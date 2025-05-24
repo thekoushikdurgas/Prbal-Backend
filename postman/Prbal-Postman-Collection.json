@@ -1,0 +1,1436 @@
+{
+  "info": {
+    "_postman_id": "your-collection-id",
+    "name": "Prbal API Collection",
+    "description": "API collection for the Prbal marketplace application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication & User Profiles",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"customer_new@example.com\",\"password\": \"Test@1234\",\"username\": \"newcustomer\",\"phone\": \"+1234567899\",\"user_type\": \"CUSTOMER\"}"
+            },
+            "description": "Register a new user (CUSTOMER or PROVIDER). Change body for provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"{{customer_email}}\",\"password\": \"{{customer_password}}\"}"
+            },
+            "description": "Login for customer. Use {{provider_email}} for provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "token", "refresh"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"refresh\": \"{{customer_refresh_token}}\"}"
+            },
+            "description": "Refresh JWT. Use {{provider_refresh_token}} for provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Authenticated User Details (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "me"]
+            },
+            "description": "Get details of the currently authenticated user. Use {{provider_access_token}} for provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Profile Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "profile_image",
+                  "type": "file",
+                  "src": "/path/to/your/image.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/profile/image/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "users", "profile", "image"]
+            },
+            "description": "Upload profile image for the authenticated user. Use {{provider_access_token}} for provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/customer-profiles/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customer-profiles", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Customer Profile (Me)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"full_name\": \"Updated Customer Name\",\"address\": \"123 Updated St\",\"bio\": \"Updated bio for customer.\",\"preferred_service_area\": \"Downtown\",\"preferred_communication\": \"EMAIL\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/customer-profiles/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customer-profiles", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Provider Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/provider-profiles/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "provider-profiles", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Provider Profile (Me)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"full_name\": \"Updated Provider Name\",\"address\": \"456 Updated Ave\",\"bio\": \"Updated bio for provider.\",\"skill_ids\": [1, 2],\"service_area\": \"Uptown\",\"hourly_rate\": \"75.00\",\"availability\": {\"monday\": [\"09:00-17:00\"]},\"experience_years\": 5}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/provider-profiles/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "provider-profiles", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Provider Features",
+      "item": [
+        {
+          "name": "Service Management",
+          "item": [
+            {
+              "name": "List Provider's Services",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/services/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "services"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create New Service",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/services/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "services"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"name\": \"Expert Web Development\",\"description\": \"Full-stack web development services.\",\"category_id\": {{category_id}},\"hourly_rate\": \"90.00\",\"min_hours\": 2,\"max_hours\": 10,\"service_area\": \"Remote\",\"required_tools\": \"N/A\",\"availability\": {\"monday\": [\"10:00-18:00\"]}}"
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Service Details",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "services", "{{service_id}}"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"name\": \"Advanced Web Development Solutions\",\"description\": \"Cutting-edge web development services.\",\"category_id\": {{category_id}},\"hourly_rate\": \"95.00\",\"min_hours\": 3,\"max_hours\": 12,\"service_area\": \"Global Remote\",\"required_tools\": \"N/A\",\"availability\": {\"tuesday\": [\"10:00-19:00\"]}}"
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Service",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "services", "{{service_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Bid Management (Provider)",
+          "item": [
+            {
+              "name": "List Provider's Submitted Bids",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/bids/me/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "bids", "me"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Submit Bid for Service Request",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/bids/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "bids"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"service_request_id\": {{request_id}},\"amount\": \"120.00\",\"estimated_hours\": 3,\"proposed_datetime\": \"2024-08-01T10:00:00Z\",\"message\": \"I am available and can complete this task efficiently.\",\"status\": \"SUBMITTED\"}"
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Withdraw Submitted Bid",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/bids/{{bid_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "bids", "{{bid_id}}"],
+                  "description": "To withdraw a bid, a DELETE request to the bid's detail endpoint can be used, or a PATCH to update status."
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Customer Features",
+      "item": [
+        {
+          "name": "Service Requests (Customer)",
+          "item": [
+            {
+              "name": "List Customer's Service Requests",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/requests/me/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "requests", "me"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Customer's Service Request Details",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/requests/{{request_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "requests", "{{request_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Customer's Service Request",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"title\": \"Updated Garden Work\", \"description\": \"Just need lawn mowing now.\", \"estimated_hours\": 2}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/requests/{{request_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "requests", "{{request_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Customer's Service Request",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/requests/{{request_id}}/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "requests", "{{request_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Bid Management (Customer)",
+          "item": [
+            {
+              "name": "View Bids for Specific Request (Customer)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/requests/{{request_id}}/bids/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "requests", "{{request_id}}", "bids"]
+                },
+                "description": "Customer views bids on their specific service request. Also, GET /api/v1/bids/ should list bids for their requests."
+              },
+              "response": []
+            },
+            {
+              "name": "Accept a Bid",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/bids/{{bid_id}}/accept/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "bids", "{{bid_id}}", "accept"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}"
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reject a Bid",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{customer_access_token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/bids/{{bid_id}}/reject/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "bids", "{{bid_id}}", "reject"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}"
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "List My Bookings (Customer or Provider)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/?status=scheduled",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "scheduled"
+                }
+              ],
+              "description": "Use {{provider_access_token}} for provider. Filters based on authenticated user. Filter by status."
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Booking Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Provider: Update Booking Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/status/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"in_progress\"}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Provider: Mark Service as Completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/complete/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "complete"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customer: Confirm Service Completion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/confirm_completion/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "confirm_completion"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Booking (Customer or Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/cancel/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "cancel"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"reason\": \"Changed my mind\"}"
+            },
+            "description": "User (customer or provider) cancels the booking. Change token accordingly."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reviews & Ratings",
+      "item": [
+        {
+          "name": "Customer: Create Review for Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"booking\": {{booking_id_for_review}},\"rating\": 5,\"comment\": \"Excellent service! Highly recommended.\"}"
+            },
+            "description": "Customer leaves a review for a completed/paid booking. Ensure 'booking_id_for_review' is set to a valid, reviewable booking ID for this customer."
+          },
+          "response": []
+        },
+        {
+          "name": "Customer: Create Review for Booking (Nested)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id_for_review}}/reviews/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id_for_review}}", "reviews"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"rating\": 4,\"comment\": \"Good job, but a bit late.\"}"
+            },
+            "description": "Alternative way for a customer to leave a review, nested under the booking."
+          },
+          "response": []
+        },
+        {
+          "name": "Customer: List My Submitted Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews"]
+            },
+            "description": "Customer lists reviews they have given. Backend filters by authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Provider: List My Received Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews"]
+            },
+            "description": "Provider lists reviews they have received. Backend filters by authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Review Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews", "{{review_id}}"]
+            },
+            "description": "Get specific review. Use customer or provider token if they are involved in the review."
+          },
+          "response": []
+        },
+        {
+          "name": "Provider: Respond to Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/respond/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews", "{{review_id}}", "respond"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"provider_response\": \"Thank you for your feedback! We appreciate your business.\"}"
+            },
+            "description": "Provider adds a response to a review they received."
+          },
+          "response": []
+        },
+        {
+          "name": "List Reviews for a Specific Provider (Public/Authenticated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/provider/?provider_id={{provider_id_to_view_reviews}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews", "provider"],
+              "query": [
+                {
+                  "key": "provider_id",
+                  "value": "{{provider_id_to_view_reviews}}"
+                }
+              ]
+            },
+            "description": "Set 'provider_id_to_view_reviews' to the ID of the provider whose reviews you want to see. Authentication might be optional or required depending on permissions."
+          },
+          "response": []
+        },
+        {
+          "name": "Customer: Delete Review",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "reviews", "{{review_id}}"]
+            },
+            "description": "Customer deletes their own review (if permissions allow)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Get Chat History for Booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/messages/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "messages"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send New Message in Booking Chat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "text_content",
+                  "value": "Hello, when will you arrive?",
+                  "type": "text"
+                },
+                {
+                  "key": "media_file",
+                  "type": "file",
+                  "src": "/path/to/optional/image.jpg",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/messages/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "messages"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Chat Message by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/messages/{{message_id_to_get}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "messages", "{{message_id_to_get}}"]
+            },
+            "description": "Retrieves a specific chat message by ID. Requires 'booking_id' and 'message_id_to_get'."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Message as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/messages/{{message_id}}/read/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "messages", "{{message_id}}", "read"]
+            },
+            "description": "User marks a message they received as read."
+          },
+          "response": []
+        }
+      ],
+      "description": "WebSocket connection for real-time chat: WS {{base_url_ws}}/ws/chat/{{booking_id}}/"
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "List Payment History (All involved for User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments"]
+            },
+            "description": "List all payments the authenticated user is involved in (customer or provider)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/{{payment_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "{{payment_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "View Payment Details for a Specific Booking (Nested)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/payments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "payments"]
+            },
+            "description": "View payment details specifically for a booking. For general payment history, use /api/v1/payments/."
+          },
+          "response": []
+        },
+        {
+          "name": "Initiate Payment for Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bookings/{{booking_id}}/payments/initiate/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bookings", "{{booking_id}}", "payments", "initiate"]
+            },
+            "description": "Typically called after booking creation/bid acceptance. Returns Stripe PaymentIntent client_secret."
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Payment Completion (Webhook/Internal)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payments/webhook/stripe/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payments", "webhook", "stripe"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": \"evt_exampleevent\",\"object\": \"event\",\"type\": \"payment_intent.succeeded\",\"data\": {\"object\": {\"id\": \"pi_exampleintent\",\"object\": \"payment_intent\",\"amount\": 2000,\"currency\": \"usd\",\"metadata\": {\"booking_id\": \"{{booking_id}}\"},\"status\": \"succeeded\"}}}"
+            },
+            "description": "Example of a Stripe webhook endpoint to confirm payment. Actual implementation may vary."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "General & Public APIs",
+      "item": [
+        {
+          "name": "Service Categories",
+          "item": [
+            {
+              "name": "List Service Categories",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}",
+                    "description": "Auth might be optional depending on IsAdminOrReadOnly setting"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/categories/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "categories"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Skills",
+          "item": [
+            {
+              "name": "List Available Skills",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/skills/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "skills"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Service Search & Browse",
+          "item": [
+            {
+              "name": "Search/Filter Available Services",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{base_url}}/api/v1/services/?category={{category_id}}&service_area=CityName&search=keyword&min_rating=4",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "services"],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "{{category_id}}",
+                      "disabled": true
+                    },
+                    {
+                      "key": "service_area",
+                      "value": "CityName",
+                      "disabled": true
+                    },
+                    {
+                      "key": "search",
+                      "value": "keyword",
+                      "disabled": true
+                    },
+                    {
+                      "key": "min_rating",
+                      "value": "4",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Service Requests (Public/For Providers)",
+          "item": [
+            {
+              "name": "List Open Service Requests for Providers",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{provider_access_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/requests/available/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "requests", "available"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Additional Utility APIs",
+      "item": [
+        {
+          "name": "AI Price Suggestion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/bids/suggest_price/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "bids", "suggest_price"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"service_request_id\": {{request_id}},\"provider_id\": {{provider_id}}}"
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "APIs like Service Areas, Statistics would be added here if implemented."
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List My Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications"]
+            },
+            "description": "Use {{provider_access_token}} for provider as well."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Unread Notification Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/unread_count/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications", "unread_count"]
+            },
+            "description": "Use {{provider_access_token}} for provider as well."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/{{notification_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications", "{{notification_id}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\\\"is_read\\\": true}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Use {{provider_access_token}} for provider as well. Body should be {'is_read': true}."
+          },
+          "response": []
+        },
+        {
+          "name": "Mark All Notifications as Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/notifications/mark_all_read/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "notifications", "mark_all_read"]
+            },
+            "description": "Use {{provider_access_token}} for provider as well."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Provider Payouts",
+      "item": [
+        {
+          "name": "List Provider Payouts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payouts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payouts"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Initiate Payout Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payouts/initiate/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payouts", "initiate"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\\\"amount\\\": \\\"50.00\\\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payout Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/payouts/{{payout_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "payouts", "{{payout_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "customer_email",
+      "value": "customer@example.com"
+    },
+    {
+      "key": "customer_password",
+      "value": "Test@123"
+    },
+    {
+      "key": "provider_email",
+      "value": "provider@example.com"
+    },
+    {
+      "key": "provider_password",
+      "value": "Test@123"
+    }
+  ]
+}
