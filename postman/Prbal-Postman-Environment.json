@@ -1,0 +1,169 @@
+{
+  "id": "your-environment-id",
+  "name": "Prbal API Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "base_url_ws",
+      "value": "ws://localhost:8000",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "customer_access_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "customer_refresh_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "provider_access_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "provider_refresh_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "admin_access_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "admin_refresh_token",
+      "value": "",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "customer_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "provider_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "customer_email",
+      "value": "customer@example.com",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "customer_password",
+      "value": "Test@123",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "provider_email",
+      "value": "provider@example.com",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "provider_password",
+      "value": "Test@123",
+      "type": "secret",
+      "enabled": true
+    },
+    {
+      "key": "service_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "category_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "request_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "bid_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "booking_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "booking_id_for_review",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "review_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "provider_id_to_view_reviews",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "payment_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "message_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "notification_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "payout_id",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}
