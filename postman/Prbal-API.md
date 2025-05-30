@@ -55,43 +55,85 @@ This document outlines the various API endpoints available in the Prbal backend 
 
 ## Authentication
 
-### JWT Token Management
-#### User Login (Obtain JWT Tokens)
+This section details user registration, login, and token management processes.
 
-- **Endpoint:** `POST {{base_url}}/api/v1/auth/login/`
-- **Description:** Authenticates any registered user (Customer, Provider, Admin, or Generic) with their username or email and password, then returns a new access and refresh JSON Web Token (JWT) pair. This is the **primary generic login endpoint** for all user types.
+### User Registration
+
+#### Generic User Registration (Defaults to Customer Type)
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/register/`
+- **Description:** Allows new users to register. By default, this endpoint registers a user with the 'customer' type. For specific roles like 'provider' or 'admin', use their dedicated registration endpoints.
 - **Permissions:** Anonymous User
 - **Request Body:** `application/json`
-  *Required fields: `username` (or `email`), `password`*
+  *Required fields: `username`, `email`, `password`, `password_confirm`*
+  *Optional fields: `phone_number`, `first_name`, `last_name`*
   ```json
   {
-      "username": "testuser", // Can also be email
-      "password": "strongpassword123"
+      "username": "newgenericuser",
+      "email": "generic@example.com",
+      "password": "newpassword123",
+      "password_confirm": "newpassword123",
+      "phone_number": "1234567890",
+      "first_name": "Generic",
+      "last_name": "User"
   }
   ```
 
-- **Example cURL Request:** 
+- **Example cURL Request:** ✅
   ```bash
-  curl -X POST {{base_url}}/api/v1/auth/login/ \
+  curl -X POST {{base_url}}/api/v1/auth/register/ \
     -H "Content-Type: application/json" \
     -d '{
-          "username": "testuser", // Or "email": "user@example.com"
-          "password": "strongpassword123"
+          "username": "newgenericuser",
+          "email": "generic@example.com",
+          "password": "newpassword123",
+          "password_confirm": "newpassword123",
+          "phone_number": "1234567890",
+          "first_name": "Generic",
+          "last_name": "User"
         }'
   ```
 
-- **Example Success Response (200 OK):**
+- **Example Success Response (201 Created):**
   ```json
   {
-      "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNDQ4OTYwMCwiaWF0IjoxNzIzNjI1NjAwLCJqdGkiOiJhYmNkZWZnMTIzNDU2Nzg5IiwidXNlcl9pZCI6MX0.abcdefghijklmnopqrstuvwxyz123456",
-      "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIzNjI1OTAwLCJpYXQiOjE3MjM2MjU2MDAsImp0aSI6IjEyMzQ1Njc4OWFiY2RlZmciLCJ1c2VyX2lkIjoxfQ.1234567890abcdefghijklmnopqrstuvwxyz"
+      "user": {
+          "id": "usr_01H...",
+          "username": "newgenericuser",
+          "email": "generic@example.com",
+          "phone_number": "1234567890",
+          "first_name": "Generic",
+          "last_name": "User",
+          "user_type": "customer",
+          "profile_picture": null,
+          "bio": null,
+          "location": null,
+          "is_verified": false,
+          "rating": 0.0,
+          "balance": "0.00",
+          "created_at": "2023-10-27T10:00:00Z",
+          "updated_at": "2023-10-27T10:00:00Z"
+      },
+      "tokens": {
+          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "message": "customer registered successfully"
   }
   ```
 
-- **Example Error Response (401 Unauthorized - Invalid Credentials):**
+- **Example Error Response (400 Bad Request - Validation Error):**
   ```json
   {
-      "detail": "No active account found with the given credentials"
+      "email": [
+          "A user with that email address already exists."
+      ],
+      "password": [
+          "Password fields didn't match."
+      ],
+      "username": [
+          "A user with that username already exists."
+      ]
   }
   ```
 
@@ -101,15 +143,431 @@ This document outlines the various API endpoints available in the Prbal backend 
       "username": [
           "This field is required."
       ],
+      "email": [
+          "This field is required."
+      ],
       "password": [
+          "This field is required."
+      ],
+      "password_confirm": [
           "This field is required."
       ]
   }
   ```
+
+#### Customer Registration
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/customer/register/`
+- **Description:** Allows new users to register specifically as a 'customer'.
+- **Permissions:** Anonymous User
+- **Request Body:** `application/json`
+  *Required fields: `username`, `email`, `password`, `password_confirm`*
+  *Optional fields: `phone_number`, `first_name`, `last_name`*
+  ```json
+  {
+      "username": "newcustomer",
+      "email": "customer@example.com",
+      "password": "securepassword123",
+      "password_confirm": "securepassword123",
+      "phone_number": "0987654321",
+      "first_name": "Customer",
+      "last_name": "Person"
+  }
+  ```
+
+- **Example cURL Request:** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/customer/register/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "username": "newcustomer",
+          "email": "customer@example.com",
+          "password": "securepassword123",
+          "password_confirm": "securepassword123",
+          "phone_number": "0987654321",
+          "first_name": "Customer",
+          "last_name": "Person"
+        }'
+  ```
+
+- **Example Success Response (201 Created):**
+  ```json
+  {
+      "user": {
+          "id": "usr_01H...",
+          "username": "newcustomer",
+          "email": "customer@example.com",
+          "phone_number": "0987654321",
+          "first_name": "Customer",
+          "last_name": "Person",
+          "user_type": "customer",
+          "profile_picture": null,
+          "bio": null,
+          "location": null,
+          "is_verified": false,
+          "rating": 0.0,
+          "balance": "0.00",
+          "created_at": "2023-10-27T10:05:00Z",
+          "updated_at": "2023-10-27T10:05:00Z"
+      },
+      "tokens": {
+          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "message": "customer registered successfully"
+  }
+  ```
+- **Example Error Responses:** (Similar to Generic User Registration)
+
+#### Provider Registration
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/provider/register/`
+- **Description:** Allows new users to register specifically as a 'provider'.
+- **Permissions:** Anonymous User
+- **Request Body:** `application/json`
+  *Required fields: `username`, `email`, `password`, `password_confirm`*
+  *Optional fields: `phone_number`, `first_name`, `last_name`, `skills` (JSON object)*
+  ```json
+  {
+      "username": "newprovider",
+      "email": "provider@example.com",
+      "password": "strongpass456",
+      "password_confirm": "strongpass456",
+      "phone_number": "1122334455",
+      "first_name": "Provider",
+      "last_name": "Pro",
+      "skills": {"plumbing": "expert", "electrical": "intermediate"}
+  }
+  ```
+
+- **Example cURL Request:** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/provider/register/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "username": "newprovider",
+          "email": "provider@example.com",
+          "password": "strongpass456",
+          "password_confirm": "strongpass456",
+          "phone_number": "1122334455",
+          "first_name": "Provider",
+          "last_name": "Pro",
+          "skills": {"plumbing": "expert", "electrical": "intermediate"}
+        }'
+  ```
+
+- **Example Success Response (201 Created):**
+  ```json
+  {
+      "user": {
+          "id": "usr_01H...",
+          "username": "newprovider",
+          "email": "provider@example.com",
+          "phone_number": "1122334455",
+          "first_name": "Provider",
+          "last_name": "Pro",
+          "user_type": "provider",
+          "profile_picture": null,
+          "bio": null,
+          "location": null,
+          "is_verified": false,
+          "rating": 0.0,
+          "balance": "0.00",
+          "created_at": "2023-10-27T10:10:00Z",
+          "updated_at": "2023-10-27T10:10:00Z"
+          // Note: 'skills' field is part of the User model but might not be in UserProfileSerializer by default.
+          // If skills are returned here, the UserProfileSerializer needs to include them.
+          // Assuming skills are managed separately or part of a detailed profile view.
+      },
+      "tokens": {
+          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "message": "provider registered successfully"
+  }
+  ```
+- **Example Error Responses:** (Similar to Generic User Registration)
+
+#### Admin Registration
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/admin/register/`
+- **Description:** Allows new users to register specifically as an 'admin'. Requires a valid admin verification code.
+- **Permissions:** Anonymous User (but protected by `admin_code`)
+- **Request Body:** `application/json`
+  *Required fields: `username`, `email`, `password`, `password_confirm`, `admin_code`*
+  *Optional fields: `phone_number`, `first_name`, `last_name`*
+  ```json
+  {
+      "username": "newadmin",
+      "email": "admin@example.com",
+      "password": "adminpass789",
+      "password_confirm": "adminpass789",
+      "phone_number": "5544332211",
+      "first_name": "Admin",
+      "last_name": "User",
+      "admin_code": "123" 
+  }
+  ```
+  *Note: The `admin_code` "123" is a placeholder from the codebase and should be securely managed.*
+
+- **Example cURL Request:** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/admin/register/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "username": "newadmin",
+          "email": "admin@example.com",
+          "password": "adminpass789",
+          "password_confirm": "adminpass789",
+          "phone_number": "5544332211",
+          "first_name": "Admin",
+          "last_name": "User",
+          "admin_code": "123"
+        }'
+  ```
+
+- **Example Success Response (201 Created):**
+  ```json
+  {
+      "user": {
+          "id": "usr_01H...",
+          "username": "newadmin",
+          "email": "admin@example.com",
+          "phone_number": "5544332211",
+          "first_name": "Admin",
+          "last_name": "User",
+          "user_type": "admin",
+          "profile_picture": null,
+          "bio": null,
+          "location": null,
+          "is_verified": false, // Admins might have different verification logic
+          "rating": 0.0,
+          "balance": "0.00",
+          "created_at": "2023-10-27T10:15:00Z",
+          "updated_at": "2023-10-27T10:15:00Z"
+      },
+      "tokens": {
+          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "message": "admin registered successfully"
+  }
+  ```
+- **Example Error Response (400 Bad Request - Invalid Admin Code):**
+  ```json
+  {
+      "admin_code": [
+          "Invalid administrator verification code"
+      ]
+  }
+  ```
+- **Example Error Responses:** (Other errors similar to Generic User Registration)
+
+### User Login
+
+#### Generic User Login
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/login/`
+- **Description:** Authenticates any registered user (Customer, Provider, Admin, or Generic) with their username, email, or phone number and password, then returns a new access and refresh JSON Web Token (JWT) pair.
+- **Permissions:** Anonymous User
+- **Request Body:** `application/json`
+  *Required fields: `password`, and one of `username`, `email`, or `phone_number`.*
+  ```json
+  {
+      "email": "generic@example.com", 
+      "password": "newpassword123"
+  }
+  ```
+  *Alternatively:*
+  ```json
+  {
+      "username": "newgenericuser",
+      "password": "newpassword123"
+  }
+  ```
+  *Or:*
+  ```json
+  {
+      "phone_number": "1234567890",
+      "password": "newpassword123"
+  }
+  ```
+
+- **Example cURL Request (using email):** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/login/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "email": "generic@example.com",
+          "password": "newpassword123"
+        }'
+  ```
+
+- **Example Success Response (200 OK):**
+  ```json
+  {
+      "user": {
+          "id": "usr_01H...",
+          "username": "newgenericuser",
+          "email": "generic@example.com",
+          "phone_number": "1234567890",
+          "first_name": "Generic",
+          "last_name": "User",
+          "user_type": "customer", // Example, will be the actual type of the logged-in user
+          "profile_picture": null,
+          "bio": null,
+          "location": null,
+          "is_verified": false,
+          "rating": 0.0,
+          "balance": "0.00",
+          "created_at": "2023-10-27T10:00:00Z",
+          "updated_at": "2023-10-27T10:00:00Z"
+      },
+      "tokens": {
+          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "message": "customer login successful" // Message reflects actual user type
+  }
+  ```
+
+- **Example Error Response (400 Bad Request - Invalid Credentials):**
+  ```json
+  {
+      "detail": "Unable to log in with provided credentials."
+  }
+  ```
+  *(Note: The `UserLoginSerializer` can return more specific errors like "Must include either 'username', 'email' or 'phone_number'" if none are provided, or serializer field errors if types are wrong, before hitting the "Unable to log in..." error from `authenticate`.)*
+
+- **Example Error Response (400 Bad Request - Missing Fields):**
+  ```json
+  {
+      "password": [
+          "This field is required."
+      ],
+      "detail": [ // If no identifier (username/email/phone) is provided
+          "Must include either 'username', 'email' or 'phone_number'"
+      ]
+  }
+  ```
+
+#### Customer Login
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/customer/login/`
+- **Description:** Authenticates a user specifically as a 'customer'.
+- **Permissions:** Anonymous User
+- **Request Body:** `application/json` (Same as Generic User Login)
+  ```json
+  {
+      "email": "customer@example.com",
+      "password": "securepassword123"
+  }
+  ```
+- **Example cURL Request:** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/customer/login/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "email": "customer@example.com",
+          "password": "securepassword123"
+        }'
+  ```
+- **Example Success Response (200 OK):** (Similar to Generic Login, but `user_type` will be 'customer' and message will reflect it)
+  ```json
+  {
+      "user": { /* ... user data for customer ... */ "user_type": "customer", ... },
+      "tokens": { /* ... tokens ... */ },
+      "message": "customer login successful"
+  }
+  ```
+- **Example Error Response (400 Bad Request - Not a Customer):**
+  ```json
+  {
+      "detail": "User is not registered as a customer" 
+  }
+  ```
+- **Example Error Responses:** (Other errors similar to Generic Login)
+
+#### Provider Login
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/provider/login/`
+- **Description:** Authenticates a user specifically as a 'provider'.
+- **Permissions:** Anonymous User
+- **Request Body:** `application/json` (Same as Generic User Login)
+  ```json
+  {
+      "email": "provider@example.com",
+      "password": "strongpass456"
+  }
+  ```
+- **Example cURL Request:** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/provider/login/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "email": "provider@example.com",
+          "password": "strongpass456"
+        }'
+  ```
+- **Example Success Response (200 OK):** (Similar to Generic Login, but `user_type` will be 'provider')
+  ```json
+  {
+      "user": { /* ... user data for provider ... */ "user_type": "provider", ... },
+      "tokens": { /* ... tokens ... */ },
+      "message": "provider login successful"
+  }
+  ```
+- **Example Error Response (400 Bad Request - Not a Provider):**
+  ```json
+  {
+      "detail": "User is not registered as a provider"
+  }
+  ```
+- **Example Error Responses:** (Other errors similar to Generic Login)
+
+#### Admin Login
+
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/admin/login/`
+- **Description:** Authenticates a user specifically as an 'admin'.
+- **Permissions:** Anonymous User
+- **Request Body:** `application/json` (Same as Generic User Login)
+  ```json
+  {
+      "email": "admin@example.com",
+      "password": "adminpass789"
+  }
+  ```
+- **Example cURL Request:** ✅
+  ```bash
+  curl -X POST {{base_url}}/api/v1/auth/admin/login/ \
+    -H "Content-Type: application/json" \
+    -d '{
+          "email": "admin@example.com",
+          "password": "adminpass789"
+        }'
+  ```
+- **Example Success Response (200 OK):** (Similar to Generic Login, but `user_type` will be 'admin')
+  ```json
+  {
+      "user": { /* ... user data for admin ... */ "user_type": "admin", ... },
+      "tokens": { /* ... tokens ... */ },
+      "message": "admin login successful"
+  }
+  ```
+- **Example Error Response (400 Bad Request - Not an Admin):**
+  ```json
+  {
+      "detail": "User is not registered as a admin" 
+  }
+  ```
+- **Example Error Responses:** (Other errors similar to Generic Login)
+
+### Token Management
+
 #### Refresh JWT Access Token
 
-- **Endpoint:** `POST /api/token/refresh/`
-- **Description:** Takes a refresh JSON Web Token (JWT) and returns a new access JWT if the refresh token is valid. This endpoint uses the standard `TokenRefreshView` from `djangorestframework-simplejwt`.
+- **Endpoint:** `POST {{base_url}}/api/v1/auth/token/refresh/`
+- **Description:** Takes a refresh JSON Web Token (JWT) and returns a new access JWT if the refresh token is valid.
 - **Permissions:** Authenticated User (via a valid refresh token)
 - **Request Body:** `application/json`
   ```json
@@ -120,10 +578,10 @@ This document outlines the various API endpoints available in the Prbal backend 
 
 - **Example cURL Request:** ✅
   ```bash
-  curl -X POST {{base_url}}/api/token/refresh/ \
+  curl -X POST {{base_url}}/api/v1/auth/token/refresh/ \
     -H "Content-Type: application/json" \
     -d '{
-          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNDQ4OTYwMCwiaWF0IjoxNzIzNjI1NjAwLCJqdGkiOiJhYmNkZWZnMTIzNDU2Nzg5IiwidXNlcl9pZCI6MX0.abcdefghijklmnopqrstuvwxyz123456"
+          "refresh": "your_valid_refresh_token"
         }'
   ```
 
@@ -131,6 +589,7 @@ This document outlines the various API endpoints available in the Prbal backend 
   ```json
   {
       "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIzNjI2MjAwLCJpYXQiOjE3MjM2MjU5MDAsImp0aSI6ImRlZmdoaWxrMTIzNDU2NzgiLCJ1c2VyX2lkIjoxfQ.pqrstuvwxyzabcdefghijklmno123456"
+      // May include other custom claims from CustomRefreshToken if it modifies the access token structure directly
   }
   ```
 
@@ -151,7 +610,7 @@ This document outlines the various API endpoints available in the Prbal backend 
   }
   ```
 
-#### User Logout
+#### User Logout (Invalidate Token)
 
 - **Endpoint:** `POST {{base_url}}/api/v1/auth/logout/`
 - **Description:** Logs out the currently authenticated user by invalidating their refresh token. The client should also discard both the access and refresh tokens locally.
@@ -160,7 +619,7 @@ This document outlines the various API endpoints available in the Prbal backend 
   *Required fields: `refresh`*
   ```json
   {
-      "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNDQ4OTYwMCwiaWF0IjoxNzIzNjI1NjAwLCJqdGkiOiJhYmNkZWZnMTIzNDU2Nzg5IiwidXNlcl9pZCI6MX0.abcdefghijklmnopqrstuvwxyz123456"
+      "refresh": "your_valid_refresh_token"
   }
   ```
 
@@ -170,13 +629,18 @@ This document outlines the various API endpoints available in the Prbal backend 
     -H "Authorization: Bearer <your_access_token>" \
     -H "Content-Type: application/json" \
     -d '{
-          "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNDQ4OTYwMCwiaWF0IjoxNzIzNjI1NjAwLCJqdGkiOiJhYmNkZWZnMTIzNDU2Nzg5IiwidXNlcl9pZCI6MX0.abcdefghijklmnopqrstuvwxyz123456"
+          "refresh": "your_valid_refresh_token"
         }'
   ```
-  *Note: The Authorization header with an access token is generally required to access protected endpoints, including this logout endpoint, to ensure the request is from an authenticated session before invalidating its tokens.*
+  *Note: The Authorization header with an access token is required to access this protected endpoint.*
 
-- **Example Success Response (204 No Content):**
-  *(No body is returned for a 204 response, indicating successful token invalidation)*
+- **Example Success Response (200 OK):** 
+  *(The code returns 200 OK with a message, not 204 No Content as previously in MD)*
+  ```json
+  {
+      "detail": "Successfully logged out."
+  }
+  ```
 
 - **Example Error Response (400 Bad Request - Missing Refresh Token):**
   ```json
@@ -188,17 +652,20 @@ This document outlines the various API endpoints available in the Prbal backend 
   ```
 
 - **Example Error Response (400 Bad Request - Invalid Token):**
+  *(If the refresh token itself is malformed or blacklisted already)*
   ```json
   {
       "detail": "Token is invalid or expired",
-      "code": "token_not_valid"
+      "code": "token_not_valid" 
   }
   ```
+  *(Or a more specific error from the `CustomRefreshToken.blacklist()` method if it raises one)*
 
-- **Example Error Response (401 Unauthorized - If access token is invalid/missing or session issue):**
+- **Example Error Response (401 Unauthorized - Invalid Access Token):**
   ```json
   {
-      "detail": "Authentication credentials were not provided."
+      "detail": "Authentication credentials were not provided." 
+      // Or "Given token not valid for any token type" if access token is bad
   }
   ```
 
