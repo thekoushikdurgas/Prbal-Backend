@@ -1,0 +1,55 @@
+# Core Django packages
+django>=5.2.1
+djangorestframework>=3.16.0
+djangorestframework-simplejwt>=5.5.0
+django-filter>=25.1
+django-cors-headers>=4.3.1
+
+# Database adapters
+psycopg2-binary>=2.9.10  # PostgreSQL adapter
+
+# Environment and configuration
+python-decouple>=3.8
+
+# Real-time functionality
+channels>=4.0.0
+# channels-redis and redis removed
+
+# Payment processing
+stripe>=7.11.0
+
+# Media handling
+Pillow>=11.2.1  # For image handling
+django-storages>=1.14.2  # For file storage (optional for S3)
+
+# Server and deployment
+daphne>=4.0.0  # ASGI server
+gunicorn>=21.2.0  # Production server
+whitenoise>=6.6.0  # Static files handling
+
+# API Documentation
+coreapi>=2.3.3
+Pygments>=2.16.1
+Markdown>=3.5.1
+drf-yasg>=1.21.7  # Swagger/OpenAPI documentation
+drf-spectacular>=0.27.0  # OpenAPI 3.0 schema generation
+
+# Monitoring and performance
+sentry-sdk>=1.32.0  # Error tracking
+django-debug-toolbar>=4.2.0  # Performance debugging (development only)
+django-prometheus>=2.3.1  # Prometheus metrics
+statsd>=4.0.1  # StatsD metrics client
+python-json-logger>=2.0.7  # JSON logging
+
+# Security
+django-csp>=3.8  # Content Security Policy
+django-axes>=6.1.1  # Login attempt limiting
+django-ratelimit>=4.1.0  # General rate limiting
+
+# Background tasks
+celery>=5.3.4
+flower>=2.0.1  # Celery monitoring
+
+# Testing
+coverage>=7.3.2
+locust>=2.16.1  # Load testing

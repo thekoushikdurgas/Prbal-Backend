@@ -1,0 +1,812 @@
+INFO 2025-05-26 21:58:42,887 autoreload 20360 3280 Watching for file changes with StatReloader
+INFO 2025-05-26 22:44:43,693 middleware 20360 18816 API Request
+WARNING 2025-05-26 22:44:43,720 basehttp 20360 18816 "POST /api/v1/users/register HTTP/1.1" 404 13840
+INFO 2025-05-26 22:45:01,268 middleware 20360 18816 API Request
+WARNING 2025-05-26 22:45:01,273 basehttp 20360 18816 "POST /api/v1/users/register/ HTTP/1.1" 404 13843
+INFO 2025-05-26 22:51:08,151 middleware 20360 21100 API Request
+WARNING 2025-05-26 22:51:08,157 basehttp 20360 21100 "POST /api/v1/auth/register/ HTTP/1.1" 400 144
+INFO 2025-05-26 22:53:06,755 middleware 20360 13808 API Request
+WARNING 2025-05-26 22:53:06,760 basehttp 20360 13808 "POST /api/v1/auth/register/ HTTP/1.1" 400 94
+ERROR 2025-05-26 22:56:50,744 log 20360 5200 Internal Server Error: /api/v1/auth/register/
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.DatatypeMismatch: column "user_id" is of type bigint but expression is of type uuid
+LINE 1: ...ti", "token", "created_at", "expires_at") VALUES ('d63ab550-...
+                                                             ^
+HINT:  You will need to rewrite or cast the expression.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\users\views.py", line 29, in post
+    refresh = RefreshToken.for_user(user)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework_simplejwt\tokens.py", line 331, in for_user
+    OutstandingToken.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=user,
+        ^^^^^^^^^^
+    ...<3 lines>...
+        expires_at=datetime_from_epoch(exp),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "user_id" is of type bigint but expression is of type uuid
+LINE 1: ...ti", "token", "created_at", "expires_at") VALUES ('d63ab550-...
+                                                             ^
+HINT:  You will need to rewrite or cast the expression.
+
+INFO 2025-05-26 22:56:50,826 middleware 20360 5200 API Request
+ERROR 2025-05-26 22:56:50,830 basehttp 20360 5200 "POST /api/v1/auth/register/ HTTP/1.1" 500 204419
+INFO 2025-05-26 23:21:50,602 autoreload 20360 3280 D:\durgas\Prbal-App\Prbal_backend\prbal_project\settings.py changed, reloading.
+INFO 2025-05-26 23:21:59,905 autoreload 21736 21628 Watching for file changes with StatReloader
+INFO 2025-05-26 23:22:26,105 autoreload 21736 21628 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-26 23:22:36,356 autoreload 1420 16284 Watching for file changes with StatReloader
+INFO 2025-05-26 23:22:49,832 autoreload 1420 16284 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-26 23:22:55,691 autoreload 2316 21236 Watching for file changes with StatReloader
+INFO 2025-05-26 23:24:32,032 autoreload 21852 20084 Watching for file changes with StatReloader
+INFO 2025-05-26 23:24:56,888 middleware 21852 3096 API Request
+WARNING 2025-05-26 23:24:56,896 basehttp 21852 3096 "POST /api/v1/auth/register/ HTTP/1.1" 400 158
+INFO 2025-05-26 23:26:04,825 middleware 21852 2692 API Request
+WARNING 2025-05-26 23:26:04,832 basehttp 21852 2692 "POST /api/v1/users/login HTTP/1.1" 404 13831
+ERROR 2025-05-26 23:26:31,713 log 21852 2692 Internal Server Error: /api/v1/auth/login/
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.DatatypeMismatch: column "user_id" is of type bigint but expression is of type uuid
+LINE 1: ...ti", "token", "created_at", "expires_at") VALUES ('d63ab550-...
+                                                             ^
+HINT:  You will need to rewrite or cast the expression.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\users\views.py", line 56, in post
+    refresh = CustomRefreshToken.for_user(user)
+  File "D:\durgas\Prbal-App\Prbal_backend\users\tokens.py", line 14, in for_user
+    token = super(RefreshToken, cls).for_user(user)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework_simplejwt\tokens.py", line 331, in for_user
+    OutstandingToken.objects.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        user=user,
+        ^^^^^^^^^^
+    ...<3 lines>...
+        expires_at=datetime_from_epoch(exp),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "user_id" is of type bigint but expression is of type uuid
+LINE 1: ...ti", "token", "created_at", "expires_at") VALUES ('d63ab550-...
+                                                             ^
+HINT:  You will need to rewrite or cast the expression.
+
+INFO 2025-05-26 23:26:31,778 middleware 21852 2692 API Request
+ERROR 2025-05-26 23:26:31,782 basehttp 21852 2692 "POST /api/v1/auth/login/ HTTP/1.1" 500 207085
+INFO 2025-05-26 23:27:27,116 autoreload 21852 20084 D:\durgas\Prbal-App\Prbal_backend\users\tokens.py changed, reloading.
+INFO 2025-05-26 23:27:34,777 autoreload 12088 5316 Watching for file changes with StatReloader
+INFO 2025-05-26 23:29:23,763 autoreload 16852 3992 Watching for file changes with StatReloader
+INFO 2025-05-26 23:29:57,174 middleware 16852 19748 API Request
+INFO 2025-05-26 23:29:57,179 basehttp 16852 19748 "POST /api/v1/auth/login/ HTTP/1.1" 200 1074
+INFO 2025-05-26 23:33:01,039 middleware 16852 6156 API Request
+ERROR 2025-05-26 23:33:01,585 log 16852 6156 Internal Server Error: /api/v1/auth/token/refresh
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\utils\deprecation.py", line 122, in __call__
+    response = self.process_response(request, response)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\middleware\common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\middleware\common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+    ...<9 lines>...
+    )
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to localhost:8000/api/v1/auth/token/refresh/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-05-26 23:33:01,600 basehttp 16852 6156 "POST /api/v1/auth/token/refresh HTTP/1.1" 500 86707
+INFO 2025-05-26 23:33:25,568 middleware 16852 19716 API Request
+INFO 2025-05-26 23:33:25,573 basehttp 16852 19716 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 331
+INFO 2025-05-26 23:34:04,985 middleware 16852 19716 API Request
+INFO 2025-05-26 23:34:04,990 basehttp 16852 19716 "GET /api/v1/users/me HTTP/1.1" 301 0
+INFO 2025-05-26 23:34:05,446 middleware 16852 15572 API Request
+INFO 2025-05-26 23:34:05,449 basehttp 16852 15572 "GET /api/v1/users/me/ HTTP/1.1" 200 435
+INFO 2025-05-26 23:42:58,768 middleware 16852 12772 API Request
+WARNING 2025-05-26 23:42:58,777 basehttp 16852 12772 "POST /api/v1/auth/login/ HTTP/1.1" 400 109
+INFO 2025-05-26 23:44:00,957 middleware 16852 12772 API Request
+INFO 2025-05-26 23:44:00,960 basehttp 16852 12772 "POST /api/v1/auth/login/ HTTP/1.1" 200 1074
+INFO 2025-05-26 23:46:36,717 middleware 16852 4980 API Request
+WARNING 2025-05-26 23:46:36,723 basehttp 16852 4980 "POST /api/v1/users/profile/image HTTP/1.1" 404 13855
+INFO 2025-05-26 23:51:39,113 autoreload 16852 3992 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-26 23:51:47,984 autoreload 20576 19536 Watching for file changes with StatReloader
+INFO 2025-05-26 23:52:17,186 autoreload 20576 19536 D:\durgas\Prbal-App\Prbal_backend\users\urls.py changed, reloading.
+INFO 2025-05-26 23:52:24,072 autoreload 15628 9232 Watching for file changes with StatReloader
+INFO 2025-05-26 23:53:34,521 autoreload 5456 11844 Watching for file changes with StatReloader
+INFO 2025-05-26 23:54:10,843 middleware 5456 13948 API Request
+INFO 2025-05-26 23:54:10,849 basehttp 5456 13948 "POST /api/v1/users/profile/image/ HTTP/1.1" 200 528
+INFO 2025-05-26 23:54:18,185 middleware 5456 13948 API Request
+INFO 2025-05-26 23:54:18,191 basehttp 5456 13948 "POST /api/v1/users/profile/image/ HTTP/1.1" 200 536
+INFO 2025-05-26 23:55:30,032 middleware 5456 17988 API Request
+WARNING 2025-05-26 23:55:30,036 basehttp 5456 17988 "GET /api/v1/customer-profiles/me HTTP/1.1" 404 14146
+INFO 2025-05-26 23:55:37,370 middleware 5456 17988 API Request
+WARNING 2025-05-26 23:55:37,375 basehttp 5456 17988 "GET /api/v1/customer-profiles/me/ HTTP/1.1" 404 14149
+INFO 2025-05-26 23:57:18,009 middleware 5456 17160 API Request
+WARNING 2025-05-26 23:57:18,022 basehttp 5456 17160 "GET /api/v1/customer-profiles/me/ HTTP/1.1" 404 14149
+INFO 2025-05-26 23:59:26,770 middleware 5456 22444 API Request
+INFO 2025-05-26 23:59:26,783 basehttp 5456 22444 "GET /api/v1/users/me/ HTTP/1.1" 200 497
+INFO 2025-05-26 23:59:37,806 middleware 5456 22444 API Request
+INFO 2025-05-26 23:59:37,815 basehttp 5456 22444 "GET /api/v1/users/me/ HTTP/1.1" 200 496
+INFO 2025-05-27 00:00:13,241 middleware 5456 22444 API Request
+ERROR 2025-05-27 00:00:13,515 log 5456 22444 Internal Server Error: /api/v1/users/me
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\utils\deprecation.py", line 122, in __call__
+    response = self.process_response(request, response)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\middleware\common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\middleware\common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+    ...<9 lines>...
+    )
+RuntimeError: You called this URL via PATCH, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining PATCH data. Change your form to point to localhost:8000/api/v1/users/me/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-05-27 00:00:13,536 basehttp 5456 22444 "PATCH /api/v1/users/me HTTP/1.1" 500 86710
+INFO 2025-05-27 00:00:21,341 middleware 5456 15056 API Request
+INFO 2025-05-27 00:00:21,344 basehttp 5456 15056 "PATCH /api/v1/users/me/ HTTP/1.1" 200 520
+INFO 2025-05-27 00:01:50,871 middleware 5456 18876 API Request
+WARNING 2025-05-27 00:01:50,874 basehttp 5456 18876 "GET /api/v1/users/me/ HTTP/1.1" 401 147
+INFO 2025-05-27 00:16:27,620 middleware 5456 6516 API Request
+WARNING 2025-05-27 00:16:27,631 basehttp 5456 6516 "POST /api/v1/auth/register/ HTTP/1.1" 400 159
+INFO 2025-05-27 00:16:40,764 middleware 5456 6516 API Request
+WARNING 2025-05-27 00:16:40,784 basehttp 5456 6516 "POST /api/v1/auth/login/ HTTP/1.1" 400 107
+INFO 2025-05-27 00:18:47,137 middleware 5456 15660 API Request
+INFO 2025-05-27 00:18:47,141 basehttp 5456 15660 "POST /api/v1/auth/login/ HTTP/1.1" 200 1139
+INFO 2025-05-27 00:20:22,283 middleware 5456 17152 API Request
+INFO 2025-05-27 00:20:22,300 basehttp 5456 17152 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 331
+INFO 2025-05-27 00:21:14,696 middleware 5456 17152 API Request
+INFO 2025-05-27 00:21:14,704 basehttp 5456 17152 "GET /api/v1/users/me/ HTTP/1.1" 200 519
+INFO 2025-05-27 00:21:27,646 basehttp 5456 10708 "GET /media/profile_pictures/unnamed_Z6V8JbN.jpg HTTP/1.1" 200 3246
+INFO 2025-05-27 00:24:20,445 middleware 5456 9852 API Request
+INFO 2025-05-27 00:24:20,459 basehttp 5456 9852 "POST /api/v1/users/profile/image/ HTTP/1.1" 200 553
+INFO 2025-05-27 00:29:05,630 middleware 5456 1768 API Request
+INFO 2025-05-27 00:29:05,643 basehttp 5456 1768 "GET /api/v1/users/me/ HTTP/1.1" 200 514
+INFO 2025-05-27 00:29:26,271 middleware 5456 1768 API Request
+INFO 2025-05-27 00:29:26,274 basehttp 5456 1768 "PATCH /api/v1/users/me/ HTTP/1.1" 200 514
+INFO 2025-05-27 00:29:50,319 middleware 5456 1768 API Request
+INFO 2025-05-27 00:29:50,322 basehttp 5456 1768 "GET /api/v1/users/me/ HTTP/1.1" 200 513
+INFO 2025-05-27 00:31:04,875 middleware 5456 13452 API Request
+INFO 2025-05-27 00:31:04,881 basehttp 5456 13452 "GET /api/v1/users/me/ HTTP/1.1" 200 514
+INFO 2025-05-27 00:31:23,416 middleware 5456 13452 API Request
+WARNING 2025-05-27 00:31:23,422 basehttp 5456 13452 "PATCH /api/v1/provider-profiles/me/ HTTP/1.1" 404 14151
+INFO 2025-05-27 00:31:39,957 middleware 5456 13452 API Request
+WARNING 2025-05-27 00:31:39,963 basehttp 5456 13452 "PATCH /api/v1/user/me/ HTTP/1.1" 404 14112
+INFO 2025-05-27 00:31:57,491 middleware 5456 13452 API Request
+INFO 2025-05-27 00:31:57,495 basehttp 5456 13452 "PATCH /api/v1/users/me/ HTTP/1.1" 200 514
+INFO 2025-05-27 00:32:26,190 middleware 5456 13452 API Request
+INFO 2025-05-27 00:32:26,195 basehttp 5456 13452 "GET /api/v1/services HTTP/1.1" 301 0
+INFO 2025-05-27 00:32:26,770 middleware 5456 10868 API Request
+INFO 2025-05-27 00:32:26,774 basehttp 5456 10868 "GET /api/v1/services/ HTTP/1.1" 200 2
+INFO 2025-05-27 00:58:28,998 middleware 5456 1888 API Request
+ERROR 2025-05-27 00:58:29,253 log 5456 1888 Internal Server Error: /api/v1/services
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\utils\deprecation.py", line 122, in __call__
+    response = self.process_response(request, response)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\middleware\common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\middleware\common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+    ...<9 lines>...
+    )
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to localhost:8000/api/v1/services/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-05-27 00:58:29,273 basehttp 5456 1888 "POST /api/v1/services HTTP/1.1" 500 86695
+INFO 2025-05-27 00:59:04,415 middleware 5456 7412 API Request
+WARNING 2025-05-27 00:59:04,420 basehttp 5456 7412 "POST /api/v1/services/ HTTP/1.1" 403 107
+INFO 2025-05-27 01:15:12,888 autoreload 5456 11844 D:\durgas\Prbal-App\Prbal_backend\users\serializers.py changed, reloading.
+INFO 2025-05-27 01:15:19,961 autoreload 4508 3972 Watching for file changes with StatReloader
+INFO 2025-05-27 01:16:29,945 autoreload 4508 3972 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 01:16:36,950 autoreload 15184 1964 Watching for file changes with StatReloader
+INFO 2025-05-27 01:17:08,395 autoreload 15184 1964 D:\durgas\Prbal-App\Prbal_backend\users\urls.py changed, reloading.
+INFO 2025-05-27 01:17:13,653 autoreload 20640 6744 Watching for file changes with StatReloader
+INFO 2025-05-27 01:22:49,068 autoreload 20640 6744 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 01:22:55,609 autoreload 21824 7548 Watching for file changes with StatReloader
+INFO 2025-05-27 01:23:59,559 autoreload 21824 7548 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 01:24:09,342 autoreload 13932 6652 Watching for file changes with StatReloader
+INFO 2025-05-27 01:24:26,899 autoreload 13932 6652 D:\durgas\Prbal-App\Prbal_backend\users\urls.py changed, reloading.
+INFO 2025-05-27 01:24:32,749 autoreload 17160 4368 Watching for file changes with StatReloader
+INFO 2025-05-27 01:27:39,126 autoreload 17160 4368 D:\durgas\Prbal-App\Prbal_backend\users\serializers.py changed, reloading.
+INFO 2025-05-27 01:27:48,189 autoreload 21872 21312 Watching for file changes with StatReloader
+INFO 2025-05-27 01:29:16,422 autoreload 21872 21312 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 01:29:28,866 autoreload 14288 6792 Watching for file changes with StatReloader
+INFO 2025-05-27 04:59:11,874 autoreload 20408 21924 Watching for file changes with StatReloader
+INFO 2025-05-27 04:59:50,295 basehttp 20408 10524 "GET /health/ HTTP/1.1" 200 41
+INFO 2025-05-27 05:00:07,702 basehttp 20408 10524 "GET /health/db/ HTTP/1.1" 200 32
+INFO 2025-05-27 05:00:59,542 middleware 20408 10524 API Request
+WARNING 2025-05-27 05:00:59,568 basehttp 20408 10524 "POST /api/v1/auth/register/ HTTP/1.1" 400 129
+INFO 2025-05-27 05:03:30,913 middleware 20408 17240 API Request
+INFO 2025-05-27 05:03:30,917 basehttp 20408 17240 "POST /api/v1/auth/register/ HTTP/1.1" 201 1094
+INFO 2025-05-27 05:04:23,977 middleware 20408 4772 API Request
+INFO 2025-05-27 05:04:23,983 basehttp 20408 4772 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 331
+INFO 2025-05-27 05:05:32,528 middleware 20408 11832 API Request
+INFO 2025-05-27 05:05:32,535 basehttp 20408 11832 "POST /api/v1/auth/login/ HTTP/1.1" 200 1087
+INFO 2025-05-27 05:56:55,397 middleware 20408 21980 API Request
+INFO 2025-05-27 05:56:55,405 basehttp 20408 21980 "POST /api/v1/auth/login/ HTTP/1.1" 200 1087
+INFO 2025-05-27 05:57:41,099 middleware 20408 21980 API Request
+INFO 2025-05-27 05:57:41,102 basehttp 20408 21980 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 331
+INFO 2025-05-27 06:02:29,785 middleware 20408 9044 API Request
+WARNING 2025-05-27 06:02:29,791 basehttp 20408 9044 "POST /api/v1/users/me/avatar/ HTTP/1.1" 400 75
+INFO 2025-05-27 06:26:04,855 middleware 20408 19496 API Request
+WARNING 2025-05-27 06:26:04,862 basehttp 20408 19496 "POST /api/v1/auth/register/ HTTP/1.1" 400 130
+INFO 2025-05-27 06:35:33,081 middleware 20408 10372 API Request
+WARNING 2025-05-27 06:35:33,088 basehttp 20408 10372 "POST /api/v1/auth/admin/register/ HTTP/1.1" 400 189
+INFO 2025-05-27 06:36:38,493 middleware 20408 21740 API Request
+WARNING 2025-05-27 06:36:38,497 basehttp 20408 21740 "POST /api/v1/auth/admin/register/ HTTP/1.1" 400 99
+INFO 2025-05-27 06:37:37,674 middleware 20408 21740 API Request
+WARNING 2025-05-27 06:37:37,681 basehttp 20408 21740 "POST /api/v1/auth/login/ HTTP/1.1" 400 108
+INFO 2025-05-27 06:41:07,421 middleware 20408 14088 API Request
+WARNING 2025-05-27 06:41:07,425 basehttp 20408 14088 "POST /api/v1/auth/login/ HTTP/1.1" 400 109
+INFO 2025-05-27 06:43:51,166 middleware 20408 9488 API Request
+INFO 2025-05-27 06:43:51,173 basehttp 20408 9488 "POST /api/v1/auth/register/ HTTP/1.1" 201 1107
+INFO 2025-05-27 06:45:50,966 middleware 20408 14460 API Request
+WARNING 2025-05-27 06:45:50,973 basehttp 20408 14460 "POST /api/v1/auth/login/ HTTP/1.1" 400 103
+INFO 2025-05-27 06:51:19,748 middleware 20408 17464 API Request
+WARNING 2025-05-27 06:51:19,752 basehttp 20408 17464 "POST /api/v1/auth/login/ HTTP/1.1" 400 142
+INFO 2025-05-27 06:51:40,174 middleware 20408 17464 API Request
+INFO 2025-05-27 06:51:40,178 basehttp 20408 17464 "POST /api/v1/auth/login/ HTTP/1.1" 200 1099
+INFO 2025-05-27 06:56:05,901 middleware 20408 4516 API Request
+INFO 2025-05-27 06:56:05,905 basehttp 20408 4516 "POST /api/v1/auth/login/ HTTP/1.1" 200 1087
+INFO 2025-05-27 07:02:00,932 middleware 20408 18732 API Request
+WARNING 2025-05-27 07:02:00,937 basehttp 20408 18732 "POST /api/v1/auth/admin/register/ HTTP/1.1" 400 99
+INFO 2025-05-27 07:12:18,279 autoreload 20408 21924 D:\durgas\Prbal-App\Prbal_backend\users\serializers.py changed, reloading.
+INFO 2025-05-27 07:12:31,014 autoreload 22080 13624 Watching for file changes with StatReloader
+INFO 2025-05-27 07:15:30,558 middleware 22080 10776 API Request
+INFO 2025-05-27 07:15:30,562 basehttp 22080 10776 "POST /api/v1/auth/admin/register/ HTTP/1.1" 201 1099
+INFO 2025-05-27 07:19:57,380 middleware 22080 17696 API Request
+WARNING 2025-05-27 07:19:57,386 basehttp 22080 17696 "GET /api/v1/users/me/ HTTP/1.1" 401 220
+INFO 2025-05-27 07:20:52,874 middleware 22080 17696 API Request
+INFO 2025-05-27 07:20:52,877 basehttp 22080 17696 "GET /api/v1/users/me/ HTTP/1.1" 200 451
+INFO 2025-05-27 07:23:22,714 middleware 22080 20368 API Request
+WARNING 2025-05-27 07:23:22,719 basehttp 22080 20368 "POST /api/v1/users/me/avatar/ HTTP/1.1" 400 75
+INFO 2025-05-27 07:24:12,814 middleware 22080 20368 API Request
+WARNING 2025-05-27 07:24:12,822 basehttp 22080 20368 "POST /api/v1/users/me/avatar/ HTTP/1.1" 400 74
+INFO 2025-05-27 07:30:08,808 middleware 22080 7888 API Request
+INFO 2025-05-27 07:30:08,812 basehttp 22080 7888 "POST /api/v1/users/me/avatar/ HTTP/1.1" 200 494
+INFO 2025-05-27 07:41:51,576 middleware 22080 18308 API Request
+INFO 2025-05-27 07:41:51,581 basehttp 22080 18308 "GET /api/v1/users/5d6a07fa-d320-4fde-b7eb-ebddb86c0f17/ HTTP/1.1" 200 314
+INFO 2025-05-27 07:42:46,933 middleware 22080 18308 API Request
+INFO 2025-05-27 07:42:46,938 basehttp 22080 18308 "POST /api/v1/users/5d6a07fa-d320-4fde-b7eb-ebddb86c0f17/like/ HTTP/1.1" 200 101
+INFO 2025-05-27 07:44:26,720 middleware 22080 16500 API Request
+INFO 2025-05-27 07:44:26,764 basehttp 22080 16500 "POST /api/v1/users/5d6a07fa-d320-4fde-b7eb-ebddb86c0f17/pass/ HTTP/1.1" 200 102
+INFO 2025-05-27 13:06:04,657 middleware 22080 10408 API Request
+WARNING 2025-05-27 13:06:04,670 basehttp 22080 10408 "GET /api/v1/users/search/?q=test&type=provider HTTP/1.1" 401 220
+INFO 2025-05-27 13:19:19,772 middleware 22080 20668 API Request
+WARNING 2025-05-27 13:19:19,778 basehttp 22080 20668 "POST /api/v1/auth/login/ HTTP/1.1" 400 143
+INFO 2025-05-27 13:19:38,136 middleware 22080 20668 API Request
+INFO 2025-05-27 13:19:38,139 basehttp 22080 20668 "POST /api/v1/auth/login/ HTTP/1.1" 200 1142
+INFO 2025-05-27 13:21:37,382 middleware 22080 1244 API Request
+WARNING 2025-05-27 13:21:37,386 basehttp 22080 1244 "GET /api/v1/users/search/?q=test&type=provider HTTP/1.1" 404 111
+INFO 2025-05-27 13:24:51,728 middleware 22080 21808 API Request
+WARNING 2025-05-27 13:24:51,732 basehttp 22080 21808 "GET /api/v1/users/search/phone/?phone=+1987654321 HTTP/1.1" 404 110
+INFO 2025-05-27 13:25:16,617 middleware 22080 21808 API Request
+WARNING 2025-05-27 13:25:16,621 basehttp 22080 21808 "POST /api/v1/auth/register/ HTTP/1.1" 400 158
+INFO 2025-05-27 13:31:25,942 autoreload 22080 13624 D:\durgas\Prbal-App\Prbal_backend\users\models.py changed, reloading.
+INFO 2025-05-27 13:31:36,397 autoreload 21204 18804 Watching for file changes with StatReloader
+INFO 2025-05-27 13:38:47,518 autoreload 21204 18804 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 13:38:55,543 autoreload 14548 10252 Watching for file changes with StatReloader
+INFO 2025-05-27 13:46:09,219 autoreload 14548 10252 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 13:46:21,193 autoreload 10816 3640 Watching for file changes with StatReloader
+INFO 2025-05-27 13:48:31,081 middleware 10816 12548 API Request
+INFO 2025-05-27 13:48:31,085 basehttp 10816 12548 "POST /api/v1/users/search/phone/ HTTP/1.1" 200 426
+INFO 2025-05-27 13:56:26,186 autoreload 10816 3640 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 13:56:37,231 autoreload 9492 11832 Watching for file changes with StatReloader
+INFO 2025-05-27 14:00:14,309 autoreload 9492 11832 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 14:00:23,362 autoreload 18908 13840 Watching for file changes with StatReloader
+INFO 2025-05-27 14:00:45,212 autoreload 18908 13840 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 14:00:55,345 autoreload 14808 9384 Watching for file changes with StatReloader
+INFO 2025-05-27 14:01:27,162 autoreload 14808 9384 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 14:01:34,949 autoreload 10388 11964 Watching for file changes with StatReloader
+INFO 2025-05-27 14:01:57,122 autoreload 10388 11964 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-27 14:02:05,293 autoreload 11292 15404 Watching for file changes with StatReloader
+INFO 2025-05-27 14:11:42,857 middleware 11292 21000 API Request
+WARNING 2025-05-27 14:11:42,867 basehttp 11292 21000 "POST /api/v1/users/search/ HTTP/1.1" 404 175
+INFO 2025-05-27 14:11:55,247 middleware 11292 21000 API Request
+WARNING 2025-05-27 14:11:55,252 basehttp 11292 21000 "POST /api/v1/users/search/ HTTP/1.1" 404 175
+INFO 2025-05-27 14:12:18,212 middleware 11292 21000 API Request
+WARNING 2025-05-27 14:12:18,216 basehttp 11292 21000 "POST /api/v1/users/search/ HTTP/1.1" 404 175
+INFO 2025-05-27 14:15:03,616 middleware 11292 9640 API Request
+WARNING 2025-05-27 14:15:03,621 basehttp 11292 9640 "POST /api/v1/users/search/ HTTP/1.1" 404 175
+INFO 2025-05-27 14:19:52,193 middleware 11292 11968 API Request
+WARNING 2025-05-27 14:19:52,197 basehttp 11292 11968 "GET /api/v1/verifications/ HTTP/1.1" 401 221
+INFO 2025-05-27 14:21:13,804 middleware 11292 21148 API Request
+INFO 2025-05-27 14:21:13,808 basehttp 11292 21148 "POST /api/v1/auth/login/ HTTP/1.1" 200 1092
+ERROR 2025-05-27 14:22:53,439 log 11292 19652 Internal Server Error: /api/v1/verifications/
+Traceback (most recent call last):
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\generics.py", line 154, in filter_queryset
+    queryset = backend().filter_queryset(self.request, queryset, self)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\filters.py", line 327, in filter_queryset
+    return queryset.order_by(*ordering)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 1718, in order_by
+    obj.query.add_ordering(*field_names)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\sql\query.py", line 2288, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\sql\query.py", line 1802, in names_to_path
+    raise FieldError(
+    ...<2 lines>...
+    )
+django.core.exceptions.FieldError: Cannot resolve keyword 'submitted_at' into field. Choices are: created_at, document_back_url, document_number, document_type, document_url, expires_at, external_reference_id, id, metadata, rejection_reason, status, updated_at, user, user_id, verification_notes, verification_type, verified_at, verified_by, verified_by_id
+INFO 2025-05-27 14:22:53,496 middleware 11292 19652 API Request
+ERROR 2025-05-27 14:22:53,501 basehttp 11292 19652 "GET /api/v1/verifications/ HTTP/1.1" 500 135548
+INFO 2025-05-27 14:25:07,348 autoreload 11292 15404 D:\durgas\Prbal-App\Prbal_backend\verification\views.py changed, reloading.
+INFO 2025-05-27 14:25:16,624 autoreload 8620 856 Watching for file changes with StatReloader
+INFO 2025-05-27 14:26:11,605 middleware 8620 2700 API Request
+INFO 2025-05-27 14:26:11,620 basehttp 8620 2700 "GET /api/v1/verifications/ HTTP/1.1" 200 2
+INFO 2025-05-27 14:34:11,248 middleware 8620 19928 API Request
+INFO 2025-05-27 14:34:11,254 basehttp 8620 19928 "GET /api/v1/services/categories/ HTTP/1.1" 200 2
+INFO 2025-05-27 15:43:58,298 autoreload 18276 3768 Watching for file changes with StatReloader
+INFO 2025-05-27 15:47:31,892 autoreload 18276 3768 D:\durgas\Prbal-App\Prbal_backend\api\views.py changed, reloading.
+INFO 2025-05-27 15:47:39,894 autoreload 3540 21344 Watching for file changes with StatReloader
+INFO 2025-05-28 14:21:09,062 autoreload 17688 2144 Watching for file changes with StatReloader
+INFO 2025-05-28 14:22:49,784 basehttp 17688 13892 "GET /health/ HTTP/1.1" 200 41
+INFO 2025-05-28 14:24:18,126 basehttp 17688 18556 "GET /health/db/ HTTP/1.1" 200 32
+INFO 2025-05-28 14:39:47,895 middleware 17688 16492 API Request
+WARNING 2025-05-28 14:39:47,900 basehttp 17688 16492 "POST /api/v1/auth/register/ HTTP/1.1" 400 224
+INFO 2025-05-28 14:52:20,029 middleware 17688 19424 API Request
+WARNING 2025-05-28 14:52:20,039 basehttp 17688 19424 "POST /api/v1/auth/register/ HTTP/1.1" 400 223
+INFO 2025-05-28 14:53:01,856 middleware 17688 19424 API Request
+INFO 2025-05-28 14:53:01,859 basehttp 17688 19424 "POST /api/v1/auth/register/ HTTP/1.1" 201 1096
+INFO 2025-05-28 14:53:53,699 middleware 17688 19424 API Request
+INFO 2025-05-28 14:53:53,703 basehttp 17688 19424 "POST /api/v1/auth/login/ HTTP/1.1" 200 1089
+INFO 2025-05-28 15:15:13,455 autoreload 17688 2144 D:\durgas\Prbal-App\Prbal_backend\api\views.py changed, reloading.
+INFO 2025-05-28 15:15:18,647 autoreload 20340 17000 Watching for file changes with StatReloader
+INFO 2025-05-28 15:18:54,834 autoreload 20340 17000 D:\durgas\Prbal-App\Prbal_backend\api\urls.py changed, reloading.
+INFO 2025-05-28 15:19:01,547 autoreload 10764 5068 Watching for file changes with StatReloader
+INFO 2025-05-28 15:19:11,569 autoreload 10764 5068 D:\durgas\Prbal-App\Prbal_backend\api\models.py changed, reloading.
+INFO 2025-05-28 15:19:15,561 autoreload 19680 20312 Watching for file changes with StatReloader
+INFO 2025-05-28 19:23:11,387 autoreload 20120 2844 Watching for file changes with StatReloader
+INFO 2025-05-28 19:25:55,394 basehttp 20120 12552 "GET /health/ HTTP/1.1" 200 41
+INFO 2025-05-28 19:31:23,438 basehttp 20120 19700 "GET /health/db/ HTTP/1.1" 200 32
+INFO 2025-05-28 19:32:11,744 basehttp 20120 19700 "GET /swagger/ HTTP/1.1" 200 2212
+INFO 2025-05-28 19:32:48,508 basehttp 20120 15356 "GET /swagger/ HTTP/1.1" 200 2212
+INFO 2025-05-28 19:32:51,300 basehttp 20120 15356 "GET /static/drf-yasg/style.css HTTP/1.1" 200 1047
+INFO 2025-05-28 19:32:51,339 basehttp 20120 15356 "GET /static/drf-yasg/swagger-ui-init.js HTTP/1.1" 200 15480
+INFO 2025-05-28 19:32:52,008 basehttp 20120 16588 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-bundle.js HTTP/1.1" 200 1046583
+INFO 2025-05-28 19:32:52,038 basehttp 20120 13628 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-standalone-preset.js HTTP/1.1" 200 322863
+INFO 2025-05-28 19:32:52,146 basehttp 20120 4180 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui.css HTTP/1.1" 200 145206
+INFO 2025-05-28 19:32:52,260 basehttp 20120 1404 "GET /static/drf-yasg/immutable.min.js HTTP/1.1" 200 56904
+INFO 2025-05-28 19:32:52,299 basehttp 20120 14616 "GET /static/drf-yasg/insQ.min.js HTTP/1.1" 200 2093
+INFO 2025-05-28 19:32:58,724 basehttp 20120 1404 "GET /static/drf-yasg/swagger-ui-dist/favicon-32x32.png HTTP/1.1" 200 628
+ERROR 2025-05-28 19:33:00,172 log 20120 14616 Internal Server Error: /swagger/
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\views.py", line 112, in get
+    schema = generator.get_schema(request, self.public)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\generators.py", line 276, in get_schema
+    paths, prefix = self.get_paths(endpoints, components, request, public)
+                    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\generators.py", line 482, in get_paths
+    operation = self.get_operation(view, path, prefix, method, components, request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\generators.py", line 524, in get_operation
+    operation = view_inspector.get_operation(operation_keys)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\view.py", line 45, in get_operation
+    responses = self.get_responses()
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\view.py", line 180, in get_responses
+    response_serializers = self.get_response_serializers()
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\view.py", line 235, in get_response_serializers
+    responses = self.get_default_responses()
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\view.py", line 211, in get_default_responses
+    default_schema = self.serializer_to_schema(default_schema) or ''
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\base.py", line 438, in serializer_to_schema
+    return self.probe_inspectors(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        self.field_inspectors, 'get_schema', serializer, {'field_inspectors': self.field_inspectors}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\base.py", line 110, in probe_inspectors
+    result = method(obj, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\field.py", line 49, in get_schema
+    return self.probe_field_inspectors(serializer, openapi.Schema, self.use_definitions)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\base.py", line 228, in probe_field_inspectors
+    return self.probe_inspectors(
+           ~~~~~~~~~~~~~~~~~~~~~^
+        self.field_inspectors, 'field_to_swagger_object', field, {'field_inspectors': self.field_inspectors},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        swagger_object_type=swagger_object_type, use_references=use_references, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\base.py", line 110, in probe_inspectors
+    result = method(obj, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\field.py", line 140, in field_to_swagger_object
+    actual_schema = definitions.setdefault(ref_name, make_schema_definition)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\openapi.py", line 685, in setdefault
+    ret = maker()
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\drf_yasg\inspectors\field.py", line 109, in make_schema_definition
+    for property_name, child in serializer.fields.items():
+                                ^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\serializers.py", line 374, in fields
+    for key, value in self.get_fields().items():
+                      ~~~~~~~~~~~~~~~^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\serializers.py", line 1105, in get_fields
+    field_class, field_kwargs = self.build_field(
+                                ~~~~~~~~~~~~~~~~^
+        source, info, model, depth
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\serializers.py", line 1251, in build_field
+    return self.build_unknown_field(field_name, model_class)
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\serializers.py", line 1369, in build_unknown_field
+    raise ImproperlyConfigured(
+    ...<2 lines>...
+    )
+django.core.exceptions.ImproperlyConfigured: Field name `image` is not valid for model `Service` in `sync.serializers.ServiceSyncSerializer`.
+ERROR 2025-05-28 19:33:00,382 basehttp 20120 14616 "GET /swagger/?format=openapi HTTP/1.1" 500 250321
+INFO 2025-05-28 19:33:38,088 basehttp 20120 8572 "GET /redoc/ HTTP/1.1" 200 926
+INFO 2025-05-28 19:34:08,841 basehttp 20120 8572 "GET /redoc/ HTTP/1.1" 200 926
+INFO 2025-05-29 19:39:45,289 autoreload 5828 2460 Watching for file changes with StatReloader
+INFO 2025-05-29 19:40:46,129 middleware 5828 9616 API Request
+WARNING 2025-05-29 19:40:46,135 basehttp 5828 9616 "POST /api/token/ HTTP/1.1" 401 105
+INFO 2025-05-29 19:41:36,428 middleware 5828 9616 API Request
+WARNING 2025-05-29 19:41:36,435 basehttp 5828 9616 "POST /api/v1/auth/register/ HTTP/1.1" 400 147
+INFO 2025-05-29 19:42:02,110 middleware 5828 9616 API Request
+WARNING 2025-05-29 19:42:02,114 basehttp 5828 9616 "POST /api/v1/auth/register/ HTTP/1.1" 400 89
+ERROR 2025-05-29 19:42:25,115 log 5828 9616 Internal Server Error: /api/v1/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "users_user_phone_number_aff54ffd_uniq"
+DETAIL:  Key (phone_number)=() already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\durgas\Prbal-App\Prbal_backend\users\views.py", line 36, in post
+    user = serializer.save()
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\serializers.py", line 210, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\users\serializers.py", line 39, in create
+    user = User.objects.create_user(
+        username=validated_data['username'],
+    ...<5 lines>...
+        phone_number=validated_data.get('phone_number', '')
+    )
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\contrib\auth\models.py", line 175, in create_user
+    return self._create_user(username, email, password, **extra_fields)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\contrib\auth\models.py", line 163, in _create_user
+    user.save(using=self._db)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\contrib\auth\base_user.py", line 65, in save
+    super().save(*args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: duplicate key value violates unique constraint "users_user_phone_number_aff54ffd_uniq"
+DETAIL:  Key (phone_number)=() already exists.
+
+INFO 2025-05-29 19:42:25,223 middleware 5828 9616 API Request
+ERROR 2025-05-29 19:42:25,228 basehttp 5828 9616 "POST /api/v1/auth/register/ HTTP/1.1" 500 226848
+INFO 2025-05-29 19:48:21,186 autoreload 5828 2460 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 19:48:41,829 autoreload 14072 16692 Watching for file changes with StatReloader
+INFO 2025-05-29 19:49:32,005 autoreload 14072 16692 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 19:49:44,426 autoreload 17420 17040 Watching for file changes with StatReloader
+INFO 2025-05-29 19:52:18,323 autoreload 17420 17040 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 19:52:34,264 autoreload 17540 3700 Watching for file changes with StatReloader
+INFO 2025-05-29 19:58:30,841 autoreload 17540 3700 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 19:58:40,562 autoreload 6884 5736 Watching for file changes with StatReloader
+INFO 2025-05-29 19:59:24,171 autoreload 6884 5736 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 19:59:30,795 autoreload 6800 13676 Watching for file changes with StatReloader
+INFO 2025-05-29 20:04:04,454 autoreload 6800 13676 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 20:04:21,799 autoreload 10996 16940 Watching for file changes with StatReloader
+INFO 2025-05-29 20:05:02,807 autoreload 10996 16940 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 20:05:14,387 autoreload 12516 14976 Watching for file changes with StatReloader
+INFO 2025-05-29 20:05:53,734 autoreload 12516 14976 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 20:06:02,596 autoreload 16688 3576 Watching for file changes with StatReloader
+INFO 2025-05-29 20:07:03,940 autoreload 16688 3576 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-05-29 20:07:12,587 autoreload 5516 17684 Watching for file changes with StatReloader
+INFO 2025-05-30 01:36:15,912 autoreload 14516 20700 Watching for file changes with StatReloader
+INFO 2025-05-30 01:37:27,107 middleware 14516 18880 API Request
+WARNING 2025-05-30 01:37:27,113 basehttp 14516 18880 "POST /api/token/ HTTP/1.1" 401 105
+INFO 2025-05-30 01:38:04,948 middleware 14516 18880 API Request
+WARNING 2025-05-30 01:38:04,952 basehttp 14516 18880 "POST /api/v1/auth/register/ HTTP/1.1" 400 148
+WARNING 2025-05-30 01:38:52,683 views 14516 18880 Registration IntegrityError for newcustomer@example.com: duplicate key value violates unique constraint "users_user_phone_number_aff54ffd_uniq"
+DETAIL:  Key (phone_number)=() already exists.
+
+INFO 2025-05-30 01:38:52,688 middleware 14516 18880 API Request
+WARNING 2025-05-30 01:38:52,692 basehttp 14516 18880 "POST /api/v1/auth/register/ HTTP/1.1" 400 122

@@ -1,0 +1,3351 @@
+{
+    "info": {
+        "_postman_id": "b2e0c1d0-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+        "name": "Prbal API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Generic Login (Test User)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData && jsonData.access) { pm.environment.set(\"access_token\", jsonData.access); }",
+                                    "if (jsonData && jsonData.refresh) { pm.environment.set(\"refresh_token\", jsonData.refresh); }"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"username\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "token",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login as Customer",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData && jsonData.access) { pm.environment.set(\"customer_access_token\", jsonData.access); }",
+                                    "if (jsonData && jsonData.refresh) { pm.environment.set(\"customer_refresh_token\", jsonData.refresh); }"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"username\": \"{{customer_email}}\",\n  \"password\": \"{{customer_password}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "token",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login as Provider",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData && jsonData.access) { pm.environment.set(\"provider_access_token\", jsonData.access); }",
+                                    "if (jsonData && jsonData.refresh) { pm.environment.set(\"provider_refresh_token\", jsonData.refresh); }"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"username\": \"{{provider_email}}\",\n  \"password\": \"{{provider_password}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "token",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login as Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData && jsonData.access) { pm.environment.set(\"admin_access_token\", jsonData.access); }",
+                                    "if (jsonData && jsonData.refresh) { pm.environment.set(\"admin_refresh_token\", jsonData.refresh); }"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"username\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "token",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Refresh JWT Token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = pm.response.json();",
+                                    "if (jsonData && jsonData.access) { pm.environment.set(\"access_token\", jsonData.access); }"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/token/refresh/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "token",
+                                "refresh",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout User",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "// Optionally clear tokens from environment",
+                                    "// pm.environment.unset(\"access_token\");",
+                                    "// pm.environment.unset(\"refresh_token\");"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/auth/logout/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "auth",
+                                "logout",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "User Management",
+            "item": [
+                {
+                    "name": "Generic User Endpoints",
+                    "item": [
+                        {
+                            "name": "Register Customer",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "var jsonData = pm.response.json();",
+                                            "if (jsonData && jsonData.access) { pm.environment.set(\"customer_access_token\", jsonData.access); }",
+                                            "if (jsonData && jsonData.refresh) { pm.environment.set(\"customer_refresh_token\", jsonData.refresh); }"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"newcustomer\",\n  \"email\": \"newcustomer@example.com\",\n  \"password\": \"newpassword123\",\n  \"password2\": \"newpassword123\",\n  \"first_name\": \"New\",\n  \"last_name\": \"Customer\",\n  \"user_type\": \"customer\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/auth/register/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "register",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Register Provider",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "var jsonData = pm.response.json();",
+                                            "if (jsonData && jsonData.access) { pm.environment.set(\"provider_access_token\", jsonData.access); }",
+                                            "if (jsonData && jsonData.refresh) { pm.environment.set(\"provider_refresh_token\", jsonData.refresh); }"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"newprovider\",\n  \"email\": \"newprovider@example.com\",\n  \"password\": \"newpassword123\",\n  \"password2\": \"newpassword123\",\n  \"first_name\": \"New\",\n  \"last_name\": \"Provider\",\n  \"user_type\": \"provider\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/auth/register/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "register",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Register Admin",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "var jsonData = pm.response.json();",
+                                            "if (jsonData && jsonData.access) { pm.environment.set(\"admin_access_token\", jsonData.access); }",
+                                            "if (jsonData && jsonData.refresh) { pm.environment.set(\"admin_refresh_token\", jsonData.refresh); }"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"newadmin\",\n  \"email\": \"newadmin@example.com\",\n  \"password\": \"newpassword123\",\n  \"password2\": \"newpassword123\",\n  \"first_name\": \"New\",\n  \"last_name\": \"Admin\",\n  \"user_type\": \"admin\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/auth/register/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "register",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Login User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpassword123\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/auth/login/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "auth",
+                                        "login",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get Current User Profile",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Current User Profile (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"{{email}}\",\n  \"first_name\": \"{{first_name}}\",\n  \"last_name\": \"{{last_name}}\",\n  \"user_type\": \"{{user_type}}\",\n  \"profile\": {\n    \"phone_number\": \"{{phone_number}}\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"gender\": \"Male\",\n    \"address\": \"123 Main St\",\n    \"city\": \"Anytown\",\n    \"state\": \"CA\",\n    \"zip_code\": \"90210\",\n    \"country\": \"USA\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Partially Update Current User Profile (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"profile\": {\n    \"phone_number\": \"+1987654321\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Upload Avatar",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "avatar",
+                                            "type": "file",
+                                            "src": "/path/to/your/avatar_image.jpg"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/me/avatar/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "me",
+                                        "avatar",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Upload Cover Photo",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "profile_image",
+                                            "type": "file",
+                                            "src": "/path/to/your/cover_image.jpg"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/profile/image/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "profile",
+                                        "image",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Change Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"old_password\": \"currentSecurePassword!1\",\n  \"new_password1\": \"newVerySecurePassword!2\",\n  \"new_password2\": \"newVerySecurePassword!2\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/me/change-password/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "me",
+                                        "change-password",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Deactivate Account",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"password\": \"currentSecurePassword!1\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/me/deactivate/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "me",
+                                        "deactivate",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get Public User Profile by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/{{user_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "{{user_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Like User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/{{user_id}}/like/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "{{user_id}}",
+                                        "like",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Pass User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/{{user_id}}/pass/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "{{user_id}}",
+                                        "pass",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Customer Specific Endpoints",
+                    "item": [
+                        {
+                            "name": "Get Current Customer Profile",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/customer/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "customer",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Current Customer Profile (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"first_name\": \"UpdatedCustomerFirst\",\n  \"last_name\": \"UpdatedCustomerLast\",\n  \"profile\": {\n    \"bio\": \"Updated customer bio.\",\n    \"preferences\": {\n        \"newsletter_subscribed\": false\n    }\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/customer/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "customer",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Partially Update Current Customer Profile (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"profile\": {\n    \"preferences\": {\n        \"preferred_language\": \"es\"\n    }\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/customer/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "customer",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Provider Specific Endpoints",
+                    "item": [
+                        {
+                            "name": "Get Current Provider Profile",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/provider/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "provider",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Current Provider Profile (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"first_name\": \"UpdatedService\",\n  \"last_name\": \"Pro\",\n  \"profile\": {\n    \"business_name\": \"Updated Pro Services LLC\",\n    \"services_offered\": [\"Deep Cleaning\", \"Regular Cleaning\", \"Eco-Friendly Cleaning\"],\n    \"hourly_rate\": 55.00\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/provider/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "provider",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Partially Update Current Provider Profile (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"profile\": {\n    \"availability_schedule\": {\"wednesday\": \"10am-3pm\", \"friday\": \"9am-6pm\"}\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/provider/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "provider",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Admin Specific Endpoints",
+                    "item": [
+                        {
+                            "name": "Get Current Admin Profile",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/admin/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "admin",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Current Admin Profile (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"first_name\": \"SeniorAdmin\",\n  \"last_name\": \"User\",\n  \"profile\": {\n    \"staff_role\": \"UserManager\",\n    \"bio\": \"Senior administrator with user management and system oversight responsibilities.\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/admin/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "admin",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Partially Update Current Admin Profile (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"profile\": {\n     \"phone_number\": \"+1231239999\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/admin/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "admin",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Own Admin Profile (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"first_name\": \"AdminUpdated\",\n  \"last_name\": \"UserUpdated\",\n  \"profile\": {\n    \"staff_role\": \"SeniorModerator\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/admin/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "admin",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Partially Update Own Admin Profile (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"profile\": {\n    \"staff_permissions\": [\"can_ban_users\", \"can_edit_posts\"]\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/admin/me/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "admin",
+                                        "me",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create User (Admin)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"username\": \"newlycreateduser\",\n  \"email\": \"newlycreated@example.com\",\n  \"password\": \"StrongPass123!\",\n  \"first_name\": \"Newly\",\n  \"last_name\": \"Created\",\n  \"user_type\": \"customer\",\n  \"profile\": {\n    \"phone_number\": \"+19998887777\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/users/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "users",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete User by ID (Admin)",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/users/{{user_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "users",
+                                        "{{user_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Services & Service Requests",
+                    "description": "Endpoints for managing services and service requests by providers and customers.",
+                    "item": [
+                        {
+                            "name": "Provider - Manage Own Services",
+                            "description": "Endpoints for providers to manage their own service listings.",
+                            "item": [
+                                {
+                                    "name": "List Own Services",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/services/?provider_id=me",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "services",
+                                                ""
+                                            ],
+                                            "query": [
+                                                {
+                                                    "key": "provider_id",
+                                                    "value": "me"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Create New Service",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            },
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"title\": \"My New Awesome Service\",\n  \"description\": \"Detailed description of my new awesome service.\",\n  \"subcategory_id\": \"subcat_replace_with_actual_id\",\n  \"base_price\": \"99.99\",\n  \"pricing_model\": \"fixed\",\n  \"is_active\": true\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/services/",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "services",
+                                                ""
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Retrieve Own Specific Service",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/services/{{serviceId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "services",
+                                                "{{serviceId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Update Own Service (PUT)",
+                                    "request": {
+                                        "method": "PUT",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            },
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"title\": \"Updated Awesome Service Title\",\n  \"description\": \"Updated detailed description.\",\n  \"subcategory_id\": \"subcat_replace_with_actual_id\",\n  \"base_price\": \"109.99\",\n  \"pricing_model\": \"fixed\",\n  \"is_active\": true\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/services/{{serviceId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "services",
+                                                "{{serviceId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Partially Update Own Service (PATCH)",
+                                    "request": {
+                                        "method": "PATCH",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            },
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"base_price\": \"119.99\",\n  \"is_active\": false\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/services/{{serviceId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "services",
+                                                "{{serviceId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Delete Own Service",
+                                    "request": {
+                                        "method": "DELETE",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/services/{{serviceId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "services",
+                                                "{{serviceId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Provider - Manage Service Requests",
+                            "description": "Endpoints for providers to manage service requests for their services.",
+                            "item": [
+                                {
+                                    "name": "List Service Requests for Provider's Services",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/?provider_id=me&status=pending_provider_acceptance",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                ""
+                                            ],
+                                            "query": [
+                                                {
+                                                    "key": "provider_id",
+                                                    "value": "me"
+                                                },
+                                                {
+                                                    "key": "status",
+                                                    "value": "pending_provider_acceptance"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Retrieve Specific Service Request (for own service)",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/{{requestId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                "{{requestId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Update Service Request (e.g. accept, reject, complete)",
+                                    "request": {
+                                        "method": "PATCH",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{provider_access_token}}"
+                                            },
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"status\": \"provider_accepted\",\n  \"provider_notes\": \"Request accepted. Will arrive at preferred time.\",\n  \"agreed_price\": \"150.00\"\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/{{requestId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                "{{requestId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Customer - Manage Service Requests",
+                            "description": "Endpoints for customers to manage their own service requests.",
+                            "item": [
+                                {
+                                    "name": "List Own Service Requests",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{customer_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/?customer_id=me",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                ""
+                                            ],
+                                            "query": [
+                                                {
+                                                    "key": "customer_id",
+                                                    "value": "me"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Create New Service Request",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{customer_access_token}}"
+                                            },
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"service_id\": \"svc_replace_with_actual_id\",\n  \"preferred_datetime_start\": \"2024-12-01T10:00:00Z\",\n  \"customer_notes\": \"Looking for a morning appointment.\"\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                ""
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Retrieve Own Specific Service Request",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{customer_access_token}}"
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/{{requestId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                "{{requestId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Update Own Service Request (e.g. cancel)",
+                                    "request": {
+                                        "method": "PATCH",
+                                        "header": [
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{customer_access_token}}"
+                                            },
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"status\": \"customer_cancelled\",\n  \"cancellation_reason\": \"No longer need the service.\"\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/api/v1/service-requests/{{requestId}}",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "api",
+                                                "v1",
+                                                "service-requests",
+                                                "{{requestId}}"
+                                            ]
+                                        }
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "User Search",
+                    "item": [
+                        {
+                            "name": "General User Search",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/search/?query={{search_query}}",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "search",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "query",
+                                            "value": "{{search_query}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Phone User Search",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/search/phone/?phone={{phone_number}}",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "search",
+                                        "phone",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "phone",
+                                            "value": "{{phone_number}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "User Verification (General)",
+                    "item": [
+                        {
+                            "name": "Get User Verification Status",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/{{user_id}}/verification/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "{{user_id}}",
+                                        "verification",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Initiate User Verification",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_data\": {\n    \"id_number\": \"123456789\",\n    \"document_url\": \"https://example.com/id.pdf\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/users/{{user_id}}/verification/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "users",
+                                        "{{user_id}}",
+                                        "verification",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Services & Service Requests",
+            "item": [
+                {
+                    "name": "Admin - Service Management",
+                    "item": [
+                        {
+                            "name": "List All Services (Admin)",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/services/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "services",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create New Service (Admin)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"New Service\",\n  \"description\": \"Description for new service\",\n  \"category\": \"<category_id>\",\n  \"price\": 100.00,\n  \"currency\": \"USD\",\n  \"is_active\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/services/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "services",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve Specific Service (Admin)",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/services/{{service_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "services",
+                                        "{{service_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Specific Service (PUT) (Admin)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Updated Service Name\",\n  \"description\": \"Updated description\",\n  \"category\": \"<category_id>\",\n  \"price\": 120.00,\n  \"currency\": \"USD\",\n  \"is_active\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/services/{{service_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "services",
+                                        "{{service_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Partially Update Specific Service (PATCH) (Admin)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"price\": 110.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/services/{{service_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "services",
+                                        "{{service_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete Specific Service (Admin)",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/services/{{service_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "services",
+                                        "{{service_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Public Endpoints",
+                    "item": [
+                        {
+                            "name": "List All Service Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/service-categories/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "service-categories",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve Specific Service Category",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/service-categories/{{category_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "service-categories",
+                                        "{{category_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "List All Service Subcategories",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/service-subcategories/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "service-subcategories",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve Specific Service Subcategory",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/service-subcategories/{{subcategory_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "service-subcategories",
+                                        "{{subcategory_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "List All Services",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/services/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "services",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve Specific Service",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "services",
+                                        "{{service_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Products",
+                    "item": []
+                },
+                {
+                    "name": "Bids",
+                    "item": []
+                },
+                {
+                    "name": "Bookings",
+                    "item": [
+                        {
+                            "name": "Calendar Integration",
+                            "item": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Payments",
+                    "item": []
+                },
+                {
+                    "name": "Messaging",
+                    "item": []
+                },
+                {
+                    "name": "Notifications",
+                    "item": [
+                        {
+                            "name": "List User's Notifications",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notifications/?unread_only=true&page_size=10",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notifications",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "unread_only",
+                                            "value": "true"
+                                        },
+                                        {
+                                            "key": "page_size",
+                                            "value": "10"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Mark Notifications as Read",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"notification_ids\": [\"{{notification_id_example}}\", \"{{another_notification_id_example}}\"]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/notifications/mark-as-read/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notifications",
+                                        "mark-as-read",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Mark All Notifications as Read",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notifications/mark-all-as-read/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notifications",
+                                        "mark-all-as-read",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve a Specific Notification",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notifications/{{notification_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notifications",
+                                        "{{notification_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "notification_id",
+                                            "value": "{{notification_id_example}}",
+                                            "description": "ID of the notification to retrieve"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete a Notification",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notifications/{{notification_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notifications",
+                                        "{{notification_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "notification_id",
+                                            "value": "{{notification_id_example}}",
+                                            "description": "ID of the notification to delete"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Notification Groups",
+                    "item": [
+                        {
+                            "name": "List Notification Groups",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notification-groups/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notification-groups",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create Notification Group",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"New Feature Announcements\",\n  \"description\": \"Users interested in updates about new platform features.\",\n  \"user_ids\": [\"usr_01H7Y8Z9A0B1C2D3E4F5G6H7J8\", \"usr_01H6X7Y8Z9A0B1C2D3E4F5G6H7\"]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/notification-groups/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notification-groups",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve a Specific Notification Group",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notification-groups/{{notification_group_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notification-groups",
+                                        "{{notification_group_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "notification_group_id",
+                                            "value": "{{notification_group_id_example}}",
+                                            "description": "ID of the notification group to retrieve"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update a Notification Group",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Updated Feature Announcements Group\",\n  \"description\": \"All users interested in updates about new platform features and major changes.\",\n  \"user_ids\": [\"usr_01H7Y8Z9A0B1C2D3E4F5G6H7J8\"]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/notification-groups/{{notification_group_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notification-groups",
+                                        "{{notification_group_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "notification_group_id",
+                                            "value": "{{notification_group_id_example}}",
+                                            "description": "ID of the notification group to update"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete a Notification Group",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/notification-groups/{{notification_group_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "notification-groups",
+                                        "{{notification_group_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "notification_group_id",
+                                            "value": "{{notification_group_id_example}}",
+                                            "description": "ID of the notification group to delete"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "AI Suggestions",
+                    "item": [
+                        {
+                            "name": "List Feedback on AI Suggestions",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}" 
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/ai-suggestions/feedback/?suggestion_id=sug_01HAEFGHJ1KMNPQRSTVWXYZABC&user_id=usr_01H7Y8Z9A0B1C2D3E4F5G6H7J8",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "ai-suggestions",
+                                        "feedback",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "suggestion_id",
+                                            "value": "sug_01HAEFGHJ1KMNPQRSTVWXYZABC"
+                                        },
+                                        {
+                                            "key": "user_id",
+                                            "value": "usr_01H7Y8Z9A0B1C2D3E4F5G6H7J8"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Submit Feedback on AI Suggestion",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"suggestion_id\": \"sug_01HAEFGHJ1KMNPQRSTVWXYZABC\",\n  \"was_helpful\": true,\n  \"feedback_text\": \"This suggestion was very relevant and saved me time.\",\n  \"context\": {\n    \"page\": \"service_booking\",\n    \"action_taken\": \"accepted_suggestion\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/ai-suggestions/feedback/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "ai-suggestions",
+                                        "feedback",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Verification (Dedicated Module)",
+                    "item": [
+                        {
+                            "name": "Create Verification Request",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"verification_type\": \"identity_document\",\n  \"comments\": \"Requesting verification of my national ID.\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/verifications/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "verifications",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "List User's Verification Requests",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/verifications/?status=pending",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "verifications",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "status",
+                                            "value": "pending"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve Specific Verification Request",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/verifications/{{verification_id_example}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "verifications",
+                                        "{{verification_id_example}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Verification Request (e.g., submit documents)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"documents\": [\n    {\n      \"document_type\": \"national_id_front\",\n      \"file_url\": \"https://example.com/docs/national_id_front.jpg\"\n    },\n    {\n      \"document_type\": \"national_id_back\",\n      \"file_url\": \"https://example.com/docs/national_id_back.jpg\"\n    }\n  ],\n  \"comments\": \"Uploaded front and back of my national ID.\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/verifications/{{verification_id_example}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "verifications",
+                                        "{{verification_id_example}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Submit Feedback on Verification Outcome",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"satisfied\": false,\n  \"feedback_comment\": \"The rejection reason was unclear. I would like more details.\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/verifications/{{verification_id_example}}/feedback/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "verifications",
+                                        "{{verification_id_example}}",
+                                        "feedback",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "List All Verification Requests (Admin)",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/verifications/?status=pending_review&user_id=usr_01H7Y8Z9A0B1C2D3E4F5G6H7J8",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "verifications",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "status",
+                                            "value": "pending_review"
+                                        },
+                                        {
+                                            "key": "user_id",
+                                            "value": "usr_01H7Y8Z9A0B1C2D3E4F5G6H7J8"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Verification Status (Admin)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"status\": \"approved\",\n  \"admin_notes\": \"Identity confirmed via national ID. Documents clear.\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/admin/verifications/{{verification_id_example}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "admin",
+                                        "verifications",
+                                        "{{verification_id_example}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Reviews",
+                    "item": [
+                        {
+                            "name": "List Approved Reviews (Public)",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/?service_id={{service_id_example}}&status=approved",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "service_id",
+                                            "value": "svc_01H7Y8Z9A0B1C2D3E4F5G6H7J8"
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "approved"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "List Pending Reviews (Admin)",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/?status=pending_approval",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "status",
+                                            "value": "pending_approval"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create a Review (Customer)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"booking_id\": \"{{booking_id_example}}\", \n  \"service_id\": \"{{service_id_example}}\", \n  \"rating\": 5,\n  \"title\": \"Fantastic Experience\",\n  \"comment\": \"Would definitely recommend this service to others.\",\n  \"is_anonymous\": false\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Retrieve a Specific Review (Public)",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        "{{review_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "review_id",
+                                            "value": "rev_01HCEFGHJ1KMNPQRSTVWXYZABC",
+                                            "description": "ID of the review to retrieve"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Own Review (Customer)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"comment\": \"Update: After a month, still very happy with the results!\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        "{{review_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "review_id",
+                                            "value": "rev_01HCEFGHJ1KMNPQRSTVWXYZABC",
+                                            "description": "ID of the review to update"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Moderate Review (Admin)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"status\": \"approved\",\n  \"admin_notes\": \"Review content verified and approved.\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        "{{review_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "review_id",
+                                            "value": "rev_01HCFGHIJKLMNOPQRSTUVWXYZABCDE",
+                                            "description": "ID of the review to moderate"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete a Review (Admin)",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/v1/reviews/{{review_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "v1",
+                                        "reviews",
+                                        "{{review_id}}",
+                                        ""
+                                    ],
+                                    "variable": [
+                                        {
+                                            "key": "review_id",
+                                            "value": "rev_01HCEFGHJ1KMNPQRSTVWXYZABC",
+                                            "description": "ID of the review to delete"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Analytics (Primarily Admin)",
+                    "item": [
+                        {
+                            "name": "Get Platform Summary Statistics",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/analytics/summary/?period=last_30_days",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "analytics",
+                                        "summary",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "period",
+                                            "value": "last_30_days"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get User Growth Report",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/analytics/users/growth/?start_date=2024-01-01&end_date=2024-03-15&granularity=monthly",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "analytics",
+                                        "users",
+                                        "growth",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "start_date",
+                                            "value": "2024-01-01"
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2024-03-15"
+                                        },
+                                        {
+                                            "key": "granularity",
+                                            "value": "monthly"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get Revenue Report",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token_financial}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/analytics/revenue/?start_date=2024-03-01&end_date=2024-03-15&granularity=daily",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "analytics",
+                                        "revenue",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "start_date",
+                                            "value": "2024-03-01"
+                                        },
+                                        {
+                                            "key": "end_date",
+                                            "value": "2024-03-15"
+                                        },
+                                        {
+                                            "key": "granularity",
+                                            "value": "daily"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Synchronization (Offline Support)",
+                    "item": [
+                        {
+                            "name": "Get Data for Offline Use",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/sync/data/?last_sync_timestamp=2024-03-10T10:00:00Z",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "sync",
+                                        "data",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "last_sync_timestamp",
+                                            "value": "2024-03-10T10:00:00Z"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Push Local Changes to Server",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"changes\": [\n    {\n      \"model\": \"ServiceRequest\",\n      \"action\": \"update\",\n      \"data\": {\n        \"id\": \"req_01H7Y8Z9A0B1C2D3E4F5G6H7J8\",\n        \"status\": \"completed\",\n        \"completed_at\": \"2024-03-15T14:30:00Z\"\n      }\n    },\n    {\n      \"model\": \"UserProfile\",\n      \"action\": \"update\",\n      \"data\": {\n        \"phone_number\": \"+1234567890\"\n      }\n    }\n  ],\n  \"client_timestamp\": \"2024-03-15T15:00:00Z\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/sync/push/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "sync",
+                                        "push",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "System & Health Checks",
+                    "item": [
+                        {
+                            "name": "Application Health Check",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/health/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "health",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Database Connectivity Check",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/health/db/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "health",
+                                        "db",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Cache Service Health Check",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/health/cache/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "health",
+                                        "cache",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Background Workers Health Check",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/health/workers/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "health",
+                                        "workers",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "API Documentation Endpoints",
+                    "item": [
+                        {
+                            "name": "Swagger UI",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/docs/swagger/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "docs",
+                                        "swagger",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "ReDoc UI",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/docs/redoc/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "docs",
+                                        "redoc",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "OpenAPI Schema File",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/api/docs/schema/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "docs",
+                                        "schema",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "WebSocket APIs",
+                    "item": [
+                        {
+                            "name": "Notifications WebSocket",
+                            "request": {
+                                "method": "GET", 
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url_ws}}/ws/notifications/?token={{access_token}}",
+                                    "protocol": "ws",
+                                    "host": [
+                                        "{{base_url_ws}}"
+                                    ],
+                                    "path": [
+                                        "ws",
+                                        "notifications",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{access_token}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ],
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ],
+            "variable": []
+        }
+    ]
+}
