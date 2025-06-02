@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from .models import User # Assuming User is in users.models, if not, adjust
+from .models import User, AccessToken # Assuming User is in users.models, if not, adjust
 # Assuming Like model is in the same app's models.py. Adjust if it's elsewhere.
 # from .models import Like # Or from another_app.models import Like
 from django.db import transaction
@@ -31,14 +31,141 @@ from .serializers import (
     CustomerSearchResultSerializer,
     ProviderSearchResultSerializer,
     AdminSearchResultSerializer,
-    ChangePasswordSerializer
+    ChangePasswordSerializer,
+    AccessTokenSerializer
 )
 
 User = get_user_model()
 
+
+class UserAccessTokensView(generics.ListAPIView):
+    """View for listing a user's access tokens"""
+    serializer_class = AccessTokenSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        # Only return tokens for the currently authenticated user
+        return AccessToken.objects.filter(user=self.request.user)
+        
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        
+        # Allow filtering by active status
+        active_only = request.query_params.get('active_only', 'false').lower() == 'true'
+        if active_only:
+            queryset = queryset.filter(is_active=True)
+            
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'count': queryset.count(),
+            'results': serializer.data
+        })
+
+
+class UserAccessTokenRevokeView(APIView):
+    """View for revoking a specific access token"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, token_id, *args, **kwargs):
+        try:
+            # Find the token and ensure it belongs to the current user
+            token = get_object_or_404(AccessToken, id=token_id, user=request.user)
+            
+            # Mark as inactive
+            token.is_active = False
+            token.save(update_fields=['is_active'])
+            
+            return Response({
+                'message': 'Token revoked successfully',
+                'token_id': token_id
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Error revoking token {token_id} for user {request.user.id}: {e}", exc_info=True)
+            return Response({"detail": "An error occurred while revoking the token."}, 
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserLogoutView(APIView):
+    """View for handling user logout and token invalidation"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            # Blacklist the token - this depends on using rest_framework_simplejwt with blacklist app
+            # If you're not using the blacklist app, this part will need to be adjusted or removed
+            try:
+                refresh_token = request.data.get("refresh")
+                if refresh_token:
+                    # Mark the associated token as inactive in our database
+                    token_jti = request.data.get("jti")
+                    if token_jti:
+                        tokens = AccessToken.objects.filter(token_jti=token_jti, user=request.user)
+                        tokens.update(is_active=False)
+                    # If using token blacklist
+                    # token = RefreshToken(refresh_token)
+                    # token.blacklist()
+                    pass  # Placeholder if not using blacklist
+            except Exception as e:
+                # Log the error but don't fail the logout
+                logger.warning(f"Token deactivation error for user {request.user.id}: {e}")
+            
+            # Even if token blacklisting fails, return success
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Error during logout for user {request.user.id}: {e}", exc_info=True)
+            return Response({"detail": "An error occurred during logout."}, 
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserDeactivateView(APIView):
+    """
+    Allows the currently authenticated user to deactivate their own account.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if not user.is_active:
+            return Response({"message": "Account is already deactivated."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user.is_active = False
+        try:
+            user.save(update_fields=['is_active'])
+            # Optionally, you might want to log the user out by invalidating tokens here
+            # For example, if using SimpleJWT, blacklist the refresh token
+            # from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
+            # try:
+            #     # Assuming refresh token is sent in request body or handled elsewhere
+            #     # This part is conceptual and needs actual refresh token handling
+            #     refresh_token = request.data.get("refresh") # Or however you get it
+            #     if refresh_token:
+            #         token = RefreshToken(refresh_token)
+            #         token.blacklist()
+            # except Exception as e:
+            #     logger.warning(f"Could not blacklist token for user {user.id} during deactivation: {e}")
+            #     pass # Non-critical, proceed with deactivation message
+
+            logger.info(f"User {user.id} ({user.username}) deactivated their account.")
+            return Response({"message": "Account deactivated successfully."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Error deactivating account for user {user.id}: {e}", exc_info=True)
+            # Re-activate user if save failed to maintain consistent state, though unlikely with just one field.
+            # user.is_active = True # This might be too aggressive or cause other issues.
+            return Response({"detail": "An error occurred while deactivating your account. Please try again."}, 
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class BaseRegistrationView(generics.CreateAPIView):
     """Base view for handling user registration"""
     permission_classes = [permissions.AllowAny]
+    
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
     
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -73,6 +200,22 @@ class BaseRegistrationView(generics.CreateAPIView):
                     'refresh': str(refresh),
                     'access': str(refresh.access_token)
                 }
+                
+                # Track the access token with device information
+                device_type = request.data.get('device_type', 'web')
+                try:
+                    # Save the token details to database
+                    AccessToken.objects.create(
+                        user=user,
+                        token_jti=refresh["jti"],  # JWT ID
+                        device_type=device_type,
+                        device_name=request.META.get('HTTP_USER_AGENT', ''),
+                        ip_address=self.get_client_ip(request)
+                    )
+                except Exception as e:
+                    # Don't fail registration if token tracking fails
+                    logger.error(f"Token tracking error for user {user.id}: {e}", exc_info=True)
+                    
             except Exception as e:
                 logger.error(f"Token generation error for user {user.id}: {e}", exc_info=True)
                 return Response({"detail": "User registered, but token generation failed. Please try logging in."},
@@ -111,6 +254,14 @@ class BaseLoginView(APIView):
     """Base view for handling user login"""
     permission_classes = [permissions.AllowAny]
     
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -122,6 +273,22 @@ class BaseLoginView(APIView):
                     'refresh': str(refresh),
                     'access': str(refresh.access_token)
                 }
+                
+                # Track the access token with device information
+                device_type = request.data.get('device_type', 'web')
+                try:
+                    # Save the token details to database
+                    AccessToken.objects.create(
+                        user=user,
+                        token_jti=refresh["jti"],  # JWT ID
+                        device_type=device_type,
+                        device_name=request.META.get('HTTP_USER_AGENT', ''),
+                        ip_address=self.get_client_ip(request)
+                    )
+                except Exception as e:
+                    # Don't fail login if token tracking fails
+                    logger.error(f"Token tracking error during login for user {user.id}: {e}", exc_info=True)
+                    
             except Exception as e:
                 logger.error(f"Token generation error during login for user {user.id}: {e}", exc_info=True)
                 return Response({"detail": "Login successful, but token generation failed. Please try again."},
@@ -857,6 +1024,7 @@ class UserVerificationView(APIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         verification_type = request.data.get('verification_type', 'identity')
+        document_link = request.data.get('document_link')
         
         # Check if a verification of this type is already in progress
         from verification.models import Verification # Consider moving imports to the top of the file
@@ -894,7 +1062,8 @@ class UserVerificationView(APIView):
                 verification = Verification.objects.create(
                     user=user,
                     verification_type=verification_type,
-                    status='pending'
+                    status='pending',
+                    document_link=document_link
                 )
                 
                 # In a real implementation, you would initiate any external verification API calls here
@@ -929,6 +1098,7 @@ class UserVerificationView(APIView):
                 'status': 'success',
                 'message': 'Verification process initiated successfully.',
                 'verification_id': verification.id,
+                'document_link': document_link,
                 'next_steps': 'Please upload required verification documents.'
             }, status=status.HTTP_201_CREATED)
 

@@ -810,3 +810,392 @@ DETAIL:  Key (phone_number)=() already exists.
 
 INFO 2025-05-30 01:38:52,688 middleware 14516 18880 API Request
 WARNING 2025-05-30 01:38:52,692 basehttp 14516 18880 "POST /api/v1/auth/register/ HTTP/1.1" 400 122
+INFO 2025-06-01 02:16:49,263 autoreload 3656 14644 Watching for file changes with StatReloader
+INFO 2025-06-01 03:35:58,800 autoreload 2780 17056 Watching for file changes with StatReloader
+INFO 2025-06-01 04:30:27,902 middleware 2780 12400 API Request
+WARNING 2025-06-01 04:30:27,935 basehttp 2780 12400 "POST /api/v1/auth/register/ HTTP/1.1" 400 106
+ERROR 2025-06-01 04:30:50,415 views 2780 12400 Registration DatabaseError for generic@example.com: column "search_vector" of relation "users_user" does not exist
+LINE 1: ...ferences", "balance", "created_at", "updated_at", "search_ve...
+                                                             ^
+Traceback (most recent call last):
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "search_vector" of relation "users_user" does not exist
+LINE 1: ...ferences", "balance", "created_at", "updated_at", "search_ve...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\users\views.py", line 86, in post
+    user = serializer.save()
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\rest_framework\serializers.py", line 210, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\users\serializers.py", line 39, in create
+    user = User.objects.create_user(
+        username=validated_data['username'],
+    ...<5 lines>...
+        phone_number=validated_data.get('phone_number', '')
+    )
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\contrib\auth\models.py", line 175, in create_user
+    return self._create_user(username, email, password, **extra_fields)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\contrib\auth\models.py", line 163, in _create_user
+    user.save(using=self._db)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\contrib\auth\base_user.py", line 65, in save
+    super().save(*args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "search_vector" of relation "users_user" does not exist
+LINE 1: ...ferences", "balance", "created_at", "updated_at", "search_ve...
+                                                             ^
+
+INFO 2025-06-01 04:30:50,616 middleware 2780 12400 API Request
+ERROR 2025-06-01 04:30:50,620 log 2780 12400 Internal Server Error: /api/v1/auth/register/
+ERROR 2025-06-01 04:30:50,625 basehttp 2780 12400 "POST /api/v1/auth/register/ HTTP/1.1" 500 125
+INFO 2025-06-01 04:35:05,084 autoreload 2780 17056 D:\durgas\Prbal-App\Prbal_backend\users\models.py changed, reloading.
+INFO 2025-06-01 04:35:27,788 autoreload 15824 11312 Watching for file changes with StatReloader
+INFO 2025-06-01 05:34:22,111 autoreload 6836 21388 Watching for file changes with StatReloader
+INFO 2025-06-01 05:34:58,406 middleware 6836 8964 API Request
+INFO 2025-06-01 05:34:58,410 basehttp 6836 8964 "POST /api/v1/auth/register/ HTTP/1.1" 201 1110
+INFO 2025-06-01 05:39:40,498 middleware 6836 12368 API Request
+WARNING 2025-06-01 05:39:40,502 basehttp 6836 12368 "POST /api/v1/auth/customer/register/ HTTP/1.1" 400 105
+INFO 2025-06-01 05:40:12,795 middleware 6836 12368 API Request
+INFO 2025-06-01 05:40:12,798 basehttp 6836 12368 "POST /api/v1/auth/provider/register/ HTTP/1.1" 201 1112
+INFO 2025-06-01 05:40:41,561 middleware 6836 12368 API Request
+WARNING 2025-06-01 05:40:41,564 basehttp 6836 12368 "POST /api/v1/auth/admin/register/ HTTP/1.1" 400 83
+INFO 2025-06-01 05:41:46,625 middleware 6836 12368 API Request
+INFO 2025-06-01 05:41:46,628 basehttp 6836 12368 "POST /api/v1/auth/admin/register/ HTTP/1.1" 201 1101
+WARNING 2025-06-01 05:46:33,573 views 6836 5304 Login attempt failed for customer@example.com: {'non_field_errors': [ErrorDetail(string='Unable to log in with provided credentials.', code='invalid')]}
+INFO 2025-06-01 05:46:33,577 middleware 6836 5304 API Request
+WARNING 2025-06-01 05:46:33,580 basehttp 6836 5304 "POST /api/v1/auth/login/ HTTP/1.1" 400 109
+INFO 2025-06-01 05:48:10,764 middleware 6836 19200 API Request
+WARNING 2025-06-01 05:48:10,767 basehttp 6836 19200 "POST /api/v1/auth/customer/register/ HTTP/1.1" 400 105
+INFO 2025-06-01 05:48:25,208 middleware 6836 19200 API Request
+INFO 2025-06-01 05:48:25,212 basehttp 6836 19200 "POST /api/v1/auth/customer/register/ HTTP/1.1" 201 1111
+INFO 2025-06-01 05:48:46,074 middleware 6836 19200 API Request
+INFO 2025-06-01 05:48:46,077 basehttp 6836 19200 "POST /api/v1/auth/customer/login/ HTTP/1.1" 200 1104
+INFO 2025-06-01 05:49:11,877 middleware 6836 19200 API Request
+INFO 2025-06-01 05:49:11,881 basehttp 6836 19200 "POST /api/v1/auth/provider/login/ HTTP/1.1" 200 1104
+INFO 2025-06-01 05:49:48,680 middleware 6836 19200 API Request
+INFO 2025-06-01 05:49:48,684 basehttp 6836 19200 "POST /api/v1/auth/admin/login/ HTTP/1.1" 200 1094
+INFO 2025-06-01 05:50:17,998 middleware 6836 19200 API Request
+INFO 2025-06-01 05:50:18,001 basehttp 6836 19200 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 331
+INFO 2025-06-01 05:51:02,146 middleware 6836 19200 API Request
+WARNING 2025-06-01 05:51:02,150 basehttp 6836 19200 "POST /api/v1/auth/logout/ HTTP/1.1" 401 148
+INFO 2025-06-01 05:51:25,722 views 6836 19200 User 3d6a52d2-82c0-43be-8edc-b4c66ea18423 logged out successfully (refresh token blacklisted).
+INFO 2025-06-01 05:51:25,725 middleware 6836 19200 API Request
+INFO 2025-06-01 05:51:25,728 basehttp 6836 19200 "POST /api/v1/auth/logout/ HTTP/1.1" 200 78
+INFO 2025-06-01 06:01:48,941 autoreload 6836 21388 D:\durgas\Prbal-App\Prbal_backend\users\models.py changed, reloading.
+INFO 2025-06-01 06:02:02,762 autoreload 10092 20192 Watching for file changes with StatReloader
+INFO 2025-06-01 06:02:28,498 autoreload 10092 20192 D:\durgas\Prbal-App\Prbal_backend\users\admin.py changed, reloading.
+INFO 2025-06-01 06:02:41,224 autoreload 8200 18848 Watching for file changes with StatReloader
+INFO 2025-06-01 06:10:57,429 autoreload 16460 14236 Watching for file changes with StatReloader
+INFO 2025-06-01 06:48:51,584 middleware 16460 16560 API Request
+INFO 2025-06-01 06:48:51,591 basehttp 16460 16560 "POST /api/v1/auth/login/ HTTP/1.1" 200 1104
+INFO 2025-06-01 06:49:46,663 middleware 16460 2544 API Request
+INFO 2025-06-01 06:49:46,667 basehttp 16460 2544 "POST /api/v1/auth/token/refresh/ HTTP/1.1" 200 331
+INFO 2025-06-01 06:50:32,997 middleware 16460 2544 API Request
+INFO 2025-06-01 06:50:33,008 basehttp 16460 2544 "GET /api/v1/users/me/tokens/ HTTP/1.1" 200 426
+ERROR 2025-06-01 06:53:30,914 views 16460 10072 Error revoking token 550e8400-e29b-41d4-a716-446655440000 for user b5c35bdf-d935-4da8-a389-d3361f69c2c8: No AccessToken matches the given query.
+Traceback (most recent call last):
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\shortcuts.py", line 90, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+users.models.AccessToken.DoesNotExist: AccessToken matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\users\views.py", line 72, in post
+    token = get_object_or_404(AccessToken, id=token_id, user=request.user)
+  File "C:\Users\durga\AppData\Roaming\Python\Python313\site-packages\django\shortcuts.py", line 92, in get_object_or_404
+    raise Http404(
+        "No %s matches the given query." % queryset.model._meta.object_name
+    )
+django.http.response.Http404: No AccessToken matches the given query.
+INFO 2025-06-01 06:53:30,956 middleware 16460 10072 API Request
+ERROR 2025-06-01 06:53:30,962 log 16460 10072 Internal Server Error: /api/v1/users/me/tokens/550e8400-e29b-41d4-a716-446655440000/revoke/
+ERROR 2025-06-01 06:53:30,997 basehttp 16460 10072 "POST /api/v1/users/me/tokens/550e8400-e29b-41d4-a716-446655440000/revoke/ HTTP/1.1" 500 97
+INFO 2025-06-01 06:55:32,559 middleware 16460 14544 API Request
+INFO 2025-06-01 06:55:32,565 basehttp 16460 14544 "POST /api/v1/users/me/tokens/77768196-461e-4aa9-9291-07b54abc2a5c/revoke/ HTTP/1.1" 200 133
+INFO 2025-06-01 06:58:14,247 middleware 16460 5440 API Request
+INFO 2025-06-01 06:58:14,251 basehttp 16460 5440 "GET /api/v1/users/me/ HTTP/1.1" 200 456
+WARNING 2025-06-01 06:58:36,569 views 16460 5440 User profile update validation failed for user b5c35bdf-d935-4da8-a389-d3361f69c2c8: {'profile_picture': [ErrorDetail(string='The submitted data was not a file. Check the encoding type on the form.', code='invalid')]}
+INFO 2025-06-01 06:58:36,573 middleware 16460 5440 API Request
+WARNING 2025-06-01 06:58:36,577 basehttp 16460 5440 "PUT /api/v1/users/me/ HTTP/1.1" 400 136
+WARNING 2025-06-01 07:01:32,995 views 16460 4088 User profile update validation failed for user b5c35bdf-d935-4da8-a389-d3361f69c2c8: {'profile_picture': [ErrorDetail(string='The submitted data was not a file. Check the encoding type on the form.', code='invalid')]}
+INFO 2025-06-01 07:01:33,000 middleware 16460 4088 API Request
+WARNING 2025-06-01 07:01:33,004 basehttp 16460 4088 "PUT /api/v1/users/me/ HTTP/1.1" 400 136
+WARNING 2025-06-01 07:04:27,971 views 16460 12020 User profile update validation failed for user b5c35bdf-d935-4da8-a389-d3361f69c2c8: {'profile_picture': [ErrorDetail(string='The submitted data was not a file. Check the encoding type on the form.', code='invalid')]}
+INFO 2025-06-01 07:04:27,974 middleware 16460 12020 API Request
+WARNING 2025-06-01 07:04:27,977 basehttp 16460 12020 "PUT /api/v1/users/me/ HTTP/1.1" 400 136
+INFO 2025-06-01 07:22:47,799 middleware 16460 7268 API Request
+INFO 2025-06-01 07:22:47,806 basehttp 16460 7268 "PATCH /api/v1/users/me/ HTTP/1.1" 200 557
+INFO 2025-06-01 07:23:02,115 middleware 16460 7268 API Request
+INFO 2025-06-01 07:23:02,121 basehttp 16460 7268 "PUT /api/v1/users/me/ HTTP/1.1" 200 592
+INFO 2025-06-01 07:23:11,384 basehttp 16460 20036 "GET /media/profile_pictures/openart-83164bd188024f41ad12439c3d89e3bf_raw.jpg HTTP/1.1" 200 1445579
+WARNING 2025-06-01 07:23:17,652 basehttp 16460 20036 "GET /favicon.ico HTTP/1.1" 404 6083
+INFO 2025-06-01 07:23:58,107 middleware 16460 7268 API Request
+INFO 2025-06-01 07:23:58,118 basehttp 16460 7268 "POST /api/v1/users/me/avatar/ HTTP/1.1" 200 573
+WARNING 2025-06-01 07:24:56,342 views 16460 7268 User b5c35bdf-d935-4da8-a389-d3361f69c2c8 attempted profile image upload without providing a file.
+INFO 2025-06-01 07:24:56,345 middleware 16460 7268 API Request
+WARNING 2025-06-01 07:24:56,348 basehttp 16460 7268 "POST /api/v1/users/profile/image/ HTTP/1.1" 400 74
+WARNING 2025-06-01 07:26:03,570 views 16460 3896 User b5c35bdf-d935-4da8-a389-d3361f69c2c8 attempted profile image upload without providing a file.
+INFO 2025-06-01 07:26:03,575 middleware 16460 3896 API Request
+WARNING 2025-06-01 07:26:03,579 basehttp 16460 3896 "POST /api/v1/users/profile/image/ HTTP/1.1" 400 75
+INFO 2025-06-01 10:33:11,867 autoreload 18452 18492 Watching for file changes with StatReloader
+INFO 2025-06-01 10:36:46,702 middleware 18452 19804 API Request
+INFO 2025-06-01 10:36:46,707 basehttp 18452 19804 "POST /api/v1/auth/login/ HTTP/1.1" 200 1222
+WARNING 2025-06-01 10:37:23,962 views 18452 19804 User b5c35bdf-d935-4da8-a389-d3361f69c2c8 attempted to upload an avatar exceeding size limit: 2169002 bytes.
+INFO 2025-06-01 10:37:24,066 middleware 18452 19804 API Request
+WARNING 2025-06-01 10:37:24,145 basehttp 18452 19804 "POST /api/v1/users/me/avatar/ HTTP/1.1" 400 88
+INFO 2025-06-01 10:38:00,498 middleware 18452 19804 API Request
+INFO 2025-06-01 10:38:00,513 basehttp 18452 19804 "POST /api/v1/users/me/avatar/ HTTP/1.1" 200 573
+WARNING 2025-06-01 10:38:39,526 views 18452 19804 User b5c35bdf-d935-4da8-a389-d3361f69c2c8 attempted profile image upload without providing a file.
+INFO 2025-06-01 10:38:39,528 middleware 18452 19804 API Request
+WARNING 2025-06-01 10:38:39,532 basehttp 18452 19804 "POST /api/v1/users/profile/image/ HTTP/1.1" 400 74
+WARNING 2025-06-01 10:39:13,927 views 18452 19804 User b5c35bdf-d935-4da8-a389-d3361f69c2c8 attempted profile image upload without providing a file.
+INFO 2025-06-01 10:39:13,940 middleware 18452 19804 API Request
+WARNING 2025-06-01 10:39:13,954 basehttp 18452 19804 "POST /api/v1/users/profile/image/ HTTP/1.1" 400 74
+INFO 2025-06-01 10:41:47,281 views 18452 5096 User b5c35bdf-d935-4da8-a389-d3361f69c2c8 (genericuser_updated) deactivated their account.
+INFO 2025-06-01 10:41:47,284 middleware 18452 5096 API Request
+INFO 2025-06-01 10:41:47,287 basehttp 18452 5096 "POST /api/v1/users/me/deactivate/ HTTP/1.1" 200 88
+WARNING 2025-06-01 10:42:09,611 views 18452 5096 Login attempt failed for customer@example.com: {'non_field_errors': [ErrorDetail(string='Unable to log in with provided credentials.', code='invalid')]}
+INFO 2025-06-01 10:42:09,618 middleware 18452 5096 API Request
+WARNING 2025-06-01 10:42:09,629 basehttp 18452 5096 "POST /api/v1/auth/login/ HTTP/1.1" 400 110
+INFO 2025-06-01 10:42:29,600 middleware 18452 5096 API Request
+WARNING 2025-06-01 10:42:29,603 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 400 158
+INFO 2025-06-01 10:43:25,419 middleware 18452 5096 API Request
+INFO 2025-06-01 10:43:25,427 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 201 1112
+INFO 2025-06-01 10:44:11,643 middleware 18452 5096 API Request
+WARNING 2025-06-01 10:44:11,647 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 400 223
+INFO 2025-06-01 10:44:31,223 middleware 18452 5096 API Request
+WARNING 2025-06-01 10:44:31,226 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 400 223
+INFO 2025-06-01 10:44:49,710 middleware 18452 5096 API Request
+WARNING 2025-06-01 10:44:49,714 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 400 105
+INFO 2025-06-01 10:45:31,480 middleware 18452 5096 API Request
+WARNING 2025-06-01 10:45:31,485 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 400 105
+INFO 2025-06-01 10:45:50,368 middleware 18452 5096 API Request
+INFO 2025-06-01 10:45:50,372 basehttp 18452 5096 "POST /api/v1/auth/register/ HTTP/1.1" 201 1114
+INFO 2025-06-01 10:52:31,753 middleware 18452 3332 API Request
+INFO 2025-06-01 10:52:31,764 basehttp 18452 3332 "GET /api/v1/users/1c946756-ba30-4aaa-96fd-1d7d07517bc4/ HTTP/1.1" 200 329
+INFO 2025-06-01 10:52:50,553 middleware 18452 3332 API Request
+WARNING 2025-06-01 10:52:50,563 basehttp 18452 3332 "POST /api/v1/users/1c946756-ba30-4aaa-96fd-1d7d07517bc4/like/ HTTP/1.1" 400 86
+INFO 2025-06-01 10:53:20,665 middleware 18452 3332 API Request
+INFO 2025-06-01 10:53:20,668 basehttp 18452 3332 "POST /api/v1/users/1c946756-ba30-4aaa-96fd-1d7d07517bc4/pass/ HTTP/1.1" 200 114
+INFO 2025-06-01 11:02:26,374 autoreload 18452 18492 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-06-01 11:02:45,278 autoreload 17848 5668 Watching for file changes with StatReloader
+INFO 2025-06-01 11:03:22,451 autoreload 17848 5668 D:\durgas\Prbal-App\Prbal_backend\verification\models.py changed, reloading.
+INFO 2025-06-01 11:03:32,672 autoreload 12972 16948 Watching for file changes with StatReloader
+ERROR 2025-06-01 11:25:03,027 views 12972 7152 Database error during verification process for user 1c946756-ba30-4aaa-96fd-1d7d07517bc4, type 'identity': column "document_link" of relation "verification_verification" does not exist
+LINE 1: ...ument_type", "document_url", "document_back_url", "document_...
+                                                             ^
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "document_link" of relation "verification_verification" does not exist
+LINE 1: ...ument_type", "document_url", "document_back_url", "document_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\users\views.py", line 1062, in post
+    verification = Verification.objects.create(
+        user=user,
+    ...<2 lines>...
+        document_link=document_link
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "document_link" of relation "verification_verification" does not exist
+LINE 1: ...ument_type", "document_url", "document_back_url", "document_...
+                                                             ^
+
+INFO 2025-06-01 11:25:03,325 middleware 12972 7152 API Request
+ERROR 2025-06-01 11:25:03,331 log 12972 7152 Internal Server Error: /api/v1/users/verify/
+ERROR 2025-06-01 11:25:03,351 basehttp 12972 7152 "POST /api/v1/users/verify/ HTTP/1.1" 500 143
+INFO 2025-06-01 11:27:52,966 autoreload 10372 19304 Watching for file changes with StatReloader
+INFO 2025-06-01 11:28:19,626 views 10372 18652 Verification process for 'identity' initiated successfully for user 1c946756-ba30-4aaa-96fd-1d7d07517bc4, verification ID: 9ce39940-e6d8-48ed-b416-d7a27fe32062
+ERROR 2025-06-01 11:28:20,593 log 10372 18652 Internal Server Error: /api/v1/users/verify/
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\response.py", line 74, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\renderers.py", line 100, in render
+    ret = json.dumps(
+        data, cls=self.encoder_class,
+        indent=indent, ensure_ascii=self.ensure_ascii,
+        allow_nan=not self.strict, separators=separators
+    )
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\utils\json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "C:\Python313\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Python313\Lib\json\encoder.py", line 261, in iterencode
+    return _iterencode(o, 0)
+  File "D:\durgas\Prbal-App\Prbal_backend\abc\Lib\site-packages\rest_framework\utils\encoders.py", line 52, in default
+    return obj.decode()
+           ~~~~~~~~~~^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd9 in position 10: invalid continuation byte
+INFO 2025-06-01 11:28:20,630 middleware 10372 18652 API Request
+ERROR 2025-06-01 11:28:20,635 basehttp 10372 18652 "POST /api/v1/users/verify/ HTTP/1.1" 500 125391
+INFO 2025-06-01 11:29:37,421 views 10372 2252 User 1c946756-ba30-4aaa-96fd-1d7d07517bc4 attempted to start a duplicate 'identity' verification.
+INFO 2025-06-01 11:29:37,497 middleware 10372 2252 API Request
+WARNING 2025-06-01 11:29:37,514 basehttp 10372 2252 "POST /api/v1/users/verify/ HTTP/1.1" 400 180
+INFO 2025-06-01 11:30:20,010 middleware 10372 2252 API Request
+WARNING 2025-06-01 11:30:20,014 basehttp 10372 2252 "POST /api/v1/users/search/ HTTP/1.1" 404 190
+INFO 2025-06-01 11:33:08,701 middleware 10372 8396 API Request
+WARNING 2025-06-01 11:33:08,706 basehttp 10372 8396 "POST /api/v1/services/categories/ HTTP/1.1" 403 104
+INFO 2025-06-01 11:33:52,543 middleware 10372 8396 API Request
+WARNING 2025-06-01 11:33:52,556 basehttp 10372 8396 "POST /api/v1/services/provider/my-services/ HTTP/1.1" 404 31645
+INFO 2025-06-01 11:34:11,822 middleware 10372 8396 API Request
+WARNING 2025-06-01 11:34:11,827 basehttp 10372 8396 "POST /api/v1/services/ HTTP/1.1" 403 106
+INFO 2025-06-01 11:36:23,007 middleware 10372 19868 API Request
+WARNING 2025-06-01 11:36:23,019 basehttp 10372 19868 "POST /api/v1/auth/provider/register/ HTTP/1.1" 400 223
+INFO 2025-06-01 11:37:24,692 middleware 10372 19868 API Request
+INFO 2025-06-01 11:37:24,695 basehttp 10372 19868 "POST /api/v1/auth/provider/register/ HTTP/1.1" 201 1115
+INFO 2025-06-01 11:38:17,890 middleware 10372 13176 API Request
+WARNING 2025-06-01 11:38:17,895 basehttp 10372 13176 "POST /api/v1/services/ HTTP/1.1" 400 144

@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 import uuid
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.indexes import GinIndex
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
 
 # Create your models here.
 class User(AbstractUser):
@@ -35,10 +41,14 @@ class User(AbstractUser):
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    search_vector = SearchVectorField(null=True, editable=False, blank=True) # blank=True for initial migration
     
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+        indexes = [
+            GinIndex(fields=['search_vector'], name='user_search_vector_idx'),
+        ]
         
     def __str__(self):
         return self.username
@@ -47,6 +57,17 @@ class User(AbstractUser):
     def name(self):
         """Returns the user's full name for API compatibility"""
         return self.get_full_name() or self.username
+
+
+@receiver(post_save, sender=User)
+def update_user_search_vector(sender, instance, **kwargs):
+    # Using .filter().update() avoids recursion by not calling instance.save() again
+    # It also handles the case where the instance might be new (kwargs['created'] is True)
+    # or existing.
+    User.objects.filter(pk=instance.pk).update(search_vector=SearchVector(
+        'username', 'email', 'first_name', 'last_name', 'phone_number',
+        config='english'  # Or your project's primary language
+    ))
 
 
 class Pass(models.Model):
@@ -61,3 +82,37 @@ class Pass(models.Model):
 
     def __str__(self):
         return f"{self.user_passing.username} passed on {self.user_passed.username}"
+
+
+class AccessToken(models.Model):
+    DEVICE_TYPE_CHOICES = (
+        ('web', 'Web Browser'),
+        ('mobile', 'Mobile App'),
+        ('tablet', 'Tablet'),
+        ('desktop', 'Desktop App'),
+        ('other', 'Other'),
+    )
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, related_name='access_tokens', on_delete=models.CASCADE)
+    token_jti = models.CharField(max_length=255, unique=True, help_text="JWT token ID")
+    device_type = models.CharField(max_length=20, choices=DEVICE_TYPE_CHOICES, default='web')
+    device_name = models.CharField(max_length=255, blank=True, null=True, help_text="User agent or device identifier")
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_used_at = models.DateTimeField(auto_now=True)
+    last_refreshed_at = models.DateTimeField(default=timezone.now)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        verbose_name = _('Access Token')
+        verbose_name_plural = _('Access Tokens')
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f"Token for {self.user.username} on {self.device_type} created at {self.created_at}"
+    
+    def refresh(self):
+        """Update the refresh timestamp"""
+        self.last_refreshed_at = timezone.now()
+        self.save(update_fields=['last_refreshed_at'])

@@ -73,6 +73,7 @@ class Verification(models.Model):
     document_type = models.CharField(max_length=30, choices=DOCUMENT_TYPE_CHOICES, default='other', help_text="Type of document submitted")
     document_url = models.FileField(upload_to=verification_document_path, null=True, blank=True, help_text="Uploaded verification document")
     document_back_url = models.FileField(upload_to=verification_document_path, blank=True, null=True, help_text="Back side of document if applicable")
+    document_link = models.URLField(max_length=255, blank=True, null=True, help_text="External link to verification document")
     document_number = models.CharField(max_length=50, blank=True, help_text="Document number for reference")
     
     # Status and feedback

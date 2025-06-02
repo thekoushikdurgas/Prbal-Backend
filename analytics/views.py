@@ -1,12 +1,16 @@
 from django.shortcuts import render
-from django.db.models import Count, Sum, F, Q, Avg
+from django.db.models import Count, Sum, F, Q, Avg, Value, DecimalField
+from django.db.models.functions import Coalesce
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from datetime import timedelta
 from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 from api.models import Service, ServiceCategory
 from bookings.models import Booking
@@ -16,7 +20,9 @@ from .serializers import (
     OverviewStatsSerializer,
     EarningsAnalyticsSerializer,
     AdminUserListSerializer,
-    AdminServiceListSerializer
+    AdminUserCreateUpdateSerializer,  # Added import
+    AdminServiceListSerializer,
+    AdminServiceCreateUpdateSerializer # Added import for service CUD
 )
 
 User = get_user_model()
@@ -27,6 +33,9 @@ class IsAdminUser(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated and request.user.user_type == 'admin'
 
+CACHE_TTL_ANALYTICS = 60 * 15  # 15 minutes
+
+@method_decorator(cache_page(CACHE_TTL_ANALYTICS), name='dispatch')
 class AnalyticsOverviewView(APIView):
     """API endpoint for getting platform overview analytics dashboard"""
     permission_classes = [permissions.IsAuthenticated, IsAdminUser]
@@ -277,87 +286,125 @@ class EarningsAnalyticsView(APIView):
             'platform_commission_total': platform_commission_total,
             'avg_commission_rate': avg_commission_rate
         }
-        
-        serializer = EarningsAnalyticsSerializer(earnings_data)
-        return Response(serializer.data)
 
-class AdminUserViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for listing and viewing all users (admin only)"""
-    queryset = User.objects.all()
-    serializer_class = AdminUserListSerializer
+class AdminUserViewSet(viewsets.ModelViewSet):
+    """API endpoint for listing, creating, updating, and deleting users (admin only)"""
+    # queryset attribute is removed as get_queryset handles it dynamically.
     permission_classes = [permissions.IsAuthenticated, IsAdminUser]
-    
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return AdminUserCreateUpdateSerializer
+        return AdminUserListSerializer # For list and retrieve
+
     def get_queryset(self):
-        queryset = User.objects.all().order_by('-date_joined')
-        
-        # Annotate with additional stats
+        queryset = super().get_queryset() # Start with the base queryset from ModelViewSet
+
+        # Annotate with additional stats required by AdminUserListSerializer
+        # Ensure 'customer_bookings' and 'provider_bookings' are correct related_names in your User model
+        # or adjust these paths. Assuming Booking model has an 'amount' field.
         queryset = queryset.annotate(
             booking_count=Count('customer_bookings', distinct=True) + Count('provider_bookings', distinct=True),
-            total_spent=Sum('customer_bookings__amount', distinct=True),
-            total_earned=Sum('provider_bookings__amount', distinct=True)
+            total_spent=Coalesce(
+                Sum('customer_bookings__amount'),
+                Value(0, output_field=DecimalField(max_digits=12, decimal_places=2))
+            ),
+            total_earned=Coalesce(
+                Sum('provider_bookings__amount'),
+                Value(0, output_field=DecimalField(max_digits=12, decimal_places=2))
+            )
         )
         
-        # Apply filters if provided
+        # Apply ordering. It's often good to order after annotations if annotations affect order.
+        queryset = queryset.order_by('-date_joined')
+
+        # Apply filters if provided in query parameters
         user_type = self.request.query_params.get('user_type')
         if user_type:
             queryset = queryset.filter(user_type=user_type)
             
-        is_verified = self.request.query_params.get('is_verified')
-        if is_verified is not None:
-            queryset = queryset.filter(is_verified=is_verified == 'true')
+        is_verified_param = self.request.query_params.get('is_verified')
+        if is_verified_param is not None:
+            is_verified = str(is_verified_param).lower() == 'true'
+            queryset = queryset.filter(is_verified=is_verified)
             
-        is_active = self.request.query_params.get('is_active')
-        if is_active is not None:
-            queryset = queryset.filter(is_active=is_active == 'true')
+        is_active_param = self.request.query_params.get('is_active')
+        if is_active_param is not None:
+            is_active = str(is_active_param).lower() == 'true'
+            queryset = queryset.filter(is_active=is_active)
             
         search = self.request.query_params.get('search')
         if search:
-            queryset = queryset.filter(
-                Q(username__icontains=search) |
-                Q(email__icontains=search) |
-                Q(first_name__icontains=search) |
-                Q(last_name__icontains=search)
-            )
+            # Using SearchQuery with 'websearch' type allows for more flexible user input
+            # e.g., "john doe" will search for john AND doe, "john or doe" for john OR doe.
+            # It also handles stemming based on the 'config' used when creating the SearchVector.
+            query = SearchQuery(search, search_type='websearch', config='english')
+            # Optional: Rank results by relevance
+            # queryset = queryset.annotate(
+            #     rank=SearchRank(F('search_vector'), query)
+            # ).filter(search_vector=query).order_by('-rank', '-date_joined')
+            # Simpler filtering without explicit ranking, relying on default ordering or '-date_joined':
+            queryset = queryset.filter(search_vector=query)
             
         return queryset
 
-class AdminServiceViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for listing and viewing all services (admin only)"""
-    queryset = Service.objects.all()
-    serializer_class = AdminServiceListSerializer
+class AdminServiceViewSet(viewsets.ModelViewSet):
+    """API endpoint for listing, creating, updating, and deleting services (admin only)"""
     permission_classes = [permissions.IsAuthenticated, IsAdminUser]
-    
+
     def get_queryset(self):
-        queryset = Service.objects.all().order_by('-created_at')
-        
-        # Annotate with additional stats
-        queryset = queryset.annotate(
-            booking_count=Count('bookings', distinct=True),
-            total_revenue=Sum('bookings__amount', distinct=True)
-        )
-        
+        """Annotate services with booking count and total revenue for list/retrieve views, and apply filters."""
+        queryset = Service.objects.all()
+
         # Apply filters if provided
         status = self.request.query_params.get('status')
         if status:
             queryset = queryset.filter(status=status)
             
-        category = self.request.query_params.get('category')
-        if category:
-            queryset = queryset.filter(category_id=category)
+        category_id = self.request.query_params.get('category')
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        provider_id = self.request.query_params.get('provider')
+        if provider_id:
+            queryset = queryset.filter(provider_id=provider_id)
             
-        is_featured = self.request.query_params.get('is_featured')
-        if is_featured is not None:
-            queryset = queryset.filter(is_featured=is_featured == 'true')
+        is_featured_param = self.request.query_params.get('is_featured')
+        if is_featured_param is not None:
+            is_featured = is_featured_param.lower() == 'true'
+            queryset = queryset.filter(is_featured=is_featured)
             
         search = self.request.query_params.get('search')
         if search:
             queryset = queryset.filter(
-                Q(title__icontains=search) |
+                Q(name__icontains=search) |
                 Q(description__icontains=search) |
                 Q(location__icontains=search) |
                 Q(provider__username__icontains=search) |
                 Q(provider__first_name__icontains=search) |
                 Q(provider__last_name__icontains=search)
             )
-            
+
+        # Annotate, select related, and order
+        # This queryset is primarily for AdminServiceListSerializer when listing/retrieving
+        # For create/update/delete, the base queryset from ModelViewSet is used directly with AdminServiceCreateUpdateSerializer
+        queryset = queryset.annotate(
+            booking_count=Coalesce(Count('bookings', distinct=True), Value(0)), # distinct=True might be important depending on relations
+            total_revenue=Coalesce(Sum('bookings__payment__amount', filter=Q(bookings__payment__status='completed')), Value(0.0), output_field=DecimalField())
+        ).select_related('provider', 'category').order_by('-created_at')
+        
         return queryset
+
+    def get_serializer_class(self):
+        """Return appropriate serializer class based on action."""
+        if self.action in ['create', 'update', 'partial_update']:
+            return AdminServiceCreateUpdateSerializer
+        return AdminServiceListSerializer
+
+    # Optional: Add perform_create, perform_update, perform_destroy methods for custom logic
+    # For example, to set the provider automatically if not provided (though admin should specify):
+    # def perform_create(self, serializer):
+    #     # Example: if provider is not in request.data, set to request.user if admin is also a provider
+    #     # This is generally not needed for admin viewsets where admin explicitly sets fields.
+    #     serializer.save()
+

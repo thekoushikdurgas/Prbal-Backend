@@ -1,11 +1,68 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from api.models import Service
+from api.models import Service, ServiceCategory, ServiceSubCategory
 from bookings.models import Booking
 from payments.models import Payment
 from bids.models import Bid
 
 User = get_user_model()
+
+
+class AdminUserCreateUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for admin user creation and updates"""
+    password = serializers.CharField(write_only=True, required=False, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = [
+            'username', 'email', 'password', 'first_name', 'last_name',
+            'user_type', 'is_active', 'is_verified'
+        ]
+        # Example: To make email read-only during update, you could add:
+        # extra_kwargs = {'email': {'read_only': True, 'required': False}}
+        # However, for admin, allowing email change might be acceptable.
+
+    def create(self, validated_data):
+        password_data = validated_data.pop('password', None)
+        if not password_data:
+            raise serializers.ValidationError({'password': 'Password is required for new users.'})
+
+        user = User(**validated_data)
+        user.set_password(password_data)
+
+        if user.user_type == 'admin':
+            user.is_staff = True
+            # Consider if admin type should also imply is_superuser=True
+            # user.is_superuser = True 
+        else:
+            user.is_staff = False
+            user.is_superuser = False # Ensure non-admins are not superusers
+
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        password_data = validated_data.pop('password', None)
+
+        # Update instance fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if password_data:
+            instance.set_password(password_data)
+
+        # Adjust staff/superuser status if user_type is changed
+        if 'user_type' in validated_data:
+            if instance.user_type == 'admin':
+                instance.is_staff = True
+                # user.is_superuser = True
+            else:
+                instance.is_staff = False
+                instance.is_superuser = False
+        
+        instance.save()
+        return instance
+
 
 class OverviewStatsSerializer(serializers.Serializer):
     """Serializer for overview analytics dashboard"""
@@ -87,6 +144,35 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             'user_type', 'is_verified', 'date_joined', 'last_login',
             'is_active', 'booking_count', 'total_spent', 'total_earned'
         ]
+
+class AdminServiceCreateUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for admin service creation and updates"""
+    # Ensure provider, category, and subcategories can be set by ID
+    # provider = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    # category = serializers.PrimaryKeyRelatedField(queryset=ServiceCategory.objects.all())
+    # subcategories = serializers.PrimaryKeyRelatedField(queryset=ServiceSubCategory.objects.all(), many=True, required=False)
+
+    # Service model has 'name' and 'hourly_rate'. List serializer uses 'title' and 'price'.
+    # We will use actual model field names here for clarity in CUD operations.
+
+    class Meta:
+        model = Service
+        fields = [
+            'id', 'name', 'description', 'provider', 'category', 'subcategories',
+            'tags', 'hourly_rate', 'pricing_options', 'currency', 'min_hours',
+            'max_hours', 'availability', 'location', 'latitude', 'longitude',
+            'required_tools', 'status', 'is_featured',
+            # Read-only fields from model's auto_now_add/auto_now are implicitly handled
+            # 'created_at', 'updated_at' 
+        ]
+        read_only_fields = ['id'] # 'created_at', 'updated_at' are already read-only by default
+
+    # Optional: Add custom validation or create/update logic if needed
+    # For example, to ensure provider is of 'provider' user_type:
+    # def validate_provider(self, value):
+    #     if value.user_type != 'provider':
+    #         raise serializers.ValidationError("Service provider must be a user with 'provider' type.")
+    #     return value
 
 class AdminServiceListSerializer(serializers.ModelSerializer):
     """Serializer for admin service listing"""

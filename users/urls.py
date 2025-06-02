@@ -27,7 +27,11 @@ from .views import (
     # Search views
     UserSearchByPhoneView,
     UserSearchView,
-    ChangePasswordView
+    ChangePasswordView,
+    UserDeactivateView, # Added for account deactivation
+    # Access token management
+    UserAccessTokensView,
+    UserAccessTokenRevokeView
 )
 
 urlpatterns = [
@@ -55,6 +59,7 @@ urlpatterns = [
     # Generic user profile endpoints
     path('users/me/', UserProfileView.as_view(), name='user-profile'),
     path('users/me/avatar/', UserAvatarUploadView.as_view(), name='user-avatar-upload'),
+    path('users/me/deactivate/', UserDeactivateView.as_view(), name='user-deactivate'), # Added for account deactivation
     path('users/profile/image/', ProfileImageUploadView.as_view(), name='profile-image-upload'),
     path('users/me/change-password/', ChangePasswordView.as_view(), name='user-change-password'),
     path('users/<uuid:id>/', UserPublicProfileView.as_view(), name='user-public-profile'),
@@ -63,6 +68,10 @@ urlpatterns = [
     
     # Verification endpoints
     path('users/verify/', UserVerificationView.as_view(), name='user-verify'),
+    
+    # Access token management endpoints
+    path('users/me/tokens/', UserAccessTokensView.as_view(), name='user-access-tokens'),
+    path('users/me/tokens/<uuid:token_id>/revoke/', UserAccessTokenRevokeView.as_view(), name='user-token-revoke'),
     
     # Search endpoints
     path('users/search/', UserSearchView.as_view(), name='user-search'),

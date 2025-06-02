@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from .models import AccessToken
 
 User = get_user_model()
 PRBAL_ADMIN_SECRET_CODE = "123"
@@ -222,6 +223,18 @@ class AdminSearchResultSerializer(serializers.ModelSerializer):
                  'profile_picture', 'bio', 'location', 'user_type', 'is_verified',
                  'is_email_verified', 'is_phone_verified', 'rating', 'total_bookings',
                  'balance', 'created_at', 'updated_at', 'last_login', 'is_active']
+        read_only_fields = fields
+
+
+class AccessTokenSerializer(serializers.ModelSerializer):
+    """Serializer for access token information"""
+    user = serializers.StringRelatedField(read_only=True)
+    device_type_display = serializers.CharField(source='get_device_type_display', read_only=True)
+    
+    class Meta:
+        model = AccessToken
+        fields = ['id', 'user', 'device_type', 'device_type_display', 'device_name', 'ip_address', 
+                 'created_at', 'last_used_at', 'last_refreshed_at', 'is_active']
         read_only_fields = fields
 
 
