@@ -3,152 +3,154 @@
 This document outlines the various API endpoints available in the Prbal backend system, derived from the project's codebase and supporting documentation.
 
 ## Table of Contents
-- [✅ Authentication](#authentication)(L-141)
-- [✅ User Registration](#user-registration)(L-143)
-- [✅ Generic User Registration (Defaults to Customer Type)](#generic-user-registration-defaults-to-customer-type)(L-145)
-- [❌ Customer Specific Registration](#customer-specific-registration)
-- [❌ Provider Specific Registration](#provider-specific-registration)
-- [❌ Admin Specific Registration](#admin-specific-registration)
-- [✅ User Logout](#user-logout)(L-334)
-- [✅ Access Token Management](#access-token-management)(L-382)
-- [✅ List User's Access Tokens](#list-users-access-tokens)(L-386)
-- [✅ Revoke Specific Access Token](#revoke-specific-access-token)(L-437)
-- [✅ Refresh JWT Access Token](#refresh-jwt-access-token)(L-483)
-- [✅ User Management](#user-management)(L-525)
-- [✅ Generic User Endpoints](#generic-user-endpoints)(L-529)
-- [✅ Manage Own Profile](#manage-own-profile)(L-533)
-- [✅ Upload/Change Own Avatar](#uploadchange-own-avatar)(L-633)
-- [✅ Deactivate Own Account](#deactivate-own-account)(L-702)
-- [✅ Change Own Password](#change-own-password)(L-770)
-- [✅ Customer Specific Endpoints](#customer-specific-endpoints)(L-832)
-- [✅ Manage Own Customer Profile](#manage-own-customer-profile)(L-837)
-- [✅ Provider Specific Endpoints](#provider-specific-endpoints)(L-967)
-- [✅ Manage Own Provider Profile](#manage-own-provider-profile)(L-971)
-- [✅ Admin Specific Endpoints (Profile)](#admin-specific-endpoints-profile)(L-1131)
-- [✅ Manage Own Admin Profile](#manage-own-admin-profile)(L-1135)
-- [✅ User Search](#user-search)(L-1239)
-- [✅ General User Search](#general-user-search)(L-1243)
-- [✅ User Search by Phone Number](#user-search-by-phone-number)(L-1333)
-- [✅ Services & Service Requests](#services--service-requests)(L-1401)
-- [✅ Public Service & Category Endpoints](#public-service--category-endpoints)(L-1405)
-- [✅ Provider Service Management](#provider-service-management)(L-1409)
-- [✅ Public Service Request Endpoints](#public-service-request-endpoints)(L-1782)
-- [✅ Service Requests (Customer)](#service-requests-customer)(L-1909)
-- [✅ Service Requests (Admin)](#service-requests-admin)(L-2239)
-- [✅ Products](#products)(L-2473)
-- [✅ Product Categories](#product-categories)(L-2477)
-- [✅ Products (Individual)](#products-individual)(L-2481)
-- [✅ Bids](#bids)(L-2485)
-- [✅ Provider Bidding Actions](#provider-bidding-actions)(L-2489)
-- [✅ Bids - Customer View](#bids---customer-view)(L-2493)
-- [✅ Bids - Admin View](#bids---admin-view)(L-2497)
-- [✅ Bookings](#bookings)(L-2501)
-- [✅ Create Booking](#create-booking)(L-2505)
-- [✅ View Booking Details](#view-booking-details)(L-2509)
-- [✅ Update Booking Status](#update-booking-status)(L-2513)
-- [✅ List Customer Bookings](#list-customer-bookings)(L-2517)
-- [✅ List Provider Bookings](#list-provider-bookings)(L-2521)
-- [✅ List Admin Bookings](#list-admin-bookings)(L-2525)
-- [✅ Calendar Integration](#calendar-integration)(L-2529)
-- [✅ Payment Processing](#payment-processing)(L-2533)
-- [✅ Create Payment Intent](#create-payment-intent)(L-2537)
-- [✅ Confirm Payment](#confirm-payment)(L-2541)
-- [✅ Retrieve Payment Details](#retrieve-payment-details)(L-2545)
-- [✅ List Payments (Customer/Provider/Admin)](#list-payments-customerprovideradmin)(L-2549)
-- [✅ Issue Refund (Admin)](#issue-refund-admin)(L-2553)
-- [✅ Payment Gateway Accounts (Provider)](#payment-gateway-accounts-provider)(L-2557)
-- [✅ Link Payment Gateway Account](#link-payment-gateway-account)(L-2561)
-- [✅ View Payment Gateway Account Details](#view-payment-gateway-account-details)(L-2565)
-- [✅ Update Payment Gateway Account](#update-payment-gateway-account)(L-2569)
-- [✅ Remove Payment Gateway Account](#remove-payment-gateway-account)(L-2573)
-- [✅ Payouts (Provider/Admin)](#payouts-provideradmin)(L-2577)
-- [✅ Request Payout (Provider)](#request-payout-provider)(L-2581)
-- [✅ View Payout History (Provider/Admin)](#view-payout-history-provideradmin)(L-2585)
-- [✅ Process Payouts (Admin)](#process-payouts-admin)(L-2589)
-- [✅ View Payout Settings (Provider/Admin)](#view-payout-settings-provideradmin)(L-2593)
-- [✅ Messaging](#messaging)(L-2597)
-- [✅ Message Threads](#message-threads)(L-2601)
-- [✅ Create Message Thread](#create-message-thread)(L-2605)
-- [✅ List User Message Threads](#list-user-message-threads)(L-2609)
-- [✅ View Message Thread Details](#view-message-thread-details)(L-2613)
-- [✅ Archive Message Thread](#archive-message-thread)(L-2617)
-- [✅ Mark Thread as Read/Unread](#mark-thread-as-readunread)(L-2621)
-- [✅ Individual Messages](#individual-messages)(L-2625)
-- [✅ Send Message in Thread](#send-message-in-thread)(L-2629)
-- [✅ List Messages in Thread](#list-messages-in-thread)(L-2633)
-- [✅ Edit Message](#edit-message)(L-2637)
-- [✅ Notifications (HTTP)](#notifications-http)(L-2645)
-- [✅ List User Notifications](#list-user-notifications)(L-2649)
-- [✅ Mark Notification as Read](#mark-notification-as-read)(L-2653)
-- [✅ Mark All Notifications as Read](#mark-all-notifications-as-read)(L-2657)
-- [✅ Delete Notification](#delete-notification)(L-2661)
-- [✅ Notification Settings](#notification-settings)(L-2665)
-- [✅ Get Notification Settings](#get-notification-settings)(L-2669)
-- [✅ Update Notification Settings](#update-notification-settings)(L-2673)
-- [✅ AI Suggestions & Feedback](#ai-suggestions--feedback)(L-2677)
-- [✅ AI Suggestions](#ai-suggestions)(L-2681)
-- [✅ Get AI Suggestions for Service Request](#get-ai-suggestions-for-service-request)(L-2685)
-- [✅ Get AI Suggestions for Pricing](#get-ai-suggestions-for-pricing)(L-2689)
-- [✅ Get AI Suggestions for Descriptions](#get-ai-suggestions-for-descriptions)(L-2693)
-- [✅ AI Feedback Logs](#ai-feedback-logs)(L-2697)
-- [✅ Submit Feedback on AI Suggestion](#submit-feedback-on-ai-suggestion)(L-2701)
-- [✅ List AI Feedback Logs (Admin)](#list-ai-feedback-logs-admin)(L-2705)
-- [✅ Verifications (User Identity, etc.)](#verifications-user-identity-etc)(L-2709)
-- [✅ Submit Verification Document](#submit-verification-document)(L-2713)
-- [✅ Check Verification Status](#check-verification-status)(L-2717)
-- [✅ Admin Verification Actions](#admin-verification-actions)(L-2721)
-- [✅ List Pending Verifications (Admin)](#list-pending-verifications-admin)(L-2725)
-- [✅ Approve/Reject Verification (Admin)](#approvereject-verification-admin)(L-2729)
-- [❌ Reviews](#reviews)
-- [✅ Submit Review for a Service/Provider](#submit-review-for-a-serviceprovider)(L-2733)
-- [❌ View Reviews for a Service/Provider](#view-reviews-for-a-serviceprovider)
-- [❌ View Reviews by a User](#view-reviews-by-a-user)
-- [❌ Update Own Review](#update-own-review)
-- [❌ Delete Own Review](#delete-own-review)
-- [❌ Admin Review Management](#admin-review-management)
-- [❌ List All Reviews (Admin)](#list-all-reviews-admin)
-- [❌ Moderate/Delete Review (Admin)](#moderatedelete-review-admin)
-- [❌ Sync (Offline Functionality)](#sync-offline-functionality)
-- [❌ Get Data for Offline Sync](#get-data-for-offline-sync)
-- [❌ Push Offline Changes to Server](#push-offline-changes-to-server)
-- [❌ Get Sync Status](#get-sync-status)
-- [❌ Analytics & Admin Management](#analytics--admin-management)
-- [❌ Analytics Reports](#analytics-reports)
-- [❌ Generate User Activity Report](#generate-user-activity-report)
-- [❌ Generate Service Popularity Report](#generate-service-popularity-report)
-- [✅ Generate Financial Report](#generate-financial-report)(L-2737)
-- [❌ View System Performance Metrics](#view-system-performance-metrics)
-- [✅ Admin User Management](#admin-user-management)(L-2745)
-- [✅ List All Users (Admin)](#list-all-users-admin)(L-2749)
-- [✅ View User Details (Admin)](#view-user-details-admin)(L-2753)
-- [✅ Activate/Deactivate User (Admin)](#activatedeactivate-user-admin)(L-2757)
-- [✅ Assign User Roles (Admin)](#assign-user-roles-admin)(L-2761)
-- [✅ Admin Service Management](#admin-service-management)(L-2765)
-- [✅ List All Services (Admin)](#list-all-services-admin)(L-2769)
-- [✅ Update Service Details (Admin)](#update-service-details-admin)(L-2773)
-- [✅ Manage Service Categories (Admin)](#manage-service-categories-admin)(L-2777)
-- [✅ WebSocket APIs](#websocket-apis)(L-2781)
-- [✅ Real-time Notifications (WebSocket)](#real-time-notifications-websocket)(L-2785)
-- [✅ Real-time Messaging (WebSocket)](#real-time-messaging-websocket)(L-2789)
-- [✅ Real-time Booking Updates (WebSocket)](#real-time-booking-updates-websocket)(L-2793)
-- [✅ Health Checks](#health-checks)(L-2797)
-- [✅ System Health Endpoint](#system-health-endpoint)(L-2801)
-- [✅ Database Health Endpoint](#database-health-endpoint)(L-2805)
-- [✅ Service Dependency Health Endpoint](#service-dependency-health-endpoint)(L-2809)
-- [✅ Metrics](#metrics)(L-2813)
-- [✅ Prometheus Metrics Endpoint](#prometheus-metrics-endpoint)(L-2817)
 
-## ✅Authentication
+- [[✅]Authentication](#authentication)(L-141)
+  - [[✅]User Registration](#user-registration)(L-143)
+    - [[✅]Generic User Registration](#generic-user-registration)(L-145)
+    - [[❌]Customer Specific Registration](#customer-specific-registration)(L-150)
+    - [[❌]Provider Specific Registration](#provider-specific-registration)(L-155)
+    - [[❌]Admin Specific Registration](#admin-specific-registration)(L-160)
+  - [[✅]User Logout](#user-logout)(L-165)
+  - [[✅]Access Token Management](#access-token-management)(L-170)
+    - [[✅]List User's Access Tokens](#list-users-access-tokens)(L-175)
+    - [[✅]Revoke Specific Access Token](#revoke-specific-access-token)(L-180)
+    - [[✅]Refresh JWT Access Token](#refresh-jwt-access-token)(L-185)
+- [[✅]User Management](#user-management)(L-190)
+  - [[✅]Generic User Endpoints](#generic-user-endpoints)(L-195)
+  - [[✅]Manage Own Profile](#manage-own-profile)(L-200)
+- [[✅]Upload/Change Own Avatar](#uploadchange-own-avatar)(L-205)
+- [[✅]Deactivate Own Account](#deactivate-own-account)(L-210)
+- [[✅]Change Own Password](#change-own-password)(L-215)
+- [[✅]Customer Specific Endpoints](#customer-specific-endpoints)(L-220)
+  - [[✅]Manage Own Customer Profile](#manage-own-customer-profile)(L-225)
+- [[✅]Provider Specific Endpoints](#provider-specific-endpoints)(L-230)
+  - [[✅]Manage Own Provider Profile](#manage-own-provider-profile)(L-235)
+- [[✅]Admin Specific Endpoints](#admin-specific-endpoints)(L-240)
+  - [[✅]Manage Own Admin Profile](#manage-own-admin-profile)(L-245)
+- [[✅]User Search](#user-search)(L-250)
+  - [[✅]General User Search](#general-user-search)(L-255)
+  - [[✅]User Search by Phone Number](#user-search-by-phone-number)(L-260)
+- [[✅]Services and Service Requests](#services-and-service-requests)(L-265)
+  - [[✅]Public Service and Category Endpoints](#public-service-and-category-endpoints)(L-270)
+  - [[✅]Provider Service Management](#provider-service-management)(L-275)
+  - [[✅]Public Service Request Endpoints](#public-service-request-endpoints)(L-280)
+  - [[✅]Service Requests (Customer)](#service-requests)(L-285)
+  - [[✅]Service Requests (Admin)](#service-requests)(L-290)
+- [[✅]Products](#products)(L-295)
+  - [[✅]Product Categories](#product-categories)(L-300)
+  - [[✅]Products (Individual)](#products)(L-305)
+- [[✅]Bids](#bids)(L-310)
+  - [[✅]Provider Bidding Actions](#provider-bidding-actions)(L-315)
+  - [[✅]Bids - Customer View](#bids---customer-view)(L-320)
+  - [[✅]Bids - Admin View](#bids---admin-view)(L-325)
+- [[✅]Bookings](#bookings)(L-330)
+  - [[✅]Create Booking](#create-booking)(L-335)
+  - [[✅]View Booking Details](#view-booking-details)(L-340)
+  - [[✅]Update Booking Status](#update-booking-status)(L-345)
+  - [[✅]List Customer Bookings](#list-customer-bookings)(L-350)
+  - [[✅]List Provider Bookings](#list-provider-bookings)(L-355)
+  - [[✅]List Admin Bookings](#list-admin-bookings)(L-360)
+- [[✅]Calendar Integration](#calendar-integration)(L-365)
+- [[✅]Payment Processing](#payment-processing)(L-370)
+  - [[✅]Create Payment Intent](#create-payment-intent)(L-375)
+  - [[✅]Confirm Payment](#confirm-payment)(L-380)
+  - [[✅]Retrieve Payment Details](#retrieve-payment-details)(L-385)
+  - [[✅]List Payments (Customer/Provider/Admin)](#list-payments)(L-390)
+  - [[✅]Issue Refund (Admin)](#issue-refund)(L-395)
+  - [[✅]Payment Gateway Accounts (Provider)](#payment-gateway-accounts)(L-400)
+  - [[✅]Link Payment Gateway Account](#link-payment-gateway-account)(L-405)
+  - [[✅]View Payment Gateway Account Details](#view-payment-gateway-account-details)(L-410)
+  - [[✅]Update Payment Gateway Account](#update-payment-gateway-account)(L-415)
+  - [[✅]Remove Payment Gateway Account](#remove-payment-gateway-account)(L-420)
+  - [[✅]Payouts (Provider/Admin)](#payouts)(L-425)
+  - [[✅]Request Payout (Provider)](#request-payout)(L-430)
+  - [[✅]View Payout History (Provider/Admin)](#view-payout-history)(L-435)
+  - [[✅]Process Payouts (Admin)](#process-payouts)(L-440)
+  - [[✅]View Payout Settings (Provider/Admin)](#view-payout-settings)(L-445)
+- [[✅]Messaging](#messaging)(L-450)
+  - [[✅]Message Threads](#message-threads)(L-455)
+  - [[✅]Create Message Thread](#create-message-thread)(L-460)
+  - [[✅]List User Message Threads](#list-user-message-threads)(L-465)
+  - [[✅]View Message Thread Details](#view-message-thread-details)(L-470)
+  - [[✅]Archive Message Thread](#archive-message-thread)(L-475)
+  - [[✅]Mark Thread as Read/Unread](#mark-thread-as-readunread)(L-480)
+  - [[✅]Individual Messages](#individual-messages)(L-485)
+  - [[✅]Send Message in Thread](#send-message-in-thread)(L-490)
+  - [[✅]List Messages in Thread](#list-messages-in-thread)(L-495)
+  - [[✅]Edit Message](#edit-message)(L-500)
+- [[✅]Notifications (HTTP)](#notifications)(L-505)
+  - [[✅]List User Notifications](#list-user-notifications)(L-510)
+  - [[✅]Mark Notification as Read](#mark-notification-as-read)(L-515)
+  - [[✅]Mark All Notifications as Read](#mark-all-notifications-as-read)(L-520)
+  - [[✅]Delete Notification](#delete-notification)(L-525)
+  - [[✅]Notification Settings](#notification-settings)(L-530)
+  - [[✅]Get Notification Settings](#get-notification-settings)(L-535)
+  - [[✅]Update Notification Settings](#update-notification-settings)(L-540)
+  - [[✅]AI Suggestions and Feedback](#ai-suggestions-feedback)(L-545)
+- [[✅]AI Suggestions](#ai-suggestions)(L-550)
+  - [[✅]Get AI Suggestions for Service Request](#get-ai-suggestions-for-service-request)(L-555)
+  - [[✅]Get AI Suggestions for Pricing](#get-ai-suggestions-for-pricing)(L-560)
+  - [[✅]Get AI Suggestions for Descriptions](#get-ai-suggestions-for-descriptions)(L-565)
+  - [[✅]AI Feedback Logs](#ai-feedback-logs)(L-570)
+    - [[✅]Submit Feedback on AI Suggestion](#submit-feedback-on-ai-suggestion)(L-575)
+    - [[✅]List AI Feedback Logs (Admin)](#list-ai-feedback-logs)(L-580)
+- [[✅]Verifications (User Identity, etc.)](#verifications)(L-585)
+  - [[✅]Submit Verification Document](#submit-verification-document)(L-590)
+  - [[✅]Check Verification Status](#check-verification-status)(L-595)
+- [[✅]Admin Verification Actions](#admin-verification-actions)(L-600)
+  - [[✅]List Pending Verifications (Admin)](#list-pending-verifications)(L-605)
+  - [[✅]Approve/Reject Verification (Admin)](#approvereject-verification)(L-610)
+- [[✅]Reviews](#reviews)
+  - [[✅]Submit Review for a Service/Provider](#submit-review-for-a-serviceprovider)(L-615)
+  - [[✅]View Reviews for a Service/Provider](#view-reviews-for-a-serviceprovider)(L-620)
+  - [[✅]View Reviews by a User](#view-reviews-by-a-user)(L-625)
+  - [[✅]Update Own Review](#update-own-review)(L-630)
+  - [[✅]Delete Own Review](#delete-own-review)(L-635)
+- [[✅]Admin Review Management](#admin-review-management)
+  - [[✅]List All Reviews (Admin)](#list-all-reviews-admin)(L-640)
+  - [[✅]Moderate/Delete Review (Admin)](#moderatedelete-review-admin)(L-645)
+- [[✅]Sync (Offline Functionality)](#sync-offline-functionality)
+  - [[✅]Get Data for Offline Sync](#get-data-for-offline-sync)(L-650)
+  - [[✅]Push Offline Changes to Server](#push-offline-changes-to-server)(L-655)
+  - [[✅]Get Sync Status](#get-sync-status)(L-660)
+- [[❌]Analytics and Admin Management](#analytics--admin-management)
+  - [[❌]Analytics Reports](#analytics-reports)(L-665)
+  - [[❌]Generate User Activity Report](#generate-user-activity-report)(L-670)
+  - [[❌]Generate Service Popularity Report](#generate-service-popularity-report)(L-675)
+  - [[✅]Generate Financial Report](#generate-financial-report)(L-680)
+- [[❌]View System Performance Metrics](#view-system-performance-metrics)(L-685)
+- [[✅]Admin User Management](#admin-user-management)(L-690)
+  - [[✅]List All Users (Admin)](#list-all-users)(L-695)
+  - [[✅]View User Details (Admin)](#view-user-details)(L-700)
+  - [[✅]Activate/Deactivate User (Admin)](#activatedeactivate-user)(L-705)
+  - [[✅]Assign User Roles (Admin)](#assign-user-roles)(L-710)
+- [[✅]Admin Service Management](#admin-service-management)(L-715)
+  - [[✅]List All Services (Admin)](#list-all-services)(L-720)
+  - [[✅]Update Service Details (Admin)](#update-service-details)(L-725)
+  - [[✅]Manage Service Categories (Admin)](#manage-service-categories)(L-730)
+- [[✅]WebSocket APIs](#websocket-apis)(L-735)
+  - [[✅]Real-time Notifications (WebSocket)](#real-time-notifications)(L-740)
+  - [[✅]Real-time Messaging (WebSocket)](#real-time-messaging)(L-745)
+  - [[✅]Real-time Booking Updates (WebSocket)](#real-time-booking-updates)(L-750)
+- [[✅]Health Checks](#health-checks)(L-755)
+  - [[✅]System Health Endpoint](#system-health-endpoint)(L-760)
+  - [[✅]Database Health Endpoint](#database-health-endpoint)(L-765)
+  - [[✅]Service Dependency Health Endpoint](#service-dependency-health-endpoint)(L-770)
+- [[✅]Metrics](#metrics)(L-775)
+  - [[✅]Prometheus Metrics Endpoint](#prometheus-metrics-endpoint)(L-780)
 
-### ✅User Registration
+## [✅]Authentication
 
-#### ✅Generic User Registration (Defaults to Customer Type)
+### [✅]User Registration
+
+#### [✅]Generic User Registration
 
 Registers a new user in the system. If no specific user type is provided, it defaults to creating a 'customer' account.
 
 **Endpoint:** `POST /api/users/register` (This is an assumption, please verify with your Python backend implementation)
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -159,7 +161,8 @@ Registers a new user in the system. If no specific user type is provided, it def
 }
 ```
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X POST http://localhost:8000/api/users/register \
 -H "Content-Type: application/json" \
@@ -174,6 +177,7 @@ curl -X POST http://localhost:8000/api/users/register \
 ```
 
 **Possible Output Response (Success 201 Created):**
+
 ```json
 {
   "message": "User registered successfully. Please check your email to verify your account.",
@@ -193,6 +197,7 @@ curl -X POST http://localhost:8000/api/users/register \
 ```
 
 **Possible Output Response (Error 400 Bad Request - Validation Error, e.g., email exists):**
+
 ```json
 {
   "error": {
@@ -207,6 +212,15 @@ curl -X POST http://localhost:8000/api/users/register \
   }
 }
 ```
+
+```json
+{
+  "email": "customer@example.com",
+  "password": "securePassword123",
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "phone_number": "+1987654321",
+  "address": {
     "street": "123 Customer Lane",
     "city": "Clientville",
     "state": "CA",
@@ -216,7 +230,7 @@ curl -X POST http://localhost:8000/api/users/register \
 }
 ```
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
 ```bash
 curl -X POST http://localhost:8000/api/users/register/customer \
 -H "Content-Type: application/json" \
@@ -237,6 +251,17 @@ curl -X POST http://localhost:8000/api/users/register/customer \
 }'
 ```
 
+```json
+{
+  "email": "provider@example.com",
+  "password": "securePasswordProvider123",
+  "first_name": "Service",
+  "last_name": "Pro",
+  "phone_number": "+1555123456",
+  "company_name": "Pro Services Ltd.",
+  "service_categories": ["plumbing", "electrical"],
+  "business_license_id": "BIZLICENSE789",
+  "address": {
     "street": "456 Provider Ave",
     "city": "Workville",
     "state": "NY",
@@ -246,7 +271,8 @@ curl -X POST http://localhost:8000/api/users/register/customer \
 }
 ```
 
-**`curl` Command:** ✅
+
+**`curl` Command:** [✅]
 ```bash
 curl -X POST http://localhost:8000/api/users/register/provider \
 -H "Content-Type: application/json" \
@@ -271,8 +297,64 @@ curl -X POST http://localhost:8000/api/users/register/provider \
 ```
 
 **Possible Output Response (Success 201 Created):**
+
 ```json
 {
+  "message": "Admin user registered successfully",
+  "data": {
+    "user_id": "uuid-generated-by-server",
+    "email": "provider@example.com",
+    "first_name": "Service",
+    "last_name": "Pro",
+    "phone_number": "+1555123456",
+    "user_type": "provider",
+    "is_active": true,
+    "is_verified": false,
+    "company_name": "Pro Services Ltd.",
+    "service_categories": ["plumbing", "electrical"],
+    "business_license_id": "BIZLICENSE789",
+    "address": {
+      "street": "456 Provider Ave",
+      "city": "Workville",
+      "state": "NY",
+      "zip_code": "10001",
+      "country": "USA"
+    },
+    "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+    "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
+  }
+}
+```
+
+### [❌]Generic User Registration
+
+(Section content to be added)
+
+---
+
+#### [❌]Admin Specific Registration
+
+Registers a new admin user in the system. This typically requires elevated permissions (e.g., an existing admin or super admin).  
+
+**Endpoint:** `POST /api/admins/register` (Assumption: Verify with backend implementation)
+
+**Request Body:**
+
+```json
+{
+  "username": "new_admin_user",
+  "email": "admin@example.com",
+  "password": "securePassword123",
+  "first_name": "Admin",
+  "last_name": "User",
+  "phone_number": "1234567890",
+  "is_staff": true,
+  "is_superuser": false
+}
+```
+
+**`curl` Command:** [✅]
+
 ```bash
 curl -X POST http://localhost:8000/api/admins/register \
 -H "Content-Type: application/json" \
@@ -289,7 +371,8 @@ curl -X POST http://localhost:8000/api/admins/register \
 }'
 ```
 
-**Possible Output Response (201 Created):** ✅
+**Possible Output Response (201 Created):** [✅]
+
 ```json
 {
   "id": 3,
@@ -306,7 +389,8 @@ curl -X POST http://localhost:8000/api/admins/register \
 }
 ```
 
-**Error Response (400 Bad Request - Invalid Data):** ✅
+**Error Response (400 Bad Request - Invalid Data):** [✅]
+
 ```json
 {
   "detail": {
@@ -321,23 +405,27 @@ curl -X POST http://localhost:8000/api/admins/register \
 }
 ```
 
-**Error Response (401 Unauthorized / 403 Forbidden):** ✅
+**Error Response (401 Unauthorized / 403 Forbidden):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
   // or "You do not have permission to perform this action."
 }
 ```
+
 ---
 
 ---
-### ✅User Logout
+
+### [✅]User Logout
 
 Logs out the currently authenticated user by invalidating their session or access token. Depending on the authentication mechanism (e.g., JWT with refresh tokens), this might involve blacklisting the token.
 
 **Endpoint:** `POST /api/users/logout` (Assumption: Verify with backend implementation)
 
 **Request Body:** (Usually empty, but depends on implementation. Some might accept a refresh token to invalidate.)
+
 ```json
 {}
 // Or for JWT with refresh token:
@@ -347,6 +435,7 @@ Logs out the currently authenticated user by invalidating their session or acces
 ```
 
 **`curl` Command:** ⚠️ (Verify and complete)
+
 ```bash
 curl -X POST http://localhost:8000/api/users/logout \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -354,7 +443,8 @@ curl -X POST http://localhost:8000/api/users/logout \
 -d '{}' # Or include refresh_token if applicable
 ```
 
-**Possible Output Response (200 OK or 204 No Content):** ✅
+**Possible Output Response (200 OK or 204 No Content):** [✅]
+
 ```json
 // For 200 OK with a message:
 {
@@ -363,27 +453,31 @@ curl -X POST http://localhost:8000/api/users/logout \
 // For 204 No Content, the response body will be empty.
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (400 Bad Request - e.g., if refresh token is invalid/required and not provided):** ✅
+**Error Response (400 Bad Request - e.g., if refresh token is invalid/required and not provided):** [✅]
+
 ```json
 {
   "detail": "Invalid refresh token."
 }
 ```
+
 ---
 
 ---
-### ✅Access Token Management
+
+### [✅]Access Token Management
 
 Endpoints related to managing user access tokens, such as listing active tokens, revoking them, or refreshing expired ones.
 
-#### ✅List User's Access Tokens
+#### [✅]List User's Access Tokens
 
 Retrieves a list of active access tokens or sessions for the currently authenticated user. This is useful for users to see where their account is currently logged in and to manage these sessions.
 
@@ -392,12 +486,14 @@ Retrieves a list of active access tokens or sessions for the currently authentic
 **Request Body:** (None for GET request)
 
 **`curl` Command:** ⚠️ (Verify and complete)
+
 ```bash
 curl -X GET http://localhost:8000/api/users/tokens \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (200 OK):** ✅
+**Possible Output Response (200 OK):** [✅]
+
 ```json
 {
   "tokens": [
@@ -425,44 +521,51 @@ curl -X GET http://localhost:8000/api/users/tokens \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
+
 ---
 
 ---
-#### ✅Revoke Specific Access Token
+
+#### [✅]Revoke Specific Access Token
 
 Allows a user to revoke a specific access token or session, effectively logging out that particular session. This is typically done by providing the ID of the token to be revoked.
 
 **Endpoint:** `DELETE /api/users/tokens/{token_id}` (Assumption: Verify with backend implementation)
 
 **Path Parameters:**
+
 - `token_id` (string, required): The unique identifier of the access token/session to be revoked.
 
 **Request Body:** (None for DELETE request)
 
 **`curl` Command:** ⚠️ (Verify and complete)
+
 ```bash
 curl -X DELETE http://localhost:8000/api/users/tokens/token_id_to_revoke \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (204 No Content):** ✅
+**Possible Output Response (204 No Content):** [✅]
 (Response body will be empty, indicating successful revocation.)
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden):** ✅
+**Error Response (403 Forbidden):** [✅]
 (If the user tries to revoke a token that doesn't belong to them, or if the token_id is malformed/not found and the system distinguishes this from a general auth error)
+
 ```json
 {
   "detail": "You do not have permission to perform this action on this token."
@@ -470,23 +573,27 @@ curl -X DELETE http://localhost:8000/api/users/tokens/token_id_to_revoke \
 }
 ```
 
-**Error Response (404 Not Found):** ✅
+**Error Response (404 Not Found):** [✅]
 (If the specified `token_id` does not exist.)
+
 ```json
 {
   "detail": "Not found."
 }
 ```
+
 ---
 
 ---
-#### ✅Refresh JWT Access Token
+
+#### [✅]Refresh JWT Access Token
 
 Allows a client to obtain a new JWT access token using a valid refresh token. This is part of the standard OAuth 2.0 / JWT authentication flow to maintain user sessions without requiring frequent re-logins.
 
 **Endpoint:** `POST /api/token/refresh/` (Common endpoint, verify with backend implementation, e.g., Django Simple JWT uses this)
 
 **Request Body:**
+
 ```json
 {
   "refresh": "<USER_REFRESH_TOKEN>"
@@ -494,6 +601,7 @@ Allows a client to obtain a new JWT access token using a valid refresh token. Th
 ```
 
 **`curl` Command:** ⚠️ (Verify and complete)
+
 ```bash
 curl -X POST http://localhost:8000/api/token/refresh/ \
 -H "Content-Type: application/json" \
@@ -502,7 +610,8 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
 }'
 ```
 
-**Possible Output Response (200 OK):** ✅
+**Possible Output Response (200 OK):** [✅]
+
 ```json
 {
   "access": "<NEW_ACCESS_TOKEN>",
@@ -510,8 +619,9 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
 }
 ```
 
-**Error Response (401 Unauthorized / 400 Bad Request - Invalid Refresh Token):** ✅
+**Error Response (401 Unauthorized / 400 Bad Request - Invalid Refresh Token):** [✅]
 (The specific error code might vary; 401 is common for invalid/expired tokens)
+
 ```json
 {
   "detail": "Token is invalid or expired",
@@ -520,21 +630,23 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
   // "refresh": ["This field is required."]
 }
 ```
+
 ---
 
-## ✅User Management
+## [✅]User Management
 
 Endpoints for managing user accounts, profiles, and related data. This section is divided based on user roles where applicable (generic, customer, provider, admin).
 
-### ✅Generic User Endpoints
+### [✅]Generic User Endpoints
 
 Endpoints applicable to any authenticated user, regardless of their specific role (customer, provider, or admin), for managing their own basic profile information.
 
-#### ✅Manage Own Profile
+#### [✅]Manage Own Profile
 
 Allows an authenticated user to retrieve and update their own profile information. This typically includes details like name, email, phone number, and other general user attributes not specific to a role like customer or provider.
 
 **Endpoints:**
+
 - `GET /api/users/me/profile/` (Retrieve own profile)
 - `PUT /api/users/me/profile/` (Update own profile - full update)
 - `PATCH /api/users/me/profile/` (Update own profile - partial update)
@@ -542,6 +654,7 @@ Allows an authenticated user to retrieve and update their own profile informatio
 (Assumption: Verify these common RESTful patterns with backend implementation. Django Rest Framework often uses `/api/users/me/` for the authenticated user.)
 
 **Request Body (for PUT/PATCH):**
+
 ```json
 {
   "first_name": "UpdatedFirstName",
@@ -558,12 +671,14 @@ Allows an authenticated user to retrieve and update their own profile informatio
 **`curl` Commands:** ⚠️ (Verify and complete)
 
 **Retrieve Profile:**
+
 ```bash
 curl -X GET http://localhost:8000/api/users/me/profile/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
 **Update Profile (PUT - Full Update):**
+
 ```bash
 curl -X PUT http://localhost:8000/api/users/me/profile/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -580,6 +695,7 @@ curl -X PUT http://localhost:8000/api/users/me/profile/ \
 ```
 
 **Update Profile (PATCH - Partial Update):**
+
 ```bash
 curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -590,7 +706,8 @@ curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 }'
 ```
 
-**Possible Output Response (200 OK for GET, PUT, PATCH):** ✅
+**Possible Output Response (200 OK for GET, PUT, PATCH):** [✅]
+
 ```json
 {
   "id": 1, // User ID
@@ -610,7 +727,8 @@ curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 }
 ```
 
-**Error Response (400 Bad Request - Validation Error for PUT/PATCH):** ✅
+**Error Response (400 Bad Request - Validation Error for PUT/PATCH):** [✅]
+
 ```json
 {
   "email": [
@@ -623,29 +741,35 @@ curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
+
 ---
-#### ✅Upload/Change Own Avatar
+
+#### [✅]Upload/Change Own Avatar
 
 Allows an authenticated user to upload a new avatar image or change their existing one. This typically involves a `POST` or `PUT` request with `multipart/form-data`.
 
 **Endpoints:**
+
 - `POST /api/users/me/avatar/` (Upload/Change avatar)
 - `DELETE /api/users/me/avatar/` (Remove avatar - Optional)
 
 (Assumption: Verify with backend. The endpoint might be part of the profile update, e.g., `PATCH /api/users/me/profile/` with a file field, or a dedicated endpoint as shown.)
 
 **Request Body (for POST/PUT - multipart/form-data):**
+
 - `avatar`: The image file (e.g., JPEG, PNG).
 
 **`curl` Commands:** ⚠️ (Verify and complete)
 
 **Upload/Change Avatar:**
+
 ```bash
 # Ensure 'avatar.jpg' exists in the directory where you run curl
 curl -X POST http://localhost:8000/api/users/me/avatar/ \
@@ -655,12 +779,14 @@ curl -X POST http://localhost:8000/api/users/me/avatar/ \
 ```
 
 **Remove Avatar (if supported):**
+
 ```bash
 curl -X DELETE http://localhost:8000/api/users/me/avatar/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (200 OK or 201 Created for POST/PUT):** ✅
+**Possible Output Response (200 OK or 201 Created for POST/PUT):** [✅]
+
 ```json
 {
   "message": "Avatar updated successfully.",
@@ -677,10 +803,11 @@ curl -X DELETE http://localhost:8000/api/users/me/avatar/ \
 }
 ```
 
-**Possible Output Response (204 No Content for DELETE):** ✅
+**Possible Output Response (204 No Content for DELETE):** [✅]
 (Response body will be empty, indicating successful removal.)
 
-**Error Response (400 Bad Request - e.g., invalid file type, file too large):** ✅
+**Error Response (400 Bad Request - e.g., invalid file type, file too large):** [✅]
+
 ```json
 {
   "avatar": [
@@ -690,26 +817,31 @@ curl -X DELETE http://localhost:8000/api/users/me/avatar/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
+
 ---
 
 ---
-#### ✅Deactivate Own Account
+
+#### [✅]Deactivate Own Account
 
 Allows an authenticated user to deactivate their own account. This is typically a `POST` or `DELETE` request. Deactivation might be a soft delete (marking the account inactive) rather than a hard delete (permanently removing data).
 
 **Endpoint:**
+
 - `POST /api/users/me/deactivate/` (Deactivate own account)
   *(Alternatively, `DELETE /api/users/me/` could be used, but `POST` to a specific `deactivate` endpoint is often preferred for clarity and to allow for a request body if needed, e.g., for password confirmation.)*
 
 (Assumption: Verify with backend. The exact method and endpoint, and whether password confirmation is required, should be confirmed.)
 
 **Request Body (Optional, e.g., if password confirmation is required):**
+
 ```json
 {
   "password": "<USER_CURRENT_PASSWORD>"
@@ -719,12 +851,14 @@ Allows an authenticated user to deactivate their own account. This is typically 
 **`curl` Commands:** ⚠️ (Verify and complete)
 
 **Deactivate Account (without password confirmation):**
+
 ```bash
 curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
 **Deactivate Account (with password confirmation):**
+
 ```bash
 curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -734,15 +868,18 @@ curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 }'
 ```
 
-**Possible Output Response (200 OK or 204 No Content):** ✅
+**Possible Output Response (200 OK or 204 No Content):** [✅]
+
 ```json
 {
   "message": "Account deactivated successfully."
 }
 ```
+
 *(If 204 No Content, the response body will be empty.)*
 
-**Error Response (400 Bad Request - e.g., incorrect password):** ✅
+**Error Response (400 Bad Request - e.g., incorrect password):** [✅]
+
 ```json
 {
   "password": [
@@ -751,33 +888,39 @@ curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - e.g., if account has active subscriptions or pending actions):** ✅
+**Error Response (403 Forbidden - e.g., if account has active subscriptions or pending actions):** [✅]
+
 ```json
 {
   "detail": "Account cannot be deactivated due to pending actions or active subscriptions. Please resolve these first."
 }
 ```
+
 ---
 
 ---
-#### ✅Change Own Password
+
+#### [✅]Change Own Password
 
 Allows an authenticated user to change their own password. This typically requires the user to provide their current password and the new password (often with confirmation).
 
 **Endpoint:**
+
 - `POST /api/users/me/change-password/`
   *(Common endpoint for password changes. Some systems might use `PUT` or `PATCH` to `/api/users/me/` with password fields, but a dedicated endpoint is clearer.)*
 
 (Assumption: Verify with backend. Django's built-in views often use a specific endpoint like `/auth/password/change/` or similar, often requiring `rest_framework.authtoken` or `dj_rest_auth` patterns.)
 
 **Request Body:**
+
 ```json
 {
   "current_password": "<USER_CURRENT_PASSWORD>",
@@ -785,9 +928,11 @@ Allows an authenticated user to change their own password. This typically requir
   "new_password2": "<NEW_PASSWORD_CONFIRMATION>"
 }
 ```
+
 *(Field names like `new_password1` and `new_password2` are common in Django for confirmation.)*
 
 **`curl` Command:** ⚠️ (Verify and complete)
+
 ```bash
 curl -X POST http://localhost:8000/api/users/me/change-password/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -799,7 +944,8 @@ curl -X POST http://localhost:8000/api/users/me/change-password/ \
 }'
 ```
 
-**Possible Output Response (200 OK):** ✅
+**Possible Output Response (200 OK):** [✅]
+
 ```json
 {
   "detail": "Password has been changed successfully."
@@ -807,7 +953,8 @@ curl -X POST http://localhost:8000/api/users/me/change-password/ \
 }
 ```
 
-**Error Response (400 Bad Request - e.g., passwords don't match, new password too weak, current password incorrect):** ✅
+**Error Response (400 Bad Request - e.g., passwords don't match, new password too weak, current password incorrect):** [✅]
+
 ```json
 {
   "current_password": [
@@ -821,24 +968,28 @@ curl -X POST http://localhost:8000/api/users/me/change-password/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
+
 ---
 
-### ✅Customer Specific Endpoints
+### [✅]Customer Specific Endpoints
 
 Endpoints tailored for users with the 'customer' role, allowing them to manage their customer-specific data and interactions.
 
 ---
-#### ✅Manage Own Customer Profile
+
+#### [✅]Manage Own Customer Profile
 
 Allows an authenticated customer to retrieve and update their customer-specific profile information. This is in addition to the generic user profile and might include things like addresses, preferences, loyalty status, etc.
 
 **Endpoints:**
+
 - `GET /api/customers/me/profile/` (Retrieve own customer profile)
 - `PUT /api/customers/me/profile/` (Update own customer profile - full update)
 - `PATCH /api/customers/me/profile/` (Update own customer profile - partial update)
@@ -846,6 +997,7 @@ Allows an authenticated customer to retrieve and update their customer-specific 
 (Assumption: Verify with backend. The endpoint `/api/customers/me/` is a common pattern for role-specific data for the authenticated user.)
 
 **Request Body (for PUT/PATCH):**
+
 ```json
 {
   "default_shipping_address": {
@@ -875,12 +1027,14 @@ Allows an authenticated customer to retrieve and update their customer-specific 
 **`curl` Commands:** ⚠️ (Verify and complete)
 
 **Retrieve Customer Profile:**
+
 ```bash
 curl -X GET http://localhost:8000/api/customers/me/profile/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
 **Update Customer Profile (PUT - Full Update):**
+
 ```bash
 curl -X PUT http://localhost:8000/api/customers/me/profile/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -903,6 +1057,7 @@ curl -X PUT http://localhost:8000/api/customers/me/profile/ \
 ```
 
 **Update Customer Profile (PATCH - Partial Update):**
+
 ```bash
 curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>" \
@@ -914,7 +1069,8 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }'
 ```
 
-**Possible Output Response (200 OK for GET, PUT, PATCH):** ✅
+**Possible Output Response (200 OK for GET, PUT, PATCH):** [✅]
+
 ```json
 {
   "user_id": 1, // Link to the generic user ID
@@ -938,7 +1094,8 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }
 ```
 
-**Error Response (400 Bad Request - Validation Error for PUT/PATCH):** ✅
+**Error Response (400 Bad Request - Validation Error for PUT/PATCH):** [✅]
+
 ```json
 {
   "default_shipping_address.zip_code": [
@@ -950,38 +1107,46 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** ✅
+**Error Response (403 Forbidden - User is not a customer):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a customer."
 }
 ```
+
 ---
-### ❌Provider Specific Endpoints
+
+### [❌]Provider Specific Endpoints
+
 These endpoints are specific to users with the 'provider' role.
 
 ---
-#### ✅Manage Own Provider Profile
+
+#### [✅]Manage Own Provider Profile
 
 Allows a logged-in provider to retrieve and update their own profile information.
 
 **1. Retrieve Own Provider Profile (GET)**
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET http://localhost:8000/api/users/profile/provider/me/ \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
 -H "Accept: application/json"
 ```
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "user_id": "provider-uuid-123",
@@ -1024,7 +1189,8 @@ curl -X GET http://localhost:8000/api/users/profile/provider/me/ \
 
 **2. Update Own Provider Profile (PUT)**
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
@@ -1060,7 +1226,8 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 }'
 ```
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "user_id": "provider-uuid-123",
@@ -1103,21 +1270,24 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** ✅
+**Error Response (403 Forbidden - User is not a provider):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a provider."
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data for PUT):** ✅
+**Error Response (400 Bad Request - Invalid data for PUT):** [✅]
+
 ```json
 {
   "phone_number": ["Enter a valid phone number."],
@@ -1128,24 +1298,29 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 ```
 
 ---
-### ❌Admin Specific Endpoints (Profile)
+
+### [❌]Admin Specific Endpoints
+
 These endpoints are specific to users with the 'admin' role for managing their own profile information.
 
 ---
-#### ✅Manage Own Admin Profile
+
+#### [✅]Manage Own Admin Profile
 
 Allows a logged-in admin user to retrieve and update their own profile information.
 
 **1. Retrieve Own Admin Profile (GET)**
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET http://localhost:8000/api/users/profile/admin/me/ \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
 -H "Accept: application/json"
 ```
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "user_id": "admin-uuid-789",
@@ -1170,7 +1345,8 @@ curl -X GET http://localhost:8000/api/users/profile/admin/me/ \
 
 **2. Update Own Admin Profile (PUT)**
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
@@ -1186,7 +1362,8 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 }'
 ```
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "user_id": "admin-uuid-789",
@@ -1211,21 +1388,24 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** ✅
+**Error Response (403 Forbidden - User is not an admin):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not an admin or does not have sufficient privileges."
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data for PUT):** ✅
+**Error Response (400 Bad Request - Invalid data for PUT):** [✅]
+
 ```json
 {
   "phone_number": ["Enter a valid phone number."],
@@ -1236,15 +1416,19 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 ```
 
 ---
-### ❌User Search
+
+### [❌]User Search
+
 Endpoints for searching users within the system. Access may be restricted based on user role (e.g., admin-only).
 
 ---
-#### ✅General User Search
+
+#### [✅]General User Search
 
 Allows authorized users (e.g., admins) to search for users based on various criteria like name, email, or user type. Supports pagination.
 
-**`curl` Command (Admin Example):** ✅
+**`curl` Command (Admin Example):** [✅]
+
 ```bash
 curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=customer&page=1&page_size=10' \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
@@ -1252,13 +1436,15 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 ```
 
 **Query Parameters:**
+
 - `query` (string, optional): Search term (e.g., name, email fragment).
 - `user_type` (string, optional): Filter by user type (e.g., `customer`, `provider`, `admin`).
 - `is_active` (boolean, optional): Filter by active status.
 - `page` (integer, optional): Page number for pagination (default: 1).
 - `page_size` (integer, optional): Number of results per page (default: 10).
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "count": 150,
@@ -1295,7 +1481,8 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 }
 ```
 
-**Possible Output Response (Success 200 OK - No Results):** ✅
+**Possible Output Response (Success 200 OK - No Results):** [✅]
+
 ```json
 {
   "count": 0,
@@ -1307,21 +1494,24 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - Insufficient permissions):** ✅
+**Error Response (403 Forbidden - Insufficient permissions):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action."
 }
 ```
 
-**Error Response (400 Bad Request - Invalid query parameters):** ✅
+**Error Response (400 Bad Request - Invalid query parameters):** [✅]
+
 ```json
 {
   "page_size": ["Must be a positive integer."],
@@ -1330,11 +1520,13 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 ```
 
 ---
-#### ✅User Search by Phone Number
+
+#### [✅]User Search by Phone Number
 
 Allows authorized users (e.g., admins) to search for a specific user by their exact phone number.
 
-**`curl` Command (Admin Example):** ✅
+**`curl` Command (Admin Example):** [✅]
+
 ```bash
 curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B1234567890' \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
@@ -1342,9 +1534,11 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 ```
 
 **Query Parameters:**
+
 - `phone_number` (string, required): The exact phone number to search for (URL-encoded if it contains special characters like '+').
 
-**Possible Output Response (Success 200 OK - User Found):** ✅
+**Possible Output Response (Success 200 OK - User Found):** [✅]
+
 ```json
 {
   "user_id": "customer-uuid-003",
@@ -1360,7 +1554,8 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 }
 ```
 
-**Possible Output Response (Success 404 Not Found - User with phone number does not exist):** ✅
+**Possible Output Response (Success 404 Not Found - User with phone number does not exist):** [✅]
+
 ```json
 {
   "detail": "User with the specified phone number not found."
@@ -1369,21 +1564,24 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - Insufficient permissions):** ✅
+**Error Response (403 Forbidden - Insufficient permissions):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action."
 }
 ```
 
-**Error Response (400 Bad Request - Missing or invalid phone_number parameter):** ✅
+**Error Response (400 Bad Request - Missing or invalid phone_number parameter):** [✅]
+
 ```json
 {
   "phone_number": ["This field is required."]
@@ -1391,6 +1589,7 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 ```
 
 Alternatively, for an invalid format:
+
 ```json
 {
   "phone_number": ["Enter a valid phone number (e.g., +1234567890)."]
@@ -1398,22 +1597,29 @@ Alternatively, for an invalid format:
 ```
 
 ---
-## ❌Services & Service Requests
+
+## [❌]Services and Service Requests
+
 This section covers APIs related to service definitions, service categories, and the lifecycle of service requests made by customers.
 
 ---
-### ❌Public Service & Category Endpoints
+
+### [❌]Public Service and Category Endpoints
+
 These endpoints provide public access to view available services and service categories. No authentication is typically required.
 
 ---
-### ✅Provider Service Management
+
+### [✅]Provider Service Management
+
 Endpoints for providers to manage their services, including creating, updating, listing, and deleting their service offerings. Requires provider authentication.
 
-#### ✅Create Service (Provider)
+#### [✅]Create Service (Provider)
 
 Allows a logged-in provider to create a new service offering.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X POST http://localhost:8000/api/services/provider/ \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
@@ -1432,7 +1638,8 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 }'
 ```
 
-**Possible Output Response (Success 201 Created):** ✅
+**Possible Output Response (Success 201 Created):** [✅]
+
 ```json
 {
   "service_id": "service-uuid-newly-created",
@@ -1459,21 +1666,24 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** ✅
+**Error Response (403 Forbidden - User is not a provider):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a provider."
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data):** ✅
+**Error Response (400 Bad Request - Invalid data):** [✅]
+
 ```json
 {
   "title": ["This field may not be blank."],
@@ -1482,12 +1692,12 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 }
 ```
 
-
-#### ✅List Own Services (Provider)
+#### [✅]List Own Services (Provider)
 
 Allows a logged-in provider to retrieve a list of their own service offerings. Supports pagination.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&is_active=true' \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
@@ -1495,13 +1705,15 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 ```
 
 **Query Parameters:**
+
 - `page` (integer, optional): Page number for pagination (default: 1).
 - `page_size` (integer, optional): Number of results per page (default: 10).
 - `is_active` (boolean, optional): Filter by active status.
 - `category_id` (string, optional): Filter by category UUID.
 - `q` (string, optional): Search term for service title or description.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "count": 25,
@@ -1543,7 +1755,8 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 }
 ```
 
-**Possible Output Response (Success 200 OK - No Services):** ✅
+**Possible Output Response (Success 200 OK - No Services):** [✅]
+
 ```json
 {
   "count": 0,
@@ -1555,33 +1768,36 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** ✅
+**Error Response (403 Forbidden - User is not a provider):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a provider."
 }
 ```
 
-**Error Response (400 Bad Request - Invalid query parameters):** ✅
+**Error Response (400 Bad Request - Invalid query parameters):** [✅]
+
 ```json
 {
   "page_size": ["Must be a positive integer and not exceed 100."]
 }
 ```
 
-
-#### ✅Retrieve Own Service (Provider)
+#### [✅]Retrieve Own Service (Provider)
 
 Allows a logged-in provider to retrieve details for a specific service they own by its ID.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/ \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
@@ -1589,9 +1805,11 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 ```
 
 **Path Parameters:**
+
 - `service_id` (uuid, required): The UUID of the service to retrieve.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "service_id": "service-uuid-abc-123",
@@ -1622,33 +1840,36 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Service does not exist or does not belong to provider):** ✅
+**Error Response (404 Not Found - Service does not exist or does not belong to provider):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** ✅
+**Error Response (403 Forbidden - User is not a provider):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a provider."
 }
 ```
 
-
-#### ✅Update Own Service (Provider)
+#### [✅]Update Own Service (Provider)
 
 Allows a logged-in provider to update an existing service they own by its ID. Only fields provided in the request body will be updated (partial updates can be supported via PATCH, but this example uses PUT for a full update of allowed fields).
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/ \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
@@ -1668,9 +1889,11 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 ```
 
 **Path Parameters:**
+
 - `service_id` (uuid, required): The UUID of the service to update.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "service_id": "service-uuid-abc-123",
@@ -1700,14 +1923,16 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Service does not exist or does not belong to provider):** ✅
+**Error Response (404 Not Found - Service does not exist or does not belong to provider):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data):** ✅
+**Error Response (400 Bad Request - Invalid data):** [✅]
+
 ```json
 {
   "title": ["This field may not be blank."],
@@ -1716,26 +1941,28 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** ✅
+**Error Response (403 Forbidden - User is not a provider):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a provider."
 }
 ```
 
-
-#### ✅Delete Own Service (Provider)
+#### [✅]Delete Own Service (Provider)
 
 Allows a logged-in provider to delete a specific service they own by its ID.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-delete/ \
 -H "Authorization: Bearer <PROVIDER_ACCESS_TOKEN>" \
@@ -1743,35 +1970,40 @@ curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-de
 ```
 
 **Path Parameters:**
+
 - `service_id` (uuid, required): The UUID of the service to delete.
 
-**Possible Output Response (Success 204 No Content):** ✅
+**Possible Output Response (Success 204 No Content):** [✅]
 (No JSON body is typically returned for a successful DELETE operation)
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Service does not exist or does not belong to provider):** ✅
+**Error Response (404 Not Found - Service does not exist or does not belong to provider):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** ✅
+**Error Response (403 Forbidden - User is not a provider):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a provider."
 }
 ```
 
-**Error Response (409 Conflict - Service cannot be deleted, e.g., active bookings):** ✅
+**Error Response (409 Conflict - Service cannot be deleted, e.g., active bookings):** [✅]
+
 ```json
 {
   "detail": "Service cannot be deleted as it has active bookings or other dependencies."
@@ -1779,14 +2011,17 @@ curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-de
 ```
 
 ---
-### ✅Public Service Request Endpoints
+
+### [✅]Public Service Request Endpoints
+
 These endpoints allow public users (typically not logged in, or any user type) to submit or view general service requests that may be picked up by providers.
 
-#### ✅Submit Public Service Request
+#### [✅]Submit Public Service Request
 
 Allows any user (authenticated or anonymous) to submit a request for a service. Contact information is required for follow-up.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X POST http://localhost:8000/api/service-requests/public/ \
 -H "Content-Type: application/json" \
@@ -1811,7 +2046,8 @@ curl -X POST http://localhost:8000/api/service-requests/public/ \
 }'
 ```
 
-**Possible Output Response (Success 201 Created):** ✅
+**Possible Output Response (Success 201 Created):** [✅]
+
 ```json
 {
   "request_id": "pub-req-uuid-newly-created",
@@ -1841,7 +2077,8 @@ curl -X POST http://localhost:8000/api/service-requests/public/ \
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data):** ✅
+**Error Response (400 Bad Request - Invalid data):** [✅]
+
 ```json
 {
   "title": ["This field may not be blank."],
@@ -1853,20 +2090,23 @@ curl -X POST http://localhost:8000/api/service-requests/public/ \
 }
 ```
 
-#### ✅View Public Service Request Details
+#### [✅]View Public Service Request Details
 
 Allows anyone to view the details of a specific public service request using its ID. This might be used by the original requester to check status or by providers considering the request.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET http://localhost:8000/api/service-requests/public/pub-req-uuid-newly-created/ \
 -H "Accept: application/json"
 ```
 
 **Path Parameters:**
+
 - `request_id` (uuid, required): The UUID of the public service request to retrieve.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "request_id": "pub-req-uuid-newly-created",
@@ -1898,7 +2138,8 @@ curl -X GET http://localhost:8000/api/service-requests/public/pub-req-uuid-newly
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Request does not exist):** ✅
+**Error Response (404 Not Found - Request does not exist):** [✅]
+
 ```json
 {
   "detail": "Not found."
@@ -1906,14 +2147,17 @@ curl -X GET http://localhost:8000/api/service-requests/public/pub-req-uuid-newly
 ```
 
 ---
-### ✅Service Requests (Customer)
+
+### [✅]Service Requests (Customer)
+
 These endpoints are for logged-in customers to manage their specific service requests, such as creating new requests for services offered by specific providers, viewing their active requests, updating, or canceling them.
 
-#### ✅Create Service Request (Customer)
+#### [✅]Create Service Request (Customer)
 
 Allows a logged-in customer to create a service request for a specific service offered by a provider.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X POST http://localhost:8000/api/service-requests/customer/ \
 -H "Authorization: Bearer <CUSTOMER_ACCESS_TOKEN>" \
@@ -1927,7 +2171,8 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 }'
 ```
 
-**Possible Output Response (Success 201 Created):** ✅
+**Possible Output Response (Success 201 Created):** [✅]
+
 ```json
 {
   "request_id": "cust-req-uuid-789",
@@ -1945,7 +2190,8 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data):** ✅
+**Error Response (400 Bad Request - Invalid data):** [✅]
+
 ```json
 {
   "service_id": ["This field is required."],
@@ -1953,32 +2199,36 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** ✅
+**Error Response (403 Forbidden - User is not a customer):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a customer."
 }
 ```
 
-**Error Response (404 Not Found - Service ID does not exist):** ✅
+**Error Response (404 Not Found - Service ID does not exist):** [✅]
+
 ```json
 {
   "detail": "Service with the provided ID not found."
 }
 ```
 
-#### ✅List Own Service Requests (Customer)
+#### [✅]List Own Service Requests (Customer)
 
 Allows a logged-in customer to list all their service requests, with options for pagination and filtering by status.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page_size=10&status=pending_provider_acceptance' \
 -H "Authorization: Bearer <CUSTOMER_ACCESS_TOKEN>" \
@@ -1986,11 +2236,13 @@ curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page
 ```
 
 **Query Parameters:**
+
 - `page` (integer, optional): Page number for pagination. Defaults to 1.
 - `page_size` (integer, optional): Number of items per page. Defaults to 10.
 - `status` (string, optional): Filter by request status (e.g., `pending_provider_acceptance`, `accepted`, `in_progress`, `completed`, `cancelled`, `declined`).
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "count": 1,
@@ -2018,25 +2270,28 @@ curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** ✅
+**Error Response (403 Forbidden - User is not a customer):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a customer."
 }
 ```
 
-#### ✅Retrieve Own Service Request (Customer)
+#### [✅]Retrieve Own Service Request (Customer)
 
 Allows a logged-in customer to retrieve details for a specific service request they made.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid-789/ \
 -H "Authorization: Bearer <CUSTOMER_ACCESS_TOKEN>" \
@@ -2044,9 +2299,11 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 ```
 
 **Path Parameters:**
+
 - `request_id` (uuid, required): The UUID of the service request to retrieve.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "request_id": "cust-req-uuid-789",
@@ -2071,32 +2328,36 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Request does not exist or does not belong to customer):** ✅
+**Error Response (404 Not Found - Request does not exist or does not belong to customer):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** ✅
+**Error Response (403 Forbidden - User is not a customer):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a customer."
 }
 ```
 
-#### ✅Update Own Service Request (Customer)
+#### [✅]Update Own Service Request (Customer)
 
 Allows a logged-in customer to update certain details of a service request they made, typically before it's accepted or in progress. Not all fields may be updatable.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid-789/ \
 -H "Authorization: Bearer <CUSTOMER_ACCESS_TOKEN>" \
@@ -2110,9 +2371,11 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 ```
 
 **Path Parameters:**
+
 - `request_id` (uuid, required): The UUID of the service request to update.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "request_id": "cust-req-uuid-789",
@@ -2134,7 +2397,8 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data or update not allowed):** ✅
+**Error Response (400 Bad Request - Invalid data or update not allowed):** [✅]
+
 ```json
 {
   "message_to_provider": ["This field may not be blank."],
@@ -2142,32 +2406,36 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 }
 ```
 
-**Error Response (404 Not Found - Request does not exist or does not belong to customer):** ✅
+**Error Response (404 Not Found - Request does not exist or does not belong to customer):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** ✅
+**Error Response (403 Forbidden - User is not a customer):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a customer."
 }
 ```
 
-#### ✅Cancel Own Service Request (Customer)
+#### [✅]Cancel Own Service Request (Customer)
 
 Allows a logged-in customer to cancel a service request they made, typically if it has not yet been completed or is in a state that allows cancellation.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uuid-789/cancel/ \
 -H "Authorization: Bearer <CUSTOMER_ACCESS_TOKEN>" \
@@ -2179,12 +2447,15 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 ```
 
 **Path Parameters:**
+
 - `request_id` (uuid, required): The UUID of the service request to cancel.
 
 **Request Body:**
+
 - `reason` (string, optional): Customer's reason for cancellation.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "request_id": "cust-req-uuid-789",
@@ -2207,28 +2478,32 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Cancellation not allowed):** ✅
+**Error Response (400 Bad Request - Cancellation not allowed):** [✅]
+
 ```json
 {
   "non_field_errors": ["Service request cannot be cancelled at its current status (e.g., 'completed')."]
 }
 ```
 
-**Error Response (404 Not Found - Request does not exist or does not belong to customer):** ✅
+**Error Response (404 Not Found - Request does not exist or does not belong to customer):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** ✅
+**Error Response (403 Forbidden - User is not a customer):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not a customer."
@@ -2236,14 +2511,17 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 ```
 
 ---
-### ✅Service Requests (Admin)
+
+### [✅]Service Requests (Admin)
+
 These endpoints are for administrators to oversee and manage all service requests within the system. This includes listing all requests, viewing details of specific requests, and potentially moderating or intervening in requests if necessary.
 
-#### ✅List All Service Requests (Admin)
+#### [✅]List All Service Requests (Admin)
 
 Allows an administrator to list all service requests in the system, with pagination and filtering options (e.g., by status, customer, provider, date range).
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_size=10&status=pending_provider_acceptance&customer_id=customer-uuid-456' \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
@@ -2251,6 +2529,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 ```
 
 **Query Parameters:**
+
 - `page` (integer, optional): Page number for pagination. Defaults to 1.
 - `page_size` (integer, optional): Number of items per page. Defaults to 10.
 - `status` (string, optional): Filter by request status.
@@ -2259,7 +2538,8 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 - `date_from` (date, optional, YYYY-MM-DD): Filter requests created on or after this date.
 - `date_to` (date, optional, YYYY-MM-DD): Filter requests created on or before this date.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "count": 150, // Total count of matching requests
@@ -2287,27 +2567,28 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** ✅
+**Error Response (403 Forbidden - User is not an admin):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not an administrator."
 }
 ```
 
-
-
-#### ✅Retrieve Service Request Details (Admin)
+#### [✅]Retrieve Service Request Details (Admin)
 
 Allows an administrator to retrieve the full details of any specific service request by its ID.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
+
 ```bash
 curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-789/ \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
@@ -2315,9 +2596,11 @@ curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 ```
 
 **Path Parameters:**
+
 - `request_id` (uuid, required): The UUID of the service request to retrieve.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "request_id": "cust-req-uuid-789",
@@ -2358,35 +2641,39 @@ curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Request does not exist):** ✅
+**Error Response (404 Not Found - Request does not exist):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** ✅
+**Error Response (403 Forbidden - User is not an admin):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not an administrator."
 }
 ```
+
 ```
 
 
 
-#### ✅Update Service Request (Admin)
+#### [✅]Update Service Request (Admin)
 
 Allows an administrator to update details of any service request. This might include changing status, assigning a provider, or adding admin notes.
 
-**`curl` Command:** ✅
+**`curl` Command:** [✅]
 ```bash
 curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-789/ \
 -H "Authorization: Bearer <ADMIN_ACCESS_TOKEN>" \
@@ -2406,9 +2693,11 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 ```
 
 **Path Parameters:**
+
 - `request_id` (uuid, required): The UUID of the service request to update.
 
 **Request Body Fields (example, actual fields may vary):**
+
 - `status` (string, optional): New status for the request (e.g., `pending_manual_assignment`, `on_hold`, `resolved_by_admin`, `closed`).
 - `assigned_provider_id` (uuid, optional): Manually assign or change the provider.
 - `admin_notes` (array of objects, optional): Add or update administrative notes.
@@ -2416,7 +2705,8 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
   - `admin_id` (string, required): ID of the admin making the note (usually taken from token).
   - `timestamp` (datetime, required): Timestamp of the note.
 
-**Possible Output Response (Success 200 OK):** ✅
+**Possible Output Response (Success 200 OK):** [✅]
+
 ```json
 {
   "request_id": "cust-req-uuid-789",
@@ -2440,7 +2730,8 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data):** ✅
+**Error Response (400 Bad Request - Invalid data):** [✅]
+
 ```json
 {
   "status": ["'invalid_status_value' is not a valid choice."],
@@ -2448,21 +2739,24 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 }
 ```
 
-**Error Response (404 Not Found - Request does not exist):** ✅
+**Error Response (404 Not Found - Request does not exist):** [✅]
+
 ```json
 {
   "detail": "Not found."
 }
 ```
 
-**Error Response (401 Unauthorized):** ✅
+**Error Response (401 Unauthorized):** [✅]
+
 ```json
 {
   "detail": "Authentication credentials were not provided."
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** ✅
+**Error Response (403 Forbidden - User is not an admin):** [✅]
+
 ```json
 {
   "detail": "You do not have permission to perform this action. User is not an administrator."
@@ -2470,271 +2764,433 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 ```
 
 ---
-## ❌Products
+
+## [❌]Products
+
 This section covers APIs related to product listings, categories, and management. Products might be offered by providers as an alternative or supplement to services.
 
 ---
-### ❌Product Categories
+
+### [❌]Product Categories
+
 Endpoints for managing and viewing product categories. Categories help organize products and make them discoverable.
 
 ---
-### ❌Products (Individual)
+
+### [❌]Products (Individual)
+
 (Section content to be added)
 
 ---
-## ❌Bids
+
+## [❌]Bids
+
 (Section content to be added)
 
 ---
-### ❌Provider Bidding Actions
+
+### [❌]Provider Bidding Actions
+
 (Section content to be added)
 
 ---
-### ❌Bids - Customer View
+
+### [❌]Bids - Customer View
+
 (Section content to be added)
 
 ---
-### ❌Bids - Admin View
+
+### [❌]Bids - Admin View
+
 (Section content to be added)
 
 ---
-## ❌Bookings
+
+## [❌]Bookings
+
 (Section content to be added)
 
 ---
-### ❌Create Booking
+
+### [❌]Create Booking
+
 (Section content to be added)
 
 ---
-### ❌View Booking Details
+
+### [❌]View Booking Details
+
 (Section content to be added)
 
 ---
-### ❌Update Booking Status
+
+### [❌]Update Booking Status
+
 (Section content to be added)
 
 ---
-### ❌List Customer Bookings
+
+### [❌]List Customer Bookings
+
 (Section content to be added)
 
 ---
-### ❌List Provider Bookings
+
+### [❌]List Provider Bookings
+
 (Section content to be added)
 
 ---
-### ❌List Admin Bookings
+
+### [❌]List Admin Bookings
+
 (Section content to be added)
 
 ---
-## ❌Calendar Integration
+
+## [❌]Calendar Integration
+
 (Section content to be added)
 
 ---
-## ❌Payment Processing
+
+## [❌]Payment Processing
+
 (Section content to be added)
 
 ---
-### ❌Create Payment Intent
+
+### [❌]Create Payment Intent
+
 (Section content to be added)
 
 ---
-### ❌Confirm Payment
+
+### [❌]Confirm Payment
+
 (Section content to be added)
 
 ---
-### ❌Retrieve Payment Details
+
+### [❌]Retrieve Payment Details
+
 (Section content to be added)
 
 ---
-### ❌List Payments (Customer/Provider/Admin)
+
+### [❌]List Payments (Customer/Provider/Admin)
+
 (Section content to be added)
 
 ---
-### ❌Issue Refund (Admin)
+
+### [❌]Issue Refund (Admin)
+
 (Section content to be added)
 
 ---
-### ❌Payment Gateway Accounts (Provider)
+
+### [❌]Payment Gateway Accounts (Provider)
+
 (Section content to be added)
 
 ---
-#### ❌Link Payment Gateway Account
+
+#### [❌]Link Payment Gateway Account
+
 (Section content to be added)
 
 ---
-#### ❌View Payment Gateway Account Details
+
+#### [❌]View Payment Gateway Account Details
+
 (Section content to be added)
 
 ---
-#### ❌Update Payment Gateway Account
+
+#### [❌]Update Payment Gateway Account
+
 (Section content to be added)
 
 ---
-#### ❌Remove Payment Gateway Account
+
+#### [❌]Remove Payment Gateway Account
+
 (Section content to be added)
 
 ---
-### ❌Payouts (Provider/Admin)
+
+### [❌]Payouts (Provider/Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Request Payout (Provider)
+
+#### [❌]Request Payout (Provider)
+
 (Section content to be added)
 
 ---
-#### ❌View Payout History (Provider/Admin)
+
+#### [❌]View Payout History (Provider/Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Process Payouts (Admin)
+
+#### [❌]Process Payouts (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌View Payout Settings (Provider/Admin)
+
+#### [❌]View Payout Settings (Provider/Admin)
+
 (Section content to be added)
 
 ---
-## ❌Messaging
+
+## [❌]Messaging
+
 (Section content to be added)
 
 ---
-### ❌Message Threads
+
+### [❌]Message Threads
+
 (Section content to be added)
 
 ---
-#### ❌Create Message Thread
+
+#### [❌]Create Message Thread
+
 (Section content to be added)
 
 ---
-#### ❌List User Message Threads
+
+#### [❌]List User Message Threads
+
 (Section content to be added)
 
 ---
-#### ❌View Message Thread Details
+
+#### [❌]View Message Thread Details
+
 (Section content to be added)
 
 ---
-#### ❌Archive Message Thread
+
+#### [❌]Archive Message Thread
+
 (Section content to be added)
 
 ---
-#### ❌Mark Thread as Read/Unread
+
+#### [❌]Mark Thread as Read/Unread
+
 (Section content to be added)
 
 ---
-### ❌Individual Messages
+
+### [❌]Individual Messages
+
 (Section content to be added)
 
 ---
-#### ❌Send Message in Thread
+
+#### [❌]Send Message in Thread
+
 (Section content to be added)
 
 ---
-#### ❌List Messages in Thread
+
+#### [❌]List Messages in Thread
+
 (Section content to be added)
 
 ---
-#### ❌Edit Message
+
+#### [❌]Edit Message
+
 (Section content to be added)
 
 ---
-#### ❌Delete Message
+
+#### [❌]Delete Message
+
 (Section content to be added)
 
 ---
-## ❌Notifications (HTTP)
+
+## [❌]Notifications (HTTP)
+
 (Section content to be added)
 
 ---
-### ❌List User Notifications
+
+### [❌]List User Notifications
+
 (Section content to be added)
 
 ---
-### ❌Mark Notification as Read
+
+### [❌]Mark Notification as Read
+
 (Section content to be added)
 
 ---
-### ❌Mark All Notifications as Read
-(Section content to be added)
+
+### [❌]Mark All Notifications as Read
+
+Allows a user to mark all their unread notifications as read in a single operation.
+
+**Endpoint:** `POST /api/notifications/mark-all-read`
+
+**Request Body:** None required
+
+**`curl` Command:** 
+
+```bash
+curl -X POST http://localhost:8000/api/notifications/mark-all-read \
+-H "Authorization: Bearer <USER_ACCESS_TOKEN>"
+```
 
+**Possible Output Response (Success 200 OK):** 
+
+```json
+{
+  "message": "All notifications marked as read",
+  "count": 5  // Number of notifications that were updated
+}
+```
+
+**Error Response (401 Unauthorized):** 
+
+```json
+{
+  "detail": "Authentication credentials were not provided."
+}
+```
+
 ---
-### ❌Delete Notification
+
+### [❌]Delete Notification
+
 (Section content to be added)
 
 ---
-### ❌Notification Settings
+
+### [❌]Notification Settings
+
 (Section content to be added)
 
 ---
-#### ❌Get Notification Settings
+
+#### [❌]Get Notification Settings
+
 (Section content to be added)
 
 ---
-#### ❌Update Notification Settings
+
+#### [❌]Update Notification Settings
+
 (Section content to be added)
 
 ---
-## ❌AI Suggestions & Feedback
+
+## [❌]AI Suggestions and Feedback
+
 (Section content to be added)
 
 ---
-### ❌AI Suggestions
+
+### [❌]AI Suggestions
+
 (Section content to be added)
 
 ---
-#### ❌Get AI Suggestions for Service Request
+
+#### [❌]Get AI Suggestions for Service Request
+
 (Section content to be added)
 
 ---
-#### ❌Get AI Suggestions for Pricing
+
+#### [❌]Get AI Suggestions for Pricing
+
 (Section content to be added)
 
 ---
-#### ❌Get AI Suggestions for Descriptions
+
+#### [❌]Get AI Suggestions for Descriptions
+
 (Section content to be added)
 
 ---
-### ❌AI Feedback Logs
+
+### [❌]AI Feedback Logs
+
 (Section content to be added)
 
 ---
-#### ❌Submit Feedback on AI Suggestion
+
+#### [❌]Submit Feedback on AI Suggestion
+
 (Section content to be added)
 
 ---
-#### ❌List AI Feedback Logs (Admin)
+
+#### [❌]List AI Feedback Logs (Admin)
+
 (Section content to be added)
 
 ---
-## ❌Verifications (User Identity, etc.)
+
+## [❌]Verifications (User Identity, etc.)
+
 (Section content to be added)
 
 ---
-### ❌Submit Verification Document
+
+### [❌]Submit Verification Document
+
 (Section content to be added)
 
 ---
-### ❌Check Verification Status
+
+### [❌]Check Verification Status
+
 (Section content to be added)
 
 ---
-### ❌Admin Verification Actions
+
+### [❌]Admin Verification Actions
+
 (Section content to be added)
 
 ---
-#### ❌List Pending Verifications (Admin)
+
+#### [❌]List Pending Verifications (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Approve/Reject Verification (Admin)
+
+#### [❌]Approve/Reject Verification (Admin)
+
 (Section content to be added)
 
 ---
-### ❌Submit Review for a Service/Provider
+
+### [❌]Submit Review for a Service/Provider
+
 (Section content to be added)
 
 ---
-#### ❌Generate Financial Report
+
+#### [❌]Generate Financial Report
+
 (Section content to be added)
 
 ---
@@ -2742,79 +3198,117 @@ Endpoints for managing and viewing product categories. Categories help organize 
 (Section content to be added)
 
 ---
-### ❌Admin User Management
+
+### [❌]Admin User Management
+
 (Section content to be added)
 
 ---
-#### ❌List All Users (Admin)
+
+#### [❌]List All Users (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌View User Details (Admin)
+
+#### [❌]View User Details (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Activate/Deactivate User (Admin)
+
+#### [❌]Activate/Deactivate User (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Assign User Roles (Admin)
+
+#### [❌]Assign User Roles (Admin)
+
 (Section content to be added)
 
 ---
-### ❌Admin Service Management
+
+### [❌]Admin Service Management
+
 (Section content to be added)
 
 ---
-#### ❌List All Services (Admin)
+
+#### [❌]List All Services (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Update Service Details (Admin)
+
+#### [❌]Update Service Details (Admin)
+
 (Section content to be added)
 
 ---
-#### ❌Manage Service Categories (Admin)
+
+#### [❌]Manage Service Categories (Admin)
+
 (Section content to be added)
 
 ---
-## ❌WebSocket APIs
+
+## [❌]WebSocket APIs
+
 (Section content to be added)
 
 ---
-### ❌Real-time Notifications (WebSocket)
+
+### [❌]Real-time Notifications (WebSocket)
+
 (Section content to be added)
 
 ---
-### ❌Real-time Messaging (WebSocket)
+
+### [❌]Real-time Messaging (WebSocket)
+
 (Section content to be added)
 
 ---
-### ❌Real-time Booking Updates (WebSocket)
+
+### [❌]Real-time Booking Updates (WebSocket)
+
 (Section content to be added)
 
 ---
-## ❌Health Checks
+
+## [❌]Health Checks
+
 (Section content to be added)
 
 ---
-### ❌System Health Endpoint
+
+### [❌]System Health Endpoint
+
 (Section content to be added)
 
 ---
-### ❌Database Health Endpoint
+
+### [❌]Database Health Endpoint
+
 (Section content to be added)
 
 ---
-### ❌Service Dependency Health Endpoint
+
+### [❌]Service Dependency Health Endpoint
+
 (Section content to be added)
 
 ---
-## ❌Metrics
+
+## [❌]Metrics
+
 (Section content to be added)
 
 ---
-### ❌Prometheus Metrics Endpoint
+
+### [❌]Prometheus Metrics Endpoint
+
 (Section content to be added)
 
 ---
