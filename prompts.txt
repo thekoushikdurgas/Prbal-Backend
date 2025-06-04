@@ -468,6 +468,9 @@ give me a one-liner requirement description for each file in the prbal Flutter a
 
 Overall, prbal is a Flutter app featuring multi-authentication (email/password, Google, Facebook, phone), theme switching (light/dark/system), multi-language support, and onboarding flow, built with BLoC/Cubit for state management and Firebase for backend services.
 
+Create a markdown file for my project to showcase all the files and their uses, and also the technology we use in this project, and givea full app architecture and app flow
+
+create requirements.txt for my project
 
 
 design lib\view\auth\view\register_view.dart: register screen with common color theme or palate and a common components darts  or any common  data in modern style
@@ -1115,3 +1118,752 @@ Enhance the Django Admin interface or build dedicated internal tools for operati
 Establish a plan for regular security patches, dependency updates, and application maintenance.
 Output: A detailed, step-by-step guide covering the complete process of taking the functionally complete Prbal backend to a production-ready state, including deployment infrastructure setup, secure configuration, database management, background task and real-time system scaling, comprehensive security hardening, setting up robust logging, monitoring, and alerting systems, finalizing API documentation and testing, and planning for ongoing maintenance and disaster recovery.
 By successfully completing these steps, your Prbal backend will be architected, implemented, and configured not just to function, but to thrive in a production environment, providing a reliable, secure, and scalable foundation for the Prbal service marketplace.
+
+So thick now, I started my project backend, so this is a guide to start and complete my backend, which is running with all APIs, models, and database tables with AI.
+
+Okay, I understand you've started your project's backend and are looking for a comprehensive guide or roadmap to complete it, ensuring it includes all the necessary APIs, data models, database tables, and AI integration. Based on the sources and our conversation history, the planned backend architecture for the Prbal App is a Django REST API backend, leveraging a robust relational database like PostgreSQL or MySQL and integrating AI functionalities.
+Here is a guide to help you build out and complete your Django backend, incorporating the key components and features outlined in the sources:
+1. Foundation and Core Backend Development
+• Project Setup: Ensure your basic Django project and virtual environment are set up, with Django and Django REST Framework (DRF) installed.
+• Database Configuration: Configure your chosen relational database (PostgreSQL/MySQL) with Django's Object-Relational Mapper (ORM).
+• User Management & Authentication: Implement the User Model (e.g., UserModel mapping to User in Django) which distinguishes between customer and service provider types. Set up authentication (registration, login, logout, token refresh) and authorization using DRF, potentially using JWT tokens. Implement robust permission classes for fine-grained access control based on user roles. Define API endpoints for these functionalities (e.g., /api/auth/register/, /api/auth/login/, /api/users/me/).
+• Core Data Models: Define and migrate all other core Django models (ServiceModel, BidModel, BookingModel, ReviewModel, PaymentModel, VerificationModel, AISuggestionModel, ProductModel, Data Model) using Django's ORM, mapping them accurately from the specified data structures.
+• Basic CRUD API Endpoints: Develop the initial RESTful API endpoints and DRF serializers for Create, Read, Update, and Delete (CRUD) operations on these core models. Examples include /api/services/, /api/bids/, /api/bookings/, /api/reviews/, /api/payments/, /api/verifications/, /api/products/.
+• Admin Interface: Configure Django Admin for easy data management and initial data seeding.
+• File Structure: Organize your code following the recommended Django project structure with dedicated apps for each functional domain (e.g., users, services, bids, bookings, etc.).
+2. Feature Development & Business Logic
+• Service Management: Build the logic and API endpoints to manage service categories (/api/services/categories/) and listings (/api/services/, /api/services/{id}/), including location-based aspects and availability.
+• Bidding System: Implement the core logic for the bidding engine, including placing new bids (/api/bids/ POST), listing bids (/api/bids/ GET), updating bids (/api/bids/{id}/ PUT), and crucially, accepting (/api/bids/{id}/accept/ POST/PATCH) and rejecting bids (/api/bids/{id}/reject/ PATCH).
+• Booking & Scheduling: Develop the logic for creating bookings (often linked to an accepted bid, /api/bookings/ POST), listing user bookings (/api/bookings/ GET), getting booking details (/api/bookings/{id}/ GET), and updating booking status (/api/bookings/{id}/status/ PUT), including cancellation (/api/bookings/{id}/cancel/ POST) and rescheduling. Calendar integration can be supported via an API endpoint (e.g., /api/integrations/calendar/sync/).
+• Review System: Implement fetching reviews (/api/reviews/ GET) and submitting new reviews (/api/reviews/ POST). Logic for updating reviews (e.g., adding provider response) (/api/reviews/{id}/ PUT) is also needed.
+• Payment Processing: Develop the logic and API endpoints for handling payments, integrating with a third-party payment gateway (e.g., Stripe, PayPal). This includes initiating payment transactions (/api/payments/initiate/ POST) and potentially handling payouts for providers (/api/payments/payout/ POST).
+• Verification Workflow: Implement the complex verification process defined by the VerificationModel. This involves API endpoints for users to upload documents (/api/verifications/ POST/PUT) and track status (/api/verifications/ GET). Backend logic should manage the workflow, potentially involving human review and calls to external background verification services (/api/integrations/verify/ POST) via asynchronous tasks.
+3. AI Integration
+• AI Services Module/Microservice: Create a specialized module within your Django app structure, or potentially a separate microservice (especially for complex/computationally intensive models), dedicated to AI logic.
+• AI Endpoints: Expose dedicated API endpoints to serve as interfaces for triggering AI model inferences and retrieving suggestions. An example is the AI price suggestion for bidding (/api/bids/smart-price/ GET or /api/ai-suggestions/ POST with type='bidAmount').
+• AISuggestionModel: Use the AISuggestionModel managed by Django's ORM to store and track AI-generated suggestions (like suggested amounts, messages, scheduling), along with contextual information, confidence scores, and usage status (isUsed). This model helps in tracking and refining AI performance.
+• Data Pipeline: Design a robust data pipeline within the backend to collect relevant user interaction data (accepted bids, search queries, booking completions, etc.). Process this data and feed it back to the AI models for retraining and continuous improvement.
+4. Integrations
+• Integration Layer: Develop a component to orchestrate communication with external third-party services.
+• Connect to Payment Gateway APIs (Stripe, PayPal).
+• Integrate Mapping/Location Services APIs (e.g., for addresses, service locations, finding nearby services).
+• Integrate Background Verification APIs (e.g., Onfido).
+• Integrate SMS/Email Services for notifications and verification codes.
+• Integrate Calendar APIs (e.g., Google Calendar) for scheduling sync.
+5. Real-time Communication
+• Integrate Django Channels for WebSocket support on the backend. This is crucial for real-time features like updates on bids, bookings, notifications, and potentially chat. Define notification endpoints (/api/notifications/ GET, PUT) which will complement the real-time WebSocket delivery.
+6. Media Handling
+• Implement efficient logic for serving media (images for profiles, services, products, reviews, verification documents). Utilize cloud storage (e.g., AWS S3) in production for secure storage and optimized serving. Server-side image processing for optimization is recommended.
+7. Offline Support (Sync APIs)
+• Implement Sync APIs to support the frontend's offline capabilities. This could include endpoints like /api/sync/profile/ (GET) to download user data, /api/sync/services/ (GET) to download available services, and /api/sync/upload/ (POST) to upload offline changes to the backend.
+8. Testing and Deployment Preparation
+• Write unit and integration tests for your Django models, serializers, views, and business logic.
+• Conduct thorough security audits on the API.
+• Optimize backend performance for speed and efficiency.
+• Prepare the backend for deployment to a cloud hosting environment (e.g., AWS, GCP, Azure).
+By systematically building out these components based on the data models and API endpoints defined in the sources, you can complete your Django backend to support all the required features of the Prbal service marketplace, including the intelligent AI functionalities. Remember to prioritize security and verification infrastructure, implement real-time communication early for dynamic features, and maintain an agile, iterative development methodology.
+So thick now, I started my project backend to complete it, which is running. So, how many APIs are required in this project?
+
+It's great to hear you've started building the backend for your project! Now that you're focused on completing it and ensuring it's running with all the necessary components, understanding the scope of the required APIs is crucial.
+Based on the sources, the Prbal App's backend requires a comprehensive suite of API endpoints to support all the planned functionalities. The sources provide detailed lists and specifications for these APIs, which are designed using a Django REST API backend and adhere to standard RESTful principles, utilizing various HTTP methods (GET, POST, PUT, DELETE, PATCH) for operations.
+While an exact single number can be slightly fluid depending on how you count (e.g., counting each method/endpoint combination vs. distinct endpoint paths), the sources outline approximately 40-50 distinct API endpoint paths across various functional categories.
+Here's a breakdown of the key API groups and examples of endpoints required to complete the backend, drawing from the detailed specifications provided in the sources:
+1. Authentication & User Management APIs: These are fundamental for user registration, login, and profile management.
+◦ Register new users: /api/v1/auth/register/ (POST)
+◦ Authenticate users and generate tokens: /api/v1/auth/login/ (POST)
+◦ Logout and invalidate tokens: /api/auth/logout/ (POST)
+◦ Refresh JWT tokens: /api/auth/refresh/ (POST)
+◦ Manage the current user's profile: /api/v1/users/me/ (GET, PUT, PATCH)
+◦ Get details of a specific user (e.g., provider profile): /api/v1/users/{id}/ (GET)
+◦ Upload or change user avatars: /api/users/me/avatar/ (POST)
+◦ Potentially handle profile matching actions (hypothetical): /api/v1/users/{id}/like/ (POST), /api/v1/users/{id}/pass/ (POST)
+2. Service Discovery & Management APIs: These handle listing, creating, updating, and deleting service and product listings.
+◦ List all services or products: /api/v1/services/ (GET), /api/v1/products/ (GET)
+◦ Create new service or product listings: /api/v1/services/ (POST), /api/v1/products/ (POST)
+◦ Get, update, or delete specific listings: /api/v1/services/{id}/ (GET, PUT, DELETE), /api/v1/products/{id}/ (GET, PUT, DELETE)
+◦ List predefined service categories: /api/v1/services/categories/ (GET)
+◦ Find services nearby: /api/services/nearby/ (GET)
+3. Bidding System APIs: Core to the marketplace functionality, these manage the creation, listing, and acceptance/rejection of bids.
+◦ Fetch a list of bids (relevant to the user): /api/v1/bids/ (GET)
+◦ Create a new bid request or offer: /api/v1/bids/ (POST)
+◦ Get details for a specific bid: /api/v1/bids/{id}/ (GET)
+◦ Update a bid: /api/bids/{id}/ (PUT)
+◦ Accept a specific bid: /api/v1/bids/{id}/accept/ (POST or PATCH)
+◦ Reject a specific bid: /api/v1/bids/{id}/reject/ (PUT/PATCH)
+4. Booking & Scheduling APIs: Manage the lifecycle of bookings, often linked to accepted bids.
+◦ Fetch a list of user bookings: /api/v1/bookings/ (GET)
+◦ Create a new booking (often after a bid is accepted): /api/v1/bookings/ (POST)
+◦ Get details for a specific booking: /api/v1/bookings/{id}/ (GET)
+◦ Update the status of a booking (e.g., confirmed, completed, cancelled): /api/v1/bookings/{id}/status/ (PUT or PATCH)
+◦ Cancel a booking: /api/bookings/{id}/cancel/ (POST)
+5. Review & Payment APIs: Handle user reviews and process payments.
+◦ Fetch a list of reviews: /api/v1/reviews/ (GET)
+◦ Submit a new review: /api/v1/reviews/ (POST)
+◦ Update a specific review (e.g., add provider response): /api/v1/reviews/{id}/ (PUT)
+◦ Initiate payment transactions: /api/v1/payments/initiate/ (POST)
+◦ Confirm payments: /api/payments/confirm/ (POST)
+◦ Initiate payouts for service providers: /api/v1/payments/payout/ (POST, hypothetical method in but mentioned as requirement)
+◦ Get payment history: /api/payments/history/ (GET)
+6. Verification APIs: Manage the complex multi-stage verification process for providers.
+◦ Fetch the status of user verifications: /api/v1/verifications/ (GET)
+◦ Upload documents for verification: /api/v1/verifications/ (POST or PUT)
+◦ Start the verification process (may trigger external calls): /api/users/verify/ (POST), /api/integrations/verify/ (POST)
+7. AI Suggestion APIs: Interface with AI models to provide suggestions.
+◦ Request AI-generated suggestions (e.g., price suggestion for bidding): /api/v1/ai-suggestions/ (POST), /api/bids/smart-price/ (GET)
+8. Notification APIs: Although real-time notifications primarily use WebSockets, there are also standard API endpoints.
+◦ Fetch historical notifications: /api/v1/notifications/ (GET)
+◦ Mark notifications as read (Hypothetical method in): /api/v1/notifications/ (PUT)
+9. Messaging APIs: Needed for in-app chat functionality.
+◦ List message threads: /api/messages/threads/ (GET)
+◦ Get messages within a thread, send messages: /api/messages/{thread}/ (GET, POST)
+10. Offline Support (Sync APIs): To enable offline functionality for the frontend.
+◦ Download user profile for offline use: /api/sync/profile/ (GET)
+◦ Download available services for offline browsing: /api/sync/services/ (GET)
+◦ Upload offline changes to the backend: /api/sync/upload/ (POST)
+11. Integration APIs: Endpoints for interacting with external services.
+◦ Integrate with calendar services for scheduling sync: /api/integrations/calendar/sync/ (POST)
+12. Analytics & Admin APIs: For tracking platform performance and managing data (often admin-panel specific).
+◦ Get user analytics dashboard: /api/analytics/overview/ (GET)
+◦ Get provider earnings analytics: /api/analytics/earnings/ (GET)
+◦ List all users: /api/admin/users/ (GET, Admin required)
+◦ List all services: /api/admin/services/ (GET, Admin required)
+As you can see, the project requires a substantial number of APIs covering diverse functionalities. The estimated range of 40-50 distinct endpoint paths provides a good scope of the work needed to complete the backend API layer based directly on the provided sources. Each of these endpoints will need corresponding logic in your Django views, serializers, and potentially background tasks.
+So thick now, I started my project backend to complete it, which is running. So, how many models are required in this project?
+That's excellent news that your backend is running! Now we can dive into the specifics of structuring the data within it.
+
+Based on the sources and our previous discussion, the Prbal App backend, built with Django, requires ten core data models which are derived from the specifications initially outlined for the Flutter frontend. These models define the structure of your database tables and are fundamental to implementing all the application's features.
+
+Here are the ten models in full detail, including their key fields and the functions or requirements they need to support, based on the sources:
+
+1.  UserModel
+    *   Purpose: Represents comprehensive user data, accommodating both service seekers (customers) and providers. It's crucial for authentication, authorization, profile management, and tracking user-specific information.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `uid`: Unique identifier for the user (likely derived from authentication system or a UUIDField in Django).
+        *   `name`: User's name (CharField).
+        *   `email`: User's email address (EmailField, unique).
+        *   `phone`: User's phone number (CharField).
+        *   `user_type`: Indicates if the user is a 'Customer' or 'Service Provider' (CharField with choices).
+        *   `isVerified`: Overall verification status (BooleanField).
+        *   `isEmailVerified`: Email verification status (BooleanField).
+        *   `isPhoneVerified`: Phone verification status (BooleanField).
+        *   `profile_image`: URL or reference to the user's profile picture (URLField or ImageField).
+        *   `rating`: Average rating for providers (DecimalField, nullable).
+        *   `totalBookings`: Count of completed bookings for providers (IntegerField).
+        *   `skills`: Skills possessed by providers (JSONField or ManyToManyField to a Skill model).
+        *   `bio`: Provider's biography/description (TextField).
+        *   `address`: User's address (TextField or ForeignKey to an Address model).
+        *   `preferences`: Map for user preferences (JSONField).
+    *   Requirements/Implied Functions: Handle dual user types. Track multi-layered verification status. Store user preferences. Maintain detailed profile information. Support local caching (handled by frontend, but model design supports it). Authentication and authorization integration.
+2.  ServiceModel
+    *   Purpose: Represents services offered by professionals. Manages service categories, details, pricing, availability, and location.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `id`: Unique identifier for the service (UUIDField).
+        *   `providerId`: Foreign key linking to the `UserModel` representing the service provider (ForeignKey(User)).
+        *   `name`: Service name/title (CharField).
+        *   `description`: Detailed description of the service (TextField).
+        *   `category`: Service category (CharField with choices or ForeignKey to a ServiceCategory model).
+        *   `subcategories`: Subcategories of the service (JSONField).
+        *   `tags`: Keywords or tags for the service (JSONField).
+        *   `hourlyRate`: Hourly price for the service (DecimalField).
+        *   `pricingOptions`: Flexible pricing options (e.g., fixed price packages) (JSONField).
+        *   `availability`: Provider's availability for this service (JSONField).
+        *   `minHours`: Minimum hours for booking (IntegerField).
+        *   `maxHours`: Maximum hours for booking (IntegerField).
+        *   `location`: Text description of the service location (CharField).
+        *   `coordinates`: Geo-spatial coordinates for the service location (PointField (GeoDjango)).
+        *   `images`: List of images related to the service (JSONField or ManyToManyField to an Image model).
+        *   `requiredTools`: Tools required for the service (JSONField).
+    *   Requirements/Implied Functions: Support multiple categories and subcategories. Flexible pricing options. Location-based services. Media attachments. Availability scheduling. CRUD operations via API endpoints.
+3.  BidModel
+    *   Purpose: Handles the entire lifecycle of a bid within the smart bidding system. Facilitates price suggestions and scheduling proposals.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `id`: Unique identifier for the bid (UUIDField).
+        *   `bidderId`: Foreign key linking to the `UserModel` of the customer requesting the bid (ForeignKey(User)).
+        *   `serviceProviderId`: Foreign key linking to the `UserModel` of the provider placing the bid (ForeignKey(User)).
+        *   `serviceId`: Foreign key linking to the `ServiceModel` the bid is for (ForeignKey(Service)).
+        *   `amount`: The bid amount (DecimalField).
+        *   `currency`: Currency of the bid amount (CharField).
+        *   `duration`: Proposed duration for the service (CharField).
+        *   `scheduledDateTime`: Proposed date and time for the service (DateTimeField).
+        *   `status`: Current status of the bid (e.g., pending, accepted, rejected) (CharField with choices).
+        *   `acceptedAt`: Timestamp when the bid was accepted (DateTimeField, nullable).
+        *   `rejectedAt`: Timestamp when the bid was rejected (DateTimeField, nullable).
+        *   `completedAt`: Timestamp when the service (from this bid) was completed (DateTimeField, nullable).
+        *   `cancelledAt`: Timestamp when the bid/booking was cancelled (DateTimeField, nullable).
+        *   `message`: Message from the provider with the bid (TextField).
+        *   `location`: Location relevant to the bid (CharField).
+        *   `paymentDetails`: Payment-related details for the bid (JSONField).
+        *   `isAISuggested`: Flag indicating if the bid was based on an AI suggestion (BooleanField).
+        *   `ai_suggestion`: The AI suggested amount (DecimalField, nullable).
+    *   Requirements/Implied Functions: Track bid lifecycle. Support AI-suggested bids. Handle scheduling. Manage payment details. Support location-based services. CRUD operations. Status updates (accept, reject, cancel).
+4.  BookingModel
+    *   Purpose: Manages the details and lifecycle of service bookings. Links customers, providers, and services.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `id`: Unique identifier for the booking (UUIDField).
+        *   `serviceId`: Foreign key linking to the `ServiceModel` booked (ForeignKey(Service)).
+        *   `providerId`: Foreign key linking to the provider `UserModel` (ForeignKey(User)).
+        *   `clientId`: Foreign key linking to the customer `UserModel` (ForeignKey(User)).
+        *   `bookingDate`: Date of the booking (DateField).
+        *   `startTime`: Start time of the booking (TimeField).
+        *   `endTime`: End time of the booking (TimeField).
+        *   `address`: Address where the service will take place (TextField).
+        *   `location`: Geo-spatial location of the service (PointField (GeoDjango)).
+        *   `status`: Current status of the booking (e.g., pending, confirmed, completed) (CharField with choices).
+        *   `totalAmount`: Total cost of the booking (DecimalField).
+        *   `paymentDetails`: Details about the payment for this booking (JSONField).
+        *   `rating`: Rating given for this booking (DecimalField, nullable).
+        *   `review`: Text review for this booking (TextField, nullable).
+        *   `isRescheduled`: Flag indicating if the booking was rescheduled (BooleanField).
+        *   `rescheduledDate`: New date if rescheduled (DateField, nullable).
+    *   Requirements/Implied Functions: Handle booking lifecycle. Support rescheduling. Track location. Manage payments. Handle reviews. CRUD operations. Status updates (confirm, cancel, complete).
+5.  ReviewModel
+    *   Purpose: Manages service reviews and ratings provided by users. Allows detailed feedback and provider responses.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `id`: Unique identifier for the review (UUIDField).
+        *   `bookingId`: Foreign key linking to the related `BookingModel` (ForeignKey(Booking)).
+        *   `serviceId`: Foreign key linking to the reviewed `ServiceModel` (ForeignKey(Service)).
+        *   `providerId`: Foreign key linking to the reviewed provider `UserModel` (ForeignKey(User)).
+        *   `clientId`: Foreign key linking to the customer `UserModel` who left the review (ForeignKey(User)).
+        *   `rating`: Overall rating (DecimalField).
+        *   `ratingBreakdown`: Detailed breakdown of the rating (e.g., punctuality, quality) (JSONField).
+        *   `comment`: Text comment of the review (TextField).
+        *   `images`: Images included with the review (JSONField or ManyToManyField to an Image model).
+        *   `isVerified`: Flag indicating if the review is verified (BooleanField).
+        *   `providerResponse`: Provider's text response to the review (TextField, nullable).
+        *   `providerResponseDate`: Timestamp of the provider's response (DateTimeField, nullable).
+    *   Requirements/Implied Functions: Support detailed ratings. Allow image attachments. Enable provider responses. Track verification status. CRUD operations.
+6.  PaymentModel
+    *   Purpose: Handles all payment transactions within the app. Tracks transaction status and details.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `id`: Unique identifier for the payment transaction (UUIDField).
+        *   `userId`: Foreign key linking to the `UserModel` initiating the payment (ForeignKey(User)).
+        *   `bookingId`: Foreign key linking to the related `BookingModel` (ForeignKey(Booking)).
+        *   `amount`: Amount of the transaction (DecimalField).
+        *   `currency`: Currency of the transaction (CharField).
+        *   `paymentMethod`: Method used for payment (e.g., card, UPI) (CharField).
+        *   `status`: Status of the transaction (e.g., pending, completed, failed) (CharField with choices).
+        *   `metadata`: Additional transaction metadata (JSONField).
+    *   Requirements/Implied Functions: Support multiple payment methods. Track payment status. Store transaction metadata. Handle different currencies. Integration with payment gateways. Manage payouts for providers. CRUD operations.
+7.  VerificationModel
+    *   Purpose: Manages the comprehensive user verification process. Tracks different types of verification and their status.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `id`: Unique identifier for the verification entry (UUIDField).
+        *   `userId`: Foreign key linking to the `UserModel` being verified (ForeignKey(User)).
+        *   `type`: Type of verification (e.g., identity, address, professional, educational, background) (CharField with choices).
+        *   `status`: Current status (e.g., unverified, pending, inProgress, verified, rejected) (CharField with choices).
+        *   `documentType`: Type of document submitted (CharField).
+        *   `documentUrl`: URL or reference to the uploaded verification document (URLField or FileField).
+        *   `verificationNotes`: Internal notes about the verification process (TextField, nullable).
+        *   `rejectionReason`: Reason for rejection if applicable (TextField, nullable).
+    *   Requirements/Implied Functions: Support multiple verification types. Track verification status. Store document information securely. Handle rejection cases with reasons. Complex workflow management (potentially involving human review and external APIs). Integration with third-party verification services. CRUD operations.
+8.  AISuggestionModel
+    *   Purpose: Handles AI-generated suggestions for various features. Manages suggestions like bid amounts, messages, and scheduling.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `userId`: Foreign key linking to the user receiving the suggestion (ForeignKey(User)).
+        *   `serviceProviderId`: Foreign key linking to the provider involved (ForeignKey(User)).
+        *   `serviceId`: Foreign key linking to the service involved (ForeignKey(Service)).
+        *   `type`: Type of suggestion (e.g., bidAmount, message, scheduling, comprehensive) (CharField with choices).
+        *   `suggestedAmount`: Suggested bid amount (DecimalField, nullable).
+        *   `suggestedMessage`: Suggested message content (TextField, nullable).
+        *   `suggestedDuration`: Suggested duration (CharField, nullable).
+        *   `suggestedSchedule`: Suggested scheduling details (JSONField, nullable).
+        *   `confidenceScore`: Confidence score of the suggestion (DecimalField).
+        *   `isUsed`: Flag indicating if the suggestion was used (BooleanField).
+        *   *Implied/Contextual fields:* Contextual data used to generate the suggestion (potentially stored here or referenced).
+    *   Requirements/Implied Functions: Support multiple suggestion types. Track suggestion confidence. Monitor suggestion usage for model improvement. Store reasoning data (implies storage of context/parameters). API endpoints to trigger AI models and retrieve suggestions. Data collection pipeline to feed data back to AI models.
+9.  ProductModel
+    *   Purpose: Represents products or pre-packaged services available in the marketplace, relevant for businesses like restaurants.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `name`: Product name (CharField).
+        *   `description`: Product description (TextField).
+        *   `price`: Product price (DecimalField).
+        *   `rating`: Average rating for the product (DecimalField).
+        *   `reviews`: Count of reviews for the product (IntegerField).
+        *   `image`: Image for the product (ImageField or URLField).
+        *   `category`: Product category (CharField).
+    *   Requirements/Implied Functions: Display product information. Track ratings and reviews. Support categorization. Handle media content. CRUD operations.
+10. Data Model
+    *   Purpose: Contains static data and sample content essential for the app's structure and initial population, such as service categories and marketing images.
+    *   Key Fields (translating Flutter concept fields to likely Django fields):
+        *   `categories`: List of service categories and subcategories (JSONField).
+        *   `products`: Sample product data (JSONField).
+        *   `carouselBrands`: Marketing images/data for carousels (JSONField).
+        *   *Note:* This data might also be managed directly in Django settings, static files, or fixtures rather than a dedicated model, depending on complexity and update frequency. If it's a model, it might be named something like `StaticData`.
+    *   Requirements/Implied Functions: Provide category structure. Include sample data. Support marketing content. API endpoints to retrieve this static data.
+
+These ten models form the backbone of your Django backend. Implementing them precisely, including relationships (Foreign Keys), appropriate field types for data integrity (e.g., DecimalField for currency, PointField for location, JSONField for flexible structures), and setting up the corresponding serializers, views, and URLs in Django REST Framework, will lay a solid foundation for the rest of the backend development.
+
+Keep up the great work on getting the backend completed!
+
+So thick now, I started my project backend to complete it, which is running. So, how many database tables are required in this project?
+
+Based on the sources and your query about the database tables needed for your running backend, which we've established is likely the Django REST API backend prioritized in the architecture documentation, we can detail the required database tables, their primary keys, fields, and how they are connected through foreign keys.
+
+It's important to note that while some sources describe the backend using Flutter and Firebase Firestore (a NoSQL database), other, more detailed architectural documents explicitly prioritize a Django REST API backend utilizing a robust relational database like PostgreSQL or MySQL. Given your query about "database tables" with "primary key and foreign key," which are terms specific to relational databases, and the explicit prioritization of the Django backend as the "definitive architectural direction" with the Flutter models serving as the blueprint for the Django schema, this response will focus on the relational database structure implied by the Django backend.
+
+The core functional areas described in the sources correspond to the main entities managed by the backend's business logic modules and exposed via API endpoints. These entities are typically mapped to database tables by Django's ORM.
+
+Here are the required database tables with their details and connections, based on the reconciled information from the sources:
+
+1.  User Table
+    *   Purpose: Represents all users of the platform, accommodating both service seekers (customers) and service providers (professionals). This table extends Django's built-in User model.
+    *   Primary Key: `id` (UUIDField or Django's default auto-incrementing integer PK). Let's use UUIDField `id` as suggested in model mappings.
+    *   Fields:
+        *   `uid` (Unique identifier from auth system)
+        *   `name` (CharField)
+        *   `email` (EmailField)
+        *   `phone` (CharField)
+        *   `user_type` (CharField with choices, e.g., 'C' for Customer, 'P' for Service Provider)
+        *   `is_verified` (BooleanField, default False)
+        *   `is_email_verified` (BooleanField)
+        *   `is_phone_verified` (BooleanField)
+        *   `profile_image` (ImageField or URLField)
+        *   `rating` (DecimalField, nullable)
+        *   `total_bookings` (IntegerField, tracks completed bookings for providers)
+        *   `skills` (JSONField or separate ManyToMany relation)
+        *   `bio` (TextField)
+        *   `address` (TextField or JSONField for structured address)
+        *   `preferences` (JSONField, stores user-specific settings/preferences)
+        *   *Inherited from Django AbstractUser:* `username`, `password` (hashed), `first_name`, `last_name`, `is_active`, `is_staff`, `is_superuser`, `date_joined`, `last_login`.
+    *   Foreign Keys: None on this table referencing other core Prbal tables. Many other tables will have Foreign Keys pointing *to* the User table.
+
+2.  ServiceCategory Table
+    *   Purpose: Manages the different categories under which services are listed.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK).
+    *   Fields:
+        *   `name` (CharField)
+        *   `icon` (CharField, stores icon reference)
+    *   Foreign Keys: None.
+
+3.  Service Table
+    *   Purpose: Represents individual services offered by service providers.
+    *   Primary Key: `id` (UUIDField).
+    *   Fields:
+        *   `provider` (ForeignKey to User) - Links a service to the provider who offers it.
+        *   `category` (ForeignKey to ServiceCategory) - Assigns a service to a category.
+        *   `title` (CharField)
+        *   `description` (TextField)
+        *   `base_price` or `pricing_options` (DecimalField or JSONField for complex pricing structures)
+        *   `availability` (JSONField, stores provider's availability)
+        *   `location` (PointField for GeoDjango, or CharField/JSONField)
+        *   `images` (JSONField storing image URLs or ManyToManyField to an Image table)
+    *   Foreign Keys:
+        *   `provider` -> User (One service is offered by one provider)
+        *   `category` -> ServiceCategory (One service belongs to one category)
+
+4.  Bid Table
+    *   Purpose: Manages bids placed by service providers on service requests (implied context, potentially linked via Service or a separate Request entity).
+    *   Primary Key: `id` (UUIDField).
+    *   Fields:
+        *   `bidder` (ForeignKey to User, the customer who initiated the implicit request) [174, 89 - listed as `bidderId`]
+        *   `provider` (ForeignKey to User, the service provider making the bid) [153, 174, 89 - listed as `serviceProviderId` in]
+        *   `service` (ForeignKey to Service or a ServiceRequest table) [153, 174, 89 - listed as `serviceId`] - Links the bid to the specific service being requested.
+        *   `amount` (DecimalField)
+        *   `currency` (CharField)
+        *   `duration` (CharField)
+        *   `scheduled_date_time` (DateTimeField, proposed time for service)
+        *   `status` (CharField with choices: 'Pending', 'Accepted', 'Rejected', plus 'Completed', 'Cancelled', 'Rejected' from lifecycle)
+        *   `accepted_at` (DateTimeField, nullable)
+        *   `rejected_at` (DateTimeField, nullable)
+        *   `completed_at` (DateTimeField, nullable)
+        *   `cancelled_at` (DateTimeField, nullable)
+        *   `message` (TextField)
+        *   `location` (CharField or PointField)
+        *   `payment_details` (JSONField, specific to this bid?)
+        *   `is_ai_suggested` (BooleanField)
+    *   Foreign Keys:
+        *   `bidder` -> User (The customer requesting the service)
+        *   `provider` -> User (The provider placing the bid)
+        *   `service` -> Service (The service being bid upon)
+
+5.  Booking Table
+    *   Purpose: Manages confirmed service bookings between a customer and a provider.
+    *   Primary Key: `id` (UUIDField).
+    *   Fields:
+        *   `service` (ForeignKey to Service) - The service being booked.
+        *   `provider` (ForeignKey to User) - The provider for the booking.
+        *   `client` (ForeignKey to User) - The customer/client for the booking.
+        *   `bid` (ForeignKey to Bid, nullable) - Added based on the flow "Create booking (after bid)", linking a booking to the specific bid that was accepted.
+        *   `booking_date` (DateField)
+        *   `start_time` (TimeField)
+        *   `end_time` (TimeField)
+        *   `address` (TextField)
+        *   `location` (PointField or CharField)
+        *   `status` (CharField with choices: 'pending', 'confirmed', 'inProgress', 'completed', 'cancelled', 'rejected')
+        *   `total_amount` (DecimalField)
+        *   `payment_details` (JSONField)
+        *   `rating` (DecimalField, nullable, stores rating given by client)
+        *   `review` (TextField, nullable, stores review comment given by client)
+        *   `is_rescheduled` (BooleanField)
+        *   `rescheduled_date` (DateField, nullable)
+    *   Foreign Keys:
+        *   `service` -> Service (The service booked)
+        *   `provider` -> User (The provider performing the service)
+        *   `client` -> User (The customer receiving the service)
+        *   `bid` -> Bid (The bid that led to this booking - optional)
+
+6.  Review Table
+    *   Purpose: Manages reviews and ratings submitted by customers after a booking is completed.
+    *   Primary Key: `id` (UUIDField).
+    *   Fields:
+        *   `booking` (ForeignKey to Booking) - Links a review directly to the completed booking.
+        *   `service` (ForeignKey to Service) - Redundant if linked to booking, but included in sources. Links review to the service.
+        *   `provider` (ForeignKey to User) - Redundant if linked to booking, but included in sources. Links review to the provider.
+        *   `client` (ForeignKey to User) - Redundant if linked to booking, but included in sources. Links review to the client who wrote it.
+        *   `rating` (DecimalField) - The overall rating score.
+        *   `rating_breakdown` (JSONField, stores detailed ratings, e.g., cleanliness, punctuality)
+        *   `comment` (TextField) - The review text.
+        *   `images` (JSONField storing image URLs or ManyToManyField to an Image table)
+        *   `is_verified` (BooleanField, indicates if the review is from a completed booking)
+        *   `provider_response` (TextField, nullable, allows provider to respond to review)
+        *   `provider_response_date` (DateTimeField, nullable, timestamp of provider response)
+    *   Foreign Keys:
+        *   `booking` -> Booking (One review is for one booking)
+        *   `service` -> Service (One review relates to one service)
+        *   `provider` -> User (One review is about one provider)
+        *   `client` -> User (One review is written by one client)
+
+7.  Payment Table
+    *   Purpose: Handles all payment transactions, including payments from customers to the platform/provider and potentially payouts from the platform to providers.
+    *   Primary Key: `id` (UUIDField).
+    *   Fields:
+        *   `user` (ForeignKey to User) - The user associated with the payment (payer or receiver).
+        *   `booking` (ForeignKey to Booking, nullable) - Links a payment to a specific booking transaction.
+        *   `amount` (DecimalField)
+        *   `currency` (CharField)
+        *   `payment_method` (CharField, e.g., 'credit_card', 'paypal', 'stripe', 'payout')
+        *   `status` (CharField with choices: e.g., 'pending', 'completed', 'failed', 'refunded', 'initiated')
+        *   `metadata` (JSONField, stores additional transaction details from payment gateway)
+    *   Foreign Keys:
+        *   `user` -> User (The user involved in the payment)
+        *   `booking` -> Booking (The booking this payment is for - optional as some payments might be payouts not directly tied to a single booking record in this way)
+
+8.  Verification Table
+    *   Purpose: Tracks the status and details of various verification processes for users, especially providers.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK).
+    *   Fields:
+        *   `user` (ForeignKey to User) - The user undergoing verification.
+        *   `type` (CharField, e.g., 'identity', 'address', 'professional', 'educational', 'background')
+        *   `status` (CharField with choices: 'unverified', 'pending', 'inProgress', 'verified', 'rejected')
+        *   `document_url` (URLField, link to stored verification document)
+        *   `submission_date` (DateTimeField)
+        *   `review_date` (DateTimeField, nullable)
+        *   `reviewed_by` (ForeignKey to User, e.g., an admin user, nullable) - The admin who reviewed the verification.
+        *   `rejection_reason` (TextField, nullable)
+        *   `verification_notes` (TextField, nullable, internal notes)
+    *   Foreign Keys:
+        *   `user` -> User (The user whose verification this record is for)
+        *   `reviewed_by` -> User (The admin user who processed the verification - optional)
+
+9.  AISuggestion Table
+    *   Purpose: Stores AI-generated suggestions for various platform actions, like bid amounts or scheduling.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK).
+    *   Fields:
+        *   `user` (ForeignKey to User, the user who received or is associated with the suggestion)
+        *   `type` (CharField, e.g., 'bid_amount', 'message', 'scheduling', 'comprehensive')
+        *   `suggestion_details` (JSONField or TextField, the actual suggestion content)
+        *   `confidence_score` (DecimalField)
+        *   `is_used` (BooleanField, tracks if the user acted on the suggestion)
+        *   `created_at` (DateTimeField)
+        *   `context_bid` (ForeignKey to Bid, nullable) - Links suggestion to a specific bid context.
+        *   `context_booking` (ForeignKey to Booking, nullable) - Links suggestion to a specific booking context.
+        *   `context_service` (ForeignKey to Service, nullable) - Links suggestion to a specific service/request context.
+    *   Foreign Keys:
+        *   `user` -> User (The user related to the suggestion)
+        *   `context_bid` -> Bid (Optional link to a bid)
+        *   `context_booking` -> Booking (Optional link to a booking)
+        *   `context_service` -> Service (Optional link to a service/request)
+
+10. Product Table
+    *   Purpose: Represents fixed-price products or smaller, standardized services offered by businesses, distinct from custom bids.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK).
+    *   Fields:
+        *   `provider` (ForeignKey to User) - Links a product to the provider offering it.
+        *   `name` (CharField)
+        *   `description` (TextField)
+        *   `price` (DecimalField)
+        *   `rating` (DecimalField, calculated summary)
+        *   `reviews_count` (IntegerField, count of associated reviews)
+        *   `image` (ImageField or URLField)
+        *   `category` (CharField or ForeignKey to ServiceCategory?)
+    *   Foreign Keys:
+        *   `provider` -> User (One product is offered by one provider)
+        *   `category` -> ServiceCategory (Optional link if products share service categories)
+
+11. ChatThread Table (Inferred from messaging features)
+    *   Purpose: Represents a conversation thread between users.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK or UUIDField).
+    *   Fields:
+        *   `created_at` (DateTimeField)
+        *   `updated_at` (DateTimeField)
+        *   `last_message` (ForeignKey to ChatMessage, nullable) - Links to the last message in the thread for quick display.
+        *   `booking` (ForeignKey to Booking, nullable) - Links a chat thread to a specific booking if it's a booking-related chat.
+    *   Foreign Keys:
+        *   `last_message` -> ChatMessage (Optional link)
+        *   `booking` -> Booking (Optional link)
+        *   *Relationship:* ManyToManyField to User (A thread involves multiple users, a user can be in multiple threads). This is often managed via an intermediate "Membership" table implicitly by Django or explicitly defined.
+
+12. ChatMessage Table (Inferred from messaging features)
+    *   Purpose: Stores individual messages within chat threads.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK or UUIDField).
+    *   Fields:
+        *   `thread` (ForeignKey to ChatThread) - Links a message to its conversation thread.
+        *   `sender` (ForeignKey to User) - The user who sent the message.
+        *   `content` (TextField) - The message text.
+        *   `timestamp` (DateTimeField)
+        *   `is_read` (BooleanField, default False)
+        *   `image` (ImageField or URLField, nullable) - Supports sending images in messages.
+    *   Foreign Keys:
+        *   `thread` -> ChatThread (One message belongs to one thread)
+        *   `sender` -> User (One message is sent by one user)
+
+13. Notification Table (Inferred from notification features)
+    *   Purpose: Stores notifications to be delivered to users.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK or UUIDField).
+    *   Fields:
+        *   `user` (ForeignKey to User) - The recipient of the notification.
+        *   `type` (CharField, e.g., 'new_bid', 'booking_confirmed', 'verification_status_update', 'new_message')
+        *   `message` (TextField) - The notification text.
+        *   `is_read` (BooleanField, default False)
+        *   `created_at` (DateTimeField)
+        *   `related_object_id` (UUIDField or IntegerField, nullable) - ID of the related object (e.g., Bid ID, Booking ID).
+        *   `related_object_type` (CharField, e.g., 'Bid', 'Booking', 'Verification', 'ChatThread', nullable) - Type of the related object, used with `related_object_id` for deep linking.
+    *   Foreign Keys:
+        *   `user` -> User (The user receiving the notification)
+
+14. Data Table (Inferred from static data mention)
+    *   Purpose: Stores static platform data like service categories lists, carousel content, etc.. Could also be managed outside the DB, but a table offers central management.
+    *   Primary Key: `id` (Django's default auto-incrementing integer PK).
+    *   Fields:
+        *   `categories_data` (JSONField, stores structured category data)
+        *   `products_data` (JSONField, stores structured product data examples/listings if not in Product table)
+        *   `carousel_brands_data` (JSONField, stores data for promotional carousels)
+        *   `updated_at` (DateTimeField)
+    *   Foreign Keys: None.
+
+How Tables are Connected:
+
+The tables are primarily connected through Foreign Keys. A Foreign Key in one table points to the Primary Key of another table, establishing a relationship.
+
+*   User is central, linked by Foreign Keys from Service (provider), Bid (bidder, provider), Booking (provider, client), Review (provider, client, reviewed_by), Payment (user), Verification (user, reviewed_by), AISuggestion (user), Product (provider), ChatThread (ManyToMany), ChatMessage (sender), and Notification (user). These are mostly One-to-Many relationships (e.g., one User can have many Services, one User can send many Messages), except for the ChatThread-User relationship which is Many-to-Many.
+*   ServiceCategory is linked by a Foreign Key from Service, establishing a One-to-Many relationship (one category has many services). Optionally linked from Product.
+*   Service is linked by Foreign Keys from Bid and Booking, indicating One-to-Many relationships (one service can have many bids, one service can have many bookings). Also linked from Review.
+*   Bid can optionally be linked by a Foreign Key from Booking, representing a One-to-One or One-to-Many relationship depending on whether multiple bookings can originate from a single bid (unlikely in this context, probably One-to-One or One Bid to zero or one Booking).
+*   Booking is linked by Foreign Keys from Review and Payment, establishing One-to-One (likely one review per booking, one primary payment per booking) or One-to-Many relationships (if multiple payments are needed, or if reviews can be edited). It's also linked from ChatThread.
+*   Review is linked from no other core tables directly.
+*   Payment is linked from no other core tables directly, except back to User and Booking.
+*   Verification is linked from no other core tables directly, except back to User.
+*   AISuggestion is linked from no other core tables directly, except back to User and optionally Bid, Booking, Service.
+*   Product is linked from no other core tables directly, except back to User. Optionally linked from Review.
+*   ChatThread is linked from ChatMessage (One-to-Many: one thread has many messages) and related back to User (ManyToMany).
+*   ChatMessage is linked from no other core tables directly, except back to ChatThread and Sender (User).
+*   Notification is linked from no other core tables directly, except back to User.
+*   Data is linked from no other tables directly.
+
+This structure provides a solid foundation for managing users, services, bids, bookings, payments, reviews, verifications, AI suggestions, products, and messaging within your Django backend, supporting the required application logic and user flows described in the sources.
+
+So thick now, I started my project backend to complete it, which is running. So, how many AIs are required in this project?
+
+That's great to hear your backend is up and running! Now, tackling the AI aspect is where the "smart" part of this service marketplace really comes to life.
+When we talk about "how many AIs" in a project like this, it's not usually a count of distinct physical AI machines or servers. Instead, it refers more to the number of distinct AI functionalities, models, or integrated services that are required to power the intelligent features of the platform.
+Based on the sources, AI is designed to be pervasive and deeply integrated throughout the Prbal App, not just a single feature. It's woven into various aspects to provide intelligent assistance to both users and providers.
+While the sources don't give a specific count like "you need X number of AIs," they clearly outline the key areas where AI functionalities are required and integrated:
+1. Smart Bidding & Pricing: AI is crucial for suggesting fair market wages/rates based on factors like skills, location, and demand. This often involves machine learning models trained on historical transaction data.
+2. Best Match Algorithm: AI learns user preferences and recommends the most suitable providers or services. This typically involves matching algorithms and recommendation engines.
+3. Verification Assistance: AI assists in processes like document validation, background checks, and fraud prevention. This could involve image recognition, data pattern analysis, and integration with third-party verification APIs.
+4. Scheduling Optimization: AI finds optimal time slots, predicts delays, and helps prevent conflicts.
+5. Personalization and Recommendations: AI adapts recommendations for services, courses, products, or providers to each user’s needs. This covers personalized recommendations across various service categories.
+6. Analytics and Insights: AI can provide actionable insights to providers and customers (e.g., earnings, satisfaction, demand trends).
+7. AI Property Search (Real Estate): AI powers smart filters, price prediction, and neighborhood analysis.
+8. Marketing & Promotion Tools (Small Businesses): AI-driven tools can help with automated campaign generation, customer targeting, and ROI prediction.
+To support these functionalities, the backend architecture specifically includes:
+• An AISuggestionModel: This is a dedicated data model in your Django backend designed specifically to handle and track various types of AI-generated suggestions. It has fields to store suggestions like bid amount, message, duration, and schedule, as well as tracking features like confidenceScore and isUsed. This model manages the output of the AI processes.
+• An AI Services Module/Microservice: The architecture suggests a specialized module or potentially a separate microservice dedicated to executing the AI logic. This component is where the actual AI models or algorithms for pricing, matching, etc., would reside and run. While it's mentioned that simpler AI logic can be integrated directly, complex or computationally intensive tasks (like smart bidding wage suggestions or complex matching) are recommended as separate microservices.
+So, rather than a fixed "number of AIs," the project requires integration of AI capabilities across multiple core features. This will involve implementing the logic for these AI functionalities (potentially using Python libraries within Django or separate services) and utilizing the AISuggestionModel to store and manage the suggestions generated by these capabilities. The number of underlying AI models needed to power all these functionalities (e.g., one model for price suggestion, one for matching, etc.) isn't explicitly counted, but the areas where AI is applied are clearly defined.
+Based on the sources and our conversation history, the Prbal project requires AI support for a wide array of functionalities across the platform, benefiting providers, customers, and administrators. However, the sources do not provide a specific number for how many "AI supports" are required. The concept of "AI support" is integrated into numerous features rather than being a countable, discrete entity.
+
+The sources also do not mention "OpenRouter AI" specifically as the required or used AI platform [Source 1-196]. They indicate the need to integrate with external AI models or leverage cloud AI platforms for complex tasks.
+
+Here's a breakdown of the areas where AI support is required in the backend for different user types:
+
+AI Support Required for Providers (Service Providers):
+
+AI is integrated to empower providers and streamline their operations. Key areas include:
+
+*   Smart Bidding & Wage Suggestion: AI analyzes market trends, job requirements, provider skills, location, and historical data to suggest a fair wage or price when providers make bids. This is a core feature. The BidModel includes a field (`isAISuggested`) specifically for this.
+*   Profile Matching: The "Smart Algorithm Matching" system helps suggest relevant job requests or customers to providers based on preferences and needs.
+*   Scheduling Assistance: AI can assist providers in finding optimal time slots for bookings.
+*   Analytics: AI potentially contributes to providing providers with actionable insights, such as earnings summaries or demand trends.
+*   Small Business/Restaurant Tools: For providers operating as small businesses or restaurants, AI-driven features include marketing and promotional tools and assistance with order management like demand forecasting.
+*   Service-Specific Assistance: AI is described for various labour categories to help with wage prediction, skill matching, safety compliance, and route planning.
+
+AI Support Required for Customers (Service Seekers):
+
+AI is designed to enhance the customer experience through personalization, convenience, and trust. Key areas include:
+
+*   Getting Help: The platform aims to provide help "with AI assistance".
+*   Smart Bidding/Price Review: When reviewing bids, customers can see the AI-suggested price alongside provider offers.
+*   Service and Provider Discovery & Matching: AI is used for personalized service recommendations, recommending suitable providers, and the smart matching algorithm helps customers find relevant professionals. Dedicated API endpoints exist for recommendations.
+*   Trust and Verification: AI assists in document validation, background checks, and fraud prevention, contributing to platform trust.
+*   Scheduling Assistance: AI can help customers find optimal time slots for booking services.
+*   Personalization: AI adapts recommendations for services or providers to each user’s unique needs and preferences.
+*   Service-Specific Assistance: AI provides tailored support for numerous service categories:
+    *   Household & Daily Needs: Smart troubleshooting (Electrician), leak detection, urgency assessment (Plumber), route optimization (Driver), scheduling (Cleaner), menu recommendations (Cook), task bundling (Errand Runner).
+    *   Travel: AI-powered itinerary suggestions and local recommendations.
+    *   Education: AI-curated online course recommendations.
+    *   Real Estate: AI-powered property search, smart filters, price prediction, neighborhood analysis, virtual property tours, and AI-based recommendations. This supports the "No Brokers" feature.
+    *   Relationship & Personal: Compatibility scoring, interest matching, safety verification.
+    *   Other: Document analysis (Legal), automated troubleshooting, remote diagnostics (Tech Support), vendor matching (Event Planning), breed-specific care (Pet Care), personalized trainer matching (Fitness), health monitoring (Elderly Care), nanny matching (Childcare), route optimization (Delivery/Logistics).
+
+AI Support Required for Admin:
+
+While not as extensive as for providers and customers, AI supports administrative functions through:
+
+*   Analytics & Reporting: AI can provide valuable insights into platform performance, user behavior, and market trends. The AISuggestionModel tracks metrics like `confidenceScore` and `isUsed`, which are valuable for monitoring and improving the AI and platform.
+*   Verification Management: AI assists in the initial stages of the complex verification process, such as document validation and initial background checks, which admins oversee.
+
+In summary, instead of a simple count, the sources describe AI as being deeply integrated across the platform to provide intelligent assistance in numerous areas for all main user types. The backend architecture is designed to accommodate these AI functionalities through dedicated endpoints and potential integration with external AI services. The exact "number" of AI supports would depend on the specific implementation details of each feature, but the *scope* of AI integration is broad and fundamental to the Prbal concept.
+1. Service Providers
+Profile & Service Optimization
+Service Description Enhancement: AI to suggest improvements to service descriptions for better searchability and conversion
+Portfolio Optimization: Analyze and suggest improvements for their portfolio content
+Category & Tag Recommendation: Suggest optimal service categories and tags based on service description
+Service Attribute Recommendations: Suggest duration, effort level, and other attributes based on similar services
+Pricing Intelligence
+Dynamic Pricing Suggestions: Analyze market data to suggest optimal pricing for services
+Seasonal Pricing Adjustments: Recommend price changes based on seasonal demand patterns
+Competitive Analysis: Compare with similar services to suggest price positioning
+Value-Based Pricing: Suggest pricing based on perceived value metrics
+Bidding Support
+Smart Bid Amount Calculator: Suggest optimal bid amounts based on service complexity, client history, and market conditions
+Bid Response Templates: Generate personalized response templates for bid requests
+Win Probability Predictor: Calculate likelihood of winning a bid at different price points
+Counter-Offer Suggestions: Recommend counter-offer strategies when negotiating
+Scheduling Optimization
+Availability Optimization: Suggest optimal availability slots based on historical booking patterns
+Schedule Balancing: Recommend schedule adjustments to optimize work-life balance
+Time Management: Suggest service duration adjustments based on actual completion times
+Performance Analytics
+Service Performance Insights: Provide AI-driven insights on service performance and improvement areas
+Client Relationship Analysis: Analyze client interactions to suggest relationship improvement strategies
+Review Response Templates: Generate personalized response templates for client reviews
+Service Enhancement Recommendations: Suggest additional features or improvements based on reviews
+2. Service Takers (Clients)
+Service Discovery
+Personalized Service Recommendations: Suggest services based on user's past bookings and preferences
+Need-Based Suggestions: Analyze user's requirements to suggest appropriate service categories
+Alternative Service Suggestions: Recommend similar services at different price points
+Bundle Recommendations: Suggest complementary services that work well together
+Provider Selection
+Provider Matching: Match clients with providers based on compatibility factors
+Provider Comparison: AI-driven comparison of potential service providers
+Trust Signal Analysis: Highlight relevant trust factors for each recommended provider
+Budget Planning
+Budget Optimization: Suggest how to allocate budget across different required services
+Cost Saving Opportunities: Identify potential savings through timing, bundling, or alternative services
+Value Assessment: Analyze price-to-quality ratio for service selection decisions
+Scheduling Assistant
+Optimal Booking Time Suggestions: Recommend booking times based on provider availability and user preferences
+Schedule Conflict Resolution: Detect and suggest solutions for scheduling conflicts
+Reminders & Preparation: Smart preparation reminders based on service type
+Post-Service Support
+Review Assistance: Generate personalized review templates based on service experience
+Issue Resolution Suggestions: Recommend approaches for resolving service issues
+Rebooking Recommendations: Suggest optimal rebooking times for recurring services
+3. Platform Administrators
+Marketplace Optimization
+Category Structure Optimization: Suggest improvements to service category organization
+Trending Service Detection: Identify emerging service trends for platform focus
+Pricing Band Recommendations: Suggest pricing bands for new service categories
+Quality Control: Flag potentially problematic services or providers for review
+User Experience Enhancement
+Onboarding Flow Optimization: Analyze user drop-off points and suggest improvements
+Feature Usage Analysis: Identify underutilized features and suggest promotion strategies
+User Segment Analysis: Discover and characterize user segments for targeted features
+Content Moderation
+Automated Content Review: AI-driven review of service descriptions and images
+Fraud Detection: Identify potential fraudulent activities or listings
+Quality Scoring: Automatically score and flag service listings for quality
+Platform Analytics
+Performance Prediction: Forecast platform metrics based on current trends
+A/B Test Analysis: Analyze results of platform experiments with AI insights
+User Retention Modeling: Identify at-risk users and suggest retention strategies
+Technical Implementation Considerations
+Integration with Existing AI Components
+Extend the current AISuggestion model to support these new suggestion types
+Enhance the AIFeedbackLog for more granular tracking of AI suggestion effectiveness
+Data Pipeline Requirements
+Implement data collection pipelines for relevant user behaviors
+Set up preprocessing workflows for raw data transformation
+Establish feedback loops for continuous model improvement
+Model Selection Strategy
+Determine which capabilities require custom models vs. API-based solutions
+Plan for model versioning and performance monitoring
+Establish evaluation metrics for each AI capability
+Privacy and Security Considerations
+Implement data anonymization for sensitive user information
+Create tiered access controls for AI-generated insights
+Establish clear data retention policies for training data
+
+Based on the provided sources, here are the details regarding the backend handling of ServiceCategory, ServiceSubCategory, and Service for the Prbal app:
+
+Service Category (Backend)
+
+The sources explicitly define a backend model for Service Categories as part of the Django REST API architecture.
+
+*   Model Name: `ServiceCategory`.
+*   Location: This model is intended to be located in `prbal_backend/apps/services/models.py`.
+*   Purpose: To manage predefined service categories that services belong to. The `Service` model has a ForeignKey relationship to `ServiceCategory`. Service categories are part of the static data and structure of the app.
+*   Fields: The defined fields for the `ServiceCategory` model are:
+    *   `name`: A CharField with a maximum length of 100 characters. This stores the name of the category.
+    *   `icon`: A CharField with a maximum length of 50 characters. This would store a reference to an icon associated with the category.
+*   Backend Functions/APIs: The backend provides API endpoints for interacting with service categories:
+    *   `GET /api/v1/services/categories/`: Fetches a list of all predefined service categories.
+    *   `GET /api/categories/`: Lists all categories.
+    *   `GET /api/categories/{id}/`: Gets the details of a specific category.
+    *   Admin Management: Administrators can manage service categories via content management functions, likely through the Django Admin interface or a dedicated panel. The data is derived from the `Data Model`.
+
+Service SubCategory (Backend)
+
+The sources do not define a separate backend model explicitly named `ServiceSubCategory`. Instead, subcategory information is handled in the following ways:
+
+*   As a field in the `Service` model: The `Service` model includes a field named `subcategories`, defined as a `JSONField`. This field allows for storing multiple subcategories associated with a specific service listing.
+*   As part of the static `Data Model`: The `Data Model` contains static data, including "service categories and subcategories". This suggests the overall structure and list of available subcategories are defined in this static data, possibly managed via backend settings, fixtures, or a dedicated `static_data` app.
+*   Admin Management: Administrators can manage service subcategories via content management functions, likely as part of managing the static data structure.
+
+Based on the sources, there is no dedicated backend model just for subcategories; they are stored within the `Service` model and defined within static data.
+
+Service (Backend)
+
+The sources explicitly define a backend model for Services as part of the Django REST API architecture.
+
+*   Model Name: `Service` (referred to as `ServiceModel` in other contexts).
+*   Location: This model is intended to be located in `prbal_backend/apps/services/models.py`.
+*   Purpose: Represents services offered by professionals on the platform. It is a core entity managed by the Service Management System component.
+*   Fields: The defined fields for the `Service` model are:
+    *   `id`: A UUIDField.
+    *   `category`: A ForeignKey to `ServiceCategory`, with `on_delete=models.PROTECT`. This links the service to a specific category.
+    *   `provider`: A ForeignKey to `User`, with `on_delete=models.CASCADE`. Also referred to as `providerId`. This links the service to the professional offering it.
+    *   `title`: A CharField with a maximum length of 200 characters. Also referred to as `name`. This stores the service name or title.
+    *   `description`: A TextField. Also mentioned as `description`. This stores a detailed description of the service.
+    *   `base_price`: A DecimalField with `max_digits=10` and `decimal_places=2`. Also referred to as `hourlyRate`. This represents the base price or hourly rate.
+    *   `location`: A PointField, implying the use of GeoDjango for spatial data. Also mentioned as `location`. This stores the geographical location relevant to the service.
+    *   `availability`: A JSONField. Also mentioned as `availability`. This stores available time slots or schedules.
+    *   `subcategories`: A JSONField. Supports multiple subcategories for the service.
+    *   `tags`: A JSONField.
+    *   `pricingOptions`: A JSONField. Allows for flexible pricing options beyond just the base rate.
+    *   `minHours`: An IntegerField.
+    *   `maxHours`: An IntegerField.
+    *   `images`: A JSONField (or potentially a ManyToManyField to an Image model). Also mentioned as `images`. Stores references to images associated with the service.
+    *   `requiredTools`: A JSONField. Lists tools required for the service.
+*   Backend Functions/APIs: The backend provides API endpoints for managing and retrieving services:
+    *   `GET /api/v1/services/`: Lists all available services. Supports search and filtering parameters like `category`, `location`, and `search`.
+    *   `POST /api/v1/services/`: Creates a new service listing. Requires authentication.
+    *   `GET /api/v1/services/{id}/`: Retrieves details of a specific service.
+    *   `PUT /api/v1/services/{id}/`: Updates a specific service listing. Requires authentication.
+    *   `DELETE /api/v1/services/{id}/`: Deletes a specific service listing. Requires authentication.
+    *   `GET /api/services/nearby/`: Finds services near a user's location, likely requiring latitude, longitude, and radius parameters.
+    *   `GET /api/sync/services/`: Downloads available services, likely for offline use and caching on the frontend.
+    *   `GET /api/admin/services/`: Lists all services, accessible only to administrators.
+    *   Service Listing Creation/Management: Handled by views in the `services/` app.
+*   Related Components: Services are integral to the Smart Matching algorithm, Bidding system, Booking system, and Location-based discovery.
