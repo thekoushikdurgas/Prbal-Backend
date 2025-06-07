@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb53",
+		"name": "Prbal API fo Analytics",
+		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+
+		{
+			"name": "Analytics & Admin Management",
+			"item": [
+				{
+					"name": "Analytics Reports",
+					"item": [],
+					"description": "",
+					"event": [],
+					"protocolProfileBehavior": {}
+				},
+				{
+					"name": "Admin User Management",
+					"item": [],
+					"description": "",
+					"event": [],
+					"protocolProfileBehavior": {}
+				},
+				{
+					"name": "Admin Service Management",
+					"item": [],
+					"description": "",
+					"event": [],
+					"protocolProfileBehavior": {}
+				}
+			],
+			"description": "",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+    ]
+}

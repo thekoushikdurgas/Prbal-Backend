@@ -1,0 +1,428 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-239e292edb57",
+		"name": "Prbal API for Products",
+		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Product Categories",
+					"item": [
+						{
+							"name": "List Product Categories",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/products/categories/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"products",
+										"categories",
+										""
+									]
+								},
+								"description": "Retrieves a list of all product categories. Requires admin privileges."
+							},
+							"response": [
+								{
+									"name": "Success - List of Product Categories (200 OK)",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{base_url}}/api/{{api_version}}/products/categories/"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\"count\": 1, \"next\": null, \"previous\": null, \"results\": [{\"id\": \"pcat_01HXM1A6B7C8D9E0F1G2H3J4K5\",\"name\": \"Electronics\",\"description\": \"Gadgets and devices\",\"icon\": \"fas fa-laptop\",\"is_active\": true,\"parent_category\": null,\"slug\": \"electronics\"}]}"
+								}
+							],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							]
+						},
+						{
+							"name": "Create Product Category",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Books & Stationery\",\"description\": \"All kinds of books and writing materials.\",\"icon\": \"fas fa-book\",\"is_active\": true,\"parent_category\": null}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/products/categories/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"products",
+										"categories",
+										""
+									]
+								},
+								"description": "Creates a new product category. Requires admin privileges."
+							},
+							"response": [
+								{
+									"name": "Success - Product Category Created (201 Created)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {},
+										"url": "{{base_url}}/api/{{api_version}}/products/categories/"
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\"id\": \"pcat_01HYN0XYZABCDEFGHJKLMNPQRST\",\"name\": \"Books & Stationery\",\"description\": \"All kinds of books and writing materials.\",\"icon\": \"fas fa-book\",\"is_active\": true,\"parent_category\": null,\"slug\": \"books-stationery\"}"
+								}
+							],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"product_category_id\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							]
+						},
+						{
+							"name": "Retrieve Product Category",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"products",
+										"categories",
+										"{{product_category_id}}",
+										""
+									]
+								},
+								"description": "Retrieves a specific product category by its ID. Requires admin privileges."
+							},
+							"response": [
+								{
+									"name": "Success - Product Category Details (200 OK)",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\"id\": \"{{product_category_id}}\",\"name\": \"Books & Stationery\",\"description\": \"All kinds of books and writing materials.\",\"icon\": \"fas fa-book\",\"is_active\": true,\"parent_category\": null,\"slug\": \"books-stationery\"}"
+								}
+							],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							]
+						},
+						{
+							"name": "Update Product Category (PUT)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Updated Books & Stationery\",\"description\": \"All kinds of books, updated description.\",\"icon\": \"fas fa-book-reader\",\"is_active\": true,\"parent_category\": null}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"products",
+										"categories",
+										"{{product_category_id}}",
+										""
+									]
+								},
+								"description": "Updates an existing product category. All fields must be provided. Requires admin privileges."
+							},
+							"response": [
+								{
+									"name": "Success - Product Category Updated (200 OK)",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {},
+										"url": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\"id\": \"{{product_category_id}}\",\"name\": \"Updated Books & Stationery\",\"description\": \"All kinds of books, updated description.\",\"icon\": \"fas fa-book-reader\",\"is_active\": true,\"parent_category\": null,\"slug\": \"updated-books-stationery\"}"
+								}
+							],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							]
+						},
+						{
+							"name": "Partially Update Product Category (PATCH)",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"description\": \"The very best books and modern writing materials.\",\"is_active\": false}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"products",
+										"categories",
+										"{{product_category_id}}",
+										""
+									]
+								},
+								"description": "Partially updates an existing product category. Requires admin privileges."
+							},
+							"response": [
+								{
+									"name": "Success - Product Category Partially Updated (200 OK)",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {},
+										"url": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\"id\": \"{{product_category_id}}\",\"name\": \"Updated Books & Stationery\",\"description\": \"The very best books and modern writing materials.\",\"icon\": \"fas fa-book-reader\",\"is_active\": false,\"parent_category\": null,\"slug\": \"updated-books-stationery\"}"
+								}
+							],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							]
+						},
+						{
+							"name": "Delete Product Category",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"products",
+										"categories",
+										"{{product_category_id}}",
+										""
+									]
+								},
+								"description": "Deletes a product category. Requires admin privileges."
+							},
+							"response": [
+								{
+									"name": "Success - Product Category Deleted (204 No Content)",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/"
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": null
+								}
+							],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () { pm.response.to.have.status(204); });"
+										],
+										"type": "text/javascript"
+									}
+								}
+							]
+						}
+					],
+					"description": "",
+					"event": [],
+					"protocolProfileBehavior": {}
+				}
+			],
+			"description": "",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+    ]
+}

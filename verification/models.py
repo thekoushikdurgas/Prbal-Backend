@@ -104,50 +104,68 @@ class Verification(models.Model):
     def __str__(self):
         return f"{self.user.username}'s {self.get_verification_type_display()} verification"
     
-    def mark_as_in_progress(self, notes=None):
+    def mark_as_in_progress(self, notes=None, admin=None):
         """Mark this verification as in progress with optional notes"""
-        if self.status in ['unverified', 'pending']:
-            self.status = 'in_progress'
-            if notes:
-                self.verification_notes = notes
-            self.save(update_fields=['status', 'verification_notes' if notes else 'status', 'updated_at'])
-            return True
-        return False
-    
+        if not self.status == 'pending':
+            raise ValueError("Only pending verifications can be marked as in progress")
+            
+        self.status = 'in_progress'
+        if notes:
+            self.verification_notes = notes
+        if admin:
+            self.verified_by = admin
+        self.save(update_fields=['status', 'verification_notes', 'verified_by', 'updated_at'])
+        return True
+
     def mark_as_verified(self, verified_by=None, notes=None, expiry_days=365):
         """Mark this verification as verified"""
-        if self.status in ['pending', 'in_progress']:
-            self.status = 'verified'
-            self.verified_at = timezone.now()
-            # Set expiration date from verification date
-            self.expires_at = self.verified_at + timezone.timedelta(days=expiry_days)
+        if self.status not in ['pending', 'in_progress']:
+            raise ValueError("Only pending or in-progress verifications can be marked as verified")
             
-            if verified_by:
-                self.verified_by = verified_by
-                
-            if notes:
-                self.verification_notes = notes
-                
-            # Update user's verification status based on verification type
-            if self.verification_type == 'identity':
-                self.user.is_verified = True
-                self.user.save(update_fields=['is_verified'])
-                
-            self.save()
-            return True
-        return False
-    
+        self.status = 'verified'
+        self.verified_at = timezone.now()
+        self.expires_at = self.verified_at + timezone.timedelta(days=expiry_days)
+        
+        if verified_by:
+            self.verified_by = verified_by
+        if notes:
+            self.verification_notes = notes
+            
+        # Update user's verification status based on verification type
+        if self.verification_type == 'identity':
+            self.user.is_verified = True
+            self.user.save(update_fields=['is_verified'])
+            
+        self.save()
+        return True
+
     def mark_as_rejected(self, reason, verified_by=None):
         """Mark this verification as rejected with a reason"""
-        if self.status in ['pending', 'in_progress']:
-            self.status = 'rejected'
-            self.rejection_reason = reason
-            if verified_by:
-                self.verified_by = verified_by
-            self.save()
-            return True
-        return False
-    
+        if self.status not in ['pending', 'in_progress']:
+            raise ValueError("Only pending or in-progress verifications can be rejected")
+            
+        if not reason:
+            raise ValueError("Rejection reason is required")
+            
+        self.status = 'rejected'
+        self.rejection_reason = reason
+        if verified_by:
+            self.verified_by = verified_by
+        self.save()
+        return True
+
+    def cancel(self, cancelled_by=None):
+        """Cancel a pending verification"""
+        if self.status != 'pending':
+            raise ValueError("Only pending verifications can be cancelled")
+            
+        if cancelled_by and cancelled_by != self.user:
+            raise ValueError("Only the verification owner can cancel it")
+            
+        self.status = 'unverified'
+        self.save(update_fields=['status', 'updated_at'])
+        return True
+
     def is_expired(self):
         """Check if this verification is expired"""
         if self.expires_at and self.expires_at < timezone.now():

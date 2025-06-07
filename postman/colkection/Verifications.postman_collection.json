@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb51",
+		"name": "Prbal API for Verifications",
+		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Verifications",
+			"item": [
+				{
+					"name": "List Verifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							],
+							"query": [
+								{
+									"key": "verification_type",
+									"value": "",
+									"description": "Filter by verification type",
+									"disabled": true
+								},
+								{
+									"key": "document_type",
+									"value": "",
+									"description": "Filter by document type",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List verification requests for the authenticated user. Admins can see all verifications, while regular users can only see their own.\n\n**Permissions:**\n- Any authenticated user can list their own verifications\n- Admins can list all verifications\n\n**Query Parameters:**\n- verification_type (optional): Filter by verification type (identity, address, etc.)\n- document_type (optional): Filter by document type (passport, drivers_license, etc.)\n- status (optional): Filter by status (pending, verified, etc.)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Verification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verification_type\": \"identity\",\n    \"document_type\": \"passport\",\n    \"document_file\": \"base64_encoded_file_content\",\n    \"document_back_file\": \"base64_encoded_back_file_content\",\n    \"document_number\": \"PASS123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							]
+						},
+						"description": "Submit a new verification request.\n\n**Permissions:** Authenticated users\n\n**Request Body Fields:**\n- verification_type (required): Type of verification (identity, address, etc.)\n- document_type (required): Type of document being submitted\n- document_file (required): Base64 encoded document file\n- document_back_file (optional): Base64 encoded back side of document\n- document_number (optional): Reference number of the document"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Verification Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								""
+							]
+						},
+						"description": "Get detailed information about a specific verification request.\n\n**Permissions:**\n- Users can view their own verification details\n- Admins can view any verification details"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Verification",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"verified\",\n    \"verification_notes\": \"Documents verified successfully\",\n    \"external_reference_id\": \"ext_ref_123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								""
+							]
+						},
+						"description": "Update a verification request. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Request Body Fields:**\n- status (optional): New status for the verification\n- verification_notes (optional): Internal notes about the verification\n- rejection_reason (required if status=rejected): Reason for rejection\n- external_reference_id (optional): Reference ID from external verification service"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Verification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/cancel/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								"cancel",
+								""
+							]
+						},
+						"description": "Cancel a pending verification request.\n\n**Permissions:**\n- Users can cancel their own pending verifications\n- Cannot cancel verifications that are already in progress or completed"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Verification In Progress",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verification_notes\": \"Started verification process\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/mark_in_progress/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								"mark_in_progress",
+								""
+							]
+						},
+						"description": "Mark a verification as in progress. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Request Body Fields:**\n- verification_notes (optional): Notes about starting the verification process"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Verification Verified",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verification_notes\": \"All documents verified successfully\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/mark_verified/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								"mark_verified",
+								""
+							]
+						},
+						"description": "Mark a verification as verified. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Request Body Fields:**\n- verification_notes (optional): Notes about the verification approval"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Verification Rejected",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rejection_reason\": \"Documents unclear or expired\",\n    \"verification_notes\": \"Please submit clearer images of documents\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/mark_rejected/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								"mark_rejected",
+								""
+							]
+						},
+						"description": "Mark a verification as rejected. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Request Body Fields:**\n- rejection_reason (required): Reason for rejecting the verification\n- verification_notes (optional): Additional notes about the rejection"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Verification Status Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/status_summary/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"status_summary",
+								""
+							]
+						},
+						"description": "Get a summary of verification request counts by status and type. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Response includes:**\n- Counts by status (pending, verified, rejected, etc.)\n- Counts by verification type (identity, address, etc.)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing user verification requests. Includes document submission, verification status updates, and admin management features.",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+    ]
+}

@@ -878,7 +878,7 @@
                 }
               }
             },
-            "Verifications (User Identity, etc.)": {
+            "Verifications": {
               "level": 4,
               "is_last": false,
               "sections": [],
@@ -1126,7 +1126,7 @@
         }
       }
     },
-    "Verifications (User Identity, etc.)": {
+    "Verifications": {
       "level": 2,
       "is_last": false,
       "sections": [],

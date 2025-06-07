@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4353-8c17-259e292edb57",
+		"name": "Prbal API for Reviews",
+		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "List Reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/?public=true&service={{service_id}}&reviewer={{user_id}}&rating=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								""
+							],
+							"query": [
+								{
+									"key": "public",
+									"value": "true",
+									"description": "Filter for public reviews only"
+								},
+								{
+									"key": "service",
+									"value": "{{service_id}}",
+									"description": "Filter by service ID"
+								},
+								{
+									"key": "reviewer",
+									"value": "{{user_id}}",
+									"description": "Filter by reviewer ID"
+								},
+								{
+									"key": "rating",
+									"value": "5",
+									"description": "Filter by rating value"
+								}
+							]
+						},
+						"description": "Lists reviews based on provided filters. By default shows public reviews for anonymous users, while authenticated users can see their own reviews as well.\n\n**Permissions:** \n- Anonymous users can see public reviews\n- Authenticated users see public reviews plus their own\n- Staff users can see all reviews\n\n**Filters:**\n- public: true/false\n- service: service ID\n- reviewer: user ID\n- reviewee: user ID\n- booking: booking ID\n- rating: 1-5"
+					}
+				},
+				{
+					"name": "Create Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"booking\": \"{{booking_id}}\",\n  \"service\": \"{{service_id}}\",\n  \"reviewee\": \"{{provider_id}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent service! Very professional and timely.\",\n  \"rating_breakdown\": {\n    \"professionalism\": 5,\n    \"punctuality\": 5,\n    \"quality\": 5\n  },\n  \"is_public\": true,\n  \"images\": [\n    {\n      \"image\": \"data:image/jpeg;base64,...\",\n      \"caption\": \"Work result\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								""
+							]
+						},
+						"description": "Create a new review for a completed service booking.\n\n**Permissions:** \n- Must be authenticated\n- Can only review bookings where user is the customer\n- Booking must be in 'completed' status\n\n**Required Fields:**\n- booking: ID of the completed booking\n- service: ID of the service being reviewed\n- reviewee: ID of the provider being reviewed\n- rating: Overall rating (1-5)\n- comment: Review text\n\n**Optional Fields:**\n- rating_breakdown: Detailed ratings by category\n- is_public: Whether review is publicly visible (default true)\n- images: Array of review images"
+					}
+				},
+				{
+					"name": "Get Review Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/{{review_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"{{review_id}}",
+								""
+							]
+						},
+						"description": "Get detailed information about a specific review.\n\n**Permissions:**\n- Public reviews visible to all\n- Private reviews visible to reviewer and reviewee\n- Staff can see all reviews"
+					}
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated review comment.\",\n  \"is_public\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/{{review_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"{{review_id}}",
+								""
+							]
+						},
+						"description": "Update an existing review.\n\n**Permissions:**\n- Only the reviewer can update their review\n- Only certain fields can be updated\n\n**Updatable Fields:**\n- rating\n- comment\n- is_public\n- images (add/remove)"
+					}
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/{{review_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"{{review_id}}",
+								""
+							]
+						},
+						"description": "Delete an existing review.\n\n**Permissions:**\n- Only the reviewer can delete their review\n- Review must be less than 30 days old"
+					}
+				},
+				{
+					"name": "Add Provider Response",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"provider_response\": \"Thank you for your review! We always strive to provide the best service.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/{{review_id}}/response/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"{{review_id}}",
+								"response",
+								""
+							]
+						},
+						"description": "Add or update a provider's response to a review.\n\n**Permissions:**\n- Only the reviewed provider can respond\n- Can be updated multiple times\n\n**Required Fields:**\n- provider_response: Text response to the review"
+					}
+				},
+				{
+					"name": "Get Provider Review Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/provider_summary/?provider_id={{provider_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"provider_summary",
+								""
+							],
+							"query": [
+								{
+									"key": "provider_id",
+									"value": "{{provider_id}}",
+									"description": "ID of the provider to get summary for"
+								}
+							]
+						},
+						"description": "Get a summary of reviews for a specific provider.\n\n**Permissions:** Any user can access this endpoint\n\n**Required Parameters:**\n- provider_id: ID of the provider\n\n**Returns:**\n- Total review count\n- Average rating\n- Rating distribution"
+					}
+				},
+				{
+					"name": "Get Service Review Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/service_summary/?service_id={{service_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"service_summary",
+								""
+							],
+							"query": [
+								{
+									"key": "service_id",
+									"value": "{{service_id}}",
+									"description": "ID of the service to get summary for"
+								}
+							]
+						},
+						"description": "Get a summary of reviews for a specific service.\n\n**Permissions:** Any user can access this endpoint\n\n**Required Parameters:**\n- service_id: ID of the service\n\n**Returns:**\n- Total review count\n- Average rating\n- Rating distribution"
+					}
+				}
+			],
+			"description": "Endpoints for managing service reviews. Includes listing, creating, updating, and deleting reviews, as well as provider responses and statistical summaries."
+		}
+    ]
+}

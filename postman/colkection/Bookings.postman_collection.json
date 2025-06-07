@@ -1,0 +1,1135 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb59",
+		"name": "Prbal API for Bookings",
+		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "List Bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bookings/?role=customer&status=confirmed",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bookings",
+								""
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "customer"
+								},
+								{
+									"key": "status",
+									"value": "confirmed"
+								}
+							]
+						},
+						"description": "Retrieves a list of bookings. The list is context-dependent based on the user role:\n\n- Admin/Staff users can see all bookings.\n- Authenticated users (non-staff) see bookings where they are either the customer or the provider.\n- The list can be filtered by the query parameters.\n\n**Permissions:** IsAuthenticated\n\n**Query Parameters:**\n- role (optional): Filter bookings by user's role. Accepts 'customer' or 'provider'.\n- service (optional): Filter by service ID.\n- customer (optional): Filter by customer ID.\n- provider (optional): Filter by provider ID.\n- status (optional): Filter by booking status (e.g., 'pending', 'confirmed', 'completed').\n- search (optional): Search term for 'requirements' and 'notes' fields.\n- ordering (optional): Field to order by (e.g., 'created_at', '-booking_date', 'amount')."
+					},
+					"response": [
+						{
+							"name": "Success - List Bookings (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/?role=customer&status=confirmed",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										""
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "customer"
+										},
+										{
+											"key": "status",
+											"value": "confirmed"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"count\": 1,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": \"bk_01H...\",\n            \"service\": \"svc_01H...\",\n            \"service_title\": \"Deep Cleaning Service\",\n            \"customer\": \"usr_01H...\",\n            \"customer_name\": \"John Doe\",\n            \"provider\": \"usr_01H...\",\n            \"provider_name\": \"Jane Smith\",\n            \"booking_date\": \"2024-07-15\",\n            \"amount\": \"75.00\",\n            \"status\": \"confirmed\",\n            \"created_at\": \"2024-06-10T10:00:00Z\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Error - Unauthorized (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Authentication credentials were not provided.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is well-formed\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('count');",
+									"    pm.expect(jsonData).to.have.property('results');",
+									"    ",
+									"    if (jsonData.count > 0) {",
+									"        var booking = jsonData.results[0];",
+									"        pm.expect(booking).to.have.property('id');",
+									"        pm.expect(booking).to.have.property('service');",
+									"        pm.expect(booking).to.have.property('booking_date');",
+									"        pm.expect(booking).to.have.property('status');",
+									"        ",
+									"        // Store the first booking ID for other requests",
+									"        if (booking.id) {",
+									"            pm.environment.set(\"booking_id\", booking.id);",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Create a New Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"service\": \"svc_01HXYZSAMPLESERVICEID\",\n    \"booking_date\": \"2024-08-01\",\n    \"amount\": \"50.00\",\n    \"requirements\": \"Please bring eco-friendly cleaning supplies.\",\n    \"notes\": \"Apartment number is 3B.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bookings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bookings",
+								""
+							]
+						},
+						"description": "Allows an authenticated user (customer) to create a new booking for a service. The 'customer' field is automatically set to the requesting user. The 'provider' is derived from the specified service.\n\n**Permissions:** IsAuthenticated\n\n**Request Body Fields:**\n- service (UUID, required): UUID of the Service\n- booking_date (YYYY-MM-DD, required): Date of the booking\n- amount (Decimal, required): Price for the booking\n- requirements (string, optional): Special requirements for the service\n- notes (string, optional): Additional notes for the booking"
+					},
+					"response": [
+						{
+							"name": "Success - Booking Created (201 Created)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service\": \"svc_01HXYZSAMPLESERVICEID\",\n    \"booking_date\": \"2024-08-01\",\n    \"amount\": \"50.00\",\n    \"requirements\": \"Please bring eco-friendly cleaning supplies.\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bk_01HNEWBOOKINGID\",\n    \"service\": \"svc_01HXYZSAMPLESERVICEID\",\n    \"booking_date\": \"2024-08-01\",\n    \"amount\": \"50.00\",\n    \"requirements\": \"Please bring eco-friendly cleaning supplies.\",\n    \"notes\": \"Apartment number is 3B.\"\n}"
+						},
+						{
+							"name": "Error - Bad Request (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"booking_date\": \"2024-08-01\",\n    \"amount\": \"50.00\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"service\": [\"This field is required.\"]\n}"
+						},
+						{
+							"name": "Error - Service Not Active (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service\": \"svc_01HINACTIVESERVICEID\",\n    \"booking_date\": \"2024-08-01\",\n    \"amount\": \"50.00\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"service\": [\"This service is not active or does not exist.\"]\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has booking details\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('service');",
+									"    pm.expect(jsonData).to.have.property('booking_date');",
+									"    pm.expect(jsonData).to.have.property('amount');",
+									"",
+									"    // Store the created booking ID for other requests",
+									"    if (jsonData.id) {",
+									"        pm.environment.set(\"booking_id\", jsonData.id);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Retrieve a Specific Booking",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bookings",
+								"{{booking_id}}",
+								""
+							]
+						},
+						"description": "Retrieves details of a specific booking. The requesting user must be the customer, the provider, or have admin privileges.\n\n**Permissions:** IsAuthenticated and (IsAdminUser or IsBookingParticipant)\n\nThe IsBookingParticipant permission ensures that only users who are a participant in the booking (either as customer or provider) can access its details."
+					},
+					"response": [
+						{
+							"name": "Success - Booking Retrieved (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bk_01H...\",\n    \"service\": \"svc_01H...\",\n    \"service_title\": \"Deep Cleaning Service\",\n    \"customer\": \"usr_01H...\",\n    \"customer_name\": \"John Doe\",\n    \"provider\": \"usr_01H...\",\n    \"provider_name\": \"Jane Smith\",\n    \"booking_date\": \"2024-07-15\",\n    \"amount\": \"75.00\",\n    \"requirements\": \"Need thorough cleaning of all rooms\",\n    \"notes\": \"Please arrive before 10 AM\",\n    \"status\": \"confirmed\",\n    \"created_at\": \"2024-06-10T10:00:00Z\",\n    \"updated_at\": \"2024-06-10T11:30:00Z\"\n}"
+						},
+						{
+							"name": "Error - Not Found (404)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/invalid_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"invalid_id",
+										""
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Not found.\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/bk_01HDIFFERENTUSER/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"bk_01HDIFFERENTUSER",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has booking details\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('service');",
+									"    pm.expect(jsonData).to.have.property('customer');",
+									"    pm.expect(jsonData).to.have.property('provider');",
+									"    pm.expect(jsonData).to.have.property('booking_date');",
+									"    pm.expect(jsonData).to.have.property('amount');",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Update Booking Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bookings",
+								"{{booking_id}}",
+								"status",
+								""
+							]
+						},
+						"description": "Updates the status of a booking. Only specific status transitions are allowed based on the current status and the role of the user.\n\n**Permissions:** IsAuthenticated and (IsAdminUser or IsBookingParticipant)\n\n**Role-Based Status Updates:**\n- Provider can update status to: 'confirmed', 'in_progress', 'completed', 'cancelled'\n- Customer can update status to: 'cancelled'\n- Admin can update status to any value\n\n**Status Transition Rules:**\n- 'pending' → 'confirmed', 'cancelled'\n- 'confirmed' → 'in_progress', 'cancelled'\n- 'in_progress' → 'completed', 'cancelled'\n- 'completed' and 'cancelled' are terminal states\n\n**Request Body Fields:**\n- status (string, required): New status for the booking. Allowed values: 'pending', 'confirmed', 'in_progress', 'completed', 'cancelled'"
+					},
+					"response": [
+						{
+							"name": "Success - Status Updated (200 OK)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"completed\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"status",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bk_01H...\",\n    \"status\": \"completed\",\n    \"updated_at\": \"2024-07-15T15:30:00Z\"\n}"
+						},
+						{
+							"name": "Error - Invalid Status Transition (400)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"confirmed\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"status",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": [\"Invalid status transition from 'completed' to 'confirmed'\"]\n}"
+						},
+						{
+							"name": "Error - Unauthorized Role (403)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"completed\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"status",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Customers cannot update booking status to 'completed'.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated status\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"    pm.expect(jsonData.status).to.eql('completed');",
+									"    pm.expect(jsonData).to.have.property('updated_at');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Reschedule Booking",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_date\": \"2024-08-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/reschedule/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bookings",
+								"{{booking_id}}",
+								"reschedule",
+								""
+							]
+						},
+						"description": "Reschedules a booking by updating its booking date. This endpoint can be used by both customers and providers, though providers may have restrictions on how close to the original date they can reschedule.\n\n**Permissions:** IsAuthenticated and (IsAdminUser or IsBookingParticipant)\n\n**Rescheduling Rules:**\n- A booking can only be rescheduled if its current status is 'pending' or 'confirmed'\n- Rescheduling is not allowed for bookings with status 'in_progress', 'completed', or 'cancelled'\n- New booking date must be in the future\n\n**Request Body Fields:**\n- booking_date (string in YYYY-MM-DD format, required): New date for the booking"
+					},
+					"response": [
+						{
+							"name": "Success - Booking Rescheduled (200 OK)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"booking_date\": \"2024-08-01\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/reschedule/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"reschedule",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bk_01H...\",\n    \"booking_date\": \"2024-08-01\",\n    \"updated_at\": \"2024-06-20T14:15:00Z\"\n}"
+						},
+						{
+							"name": "Error - Invalid Booking Date (400)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"booking_date\": \"2023-01-01\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/reschedule/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"reschedule",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"booking_date\": [\"Booking date must be in the future.\"]\n}"
+						},
+						{
+							"name": "Error - Cannot Reschedule (400)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"booking_date\": \"2024-08-01\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/reschedule/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"reschedule",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Cannot reschedule a booking with status 'completed'.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated booking date\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('booking_date');",
+									"    pm.expect(jsonData.booking_date).to.eql('2024-08-01');",
+									"    pm.expect(jsonData).to.have.property('updated_at');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Cancel Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cancellation_reason\": \"Schedule conflict\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/cancel/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bookings",
+								"{{booking_id}}",
+								"cancel",
+								""
+							]
+						},
+						"description": "Cancels a booking. This endpoint can be used by both customers and providers to cancel bookings. Different cancellation policies may apply based on the role and the timing of cancellation.\n\n**Permissions:** IsAuthenticated and (IsAdminUser or IsBookingParticipant)\n\n**Cancellation Rules:**\n- A booking can only be cancelled if its current status is 'pending', 'confirmed', or 'in_progress'\n- Cancellation is not allowed for bookings with status 'completed' or already 'cancelled'\n- Cancellation by providers may incur penalties if done too close to the booking date\n- Customers can cancel without penalties up to 24 hours before the booking\n\n**Request Body Fields:**\n- cancellation_reason (string, optional): Reason for cancelling the booking"
+					},
+					"response": [
+						{
+							"name": "Success - Booking Cancelled (200 OK)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancellation_reason\": \"Schedule conflict\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/cancel/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"cancel",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bk_01H...\",\n    \"status\": \"cancelled\",\n    \"cancellation_reason\": \"Schedule conflict\",\n    \"cancelled_by\": \"customer\",\n    \"cancelled_at\": \"2024-06-25T09:30:00Z\"\n}"
+						},
+						{
+							"name": "Error - Cannot Cancel (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancellation_reason\": \"Schedule conflict\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/cancel/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"cancel",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Cannot cancel a booking with status 'completed'.\"\n}"
+						},
+						{
+							"name": "Error - Late Cancellation Fee (200 OK with Warning)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancellation_reason\": \"Emergency\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/cancel/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bookings",
+										"{{booking_id}}",
+										"cancel",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bk_01H...\",\n    \"status\": \"cancelled\",\n    \"cancellation_reason\": \"Emergency\",\n    \"cancelled_by\": \"customer\",\n    \"cancelled_at\": \"2024-06-25T09:30:00Z\",\n    \"cancellation_fee\": \"25.00\",\n    \"warning\": \"Late cancellation fee of $25.00 has been applied.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Booking status is cancelled\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"    pm.expect(jsonData.status).to.eql('cancelled');",
+									"    pm.expect(jsonData).to.have.property('cancelled_at');",
+									"});",
+									"",
+									"pm.test(\"Cancellation reason is included\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('cancellation_reason');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				}
+			],
+			"description": "Endpoints for managing service bookings between customers and providers.",
+			"event": [],
+			"protocolProfileBehavior": {}
+		},
+				{
+					"name": "Real-time Booking Updates (WebSocket)",
+					"item": [],
+					"description": "",
+					"event": [],
+					"protocolProfileBehavior": {}
+				}
+    ]
+}

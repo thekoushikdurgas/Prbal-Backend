@@ -1,192 +1,144 @@
-<!-- 
-# DOCUMENTATION FORMATTING GUIDE
-
-When modifying this API documentation, please follow these formatting conventions for proper parsing by the ai_gent_backend.py script:
-
-## Headings Format (e.g., ## ✅ Get User Data):
-- Use standard Markdown headings with hashmarks (# for H1, ## for H2, etc.)
-- Include a status emoji (✅ or ❌) immediately after the hashmarks and a space
-- The title follows the emoji and is used to match TOC entries with API endpoints
-- Example: `## ✅ Get User Data` or `### ❌ Update User Profile`
-
-## Endpoint Format:
-- Use bolded text **Endpoint:** followed by a method and path in backticks
-- Example: **Endpoint:** `GET /api/users/{id}`
-
-## Request Body Format (for POST, PUT, etc.):
-- Use bolded text **Request Body:** followed by a JSON code block
-- Example:
-  **Request Body:**
-  ```json
-  {
-    "key": "value"
-  }
-  ```
-
-## cURL Command Format:
-- Use bolded text **`curl` Command:** followed by a bash code block containing the curl command
-- Example:
-  **`curl` Command:**
-  ```bash
-  curl -X GET http://example.com/api/resource
-  ```
-
-## Response Example Format:
-- Use bolded text **Possible Output Response (Success/Error...):** followed by a JSON code block
-- Include HTTP status code and description in parentheses
-- Example:
-  **Possible Output Response (Success 200 OK):**
-  ```json
-  {
-    "message": "Success"
-  }
-  ```
-
-## Section Content Organization:
-- All details for an API endpoint (Endpoint, Request Body, Curl Command, Responses) must be within the same section
-- Place all related content under the same heading and before the next heading of the same or higher level
-- The parser associates all content between headings as belonging to the same API endpoint
-
-Note: Improper formatting may result in endpoints not being properly parsed or displayed in the interactive documentation.
--->
-
 # Prbal API Documentation
 
 This document outlines the various API endpoints available in the Prbal backend system, derived from the project's codebase and supporting documentation.
 
 ## Table of Contents
 
-- [Authentication](#authentication)
-  - [User Registration](#user-registration)
-    - [Generic User Registration](#generic-user-registration)
-    - [Customer Specific Registration](#customer-specific-registration)
-    - [Provider Specific Registration](#provider-specific-registration)
-    - [Admin Specific Registration](#admin-specific-registration)
-  - [User Logout](#user-logout)
-  - [Access Token Management](#access-token-management)
-    - [List User's Access Tokens](#list-users-access-tokens)
-    - [Revoke Specific Access Token](#revoke-specific-access-token)
-    - [Refresh JWT Access Token](#refresh-jwt-access-token)
-- [User Management](#user-management)
-  - [Generic User Endpoints](#generic-user-endpoints)
-  - [Manage Own Profile](#manage-own-profile)
-  - [Upload/Change Own Avatar](#uploadchange-own-avatar)
-  - [Deactivate Own Account](#deactivate-own-account)
-  - [Change Own Password](#change-own-password)
-  - [Customer Specific Endpoints](#customer-specific-endpoints)
-    - [Manage Own Customer Profile](#manage-own-customer-profile)
-  - [Provider Specific Endpoints](#provider-specific-endpoints)
-    - [Manage Own Provider Profile](#manage-own-provider-profile)
-  - [Admin Specific Endpoints](#admin-specific-endpoints)
-    - [Manage Own Admin Profile](#manage-own-admin-profile)
-  - [User Search](#user-search)
-    - [General User Search](#general-user-search)
-    - [User Search by Phone Number](#user-search-by-phone-number)
-- [Services and Service Requests](#services-and-service-requests)
-  - [Public Service and Category Endpoints](#public-service-and-category-endpoints)
-  - [Provider Service Management](#provider-service-management)
-  - [Public Service Request Endpoints](#public-service-request-endpoints)
-  - [Service Requests (Customer)](#service-requests)
-  - [Service Requests (Admin)](#service-requests)
-- [Products](#products)
-  - [Product Categories](#product-categories)
-  - [Products (Individual)](#products)
-- [Bids](#bids)
-  - [Provider Bidding Actions](#provider-bidding-actions)
-  - [Bids - Admin View](#bids---admin-view)
-- [Bookings](#bookings)
-  - [Create Booking](#create-booking)
-  - [View Booking Details](#view-booking-details)
-  - [Update Booking Status](#update-booking-status)
-  - [List Customer Bookings](#list-customer-bookings)
-  - [List Provider Bookings](#list-provider-bookings)
-  - [List Admin Bookings](#list-admin-bookings)
-- [Calendar Integration](#calendar-integration)
-- [Payment Processing](#payment-processing)
-  - [Create Payment Intent](#create-payment-intent)
-  - [Confirm Payment](#confirm-payment)
-  - [Retrieve Payment Details](#retrieve-payment-details)
-  - [List Payments (Customer/Provider/Admin)](#list-payments)
-  - [Issue Refund (Admin)](#issue-refund)
-  - [Payment Gateway Accounts (Provider)](#payment-gateway-accounts)
-  - [Link Payment Gateway Account](#link-payment-gateway-account)
-  - [View Payment Gateway Account Details](#view-payment-gateway-account-details)
-  - [Update Payment Gateway Account](#update-payment-gateway-account)
-  - [Remove Payment Gateway Account](#remove-payment-gateway-account)
-  - [Payouts (Provider/Admin)](#payouts)
-  - [Request Payout (Provider)](#request-payout)
-  - [View Payout History (Provider/Admin)](#view-payout-history)
-  - [Process Payouts (Admin)](#process-payouts)
-  - [View Payout Settings (Provider/Admin)](#view-payout-settings)
-- [Messaging](#messaging)
-  - [Message Threads](#message-threads)
-  - [Create Message Thread](#create-message-thread)
-  - [List User Message Threads](#list-user-message-threads)
-  - [View Message Thread Details](#view-message-thread-details)
-  - [Archive Message Thread](#archive-message-thread)
-  - [Mark Thread as Read/Unread](#mark-thread-as-readunread)
-  - [Individual Messages](#individual-messages)
-  - [Send Message in Thread](#send-message-in-thread)
-  - [List Messages in Thread](#list-messages-in-thread)
-  - [Edit Message](#edit-message)
-- [Notifications (HTTP)](#notifications)
-  - [List User Notifications](#list-user-notifications)
-  - [Mark Notification as Read](#mark-notification-as-read)
-  - [Mark All Notifications as Read](#mark-all-notifications-as-read)
-  - [Delete Notification](#delete-notification)
-  - [Notification Settings](#notification-settings)
-  - [Get Notification Settings](#get-notification-settings)
-  - [Update Notification Settings](#update-notification-settings)
-  - [AI Suggestions and Feedback](#ai-suggestions-feedback)
-- [AI Suggestions](#ai-suggestions)
-  - [Get AI Suggestions for Service Request](#get-ai-suggestions-for-service-request)
-  - [Get AI Suggestions for Pricing](#get-ai-suggestions-for-pricing)
-  - [Get AI Suggestions for Descriptions](#get-ai-suggestions-for-descriptions)
-  - [AI Feedback Logs](#ai-feedback-logs)
-    - [Submit Feedback on AI Suggestion](#submit-feedback-on-ai-suggestion)
-    - [List AI Feedback Logs (Admin)](#list-ai-feedback-logs)
-- [Verifications (User Identity, etc.)](#verifications)
-  - [Submit Verification Document](#submit-verification-document)
-  - [Check Verification Status](#check-verification-status)
-- [Admin Verification Actions](#admin-verification-actions)
-  - [List Pending Verifications (Admin)](#list-pending-verifications)
-  - [Approve/Reject Verification (Admin)](#approvereject-verification)
-- [Reviews](#reviews)
-  - [Submit Review for a Service/Provider](#submit-review-for-a-serviceprovider)
-  - [View Reviews for a Service/Provider](#view-reviews-for-a-serviceprovider)
-  - [View Reviews by a User](#view-reviews-by-a-user)
-  - [Update Own Review](#update-own-review)
-  - [Delete Own Review](#delete-own-review)
-- [Admin Review Management](#admin-review-management)
-  - [List All Reviews (Admin)](#list-all-reviews-admin)
-  - [Moderate/Delete Review (Admin)](#moderatedelete-review-admin)
-- [Sync (Offline Functionality)](#sync-offline-functionality)
-  - [Get Data for Offline Sync](#get-data-for-offline-sync)
-  - [Push Offline Changes to Server](#push-offline-changes-to-server)
-  - [Get Sync Status](#get-sync-status)
-- [Analytics and Admin Management](#analytics--admin-management)
-  - [Analytics Reports](#analytics-reports)
-  - [Generate User Activity Report](#generate-user-activity-report)
-  - [Generate Service Popularity Report](#generate-service-popularity-report)
-  - [Generate Financial Report](#generate-financial-report)
-- [View System Performance Metrics](#view-system-performance-metrics)
-- [Admin User Management](#admin-user-management)
-  - [List All Users (Admin)](#list-all-users)
-  - [View User Details (Admin)](#view-user-details)
-  - [Activate/Deactivate User (Admin)](#activatedeactivate-user)
-  - [Assign User Roles (Admin)](#assign-user-roles)
-- [Admin Service Management](#admin-service-management)
-  - [List All Services (Admin)](#list-all-services)
-  - [Update Service Details (Admin)](#update-service-details)
-  - [Manage Service Categories (Admin)](#manage-service-categories)
-- [WebSocket APIs](#websocket-apis)
-  - [Real-time Notifications (WebSocket)](#real-time-notifications)
-  - [Real-time Messaging (WebSocket)](#real-time-messaging)
-  - [Real-time Booking Updates (WebSocket)](#real-time-booking-updates)
-- [Health Checks](#health-checks)
-  - [System Health Endpoint](#system-health-endpoint)
-  - [Database Health Endpoint](#database-health-endpoint)
-  - [Service Dependency Health Endpoint](#service-dependency-health-endpoint)
+- [Prbal API Documentation](#prbal-api-documentation)
+  - [Table of Contents](#table-of-contents)
+  - [Authentication](#authentication)
+    - [User Registration](#user-registration)
+      - [Generic User Registration](#generic-user-registration)
+      - [Customer Specific Registration](#customer-specific-registration)
+      - [Provider Specific Registration](#provider-specific-registration)
+    - [Generic User Registration](#generic-user-registration-1)
+      - [Admin Specific Registration](#admin-specific-registration)
+    - [User Logout](#user-logout)
+    - [Access Token Management](#access-token-management)
+      - [List User's Access Tokens](#list-users-access-tokens)
+      - [Revoke Specific Access Token](#revoke-specific-access-token)
+      - [Refresh JWT Access Token](#refresh-jwt-access-token)
+  - [User Management](#user-management)
+    - [Generic User Endpoints](#generic-user-endpoints)
+      - [Manage Own Profile](#manage-own-profile)
+      - [Upload/Change Own Avatar](#uploadchange-own-avatar)
+      - [Deactivate Own Account](#deactivate-own-account)
+      - [Change Own Password](#change-own-password)
+    - [Customer Specific Endpoints](#customer-specific-endpoints)
+      - [Manage Own Customer Profile](#manage-own-customer-profile)
+    - [Provider Specific Endpoints](#provider-specific-endpoints)
+      - [Manage Own Provider Profile](#manage-own-provider-profile)
+    - [Admin Specific Endpoints](#admin-specific-endpoints)
+      - [Manage Own Admin Profile](#manage-own-admin-profile)
+    - [User Search](#user-search)
+      - [General User Search](#general-user-search)
+      - [User Search by Phone Number](#user-search-by-phone-number)
+  - [Services and Service Requests](#services-and-service-requests)
+    - [Public Service and Category Endpoints](#public-service-and-category-endpoints)
+    - [Provider Service Management](#provider-service-management)
+      - [Create Service (Provider)](#create-service-provider)
+      - [List Own Services (Provider)](#list-own-services-provider)
+      - [Retrieve Own Service (Provider)](#retrieve-own-service-provider)
+      - [Update Own Service (Provider)](#update-own-service-provider)
+      - [Delete Own Service (Provider)](#delete-own-service-provider)
+    - [Public Service Request Endpoints](#public-service-request-endpoints)
+      - [Submit Public Service Request](#submit-public-service-request)
+      - [View Public Service Request Details](#view-public-service-request-details)
+    - [Service Requests (Customer)](#service-requests-customer)
+      - [Create Service Request (Customer)](#create-service-request-customer)
+      - [List Own Service Requests (Customer)](#list-own-service-requests-customer)
+      - [Retrieve Own Service Request (Customer)](#retrieve-own-service-request-customer)
+      - [Update Own Service Request (Customer)](#update-own-service-request-customer)
+      - [Cancel Own Service Request (Customer)](#cancel-own-service-request-customer)
+    - [Service Requests (Admin)](#service-requests-admin)
+      - [List All Service Requests (Admin)](#list-all-service-requests-admin)
+      - [Retrieve Service Request Details (Admin)](#retrieve-service-request-details-admin)
+  - [Products](#products)
+    - [Product Categories](#product-categories)
+    - [Products (Individual)](#products-individual)
+  - [Bids](#bids)
+    - [Provider Bidding Actions](#provider-bidding-actions)
+    - [Bids - Customer View](#bids---customer-view)
+    - [Bids - Admin View](#bids---admin-view)
+  - [Bookings](#bookings)
+    - [Create Booking](#create-booking)
+    - [View Booking Details](#view-booking-details)
+    - [Update Booking Status](#update-booking-status)
+    - [List Customer Bookings](#list-customer-bookings)
+    - [List Provider Bookings](#list-provider-bookings)
+    - [List Admin Bookings](#list-admin-bookings)
+  - [Calendar Integration](#calendar-integration)
+  - [Payment Processing](#payment-processing)
+    - [Create Payment Intent](#create-payment-intent)
+    - [Confirm Payment](#confirm-payment)
+    - [Retrieve Payment Details](#retrieve-payment-details)
+    - [List Payments (Customer/Provider/Admin)](#list-payments-customerprovideradmin)
+    - [Issue Refund (Admin)](#issue-refund-admin)
+    - [Payment Gateway Accounts (Provider)](#payment-gateway-accounts-provider)
+      - [Link Payment Gateway Account](#link-payment-gateway-account)
+      - [View Payment Gateway Account Details](#view-payment-gateway-account-details)
+      - [Update Payment Gateway Account](#update-payment-gateway-account)
+      - [Remove Payment Gateway Account](#remove-payment-gateway-account)
+    - [Payouts (Provider/Admin)](#payouts-provideradmin)
+      - [Request Payout (Provider)](#request-payout-provider)
+      - [View Payout History (Provider/Admin)](#view-payout-history-provideradmin)
+      - [Process Payouts (Admin)](#process-payouts-admin)
+      - [View Payout Settings (Provider/Admin)](#view-payout-settings-provideradmin)
+  - [Messaging](#messaging)
+    - [Message Threads](#message-threads)
+      - [Create Message Thread](#create-message-thread)
+      - [List User Message Threads](#list-user-message-threads)
+      - [View Message Thread Details](#view-message-thread-details)
+      - [Archive Message Thread](#archive-message-thread)
+      - [Mark Thread as Read/Unread](#mark-thread-as-readunread)
+    - [Individual Messages](#individual-messages)
+      - [Send Message in Thread](#send-message-in-thread)
+      - [List Messages in Thread](#list-messages-in-thread)
+      - [Edit Message](#edit-message)
+      - [Delete Message](#delete-message)
+  - [Notifications (HTTP)](#notifications-http)
+    - [List User Notifications](#list-user-notifications)
+    - [Mark Notification as Read](#mark-notification-as-read)
+    - [Mark All Notifications as Read](#mark-all-notifications-as-read)
+    - [Delete Notification](#delete-notification)
+    - [Notification Settings](#notification-settings)
+      - [Get Notification Settings](#get-notification-settings)
+      - [Update Notification Settings](#update-notification-settings)
+  - [AI Suggestions and Feedback](#ai-suggestions-and-feedback)
+    - [AI Suggestions](#ai-suggestions)
+      - [Get AI Suggestions for Service Request](#get-ai-suggestions-for-service-request)
+      - [Get AI Suggestions for Pricing](#get-ai-suggestions-for-pricing)
+      - [Get AI Suggestions for Descriptions](#get-ai-suggestions-for-descriptions)
+    - [AI Feedback Logs](#ai-feedback-logs)
+      - [Submit Feedback on AI Suggestion](#submit-feedback-on-ai-suggestion)
+      - [List AI Feedback Logs (Admin)](#list-ai-feedback-logs-admin)
+  - [Verifications (User Identity, etc.)](#verifications-user-identity-etc)
+    - [Submit Verification Document](#submit-verification-document)
+    - [Check Verification Status](#check-verification-status)
+    - [Admin Verification Actions](#admin-verification-actions)
+      - [List Pending Verifications (Admin)](#list-pending-verifications-admin)
+      - [Approve/Reject Verification (Admin)](#approvereject-verification-admin)
+    - [Submit Review for a Service/Provider](#submit-review-for-a-serviceprovider)
+      - [Generate Financial Report](#generate-financial-report)
+    - [Admin User Management](#admin-user-management)
+      - [List All Users (Admin)](#list-all-users-admin)
+      - [View User Details (Admin)](#view-user-details-admin)
+      - [Activate/Deactivate User (Admin)](#activatedeactivate-user-admin)
+      - [Assign User Roles (Admin)](#assign-user-roles-admin)
+    - [Admin Service Management](#admin-service-management)
+      - [List All Services (Admin)](#list-all-services-admin)
+      - [Update Service Details (Admin)](#update-service-details-admin)
+      - [Manage Service Categories (Admin)](#manage-service-categories-admin)
+  - [WebSocket APIs](#websocket-apis)
+    - [Real-time Notifications (WebSocket)](#real-time-notifications-websocket)
+    - [Real-time Messaging (WebSocket)](#real-time-messaging-websocket)
+    - [Real-time Booking Updates (WebSocket)](#real-time-booking-updates-websocket)
+  - [Health Checks](#health-checks)
+    - [System Health Endpoint](#system-health-endpoint)
+    - [Database Health Endpoint](#database-health-endpoint)
+    - [Service Dependency Health Endpoint](#service-dependency-health-endpoint)
+  - [Metrics](#metrics)
+    - [Prometheus Metrics Endpoint](#prometheus-metrics-endpoint)
 
 ## Authentication
 
@@ -263,7 +215,7 @@ curl -X POST http://localhost:8000/api/users/register \
 ```
 
 
-#### ✅ Customer Specific Registration
+####  Customer Specific Registration
 
 Registers a new user with a 'customer' role, including customer-specific profile information.
 
@@ -309,7 +261,7 @@ curl -X POST http://localhost:8000/api/users/register/customer \
 ```
 
 
-#### ✅ Provider Specific Registration
+####  Provider Specific Registration
 
 Registers a new user with a 'provider' role, including provider-specific details like company name and service categories.
 

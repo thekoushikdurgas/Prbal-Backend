@@ -669,7 +669,7 @@ Task: Provide a comprehensive, step-by-step guide for initializing the Django pr
 3.Guidance on initializing the Django project and the main application directory structure.
 4.Detailed steps for configuring the database connection in settings.py, specifically for a relational database like PostgreSQL or MySQL, as chosen for Prbal.
 5.Instructions for running the initial database migrations (makemigrations and migrate) to set up Django's built-in tables.
-6.Explanation of the purpose of key files generated during this setup (e.g., settings.py, urls.py, manage.py) in the context of the Prbal API backend.
+6.Explanation of the purpose of key files generated during this setup (e.g., settings.py, urls.py, manage.py) in the context of the Prbal_API backend.
 Output: A numbered list of clear, actionable steps with accompanying command-line examples (using pip and python manage.py). Each step should include a brief explanation of why it's necessary for the Prbal backend. The response should reference the specific technologies mentioned in the sources (Django, DRF, relational database) and confirm that by the end of these steps, the basic project structure is in place and connected to an empty database, ready for application-specific models and APIs.
 
 --------------------------------------------------------------------------------
@@ -1867,3 +1867,40 @@ The sources explicitly define a backend model for Services as part of the Django
     *   `GET /api/admin/services/`: Lists all services, accessible only to administrators.
     *   Service Listing Creation/Management: Handled by views in the `services/` app.
 *   Related Components: Services are integral to the Smart Matching algorithm, Bidding system, Booking system, and Location-based discovery.
+
+
+
+Context:
+Your project contains Python files for provider, customer, and admin roles. The existing Postman collection (`Authentication.postman_collection.json`) lists implemented APIs, but it needs comprehensive validation and enhancement. Specifically, the Authentication module may have missing or incomplete endpoints.
+
+Expert Persona:
+You are a backend API and documentation specialist with extensive experience in Python web services and maintaining Postman API collections. You excel at validating API functionality, structuring documentation, and ensuring all endpoints are accurately captured.
+
+Task:
+
+1. Review all Python files to extract every Authentication-related API endpoint implemented but not yet documented.
+2. For each endpoint already in the Postman collection:
+
+   * Execute its `curl` command and mark it with ✅ if it succeeds or ❌ if it fails.
+   * Provide a sample output response for each command.
+   * Prefix the endpoint or heading in the collection with ✅ or ❌ to indicate its completion status.
+3. For any endpoint marked ❌, validate the request individually, explain why it failed, and suggest corrections.
+4. Expand the Table of Contents by adding clear, organized headings under Authentication (and any related subsections).
+5. Add, one by one, all missing Authentication endpoints to `Authentication.postman_collection.json`, including for each:
+
+   * HTTP method
+   * Route path
+   * Brief description of functionality
+   * Example request body (if applicable)
+   * Example response body
+   * Validation status (✅ or ❌) with explanation for any ❌
+
+Output:
+An updated `Authentication.postman_collection.json` file containing:
+
+* ✅/❌ prefixes on all Authentication headings and endpoints (indicating completion status)
+* Sample output responses for each `curl` command
+* Explanations for any requests marked ❌
+* An expanded, well-organized Table of Contents covering all Authentication endpoints
+* All missing Authentication-related endpoints added with full details and validated curl commands
+  Ensure the final collection is comprehensive, accurate, and ready for developer use.

@@ -17,5 +17,15 @@ class IsVerificationAdmin(permissions.BasePermission):
     message = "Only administrators can update verification status."
 
     def has_permission(self, request, view):
-        # Check if user is staff or has admin role
-        return request.user.is_staff or getattr(request.user, 'is_admin', False)
+        # Check if user is authenticated first
+        if not request.user or not request.user.is_authenticated:
+            return False
+            
+        # Check if user is staff or has admin role or has explicit verification admin permission
+        return (request.user.is_staff or 
+                getattr(request.user, 'is_admin', False) or
+                request.user.has_perm('verification.change_verification_status'))
+
+    def has_object_permission(self, request, view, obj):
+        # Recheck permission at object level
+        return self.has_permission(request, view)

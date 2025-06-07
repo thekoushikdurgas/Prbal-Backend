@@ -1,0 +1,1603 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb55",
+		"name": "Prbal API for Bids",
+		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Bids",
+			"item": [
+				{
+					"name": "List Bids",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/?service_request_id={{service_request_id_example}}&provider_id={{provider_id_example}}&status=pending",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								""
+							],
+							"query": [
+								{
+									"key": "service_request_id",
+									"value": "{{service_request_id_example}}",
+									"description": "Filter bids for a specific service request (primarily for customers). Example: sreq_01HYP4XYZMPWJ8T5ZXV3N7Q9RST",
+									"disabled": true
+								},
+								{
+									"key": "provider_id",
+									"value": "{{provider_id_example}}",
+									"description": "Filter bids made by a specific provider (primarily for admins). Example: usr_01HYP3WXYMPWJ8T5ZXV3N7Q9RST",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "Filter by bid status (e.g., pending, accepted, rejected, withdrawn).",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves a list of bids. The list is context-dependent:\n- Customers see bids on their service requests.\n- Providers see bids they have made.\n- Admins see all bids.\n\n**Permissions:** Authenticated User"
+					},
+					"response": [
+						{
+							"name": "Success - List of Bids (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"count\": 1,\n    \"next\": null,\n    \"previous\": null,\n    \"results\": [\n        {\n            \"id\": \"bid_01HYP5ABCMPWJ8T5ZXV3N7Q9RST\",\n            \"service_request\": {\n                \"id\": \"sreq_01HYP4XYZMPWJ8T5ZXV3N7Q9RST\",\n                \"title\": \"Need urgent plumbing fix\"\n            },\n            \"provider\": {\n                \"id\": \"{{provider_id_example}}\",\n                \"username\": \"pro_plumber\"\n            },\n            \"amount\": \"75.00\",\n            \"currency\": \"USD\",\n            \"message\": \"I can fix this for you quickly.\",\n            \"status\": \"pending\",\n            \"created_at\": \"2023-11-15T10:00:00Z\",\n            \"updated_at\": \"2023-11-15T10:00:00Z\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Error - Unauthorized (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Authentication credentials were not provided.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 for successful bid list\", function () {",
+									"    if (pm.response.code === 200) {",
+									"        pm.response.to.have.status(200);",
+									"        var jsonData = pm.response.json();",
+									"        pm.test(\"Response has count and results\", function() {",
+									"            pm.expect(jsonData).to.have.property('count');",
+									"            pm.expect(jsonData).to.have.property('results');",
+									"            pm.expect(jsonData.results).to.be.an('array');",
+									"        });",
+									"        if (jsonData.results && jsonData.results.length > 0 && jsonData.results[0].id) {",
+									"           // pm.environment.set(\"bid_id\", jsonData.results[0].id);",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Create a New Bid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"service_request\": \"sreq_01HSRQSTSAMPLEID\",\n    \"amount\": \"60.00\",\n    \"message\": \"I am available tomorrow and can do it for $60. Experienced and reliable.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								""
+							]
+						},
+						"description": "Allows an authenticated service provider to submit a bid for a specific service request.\n\n**Permissions:** IsAuthenticated AND IsProvider"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Created (201 Created)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service_request\": \"sreq_01HSRQSTSAMPLEID\",\n    \"amount\": \"60.00\",\n    \"message\": \"I am available tomorrow and can do it for $60. Experienced and reliable.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bid_01HYP5DEFMPWJ8T5ZXV3N7Q9TUV\",\n    \"service_request\": {\n        \"id\": \"sreq_01HSRQSTSAMPLEID\",\n        \"title\": \"Need urgent plumbing fix\"\n    },\n    \"provider\": {\n        \"id\": \"usr_currentProvider456\",\n        \"username\": \"MyProviderBiz\"\n    },\n    \"amount\": \"60.00\",\n    \"message\": \"I am available tomorrow and can do it for $60. Experienced and reliable.\",\n    \"status\": \"pending\",\n    \"created_at\": \"2024-05-31T11:00:00Z\",\n    \"updated_at\": \"2024-05-31T11:00:00Z\"\n}"
+						},
+						{
+							"name": "Error - Validation Error (400 Bad Request)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": \"invalid\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"service_request\": [\"This field is required.\"],\n    \"amount\": [\"A valid number is required.\"]\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service_request\": \"sreq_01HSRQSTSAMPLEID\",\n    \"amount\": \"60.00\",\n    \"message\": \"I can do this.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						},
+						{
+							"name": "Error - Not Found (404)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"service_request\": \"sreq_nonexistent\",\n    \"amount\": \"60.00\",\n    \"message\": \"I can do this.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										""
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Service request not found or not available for bidding.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 for successful bid creation\", function () {",
+									"    if (pm.response.code === 201) {",
+									"        pm.response.to.have.status(201);",
+									"        var jsonData = pm.response.json();",
+									"        if (jsonData.id) {",
+									"            pm.environment.set(\"bid_id\", jsonData.id);",
+									"            console.log(\"Saved bid_id: \" + jsonData.id);",
+									"        }",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Retrieve a Specific Bid",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								"{{bid_id}}",
+								""
+							]
+						},
+						"description": "Retrieves details of a specific bid by its ID. Accessible by the customer of the service request, the provider who made the bid, or an admin.\n\n**Permissions:** IsAuthenticated AND (IsBidOwner OR IsServiceRequestOwnerForBid OR IsAdminUser)"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Details (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bid_01HYP5ABCMPWJ8T5ZXV3N7Q9RST\",\n    \"service_request\": {\n        \"id\": \"sreq_01HSRQSTSAMPLEID\",\n        \"title\": \"Need urgent plumbing fix\"\n    },\n    \"provider\": {\n        \"id\": \"usr_provider123\",\n        \"username\": \"QuickPlumberPro\"\n    },\n    \"amount\": \"75.50\",\n    \"message\": \"I can come by this afternoon and fix the leak. My quote is $75.50.\",\n    \"status\": \"pending\",\n    \"created_at\": \"2024-05-31T10:00:00Z\",\n    \"updated_at\": \"2024-05-31T10:00:00Z\"\n}"
+						},
+						{
+							"name": "Error - Not Found (404)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/bid_nonexistent/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"bid_nonexistent",
+										""
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Not found.\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{unrelated_user_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 for successful bid retrieval\", function () {",
+									"    if (pm.response.code === 200) {",
+									"        pm.response.to.have.status(200);",
+									"        var jsonData = pm.response.json();",
+									"        pm.test(\"Bid has expected properties\", function() {",
+									"            pm.expect(jsonData).to.have.property('id');",
+									"            pm.expect(jsonData).to.have.property('service_request');",
+									"            pm.expect(jsonData).to.have.property('provider');",
+									"            pm.expect(jsonData).to.have.property('amount');",
+									"            pm.expect(jsonData).to.have.property('status');",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Update a Bid (Full Update)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": \"55.00\",\n    \"message\": \"Revised offer: I can do it for $55 if I can start by 2 PM.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								"{{bid_id}}",
+								""
+							]
+						},
+						"description": "Allows a provider to update their own bid, typically if it's still in 'pending' status. All writable fields must be provided.\n\n**Permissions:** IsAuthenticated AND IsBidOwner (and bid status allows update, e.g., 'pending')"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Updated (200 OK)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": \"55.00\",\n    \"message\": \"Revised offer: I can do it for $55 if I can start by 2 PM.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bid_01HYP5DEFMPWJ8T5ZXV3N7Q9TUV\",\n    \"service_request\": {\n        \"id\": \"sreq_01HSRQSTSAMPLEID\",\n        \"title\": \"Need urgent plumbing fix\"\n    },\n    \"provider\": {\n        \"id\": \"usr_currentProvider456\",\n        \"username\": \"MyProviderBiz\"\n    },\n    \"amount\": \"55.00\",\n    \"message\": \"Revised offer: I can do it for $55 if I can start by 2 PM.\",\n    \"status\": \"pending\",\n    \"created_at\": \"2024-05-31T11:00:00Z\",\n    \"updated_at\": \"2024-05-31T11:15:00Z\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": \"55.00\",\n    \"message\": \"Updated message\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						},
+						{
+							"name": "Error - Bad Request (400)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": \"invalid\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"amount\": [\"A valid number is required.\"],\n    \"detail\": \"Cannot update a bid that is no longer pending.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 for successful bid update\", function () {",
+									"    if (pm.response.code === 200) {",
+									"        pm.response.to.have.status(200);",
+									"        var jsonData = pm.response.json();",
+									"        pm.test(\"Bid updated correctly\", function() {",
+									"            pm.expect(jsonData.amount).to.eql(\"55.00\");",
+									"            pm.expect(jsonData.message).to.include(\"Revised offer\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Partially Update a Bid (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Further clarification: My $55 quote includes all materials.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								"{{bid_id}}",
+								""
+							]
+						},
+						"description": "Allows a provider to partially update their own bid (e.g., just the message or amount), if it's still in 'pending' status. Only include fields to change.\n\n**Permissions:** IsAuthenticated AND IsBidOwner (and bid status allows update)"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Partially Updated (200 OK)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\": \"Further clarification: My $55 quote includes all materials.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bid_01HYP5DEFMPWJ8T5ZXV3N7Q9TUV\",\n    \"service_request\": {\n        \"id\": \"sreq_01HSRQSTSAMPLEID\",\n        \"title\": \"Need urgent plumbing fix\"\n    },\n    \"provider\": {\n        \"id\": \"usr_currentProvider456\",\n        \"username\": \"MyProviderBiz\"\n    },\n    \"amount\": \"55.00\",\n    \"message\": \"Further clarification: My $55 quote includes all materials.\",\n    \"status\": \"pending\",\n    \"created_at\": \"2024-05-31T11:00:00Z\",\n    \"updated_at\": \"2024-05-31T11:20:00Z\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"message\": \"Attempt to update someone else's bid\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						},
+						{
+							"name": "Error - Bad Request (400)",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": \"invalid\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"amount\": [\"A valid number is required.\"]\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 for successful bid partial update\", function () {",
+									"    if (pm.response.code === 200) {",
+									"        pm.response.to.have.status(200);",
+									"        var jsonData = pm.response.json();",
+									"        pm.test(\"Bid message updated correctly\", function() {",
+									"            pm.expect(jsonData.message).to.include(\"clarification\");",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Delete/Withdraw a Bid",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								"{{bid_id}}",
+								""
+							]
+						},
+						"description": "Allows a provider to withdraw their bid, or an admin to delete any bid. This action is permanent and cannot be undone.\n\n**Permissions:** IsAuthenticated AND (IsBidOwner OR IsAdminUser)"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Deleted (204 No Content)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Error - Not Found (404)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/nonexistent_bid_id/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"nonexistent_bid_id",
+										""
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Not found.\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						},
+						{
+							"name": "Error - Conflict (409)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{accepted_bid_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{accepted_bid_id}}",
+										""
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Cannot delete a bid that has been accepted or is already in progress.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204 for successful bid deletion\", function () {",
+									"    if (pm.response.code === 204) {",
+									"        pm.response.to.have.status(204);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Accept a Bid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/accept/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								"{{bid_id}}",
+								"accept",
+								""
+							]
+						},
+						"description": "Allows a customer to accept a bid on their service request. This action typically transitions the bid to 'accepted' status and may affect other bids on the same service request.\n\n**Permissions:** IsAuthenticated AND IsServiceRequestOwnerForBid"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Accepted (200 OK)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/accept/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										"accept",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bid_01HYP5ABCMPWJ8T5ZXV3N7Q9RST\",\n    \"service_request\": {\n        \"id\": \"sreq_01HSRQSTSAMPLEID\",\n        \"title\": \"Need urgent plumbing fix\"\n    },\n    \"provider\": {\n        \"id\": \"usr_provider123\",\n        \"username\": \"QuickPlumberPro\"\n    },\n    \"amount\": \"75.50\",\n    \"message\": \"I can come by this afternoon and fix the leak. My quote is $75.50.\",\n    \"status\": \"accepted\",\n    \"created_at\": \"2024-05-31T10:00:00Z\",\n    \"updated_at\": \"2024-05-31T10:30:00Z\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/accept/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										"accept",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						},
+						{
+							"name": "Error - Conflict (409)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/accept/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										"accept",
+										""
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Cannot accept this bid. Another bid has already been accepted for this service request.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 for successful bid acceptance\", function () {",
+									"    if (pm.response.code === 200) {",
+									"        pm.response.to.have.status(200);",
+									"        var jsonData = pm.response.json();",
+									"        pm.test(\"Bid status changed to accepted\", function() {",
+									"            pm.expect(jsonData.status).to.eql(\"accepted\");",
+									"        });",
+									"        // Save the accepted bid ID for future tests",
+									"        pm.environment.set(\"accepted_bid_id\", jsonData.id);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Reject a Bid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rejection_reason\": \"I found a more suitable provider for my needs.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/reject/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"bids",
+								"{{bid_id}}",
+								"reject",
+								""
+							]
+						},
+						"description": "Allows a customer to explicitly reject a bid on their service request. Optional rejection reason can be provided.\n\n**Permissions:** IsAuthenticated AND IsServiceRequestOwnerForBid"
+					},
+					"response": [
+						{
+							"name": "Success - Bid Rejected (200 OK)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rejection_reason\": \"I found a more suitable provider for my needs.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/reject/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										"reject",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"bid_01HYP5DEFMPWJ8T5ZXV3N7Q9TUV\",\n    \"service_request\": {\n        \"id\": \"sreq_01HSRQSTSAMPLEID\",\n        \"title\": \"Need urgent plumbing fix\"\n    },\n    \"provider\": {\n        \"id\": \"usr_currentProvider456\",\n        \"username\": \"MyProviderBiz\"\n    },\n    \"amount\": \"55.00\",\n    \"message\": \"Revised offer: I can do it for $55 if I can start by 2 PM.\",\n    \"status\": \"rejected\",\n    \"rejection_reason\": \"I found a more suitable provider for my needs.\",\n    \"created_at\": \"2024-05-31T11:00:00Z\",\n    \"updated_at\": \"2024-05-31T11:45:00Z\"\n}"
+						},
+						{
+							"name": "Error - Forbidden (403)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rejection_reason\": \"Trying to reject someone else's bid\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{bid_id}}/reject/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{bid_id}}",
+										"reject",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"You do not have permission to perform this action.\"\n}"
+						},
+						{
+							"name": "Error - Conflict (409)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{customer_access_token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rejection_reason\": \"Trying to reject an already accepted bid\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/bids/{{accepted_bid_id}}/reject/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"bids",
+										"{{accepted_bid_id}}",
+										"reject",
+										""
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Cannot reject a bid that has already been accepted.\"\n}"
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 for successful bid rejection\", function () {",
+									"    if (pm.response.code === 200) {",
+									"        pm.response.to.have.status(200);",
+									"        var jsonData = pm.response.json();",
+									"        pm.test(\"Bid status changed to rejected\", function() {",
+									"            pm.expect(jsonData.status).to.eql(\"rejected\");",
+									"            pm.expect(jsonData).to.have.property('rejection_reason');",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				}
+			],
+			"description": "Endpoints for managing bids on service requests.",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+    ]
+}
