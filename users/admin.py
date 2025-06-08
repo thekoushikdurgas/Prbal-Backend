@@ -11,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('id', 'created_at', 'updated_at')
     
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
+        (None, {'fields': ('username', 'email')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'phone_number', 'profile_picture', 'bio', 'location')}),
         (_('Account info'), {'fields': ('user_type', 'is_verified', 'rating', 'balance')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
@@ -21,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'user_type'),
+            'fields': ('username', 'email', 'user_type'),
         }),
     )
 

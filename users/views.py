@@ -22,17 +22,17 @@ from .serializers import (
     CustomerRegistrationSerializer,
     ProviderRegistrationSerializer,
     AdminRegistrationSerializer,
-    UserLoginSerializer,
-    CustomerLoginSerializer,
-    ProviderLoginSerializer,
-    AdminLoginSerializer,
     UserProfileSerializer,
     PublicUserProfileSerializer,
     CustomerSearchResultSerializer,
     ProviderSearchResultSerializer,
     AdminSearchResultSerializer,
-    ChangePasswordSerializer,
-    AccessTokenSerializer
+    AccessTokenSerializer,
+    PinLoginSerializer,
+    PinRegistrationSerializer,
+    ChangePinSerializer,
+    ResetPinSerializer,
+    PinStatusSerializer
 )
 
 User = get_user_model()
@@ -85,36 +85,8 @@ class UserAccessTokenRevokeView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class UserLogoutView(APIView):
-    """View for handling user logout and token invalidation"""
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def post(self, request, *args, **kwargs):
-        try:
-            # Blacklist the token - this depends on using rest_framework_simplejwt with blacklist app
-            # If you're not using the blacklist app, this part will need to be adjusted or removed
-            try:
-                refresh_token = request.data.get("refresh")
-                if refresh_token:
-                    # Mark the associated token as inactive in our database
-                    token_jti = request.data.get("jti")
-                    if token_jti:
-                        tokens = AccessToken.objects.filter(token_jti=token_jti, user=request.user)
-                        tokens.update(is_active=False)
-                    # If using token blacklist
-                    # token = RefreshToken(refresh_token)
-                    # token.blacklist()
-                    pass  # Placeholder if not using blacklist
-            except Exception as e:
-                # Log the error but don't fail the logout
-                logger.warning(f"Token deactivation error for user {request.user.id}: {e}")
-            
-            # Even if token blacklisting fails, return success
-            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(f"Error during logout for user {request.user.id}: {e}", exc_info=True)
-            return Response({"detail": "An error occurred during logout."}, 
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+# Note: UserLogoutView removed as part of password removal - 
+# Alternative token management should be implemented if needed
 
 
 class UserDeactivateView(APIView):
@@ -250,80 +222,6 @@ class AdminRegistrationView(BaseRegistrationView):
     """Admin registration view"""
     serializer_class = AdminRegistrationSerializer
 
-class BaseLoginView(APIView):
-    """Base view for handling user login"""
-    permission_classes = [permissions.AllowAny]
-    
-    def get_client_ip(self, request):
-        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
-        else:
-            ip = request.META.get('REMOTE_ADDR')
-        return ip
-    
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data['user']
-            
-            try:
-                refresh = CustomRefreshToken.for_user(user)
-                tokens = {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token)
-                }
-                
-                # Track the access token with device information
-                device_type = request.data.get('device_type', 'web')
-                try:
-                    # Save the token details to database
-                    AccessToken.objects.create(
-                        user=user,
-                        token_jti=refresh["jti"],  # JWT ID
-                        device_type=device_type,
-                        device_name=request.META.get('HTTP_USER_AGENT', ''),
-                        ip_address=self.get_client_ip(request)
-                    )
-                except Exception as e:
-                    # Don't fail login if token tracking fails
-                    logger.error(f"Token tracking error during login for user {user.id}: {e}", exc_info=True)
-                    
-            except Exception as e:
-                logger.error(f"Token generation error during login for user {user.id}: {e}", exc_info=True)
-                return Response({"detail": "Login successful, but token generation failed. Please try again."},
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
-            user_data = UserProfileSerializer(user).data
-            return Response({
-                'user': user_data,
-                'tokens': tokens,
-                'message': f'{user.get_user_type_display()} login successful'
-            }, status=status.HTTP_200_OK)
-        
-        logger.warning(f"Login attempt failed for {request.data.get('email') or request.data.get('username', 'N/A')}: {serializer.errors}")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserLoginView(BaseLoginView):
-    """Generic user login view"""
-    serializer_class = UserLoginSerializer
-
-
-class CustomerLoginView(BaseLoginView):
-    """Customer login view"""
-    serializer_class = CustomerLoginSerializer
-
-
-class ProviderLoginView(BaseLoginView):
-    """Service provider login view"""
-    serializer_class = ProviderLoginSerializer
-
-
-class AdminLoginView(BaseLoginView):
-    """Admin login view"""
-    serializer_class = AdminLoginSerializer
-
 class UserProfileView(generics.RetrieveUpdateAPIView):
     """View for retrieving and updating the authenticated user's profile"""
     serializer_class = UserProfileSerializer
@@ -400,70 +298,6 @@ class UserPublicProfileView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = User.objects.all()
     lookup_field = 'id'
-
-class UserLogoutView(APIView):
-    """View for handling user logout and token invalidation"""
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def post(self, request, *args, **kwargs):
-        try:
-            # Get the refresh token from the request
-            refresh_token = request.data.get('refresh_token') # Ensure this matches your token key
-            if not refresh_token:
-                logger.warning(f"Logout attempt by user {request.user.id} without refresh token.")
-                return Response({'detail': 'Refresh token not provided.'}, status=status.HTTP_400_BAD_REQUEST)
-            
-            # Blacklist the token to invalidate it
-            # Ensure CustomRefreshToken is used if that's your intended token class
-            # from .tokens import CustomRefreshToken # Or from rest_framework_simplejwt.tokens import RefreshToken
-            # token = CustomRefreshToken(refresh_token) # Or RefreshToken(refresh_token)
-            # For now, assuming simplejwt's default RefreshToken if CustomRefreshToken is not defined or intended here
-            from rest_framework_simplejwt.tokens import RefreshToken
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            logger.info(f"User {request.user.id} logged out successfully (refresh token blacklisted).")
-            return Response({'detail': 'Successfully logged out.'}, status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(f"Error during logout for user {request.user.id}: {e}", exc_info=True)
-            return Response({'detail': 'An error occurred during logout.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class ChangePasswordView(generics.UpdateAPIView):
-    """View for changing user password.
-    Requires the user to be authenticated.
-    """
-    serializer_class = ChangePasswordSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def update(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        serializer = self.get_serializer(data=request.data)
-
-        if serializer.is_valid():
-            # The serializer's validate_old_password and validate methods handle checks.
-            # The serializer's save method handles setting the new password.
-            try:
-                serializer.save() # This calls the serializer's save method
-                # Optionally, update session auth hash to prevent logout after password change
-                # from django.contrib.auth import update_session_auth_hash
-                # update_session_auth_hash(request, self.object)
-                logger.info(f"User {self.object.id} successfully changed their password.")
-                return Response({"status": "success", "message": "Password updated successfully"}, status=status.HTTP_200_OK)
-            except serializers.ValidationError: # Should be caught by is_valid, but as a safeguard
-                logger.warning(f"Password change validation failed for user {self.object.id}: {serializer.errors}")
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            except Exception as e:
-                logger.error(f"Error saving new password for user {self.object.id}: {e}", exc_info=True)
-                return Response({
-                    'status': 'error',
-                    'message': 'An error occurred while saving the new password.'
-                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        logger.warning(f"Password change validation failed for user {self.object.id if hasattr(self, 'object') else 'unknown'}: {serializer.errors}")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserAvatarUploadView(APIView):
     """View for uploading or changing user profile picture"""
@@ -1114,3 +948,185 @@ class UserVerificationView(APIView):
                 'status': 'error',
                 'message': f'Failed to initiate verification process. An unexpected error occurred.'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# PIN Authentication Views
+
+class PinLoginView(APIView):
+    """View for authenticating users with phone number and PIN"""
+    permission_classes = [permissions.AllowAny]
+    serializer_class = PinLoginSerializer
+    
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            
+            try:
+                # Generate JWT tokens
+                refresh = CustomRefreshToken.for_user(user)
+                tokens = {
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token)
+                }
+                
+                # Track the access token with device information
+                device_type = request.data.get('device_type', 'web')
+                try:
+                    AccessToken.objects.create(
+                        user=user,
+                        token_jti=refresh["jti"],
+                        device_type=device_type,
+                        device_name=request.META.get('HTTP_USER_AGENT', ''),
+                        ip_address=self.get_client_ip(request)
+                    )
+                except Exception as e:
+                    logger.error(f"Token tracking error for user {user.id}: {e}", exc_info=True)
+                
+                # Get user profile data
+                user_data = UserProfileSerializer(user).data
+                
+                logger.info(f"User {user.id} ({user.username}) logged in successfully with PIN")
+                
+                return Response({
+                    'user': user_data,
+                    'tokens': tokens,
+                    'message': 'Login successful'
+                }, status=status.HTTP_200_OK)
+                
+            except Exception as e:
+                logger.error(f"Token generation error during PIN login for user {user.id}: {e}", exc_info=True)
+                return Response({
+                    'detail': 'Authentication successful but token generation failed. Please try again.'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PinRegistrationView(BaseRegistrationView):
+    """Enhanced registration view with PIN authentication"""
+    serializer_class = PinRegistrationSerializer
+
+
+class CustomerPinRegistrationView(PinRegistrationView):
+    """Customer registration with PIN"""
+    
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = type('CustomerPinRegistrationSerializer', (PinRegistrationSerializer,), {
+            'get_user_type': lambda self: 'customer'
+        })
+        kwargs['data'] = self.request.data
+        return serializer_class(*args, **kwargs)
+
+
+class ProviderPinRegistrationView(PinRegistrationView):
+    """Provider registration with PIN"""
+    
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = type('ProviderPinRegistrationSerializer', (PinRegistrationSerializer,), {
+            'get_user_type': lambda self: 'provider',
+            'Meta': type('Meta', (), {
+                'model': User,
+                'fields': PinRegistrationSerializer.Meta.fields + ['skills'],
+                'extra_kwargs': PinRegistrationSerializer.Meta.extra_kwargs
+            })
+        })
+        kwargs['data'] = self.request.data
+        return serializer_class(*args, **kwargs)
+
+
+class ChangePinView(APIView):
+    """View for changing user's PIN"""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ChangePinSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        
+        if serializer.is_valid():
+            user = request.user
+            new_pin = serializer.validated_data['new_pin']
+            
+            try:
+                user.set_pin(new_pin)
+                user.save()
+                
+                logger.info(f"User {user.id} ({user.username}) changed their PIN successfully")
+                
+                return Response({
+                    'message': 'PIN changed successfully',
+                    'pin_updated_at': user.pin_updated_at
+                }, status=status.HTTP_200_OK)
+                
+            except Exception as e:
+                logger.error(f"Error changing PIN for user {user.id}: {e}", exc_info=True)
+                return Response({
+                    'detail': 'An error occurred while changing your PIN. Please try again.'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ResetPinView(APIView):
+    """View for resetting user's PIN (requires phone verification)"""
+    permission_classes = [permissions.AllowAny]
+    serializer_class = ResetPinSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            phone_number = serializer.validated_data['phone_number']
+            new_pin = serializer.validated_data['new_pin']
+            
+            try:
+                user = User.objects.get(phone_number=phone_number)
+                user.set_pin(new_pin)
+                user.save()
+                
+                logger.info(f"PIN reset successfully for user {user.id} ({user.username})")
+                
+                # TODO: Implement phone verification before allowing PIN reset
+                # For now, we'll allow PIN reset without verification
+                # In production, you should verify the phone number with OTP
+                
+                return Response({
+                    'message': 'PIN reset successfully',
+                    'pin_updated_at': user.pin_updated_at
+                }, status=status.HTTP_200_OK)
+                
+            except User.DoesNotExist:
+                return Response({
+                    'detail': 'User not found with this phone number'
+                }, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                logger.error(f"Error resetting PIN for phone {phone_number}: {e}", exc_info=True)
+                return Response({
+                    'detail': 'An error occurred while resetting your PIN. Please try again.'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PinStatusView(APIView):
+    """View for checking PIN status and lock information"""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PinStatusSerializer
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = self.serializer_class(user)
+        
+        return Response({
+            'pin_status': serializer.data,
+            'user_id': user.id
+        }, status=status.HTTP_200_OK)

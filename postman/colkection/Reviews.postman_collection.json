@@ -23,7 +23,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/{{api_version}}/reviews/?public=true&service={{service_id}}&reviewer={{user_id}}&rating=5",
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/?public=true&service={{service_id}}&client={{customer_id}}&provider={{provider_id}}&rating=5&search={{search_query}}&ordering=-created_at",
 							"host": [
 								"{{base_url}}"
 							],
@@ -45,18 +45,39 @@
 									"description": "Filter by service ID"
 								},
 								{
-									"key": "reviewer",
-									"value": "{{user_id}}",
-									"description": "Filter by reviewer ID"
+									"key": "client",
+									"value": "{{customer_id}}",
+									"description": "Filter by client (reviewer) ID"
+								},
+								{
+									"key": "provider",
+									"value": "{{provider_id}}",
+									"description": "Filter by provider ID"
+								},
+								{
+									"key": "booking",
+									"value": "{{booking_id}}",
+									"description": "Filter by booking ID",
+									"disabled": true
 								},
 								{
 									"key": "rating",
 									"value": "5",
 									"description": "Filter by rating value"
+								},
+								{
+									"key": "search",
+									"value": "{{search_query}}",
+									"description": "Search in review comments"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field (created_at, rating, -created_at, -rating)"
 								}
 							]
 						},
-						"description": "Lists reviews based on provided filters. By default shows public reviews for anonymous users, while authenticated users can see their own reviews as well.\n\n**Permissions:** \n- Anonymous users can see public reviews\n- Authenticated users see public reviews plus their own\n- Staff users can see all reviews\n\n**Filters:**\n- public: true/false\n- service: service ID\n- reviewer: user ID\n- reviewee: user ID\n- booking: booking ID\n- rating: 1-5"
+						"description": "Lists reviews based on provided filters. By default shows public reviews for anonymous users, while authenticated users can see their own reviews as well.\n\n**Permissions:** \n- Anonymous users can see public reviews\n- Authenticated users see public reviews plus their own\n- Staff users can see all reviews\n\n**Filters:**\n- public: true/false\n- service: service ID\n- client: client (reviewer) user ID\n- provider: provider user ID\n- booking: booking ID\n- rating: 1-5\n- search: search in review comments\n- ordering: order by field (created_at, rating, -created_at, -rating)"
 					}
 				},
 				{
@@ -77,7 +98,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"booking\": \"{{booking_id}}\",\n  \"service\": \"{{service_id}}\",\n  \"reviewee\": \"{{provider_id}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent service! Very professional and timely.\",\n  \"rating_breakdown\": {\n    \"professionalism\": 5,\n    \"punctuality\": 5,\n    \"quality\": 5\n  },\n  \"is_public\": true,\n  \"images\": [\n    {\n      \"image\": \"data:image/jpeg;base64,...\",\n      \"caption\": \"Work result\"\n    }\n  ]\n}"
+							"raw": "{\n  \"booking\": \"{{booking_id}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent service! Very professional and timely.\",\n  \"rating_breakdown\": {\n    \"professionalism\": 5,\n    \"punctuality\": 5,\n    \"quality\": 5\n  },\n  \"is_public\": true,\n  \"images\": [\n    \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=\"\n  ],\n  \"image_captions\": [\n    \"Work result\"\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/{{api_version}}/reviews/",
@@ -91,7 +112,7 @@
 								""
 							]
 						},
-						"description": "Create a new review for a completed service booking.\n\n**Permissions:** \n- Must be authenticated\n- Can only review bookings where user is the customer\n- Booking must be in 'completed' status\n\n**Required Fields:**\n- booking: ID of the completed booking\n- service: ID of the service being reviewed\n- reviewee: ID of the provider being reviewed\n- rating: Overall rating (1-5)\n- comment: Review text\n\n**Optional Fields:**\n- rating_breakdown: Detailed ratings by category\n- is_public: Whether review is publicly visible (default true)\n- images: Array of review images"
+						"description": "Create a new review for a completed service booking.\n\n**Permissions:** \n- Must be authenticated\n- Can only review bookings where user is the customer\n- Booking must be in 'completed' status\n\n**Required Fields:**\n- booking: ID of the completed booking\n- rating: Overall rating (1-5)\n- comment: Review text\n\n**Optional Fields:**\n- rating_breakdown: Detailed ratings by category\n- is_public: Whether review is publicly visible (default true)\n- images: Array of base64 encoded images\n- image_captions: Array of captions for images (must match images length)"
 					}
 				},
 				{
@@ -122,7 +143,7 @@
 					}
 				},
 				{
-					"name": "Update Review",
+					"name": "Update Review (Partial)",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -154,7 +175,43 @@
 								""
 							]
 						},
-						"description": "Update an existing review.\n\n**Permissions:**\n- Only the reviewer can update their review\n- Only certain fields can be updated\n\n**Updatable Fields:**\n- rating\n- comment\n- is_public\n- images (add/remove)"
+						"description": "Partially update an existing review.\n\n**Permissions:**\n- Only the reviewer can update their review\n- Only certain fields can be updated\n\n**Updatable Fields:**\n- rating\n- comment\n- is_public\n- rating_breakdown"
+					}
+				},
+				{
+					"name": "Update Review (Full)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"booking\": \"{{booking_id}}\",\n  \"rating\": 4,\n  \"comment\": \"Updated review comment with full details.\",\n  \"rating_breakdown\": {\n    \"professionalism\": 4,\n    \"punctuality\": 4,\n    \"quality\": 4\n  },\n  \"is_public\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/{{review_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								"{{review_id}}",
+								""
+							]
+						},
+						"description": "Fully update an existing review (replaces all fields).\n\n**Permissions:**\n- Only the reviewer can update their review\n\n**Required Fields:**\n- booking: ID of the booking\n- rating: Overall rating (1-5)\n- comment: Review text\n\n**Optional Fields:**\n- rating_breakdown: Detailed ratings by category\n- is_public: Whether review is publicly visible"
 					}
 				},
 				{
@@ -287,6 +344,97 @@
 							]
 						},
 						"description": "Get a summary of reviews for a specific service.\n\n**Permissions:** Any user can access this endpoint\n\n**Required Parameters:**\n- service_id: ID of the service\n\n**Returns:**\n- Total review count\n- Average rating\n- Rating distribution"
+					}
+				},
+				{
+					"name": "Get Recent Reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/?public=true&ordering=-created_at&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								""
+							],
+							"query": [
+								{
+									"key": "public",
+									"value": "true",
+									"description": "Only public reviews"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by most recent first"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limit results to 10"
+								}
+							]
+						},
+						"description": "Get the most recent public reviews.\n\n**Permissions:** Available to all users\n\n**Use Case:** For displaying recent reviews on homepage or public pages"
+					}
+				},
+				{
+					"name": "Get High-Rated Reviews",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/reviews/?public=true&rating=5&ordering=-created_at&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"reviews",
+								""
+							],
+							"query": [
+								{
+									"key": "public",
+									"value": "true",
+									"description": "Only public reviews"
+								},
+								{
+									"key": "rating",
+									"value": "5",
+									"description": "Only 5-star reviews"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by most recent first"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limit results to 10"
+								}
+							]
+						},
+						"description": "Get high-rated (5-star) public reviews.\n\n**Permissions:** Available to all users\n\n**Use Case:** For displaying testimonials or featured reviews"
 					}
 				}
 			],

@@ -1,913 +1,855 @@
 {
-	"info": {
-		"_postman_id": "c6ef0918-c0ce-4743-8c17-259e292edb57",
-		"name": "Prbal API for Messaging",
-		"description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20572666",
-		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
-	},
-	"item": [
-		{
-			"name": "Messaging",
-			"item": [
-				{
-					"name": "Message Threads",
-					"item": [
-						{
-							"name": "List Message Threads",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/threads/?thread_type={{thread_type}}&ordering=-updated_at",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"threads",
-										""
-									],
-									"query": [
-										{
-											"key": "thread_type",
-											"value": "{{thread_type}}",
-											"description": "Filter by thread type (bid, booking, general, support)"
-										},
-										{
-											"key": "ordering",
-											"value": "-updated_at",
-											"description": "Sort by update time (descending)"
-										}
-									]
-								},
-								"description": "List all message threads the authenticated user is participating in"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"count": 2,
-										"next": null,
-										"previous": null,
-										"results": [
-											{
-												"id": "thrd_01H...",
-												"thread_type": "bid",
-												"participants": [
-													{
-														"id": "usr_01H...",
-														"username": "customer1"
-													},
-													{
-														"id": "usr_02H...",
-														"username": "provider1"
-													}
-												],
-												"bid": "bid_01H...",
-												"booking": null,
-												"created_at": "2024-01-15T10:00:00Z",
-												"updated_at": "2024-01-15T10:30:00Z"
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							"name": "Create Message Thread",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"participants\": [\"usr_01H...\", \"usr_02H...\"],\n    \"thread_type\": \"general\",\n    \"bid\": null,\n    \"booking\": null\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/threads/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"threads",
-										""
-									]
-								},
-								"description": "Create a new message thread with specified participants"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "thrd_01H...",
-										"thread_type": "general",
-										"participants": [
-											{
-												"id": "usr_01H...",
-												"username": "customer1"
-											},
-											{
-												"id": "usr_02H...",
-												"username": "provider1"
-											}
-										],
-										"bid": null,
-										"booking": null,
-										"created_at": "2024-01-15T10:00:00Z",
-										"updated_at": "2024-01-15T10:00:00Z"
-									}
-								}
-							]
-						},
-						{
-							"name": "Get Message Thread",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"threads",
-										"{{thread_id}}",
-										""
-									]
-								},
-								"description": "Get details of a specific message thread"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "thrd_01H...",
-										"thread_type": "bid",
-										"participants": [
-											{
-												"id": "usr_01H...",
-												"username": "customer1"
-											},
-											{
-												"id": "usr_02H...",
-												"username": "provider1"
-											}
-										],
-										"bid": "bid_01H...",
-										"booking": null,
-										"created_at": "2024-01-15T10:00:00Z",
-										"updated_at": "2024-01-15T10:30:00Z",
-										"last_message": {
-											"id": "msg_01H...",
-											"content": "Latest message in thread",
-											"created_at": "2024-01-15T10:30:00Z"
-										}
-									}
-								}
-							]
-						},
-						{
-							"name": "Update Message Thread",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"participants\": [\"usr_01H...\", \"usr_02H...\", \"usr_03H...\"]\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"threads",
-										"{{thread_id}}",
-										""
-									]
-								},
-								"description": "Update a message thread (e.g. add/remove participants)"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "thrd_01H...",
-										"thread_type": "general",
-										"participants": [
-											{
-												"id": "usr_01H...",
-												"username": "customer1"
-											},
-											{
-												"id": "usr_02H...",
-												"username": "provider1"
-											},
-											{
-												"id": "usr_03H...",
-												"username": "provider2"
-											}
-										],
-										"bid": null,
-										"booking": null,
-										"created_at": "2024-01-15T10:00:00Z",
-										"updated_at": "2024-01-15T11:00:00Z"
-									}
-								}
-							]
-						},
-						{
-							"name": "Delete Message Thread",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"threads",
-										"{{thread_id}}",
-										""
-									]
-								},
-								"description": "Delete a message thread and all its messages"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 204,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									]
-								}
-							]
-						}
-					],
-					"description": "Endpoints for managing message threads between users",
-					"event": [],
-					"protocolProfileBehavior": {}
-				},
-				{
-					"name": "Individual Messages",
-					"item": [
-						{
-							"name": "List All Messages",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/?thread={{thread_id}}&ordering=-created_at",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										""
-									],
-									"query": [
-										{
-											"key": "thread",
-											"value": "{{thread_id}}",
-											"description": "Filter by thread ID"
-										},
-										{
-											"key": "ordering",
-											"value": "-created_at",
-											"description": "Sort by creation time (descending)"
-										}
-									]
-								},
-								"description": "List all messages the authenticated user can access"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"count": 2,
-										"next": null,
-										"previous": null,
-										"results": [
-											{
-												"id": "msg_01H...",
-												"thread": "thrd_01H...",
-												"sender": {
-													"id": "usr_01H...",
-													"username": "customer1"
-												},
-												"content": "Hello provider!",
-												"read_by": [
-													"usr_01H..."
-												],
-												"created_at": "2024-01-15T10:00:00Z",
-												"updated_at": "2024-01-15T10:00:00Z"
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							"name": "Create Message",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"thread\": \"thrd_01H...\",\n    \"content\": \"New message content\"\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										""
-									]
-								},
-								"description": "Create a new message in a thread"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "msg_01H...",
-										"thread": "thrd_01H...",
-										"sender": {
-											"id": "usr_01H...",
-											"username": "customer1"
-										},
-										"content": "New message content",
-										"read_by": [
-											"usr_01H..."
-										],
-										"created_at": "2024-01-15T10:00:00Z",
-										"updated_at": "2024-01-15T10:00:00Z"
-									}
-								}
-							]
-						},
-						{
-							"name": "Get Message",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										"{{message_id}}",
-										""
-									]
-								},
-								"description": "Get details of a specific message"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "msg_01H...",
-										"thread": "thrd_01H...",
-										"sender": {
-											"id": "usr_01H...",
-											"username": "customer1"
-										},
-										"content": "Message content",
-										"read_by": [
-											"usr_01H...",
-											"usr_02H..."
-										],
-										"created_at": "2024-01-15T10:00:00Z",
-										"updated_at": "2024-01-15T10:00:00Z"
-									}
-								}
-							]
-						},
-						{
-							"name": "Update Message",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"content\": \"Updated message content\"\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										"{{message_id}}",
-										""
-									]
-								},
-								"description": "Update a message (only sender can update)"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "msg_01H...",
-										"thread": "thrd_01H...",
-										"sender": {
-											"id": "usr_01H...",
-											"username": "customer1"
-										},
-										"content": "Updated message content",
-										"read_by": [
-											"usr_01H...",
-											"usr_02H..."
-										],
-										"created_at": "2024-01-15T10:00:00Z",
-										"updated_at": "2024-01-15T10:30:00Z"
-									}
-								}
-							]
-						},
-						{
-							"name": "Delete Message",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										"{{message_id}}",
-										""
-									]
-								},
-								"description": "Delete a message (only sender can delete)"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 204,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									]
-								}
-							]
-						},
-						{
-							"name": "Mark Messages as Read",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"message_ids\": [\"msg_01H...\", \"msg_02H...\"]\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/mark_as_read/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										"mark_as_read",
-										""
-									]
-								},
-								"description": "Mark multiple messages as read"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"status": "success",
-										"marked_count": 2,
-										"message": "Messages marked as read."
-									}
-								}
-							]
-						},
-						{
-							"name": "Get Unread Count",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/messages/unread_count/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"messages",
-										"unread_count",
-										""
-									]
-								},
-								"description": "Get count of unread messages for the authenticated user"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"total_unread": 5,
-										"thread_counts": {
-											"thrd_01H...": 2,
-											"thrd_02H...": 3
-										}
-									}
-								}
-							]
-						}
-					],
-					"description": "Endpoints for managing individual messages",
-					"event": [],
-					"protocolProfileBehavior": {}
-				},
-				{
-					"name": "Messages within a Thread",
-					"item": [
-						{
-							"name": "List Messages in Thread",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/{{thread_id}}/?ordering=created_at",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"{{thread_id}}",
-										""
-									],
-									"query": [
-										{
-											"key": "ordering",
-											"value": "created_at",
-											"description": "Sort by creation time (ascending)"
-										}
-									]
-								},
-								"description": "Get all messages in a specific thread"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"count": 2,
-										"next": null,
-										"previous": null,
-										"results": [
-											{
-												"id": "msg_01H...",
-												"sender": {
-													"id": "usr_01H...",
-													"username": "customer1"
-												},
-												"content": "First message",
-												"read_by": [
-													"usr_01H...",
-													"usr_02H..."
-												],
-												"created_at": "2024-01-15T10:00:00Z"
-											},
-											{
-												"id": "msg_02H...",
-												"sender": {
-													"id": "usr_02H...",
-													"username": "provider1"
-												},
-												"content": "Second message",
-												"read_by": [
-													"usr_02H..."
-												],
-												"created_at": "2024-01-15T10:30:00Z"
-											}
-										]
-									}
-								}
-							]
-						},
-						{
-							"name": "Create Message in Thread",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{access_token}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"content\": \"New message in thread\"\n}"
-								},
-								"url": {
-									"raw": "{{base_url}}/api/{{api_version}}/messaging/{{thread_id}}/",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"{{api_version}}",
-										"messaging",
-										"{{thread_id}}",
-										""
-									]
-								},
-								"description": "Add a new message to a specific thread"
-							},
-							"response": [
-								{
-									"name": "Success Response",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"body": {
-										"id": "msg_03H...",
-										"sender": {
-											"id": "usr_01H...",
-											"username": "customer1"
-										},
-										"content": "New message in thread",
-										"read_by": [
-											"usr_01H..."
-										],
-										"created_at": "2024-01-15T11:00:00Z"
-									}
-								}
-							]
-						}
-					],
-					"description": "Endpoints for managing messages within a specific thread",
-					"event": [],
-					"protocolProfileBehavior": {}
-				}
-			],
-			"description": "",
-			"event": [],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Real-time Messaging (WebSocket)",
-			"item": [],
-			"description": "",
-			"event": [],
-			"protocolProfileBehavior": {}
-		}
-	]
+    "info": {
+        "_postman_id": "c6ef0918-c0ce-4743-8c17-259e292edb57",
+        "name": "Prbal API for Messaging",
+        "description": "API collection for the Prbal application messaging system. Covers all messaging endpoints for providers, customers, and admins.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "20572666",
+        "_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+    },
+    "item": [
+        {
+            "name": "Message Threads",
+            "item": [
+                {
+                    "name": "List Message Threads",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/?thread_type={{thread_type}}&ordering=-updated_at",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "thread_type",
+                                    "value": "{{thread_type}}",
+                                    "description": "Filter by thread type: bid, booking, general, support"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "-updated_at",
+                                    "description": "Order by: updated_at, created_at, -updated_at, -created_at"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Message Thread",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread_type\": \"general\",\n    \"participant_ids\": [\n        \"{{provider_id}}\",\n        \"{{customer_id}}\"\n    ],\n    \"initial_message\": \"Hello! I'd like to discuss your service.\",\n    \"bid\": null,\n    \"booking\": null\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Message Thread",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Message Thread (Full)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread_type\": \"booking\",\n    \"participant_ids\": [\n        \"{{provider_id}}\",\n        \"{{customer_id}}\"\n    ],\n    \"booking\": \"{{booking_id}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Message Thread (Partial)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread_type\": \"support\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Message Thread",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Messages in Thread (Custom Action)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/{{thread_id}}/messages/?since={{timestamp}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                "{{thread_id}}",
+                                "messages",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "since",
+                                    "value": "{{timestamp}}",
+                                    "description": "Timestamp to get messages after (optional)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints for managing message threads between users"
+        },
+        {
+            "name": "Individual Messages",
+            "item": [
+                {
+                    "name": "List All Messages",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread\": \"{{thread_id}}\",\n    \"content\": \"Hello! This is a test message.\",\n    \"attachment\": null\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Message",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "{{message_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Message (Full)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread\": \"{{thread_id}}\",\n    \"content\": \"Updated message content\",\n    \"attachment\": null\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "{{message_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Message (Partial)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Partially updated message content\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "{{message_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Message",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/{{message_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "{{message_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Messages as Read",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"message_ids\": [\n        \"{{message_id}}\"\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/mark_as_read/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "mark_as_read",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark All Messages in Thread as Read",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"mark_all_in_thread\": true,\n    \"thread_id\": \"{{thread_id}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/mark_as_read/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "mark_as_read",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Unread Count",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/messages/unread_count/?thread_id={{thread_id}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "messages",
+                                "unread_count",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "thread_id",
+                                    "value": "{{thread_id}}",
+                                    "description": "Optional: Get unread count for specific thread"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints for managing individual messages"
+        },
+        {
+            "name": "Messages within a Thread",
+            "item": [
+                {
+                    "name": "List Messages in Thread",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/{{thread_id}}/?since={{timestamp}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "{{thread_id}}",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "since",
+                                    "value": "{{timestamp}}",
+                                    "description": "Timestamp to get messages after (optional)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Message in Thread",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Hello! This is a message directly in the thread.\",\n    \"attachment\": null\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/{{thread_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Message with Base64 Attachment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Here's an attachment for you.\",\n    \"attachment\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/{{thread_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints for managing messages within a specific thread"
+        },
+        {
+            "name": "Real-time Messaging (WebSocket)",
+            "item": [
+                {
+                    "name": "WebSocket Connection Guide",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url_ws}}/ws/chat/{{thread_id}}/",
+                            "host": [
+                                "{{base_url_ws}}"
+                            ],
+                            "path": [
+                                "ws",
+                                "chat",
+                                "{{thread_id}}",
+                                ""
+                            ]
+                        },
+                        "description": "WebSocket connection URL for real-time messaging. Use this URL to establish WebSocket connection.\n\nMessage Types to Send:\n1. Send Message: {\"type\": \"message\", \"message\": \"Hello!\"}\n2. Typing Indicator: {\"type\": \"typing\", \"is_typing\": true}\n3. Read Receipt: {\"type\": \"read_receipt\", \"message_id\": \"uuid\"}\n\nMessage Types Received:\n1. New Message: {\"type\": \"message\", \"message\": \"...\", \"sender_id\": \"...\", \"message_id\": \"...\", \"timestamp\": \"...\"}\n2. Typing Status: {\"type\": \"typing\", \"user_id\": \"...\", \"is_typing\": true/false}\n3. Read Receipt: {\"type\": \"read_receipt\", \"user_id\": \"...\", \"message_id\": \"...\", \"timestamp\": \"...\"}\n4. Presence Update: {\"type\": \"presence\", \"user_id\": \"...\", \"status\": \"online/offline\", \"timestamp\": \"...\"}"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "WebSocket connection for real-time messaging features including typing indicators, read receipts, and presence status"
+        },
+        {
+            "name": "Thread Creation Examples",
+            "item": [
+                {
+                    "name": "Create Bid-Related Thread",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread_type\": \"bid\",\n    \"participant_ids\": [\n        \"{{provider_id}}\",\n        \"{{customer_id}}\"\n    ],\n    \"initial_message\": \"Hi! I'm interested in your bid for the service.\",\n    \"bid\": \"{{bid_id}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Booking-Related Thread",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread_type\": \"booking\",\n    \"participant_ids\": [\n        \"{{provider_id}}\",\n        \"{{customer_id}}\"\n    ],\n    \"initial_message\": \"Hello! I have some questions about our upcoming booking.\",\n    \"booking\": \"{{booking_id}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Support Thread",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"thread_type\": \"support\",\n    \"participant_ids\": [\n        \"{{admin_id}}\"\n    ],\n    \"initial_message\": \"Hi! I need help with my account.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/messaging/threads/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "messaging",
+                                "threads",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Examples of creating different types of message threads"
+        }
+    ]
 }

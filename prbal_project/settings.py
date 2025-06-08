@@ -152,22 +152,35 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', cast=int),
-        # Connection pooling settings
-        'CONN_MAX_AGE': 600,  # 10 minutes persistent connection
-        'OPTIONS': {
-            # Statement timeout in milliseconds (5 seconds)
-            'options': '-c statement_timeout=5000',
-        },
+# Database configuration - supports both SQLite and PostgreSQL
+DB_ENGINE = config('DB_ENGINE', default='django.db.backends.sqlite3')
+
+if DB_ENGINE == 'django.db.backends.sqlite3':
+    # SQLite configuration (for development/testing)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / config('DB_NAME', default='db.sqlite3'),
+        }
     }
-}
+else:
+    # PostgreSQL configuration (for production)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT', cast=int),
+            # Connection pooling settings
+            'CONN_MAX_AGE': 600,  # 10 minutes persistent connection
+            'OPTIONS': {
+                # Statement timeout in milliseconds (5 seconds)
+                'options': '-c statement_timeout=5000',
+            },
+        }
+    }
 
 # Use django-db-connection-pool in production for more advanced connection pooling
 if not DEBUG and config('USE_DB_POOL', default=False, cast=bool):

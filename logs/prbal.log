@@ -1199,3 +1199,27 @@ INFO 2025-06-01 11:37:24,692 middleware 10372 19868 API Request
 INFO 2025-06-01 11:37:24,695 basehttp 10372 19868 "POST /api/v1/auth/provider/register/ HTTP/1.1" 201 1115
 INFO 2025-06-01 11:38:17,890 middleware 10372 13176 API Request
 WARNING 2025-06-01 11:38:17,895 basehttp 10372 13176 "POST /api/v1/services/ HTTP/1.1" 400 144
+INFO 2025-06-07 20:35:35,955 autoreload 21672 1372 Watching for file changes with StatReloader
+INFO 2025-06-07 23:13:57,742 autoreload 22136 15284 Watching for file changes with StatReloader
+INFO 2025-06-07 23:15:19,945 middleware 22136 14636 API Request
+WARNING 2025-06-07 23:15:19,947 basehttp 22136 14636 "POST /api/v1/auth/customer/register/ HTTP/1.1" 400 165
+INFO 2025-06-07 23:19:44,944 middleware 22136 15024 API Request
+WARNING 2025-06-07 23:19:44,946 basehttp 22136 15024 "POST /api/v1/auth/customer/register/ HTTP/1.1" 400 105
+INFO 2025-06-07 23:19:58,009 middleware 22136 15024 API Request
+INFO 2025-06-07 23:19:58,010 basehttp 22136 15024 "POST /api/v1/auth/customer/register/ HTTP/1.1" 201 1112
+INFO 2025-06-08 00:53:37,861 autoreload 7316 7360 Watching for file changes with StatReloader
+INFO 2025-06-08 05:36:32,732 autoreload 9620 4944 Watching for file changes with StatReloader
+INFO 2025-06-08 05:44:18,382 autoreload 21348 18040 Watching for file changes with StatReloader
+INFO 2025-06-08 05:45:27,681 middleware 21348 17708 API Request
+WARNING 2025-06-08 05:45:27,691 basehttp 21348 17708 "POST /api/v1/auth/customer/register/ HTTP/1.1" 400 223
+INFO 2025-06-08 05:50:15,009 autoreload 21348 18040 D:\durgas\Prbal-App\Prbal_backend\users\models.py changed, reloading.
+INFO 2025-06-08 05:50:16,330 autoreload 12744 2344 Watching for file changes with StatReloader
+INFO 2025-06-08 05:50:53,627 autoreload 12744 2344 D:\durgas\Prbal-App\Prbal_backend\users\serializers.py changed, reloading.
+INFO 2025-06-08 05:50:54,837 autoreload 7780 4312 Watching for file changes with StatReloader
+INFO 2025-06-08 05:51:16,069 autoreload 7780 4312 D:\durgas\Prbal-App\Prbal_backend\users\views.py changed, reloading.
+INFO 2025-06-08 05:51:17,517 autoreload 22600 21480 Watching for file changes with StatReloader
+INFO 2025-06-08 06:35:33,686 autoreload 14660 11528 Watching for file changes with StatReloader
+INFO 2025-06-08 07:02:09,976 middleware 14660 1736 API Request
+INFO 2025-06-08 07:02:09,978 basehttp 14660 1736 "POST /api/v1/auth/register/ HTTP/1.1" 201 1114
+INFO 2025-06-08 07:02:42,137 middleware 14660 1736 API Request
+INFO 2025-06-08 07:02:42,138 basehttp 14660 1736 "POST /api/v1/auth/provider/register/ HTTP/1.1" 201 1115

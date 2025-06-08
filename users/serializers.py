@@ -1,46 +1,29 @@
 from rest_framework import serializers
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from .models import AccessToken
+from .utils import validate_pin, validate_phone_number, authenticate_user_with_pin, is_pin_strong
 
 User = get_user_model()
 PRBAL_ADMIN_SECRET_CODE = "123"
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    """Base serializer for user registration"""
-    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
-    password_confirm = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    """Base serializer for user registration without password"""
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'phone_number', 'password', 'password_confirm', 'first_name', 'last_name']
+        fields = ['id', 'username', 'email', 'phone_number', 'first_name', 'last_name']
         extra_kwargs = {
             'email': {'required': True}
         }
     
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password_confirm']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
-        
-        try:
-            validate_password(attrs['password'])
-        except ValidationError as e:
-            raise serializers.ValidationError({"password": list(e.messages)})
-            
-        return attrs
-    
     def create(self, validated_data):
-        # Remove password_confirm as it's not needed for creating the user
-        validated_data.pop('password_confirm')
-        
         # Set the user_type based on the specific serializer
         validated_data['user_type'] = self.get_user_type()
         
-        # Create the user with the validated data
+        # Create the user with the validated data (no password)
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
-            password=validated_data['password'],
             user_type=validated_data['user_type'],
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
@@ -105,71 +88,8 @@ class AdminRegistrationSerializer(UserRegistrationSerializer):
         user.save()
         return user
 
-class UserLoginSerializer(serializers.Serializer):
-    """Serializer for user login"""
-    username = serializers.CharField(required=False)
-    email = serializers.EmailField(required=False)
-    phone_number = serializers.CharField(required=False)
-    password = serializers.CharField(style={'input_type': 'password'})
-    user_type = serializers.CharField(required=False)
-    
-    def validate(self, attrs):
-        # Check if at least one identifier field is provided
-        identifier_fields = ['username', 'email', 'phone_number']
-        if not any(attrs.get(field) for field in identifier_fields):
-            raise serializers.ValidationError("Must include either 'username', 'email' or 'phone_number'")
-        
-        # Try to authenticate with provided credentials
-        user = None
-        
-        if attrs.get('username'):
-            user = authenticate(username=attrs.get('username'), password=attrs.get('password'))
-        elif attrs.get('email'):
-            try:
-                user_obj = User.objects.get(email=attrs.get('email'))
-                user = authenticate(username=user_obj.username, password=attrs.get('password'))
-            except User.DoesNotExist:
-                pass
-        elif attrs.get('phone_number'):
-            try:
-                user_obj = User.objects.get(phone_number=attrs.get('phone_number'))
-                user = authenticate(username=user_obj.username, password=attrs.get('password'))
-            except User.DoesNotExist:
-                pass
-        
-        if not user:
-            raise serializers.ValidationError("Unable to log in with provided credentials.")
-        
-        # Check if the user type is specified and matches
-        if attrs.get('user_type') and user.user_type != attrs.get('user_type'):
-            raise serializers.ValidationError(f"User is not registered as a {attrs.get('user_type')}")
-        
-        attrs['user'] = user
-        return attrs
-
-
-class CustomerLoginSerializer(UserLoginSerializer):
-    """Serializer for customer login"""
-    
-    def validate(self, attrs):
-        attrs['user_type'] = 'customer'
-        return super().validate(attrs)
-
-
-class ProviderLoginSerializer(UserLoginSerializer):
-    """Serializer for service provider login"""
-    
-    def validate(self, attrs):
-        attrs['user_type'] = 'provider'
-        return super().validate(attrs)
-
-
-class AdminLoginSerializer(UserLoginSerializer):
-    """Serializer for admin login"""
-    
-    def validate(self, attrs):
-        attrs['user_type'] = 'admin'
-        return super().validate(attrs)
+# Note: Login serializers removed as they depend on password authentication
+# Alternative authentication methods should be implemented (e.g., token-based, OAuth, etc.)
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializer for the user's own profile with all fields"""
@@ -237,46 +157,192 @@ class AccessTokenSerializer(serializers.ModelSerializer):
                  'created_at', 'last_used_at', 'last_refreshed_at', 'is_active']
         read_only_fields = fields
 
+# Note: ChangePasswordSerializer removed as password functionality is being removed
 
-class ChangePasswordSerializer(serializers.Serializer):
-    """Serializer for password change.
-    Requires the user to be authenticated.
-    """
-    old_password = serializers.CharField(
-        required=True, write_only=True, style={'input_type': 'password'}
-    )
-    new_password = serializers.CharField(
-        required=True, write_only=True, style={'input_type': 'password'}
-    )
-    new_password_confirm = serializers.CharField(
-        required=True, write_only=True, style={'input_type': 'password'}
-    )
 
-    def validate_old_password(self, value):
-        user = self.context['request'].user
-        if not user.check_password(value):
-            raise serializers.ValidationError(
-                "Your old password was entered incorrectly. Please enter it again."
-            )
+# PIN-related Serializers
+
+class PinLoginSerializer(serializers.Serializer):
+    """Serializer for phone + PIN authentication"""
+    phone_number = serializers.CharField(max_length=15)
+    pin = serializers.CharField(max_length=4, min_length=4)
+    
+    def validate_phone_number(self, value):
+        validate_phone_number(value)
         return value
-
-    def validate(self, data):
-        if data['new_password'] != data['new_password_confirm']:
-            raise serializers.ValidationError(
-                {"new_password_confirm": "The two new password fields didn't match."}
-            )
+    
+    def validate_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate(self, attrs):
+        phone_number = attrs.get('phone_number')
+        pin = attrs.get('pin')
         
-        try:
-            validate_password(data['new_password'], user=self.context['request'].user)
-        except ValidationError as e:
-            raise serializers.ValidationError({"new_password": list(e.messages)})
+        if phone_number and pin:
+            user = authenticate_user_with_pin(phone_number, pin)
+            if not user:
+                raise serializers.ValidationError('Invalid phone number or PIN')
+            
+            if user.is_pin_locked():
+                remaining_time = user.get_pin_lock_remaining_time()
+                raise serializers.ValidationError(
+                    f'PIN is locked due to multiple failed attempts. Try again in {remaining_time} minutes.'
+                )
+            
+            attrs['user'] = user
         
-        return data
+        return attrs
 
-    def save(self, **kwargs):
-        user = self.context['request'].user
-        user.set_password(self.validated_data['new_password'])
+
+class PinRegistrationSerializer(UserRegistrationSerializer):
+    """Enhanced registration serializer with PIN field"""
+    pin = serializers.CharField(max_length=4, min_length=4, write_only=True)
+    confirm_pin = serializers.CharField(max_length=4, min_length=4, write_only=True)
+    
+    class Meta(UserRegistrationSerializer.Meta):
+        fields = UserRegistrationSerializer.Meta.fields + ['pin', 'confirm_pin']
+        extra_kwargs = {
+            'email': {'required': True},
+            'phone_number': {'required': True}
+        }
+    
+    def validate_phone_number(self, value):
+        validate_phone_number(value)
+        # Check if phone number already exists
+        if User.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError('Phone number already registered')
+        return value
+    
+    def validate_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate_confirm_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate(self, attrs):
+        pin = attrs.get('pin')
+        confirm_pin = attrs.get('confirm_pin')
+        
+        if pin != confirm_pin:
+            raise serializers.ValidationError({'confirm_pin': 'PINs do not match'})
+        
+        # Check PIN strength (optional - can be made configurable)
+        is_strong, message = is_pin_strong(pin)
+        if not is_strong:
+            raise serializers.ValidationError({'pin': message})
+        
+        return attrs
+    
+    def create(self, validated_data):
+        pin = validated_data.pop('pin')
+        validated_data.pop('confirm_pin')  # Remove confirm_pin as it's not needed
+        
+        user = super().create(validated_data)
+        user.set_pin(pin)
         user.save()
-        # Consider: from django.contrib.auth import update_session_auth_hash
-        # update_session_auth_hash(self.context['request'], user)
         return user
+
+
+class ChangePinSerializer(serializers.Serializer):
+    """Serializer for changing user PIN"""
+    current_pin = serializers.CharField(max_length=4, min_length=4)
+    new_pin = serializers.CharField(max_length=4, min_length=4)
+    confirm_new_pin = serializers.CharField(max_length=4, min_length=4)
+    
+    def validate_current_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate_new_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate_confirm_new_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate(self, attrs):
+        user = self.context['request'].user
+        current_pin = attrs.get('current_pin')
+        new_pin = attrs.get('new_pin')
+        confirm_new_pin = attrs.get('confirm_new_pin')
+        
+        # Check if current PIN is correct
+        if not user.check_pin(current_pin):
+            raise serializers.ValidationError({'current_pin': 'Current PIN is incorrect'})
+        
+        # Check if new PINs match
+        if new_pin != confirm_new_pin:
+            raise serializers.ValidationError({'confirm_new_pin': 'New PINs do not match'})
+        
+        # Check if new PIN is different from current
+        if current_pin == new_pin:
+            raise serializers.ValidationError({'new_pin': 'New PIN must be different from current PIN'})
+        
+        # Check PIN strength
+        is_strong, message = is_pin_strong(new_pin)
+        if not is_strong:
+            raise serializers.ValidationError({'new_pin': message})
+        
+        return attrs
+
+
+class ResetPinSerializer(serializers.Serializer):
+    """Serializer for PIN reset (requires phone verification)"""
+    phone_number = serializers.CharField(max_length=15)
+    new_pin = serializers.CharField(max_length=4, min_length=4)
+    confirm_new_pin = serializers.CharField(max_length=4, min_length=4)
+    # Add verification code field when you implement phone verification
+    # verification_code = serializers.CharField(max_length=6)
+    
+    def validate_phone_number(self, value):
+        validate_phone_number(value)
+        # Check if user exists with this phone number
+        if not User.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError('No user found with this phone number')
+        return value
+    
+    def validate_new_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate_confirm_new_pin(self, value):
+        validate_pin(value)
+        return value
+    
+    def validate(self, attrs):
+        new_pin = attrs.get('new_pin')
+        confirm_new_pin = attrs.get('confirm_new_pin')
+        
+        if new_pin != confirm_new_pin:
+            raise serializers.ValidationError({'confirm_new_pin': 'PINs do not match'})
+        
+        # Check PIN strength
+        is_strong, message = is_pin_strong(new_pin)
+        if not is_strong:
+            raise serializers.ValidationError({'new_pin': message})
+        
+        return attrs
+
+
+class PinStatusSerializer(serializers.Serializer):
+    """Serializer for PIN status information"""
+    is_pin_locked = serializers.SerializerMethodField()
+    failed_attempts = serializers.SerializerMethodField()
+    remaining_lock_time = serializers.SerializerMethodField()
+    pin_last_updated = serializers.SerializerMethodField()
+    
+    def get_is_pin_locked(self, obj):
+        return obj.is_pin_locked()
+    
+    def get_failed_attempts(self, obj):
+        return obj.failed_pin_attempts
+    
+    def get_remaining_lock_time(self, obj):
+        return obj.get_pin_lock_remaining_time()
+    
+    def get_pin_last_updated(self, obj):
+        return obj.pin_updated_at

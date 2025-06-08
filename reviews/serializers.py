@@ -34,8 +34,8 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 
 class ReviewListSerializer(serializers.ModelSerializer):
     """Serializer for listing reviews"""
-    reviewer_name = serializers.CharField(source='reviewer.get_full_name', read_only=True)
-    reviewer_profile_pic = serializers.ImageField(source='reviewer.profile_picture', read_only=True)
+    reviewer_name = serializers.CharField(source='client.get_full_name', read_only=True)
+    reviewer_profile_pic = serializers.ImageField(source='client.profile_picture', read_only=True)
     service_title = serializers.CharField(source='service.title', read_only=True)
     has_provider_response = serializers.SerializerMethodField()
     images_count = serializers.SerializerMethodField()
@@ -43,8 +43,8 @@ class ReviewListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = [
-            'id', 'booking', 'service', 'service_title', 'reviewer', 
-            'reviewer_name', 'reviewer_profile_pic', 'reviewee', 'rating', 
+            'id', 'booking', 'service', 'service_title', 'client', 
+            'reviewer_name', 'reviewer_profile_pic', 'provider', 'rating', 
             'comment', 'has_provider_response', 'images_count', 'created_at'
         ]
         read_only_fields = fields
@@ -57,15 +57,15 @@ class ReviewListSerializer(serializers.ModelSerializer):
 
 class ReviewDetailSerializer(serializers.ModelSerializer):
     """Serializer for detailed review view"""
-    reviewer = PublicUserProfileSerializer(read_only=True)
-    reviewee = PublicUserProfileSerializer(read_only=True)
+    client = PublicUserProfileSerializer(read_only=True)
+    provider = PublicUserProfileSerializer(read_only=True)
     service = ServiceSerializer(read_only=True)
     images = ReviewImageSerializer(many=True, read_only=True)
     
     class Meta:
         model = Review
         fields = [
-            'id', 'booking', 'service', 'reviewer', 'reviewee', 'rating',
+            'id', 'booking', 'service', 'client', 'provider', 'rating',
             'comment', 'provider_response', 'provider_response_date',
             'is_public', 'images', 'created_at', 'updated_at'
         ]
@@ -141,8 +141,8 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         
         # Create review object
         review = Review.objects.create(
-            reviewer=self.context['request'].user,
-            reviewee=booking.provider,
+            client=self.context['request'].user,
+            provider=booking.provider,
             service=booking.service,
             **validated_data
         )
@@ -171,7 +171,7 @@ class ReviewProviderResponseSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         review = self.instance
         
-        if review.reviewee != user:
+        if review.provider != user:
             raise serializers.ValidationError(
                 "You can only respond to reviews where you are the provider."
             )

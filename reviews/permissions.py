@@ -7,8 +7,8 @@ class IsReviewOwner(permissions.BasePermission):
     message = "You must be the owner of this review to perform this action."
 
     def has_object_permission(self, request, view, obj):
-        # Check if user is the reviewer
-        return obj.reviewer == request.user
+        # Check if user is the client (reviewer)
+        return obj.client == request.user
 
 class IsReviewProvider(permissions.BasePermission):
     """
@@ -17,5 +17,5 @@ class IsReviewProvider(permissions.BasePermission):
     message = "You must be the provider of this service to respond to the review."
 
     def has_object_permission(self, request, view, obj):
-        # Check if user is the reviewee (provider)
-        return obj.reviewee == request.user
+        # Check if user is the provider
+        return obj.provider == request.user

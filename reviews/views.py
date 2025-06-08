@@ -24,7 +24,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """
     queryset = Review.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['service', 'reviewer', 'reviewee', 'booking', 'rating']
+    filterset_fields = ['service', 'client', 'provider', 'booking', 'rating']
     search_fields = ['comment']
     ordering_fields = ['created_at', 'rating']
     ordering = ['-created_at']  # Most recent first by default
@@ -46,7 +46,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             
         # Users can see public reviews and all reviews they're involved in
         return Review.objects.filter(
-            Q(is_public=True) | Q(reviewer=user) | Q(reviewee=user)
+            Q(is_public=True) | Q(client=user) | Q(provider=user)
         )
     
     def get_serializer_class(self):
@@ -78,7 +78,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             review = serializer.save()
             
             # Update the provider's average rating
-            provider = review.reviewee
+            provider = review.provider
             self.update_provider_rating(provider)
             
             # Increment the provider's total bookings count if needed
@@ -93,7 +93,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 recipient=provider,
                 notification_type='review_received',
                 title='New Review Received',
-                message=f'You received a {review.rating}-star review from {review.reviewer.get_full_name() or review.reviewer.username}.',
+                message=f'You received a {review.rating}-star review from {review.client.get_full_name() or review.client.username}.',
                 content_object=review,
                 action_url=f'/provider/reviews/{review.id}/'
             )
@@ -113,10 +113,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
                 
                 # Send notification to the reviewer about the provider's response
                 send_notification(
-                    recipient=review.reviewer,
+                    recipient=review.client,
                     notification_type='review_response',
                     title='Provider Responded to Your Review',
-                    message=f'{review.reviewee.get_full_name() or review.reviewee.username} responded to your review for {review.service.title}.',
+                    message=f'{review.provider.get_full_name() or review.provider.username} responded to your review for {review.service.title}.',
                     content_object=review,
                     action_url=f'/bookings/{review.booking.id}/review/'
                 )
@@ -138,7 +138,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
             
         # Get public reviews for this provider
-        reviews = Review.objects.filter(reviewee_id=provider_id, is_public=True)
+        reviews = Review.objects.filter(provider_id=provider_id, is_public=True)
         
         # Calculate average rating
         avg_rating = reviews.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0
@@ -164,7 +164,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
             provider: The User instance for the service provider
         """
         # Get all public reviews for this provider
-        reviews = Review.objects.filter(reviewee=provider, is_public=True)
+        reviews = Review.objects.filter(provider=provider, is_public=True)
         
         # Calculate average rating
         avg = reviews.aggregate(avg_rating=Avg('rating'))

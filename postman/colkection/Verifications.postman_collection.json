@@ -23,7 +23,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/{{api_version}}/verifications/",
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/?verification_type=identity&document_type=passport&status=pending&ordering=-created_at&limit=10&offset=0",
 							"host": [
 								"{{base_url}}"
 							],
@@ -36,25 +36,37 @@
 							"query": [
 								{
 									"key": "verification_type",
-									"value": "",
-									"description": "Filter by verification type",
-									"disabled": true
+									"value": "identity",
+									"description": "Filter by verification type (identity, address, professional, educational, background, business, banking, other)"
 								},
 								{
 									"key": "document_type",
-									"value": "",
-									"description": "Filter by document type",
-									"disabled": true
+									"value": "passport",
+									"description": "Filter by document type (passport, national_id, drivers_license, utility_bill, etc.)"
 								},
 								{
 									"key": "status",
-									"value": "",
-									"description": "Filter by status",
-									"disabled": true
+									"value": "pending",
+									"description": "Filter by status (unverified, pending, in_progress, verified, rejected, expired)"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field (created_at, updated_at, verified_at, -created_at, -updated_at, -verified_at)"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of results per page"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Number of results to skip"
 								}
 							]
 						},
-						"description": "List verification requests for the authenticated user. Admins can see all verifications, while regular users can only see their own.\n\n**Permissions:**\n- Any authenticated user can list their own verifications\n- Admins can list all verifications\n\n**Query Parameters:**\n- verification_type (optional): Filter by verification type (identity, address, etc.)\n- document_type (optional): Filter by document type (passport, drivers_license, etc.)\n- status (optional): Filter by status (pending, verified, etc.)"
+						"description": "List verification requests for the authenticated user. Admins can see all verifications, while regular users can only see their own.\n\n**Permissions:**\n- Any authenticated user can list their own verifications\n- Admins can list all verifications\n\n**Query Parameters:**\n- verification_type (optional): Filter by verification type (identity, address, professional, educational, background, business, banking, other)\n- document_type (optional): Filter by document type (passport, national_id, drivers_license, utility_bill, bank_statement, rental_agreement, professional_cert, business_license, degree, transcript, other)\n- status (optional): Filter by status (unverified, pending, in_progress, verified, rejected, expired)\n- ordering (optional): Order by field (created_at, updated_at, verified_at, -created_at, -updated_at, -verified_at)\n- limit (optional): Number of results per page\n- offset (optional): Number of results to skip for pagination"
 					},
 					"response": []
 				},
@@ -76,7 +88,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"verification_type\": \"identity\",\n    \"document_type\": \"passport\",\n    \"document_file\": \"base64_encoded_file_content\",\n    \"document_back_file\": \"base64_encoded_back_file_content\",\n    \"document_number\": \"PASS123456\"\n}"
+							"raw": "{\n    \"verification_type\": \"{{verification_type}}\",\n    \"document_type\": \"{{document_type}}\",\n    \"document_file\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=\",\n    \"document_back_file\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=\",\n    \"document_number\": \"{{document_number}}\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/{{api_version}}/verifications/",
@@ -123,7 +135,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Verification",
+					"name": "Update Verification (Partial)",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -156,6 +168,71 @@
 							]
 						},
 						"description": "Update a verification request. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Request Body Fields:**\n- status (optional): New status for the verification\n- verification_notes (optional): Internal notes about the verification\n- rejection_reason (required if status=rejected): Reason for rejection\n- external_reference_id (optional): Reference ID from external verification service"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Verification (Full)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"verified\",\n    \"verification_notes\": \"Complete verification review conducted. All documents validated.\",\n    \"rejection_reason\": \"\",\n    \"external_reference_id\": \"ext_ref_789\",\n    \"verified_by\": \"{{admin_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								""
+							]
+						},
+						"description": "Fully update a verification request (replaces all updatable fields). Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Request Body Fields (all optional but replaces entire object):**\n- status: New status for the verification\n- verification_notes: Internal notes about the verification\n- rejection_reason: Reason for rejection if applicable\n- external_reference_id: Reference ID from external verification service\n- verified_by: ID of admin who verified (admin only field)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Verification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/{{verification_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								"{{verification_id}}",
+								""
+							]
+						},
+						"description": "Delete a verification request. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Use Cases:**\n- Remove test verification requests\n- Clean up duplicate submissions\n- Remove verification requests that violate policies\n\n**Note:** This permanently deletes the verification record and associated documents."
 					},
 					"response": []
 				},
@@ -327,6 +404,196 @@
 							]
 						},
 						"description": "Get a summary of verification request counts by status and type. Admin only endpoint.\n\n**Permissions:** Admin users only\n\n**Response includes:**\n- Counts by status (pending, verified, rejected, etc.)\n- Counts by verification type (identity, address, etc.)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pending Verifications (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/?status=pending&ordering=created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "Filter for pending verifications only"
+								},
+								{
+									"key": "ordering",
+									"value": "created_at",
+									"description": "Order by oldest first for admin processing"
+								}
+							]
+						},
+						"description": "Get all pending verification requests for admin review. Shows oldest requests first.\n\n**Permissions:** Admin users only\n\n**Use Case:** Admin dashboard to process verification queue"
+					},
+					"response": []
+				},
+				{
+					"name": "Get In Progress Verifications (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/?status=in_progress&ordering=-updated_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "in_progress",
+									"description": "Filter for in-progress verifications only"
+								},
+								{
+									"key": "ordering",
+									"value": "-updated_at",
+									"description": "Order by most recently updated first"
+								}
+							]
+						},
+						"description": "Get all in-progress verification requests for admin review. Shows most recently updated first.\n\n**Permissions:** Admin users only\n\n**Use Case:** Admin dashboard to continue processing verifications"
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Verification Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/?ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							],
+							"query": [
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by most recent first"
+								}
+							]
+						},
+						"description": "Get all verification requests for the authenticated user. Shows most recent first.\n\n**Permissions:** Authenticated users (own verifications only)\n\n**Use Case:** User dashboard to check verification status"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Identity Verifications Only",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/?verification_type=identity&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							],
+							"query": [
+								{
+									"key": "verification_type",
+									"value": "identity",
+									"description": "Filter for identity verifications only"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by most recent first"
+								}
+							]
+						},
+						"description": "Get identity verification requests only.\n\n**Permissions:** Authenticated users (own verifications only), Admins (all verifications)\n\n**Use Case:** Check identity verification status specifically"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Verified Documents",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/verifications/?status=verified&ordering=-verified_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"verifications",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "verified",
+									"description": "Filter for verified documents only"
+								},
+								{
+									"key": "ordering",
+									"value": "-verified_at",
+									"description": "Order by most recently verified first"
+								}
+							]
+						},
+						"description": "Get all verified documents for the authenticated user.\n\n**Permissions:** Authenticated users (own verifications only), Admins (all verifications)\n\n**Use Case:** Display user's verified credentials"
 					},
 					"response": []
 				}
