@@ -1777,6 +1777,221 @@
 							"body": "{\n    \"detail\": \"Authentication credentials were not provided.\"\n}"
 						}
 					]
+				},
+				{
+					"name": "User Type Detection",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"description": "Access token for authentication.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/auth/user-type/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"user-type",
+								""
+							]
+						},
+						"description": "Detects and returns the user type (customer, provider, or admin) based on the authentication token.\n\n**Permissions:** Authenticated User\n\n**Use Case:** Frontend applications can use this endpoint to determine user role and display appropriate UI/features.\n\n**Response includes:**\n- User ID and username for verification\n- Raw user type and display name\n- Boolean flags for easy role checking (is_customer, is_provider, is_admin)"
+					},
+					"response": [
+						{
+							"name": "Success - Customer User Type (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/auth/user-type/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"auth",
+										"user-type",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"username\": \"john_customer\",\n        \"user_type\": \"customer\",\n        \"user_type_display\": \"Customer\",\n        \"is_customer\": true,\n        \"is_provider\": false,\n        \"is_admin\": false\n    },\n    \"message\": \"User is a Customer\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Success - Provider User Type (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/auth/user-type/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"auth",
+										"user-type",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user_id\": \"987f6543-d21c-34b5-e678-901234567890\",\n        \"username\": \"jane_provider\",\n        \"user_type\": \"provider\",\n        \"user_type_display\": \"Service Provider\",\n        \"is_customer\": false,\n        \"is_provider\": true,\n        \"is_admin\": false\n    },\n    \"message\": \"User is a Service Provider\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Success - Admin User Type (200 OK)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/auth/user-type/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"auth",
+										"user-type",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user_id\": \"456a7890-b12c-45d6-e789-012345678901\",\n        \"username\": \"admin_user\",\n        \"user_type\": \"admin\",\n        \"user_type_display\": \"Administrator\",\n        \"is_customer\": false,\n        \"is_provider\": false,\n        \"is_admin\": true\n    },\n    \"message\": \"User is a Administrator\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Error - Unauthorized (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer invalid_token",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/auth/user-type/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"auth",
+										"user-type",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Authentication credentials were not provided.\"\n}"
+						},
+						{
+							"name": "Error - Invalid Token (401)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer expired_or_invalid_token",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/{{api_version}}/auth/user-type/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"{{api_version}}",
+										"auth",
+										"user-type",
+										""
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"detail\": \"Given token not valid for any token type\",\n    \"code\": \"token_not_valid\",\n    \"messages\": [\n        {\n            \"token_class\": \"AccessToken\",\n            \"token_type\": \"access\",\n            \"message\": \"Token is invalid or expired\"\n        }\n    ]\n}"
+						}
+					]
 				}
 			],
 			"description": "PIN-based authentication endpoints for secure user login and registration without traditional passwords."

@@ -346,3 +346,26 @@ class PinStatusSerializer(serializers.Serializer):
     
     def get_pin_last_updated(self, obj):
         return obj.pin_updated_at
+
+
+class UserTypeSerializer(serializers.Serializer):
+    """Serializer for user type information based on token"""
+    user_id = serializers.UUIDField(read_only=True)
+    username = serializers.CharField(read_only=True)
+    user_type = serializers.CharField(read_only=True)
+    user_type_display = serializers.SerializerMethodField()
+    is_customer = serializers.SerializerMethodField()
+    is_provider = serializers.SerializerMethodField()
+    is_admin = serializers.SerializerMethodField()
+    
+    def get_user_type_display(self, obj):
+        return obj.get_user_type_display()
+    
+    def get_is_customer(self, obj):
+        return obj.user_type == 'customer'
+    
+    def get_is_provider(self, obj):
+        return obj.user_type == 'provider'
+    
+    def get_is_admin(self, obj):
+        return obj.user_type == 'admin'

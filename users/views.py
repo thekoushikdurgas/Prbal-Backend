@@ -32,7 +32,8 @@ from .serializers import (
     PinRegistrationSerializer,
     ChangePinSerializer,
     ResetPinSerializer,
-    PinStatusSerializer
+    PinStatusSerializer,
+    UserTypeSerializer
 )
 
 User = get_user_model()
@@ -1129,4 +1130,20 @@ class PinStatusView(APIView):
         return Response({
             'pin_status': serializer.data,
             'user_id': user.id
+        }, status=status.HTTP_200_OK)
+
+
+class UserTypeView(APIView):
+    """View for getting user type based on authentication token"""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserTypeSerializer
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = self.serializer_class(user)
+        
+        return Response({
+            'data': serializer.data,
+            'message': f'User is a {user.get_user_type_display()}',
+            'status': 'success'
         }, status=status.HTTP_200_OK)

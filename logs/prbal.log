@@ -1223,3 +1223,50 @@ INFO 2025-06-08 07:02:09,976 middleware 14660 1736 API Request
 INFO 2025-06-08 07:02:09,978 basehttp 14660 1736 "POST /api/v1/auth/register/ HTTP/1.1" 201 1114
 INFO 2025-06-08 07:02:42,137 middleware 14660 1736 API Request
 INFO 2025-06-08 07:02:42,138 basehttp 14660 1736 "POST /api/v1/auth/provider/register/ HTTP/1.1" 201 1115
+ERROR 2025-06-10 07:09:40,279 exception 15168 7016 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+ERROR 2025-06-10 07:09:40,740 exception 15168 7016 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+ERROR 2025-06-10 07:09:40,804 exception 15168 7016 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+ERROR 2025-06-10 07:09:40,941 exception 15168 7016 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\durgas\Prbal-App\Prbal_backend\venv\Lib\site-packages\django\http\request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+INFO 2025-06-10 07:23:36,075 autoreload 15200 14880 Watching for file changes with StatReloader
+INFO 2025-06-10 19:57:29,734 autoreload 6960 5772 Watching for file changes with StatReloader
+INFO 2025-06-10 20:12:26,205 autoreload 19388 20804 Watching for file changes with StatReloader

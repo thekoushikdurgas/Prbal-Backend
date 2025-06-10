@@ -33,7 +33,9 @@ from .views import (
     ProviderPinRegistrationView,
     ChangePinView,
     ResetPinView,
-    PinStatusView
+    PinStatusView,
+    # User type detection
+    UserTypeView
 )
 
 urlpatterns = [
@@ -45,6 +47,9 @@ urlpatterns = [
     path('auth/pin/change/', ChangePinView.as_view(), name='change-pin'),
     path('auth/pin/reset/', ResetPinView.as_view(), name='reset-pin'),
     path('auth/pin/status/', PinStatusView.as_view(), name='pin-status'),
+    
+    # User type detection endpoint
+    path('auth/user-type/', UserTypeView.as_view(), name='user-type'),
     
     # Generic authentication endpoints (registration only - no login/password functionality)
     path('auth/register/', UserRegistrationView.as_view(), name='user-register'),
