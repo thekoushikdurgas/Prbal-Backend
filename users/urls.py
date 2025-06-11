@@ -26,6 +26,7 @@ from .views import (
     # Access token management
     UserAccessTokensView,
     UserAccessTokenRevokeView,
+    UserAccessTokenRevokeAllView,
     # PIN Authentication views
     PinLoginView,
     PinRegistrationView,
@@ -35,7 +36,8 @@ from .views import (
     ResetPinView,
     PinStatusView,
     # User type detection
-    UserTypeView
+    UserTypeView,
+    UserTypeChangeView
 )
 
 urlpatterns = [
@@ -50,6 +52,7 @@ urlpatterns = [
     
     # User type detection endpoint
     path('auth/user-type/', UserTypeView.as_view(), name='user-type'),
+    path('auth/user-type-change/', UserTypeChangeView.as_view(), name='user-type-change'),
     
     # Generic authentication endpoints (registration only - no login/password functionality)
     path('auth/register/', UserRegistrationView.as_view(), name='user-register'),
@@ -82,6 +85,7 @@ urlpatterns = [
     # Access token management endpoints
     path('users/me/tokens/', UserAccessTokensView.as_view(), name='user-access-tokens'),
     path('users/me/tokens/<uuid:token_id>/revoke/', UserAccessTokenRevokeView.as_view(), name='user-token-revoke'),
+    path('users/me/tokens/revoke_all/', UserAccessTokenRevokeAllView.as_view(), name='user-tokens-revoke-all'),
     
     # Search endpoints
     path('users/search/', UserSearchView.as_view(), name='user-search'),
@@ -90,7 +94,6 @@ urlpatterns = [
 
 # Note: All login endpoints removed as password functionality is being removed:
 # - path('auth/login/', UserLoginView.as_view(), name='user-login'),
-# - path('auth/logout/', UserLogoutView.as_view(), name='user-logout'),
 # - path('auth/customer/login/', CustomerLoginView.as_view(), name='customer-login'),
 # - path('auth/provider/login/', ProviderLoginView.as_view(), name='provider-login'),
 # - path('auth/admin/login/', AdminLoginView.as_view(), name='admin-login'),

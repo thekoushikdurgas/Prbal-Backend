@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import django_db_pool
 
 # JWT Settings
 from datetime import timedelta
@@ -185,7 +186,6 @@ else:
 # Use django-db-connection-pool in production for more advanced connection pooling
 if not DEBUG and config('USE_DB_POOL', default=False, cast=bool):
     try:
-        import django_db_pool
         DATABASES['default']['ENGINE'] = 'django_db_pool.db.backends.postgresql'
         DATABASES['default']['POOL_OPTIONS'] = {
             'POOL_SIZE': config('DB_POOL_SIZE', default=5, cast=int),
@@ -260,7 +260,13 @@ REST_FRAMEWORK = {
         'bid_submission': '10/hour',
         'review_submission': '5/day',
         'ai_suggestion': '20/day',
+        'service_category': '50/hour',
+        'service_subcategory': '50/hour',
+        'service_creation': '20/hour',
+        'service_request': '30/hour',
     },
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 

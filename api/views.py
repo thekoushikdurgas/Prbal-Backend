@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q, Count
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 from .models import ServiceCategory, ServiceSubCategory, Service, ServiceRequest
 from .serializers import (
     ServiceCategorySerializer,
@@ -16,7 +17,10 @@ from .serializers import (
     ServiceRequestDetailSerializer
 )
 from .permissions import IsServiceProvider, IsOwner, IsCustomer
+from .throttling import ServiceCategoryRateThrottle, ServiceSubCategoryRateThrottle, ServiceCreationRateThrottle, ServiceRequestRateThrottle
 import math
+
+User = get_user_model()
 
 # Create your views here.
 class ServiceCategoryViewSet(viewsets.ModelViewSet):
@@ -30,7 +34,20 @@ class ServiceCategoryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['is_active']
     search_fields = ['name', 'description']
-    ordering_fields = ['name', 'created_at']
+    ordering_fields = ['name', 'sort_order', 'created_at']
+    throttle_classes = [ServiceCategoryRateThrottle]
+    
+    def get_queryset(self):
+        queryset = ServiceCategory.objects.all()
+        
+        # Apply active_only filter if provided
+        active_only = self.request.query_params.get('active_only')
+        if active_only and active_only.lower() == 'true':
+            queryset = queryset.filter(is_active=True)
+        elif active_only and active_only.lower() == 'false':
+            queryset = queryset.filter(is_active=False)
+            
+        return queryset
     
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy', 'statistics']:
@@ -111,7 +128,25 @@ class ServiceSubCategoryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['is_active', 'category']
     search_fields = ['name', 'description', 'category__name']
-    ordering_fields = ['name', 'category__name', 'created_at']
+    ordering_fields = ['name', 'sort_order', 'category__name', 'created_at']
+    throttle_classes = [ServiceSubCategoryRateThrottle]
+    
+    def get_queryset(self):
+        queryset = ServiceSubCategory.objects.all()
+        
+        # Apply active_only filter if provided
+        active_only = self.request.query_params.get('active_only')
+        if active_only and active_only.lower() == 'true':
+            queryset = queryset.filter(is_active=True)
+        elif active_only and active_only.lower() == 'false':
+            queryset = queryset.filter(is_active=False)
+            
+        # Apply category filter if provided
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+            
+        return queryset
     
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -601,8 +636,6 @@ class ServiceRequestViewSet(viewsets.ModelViewSet):
             
         # Find providers who offer services in the same category
         from users.serializers import PublicUserProfileSerializer
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
         
         # Get providers with active services in this category
         providers = User.objects.filter(

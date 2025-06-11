@@ -33,7 +33,9 @@ from .serializers import (
     ChangePinSerializer,
     ResetPinSerializer,
     PinStatusSerializer,
-    UserTypeSerializer
+    UserTypeSerializer,
+    UserTypeChangeSerializer,
+    UserTypeChangeInfoSerializer
 )
 
 User = get_user_model()
@@ -83,6 +85,38 @@ class UserAccessTokenRevokeView(APIView):
         except Exception as e:
             logger.error(f"Error revoking token {token_id} for user {request.user.id}: {e}", exc_info=True)
             return Response({"detail": "An error occurred while revoking the token."}, 
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserAccessTokenRevokeAllView(APIView):
+    """View for revoking all active access tokens for the authenticated user"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            # Get all active tokens for the current user
+            active_tokens = AccessToken.objects.filter(user=request.user, is_active=True)
+            tokens_count = active_tokens.count()
+            
+            if tokens_count == 0:
+                return Response({
+                    'message': 'No active tokens to revoke',
+                    'revoked_count': 0
+                }, status=status.HTTP_200_OK)
+            
+            # Mark all active tokens as inactive
+            active_tokens.update(is_active=False)
+            
+            logger.info(f"User {request.user.id} ({request.user.username}) revoked all {tokens_count} active tokens")
+            
+            return Response({
+                'message': 'All active tokens revoked successfully',
+                'revoked_count': tokens_count
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            logger.error(f"Error revoking all tokens for user {request.user.id}: {e}", exc_info=True)
+            return Response({"detail": "An error occurred while revoking all tokens."}, 
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -1147,3 +1181,132 @@ class UserTypeView(APIView):
             'message': f'User is a {user.get_user_type_display()}',
             'status': 'success'
         }, status=status.HTTP_200_OK)
+
+
+class UserTypeChangeView(APIView):
+    """View for getting user type change information and changing user type"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        """Get information about possible user type changes"""
+        user = request.user
+        current_type = user.user_type
+        
+        # Define allowed transitions
+        allowed_transitions = {
+            'customer': ['provider'],
+            'provider': ['customer'],
+            'admin': []  # Admins typically can't change type
+        }
+        
+        # Define requirements for each type change
+        requirements = {
+            'provider': {
+                'phone_number': 'Phone number is required',
+                'skills': 'At least one skill must be specified',
+                'verification': 'Account verification may be required'
+            },
+            'customer': {
+                'no_pending_bookings': 'No pending service bookings',
+                'profile_completion': 'Basic profile information must be complete'
+            }
+        }
+        
+        # Define restrictions
+        restrictions = {
+            'admin': 'Administrator accounts cannot change type',
+            'pending_verification': 'Cannot change type while verification is pending',
+            'active_bookings': 'Cannot change type with active bookings'
+        }
+        
+        available_changes = allowed_transitions.get(current_type, [])
+        
+        info_data = {
+            'current_type': current_type,
+            'current_type_display': user.get_user_type_display(),
+            'available_changes': [
+                {
+                    'type': change_type,
+                    'display': dict(User.USER_TYPE_CHOICES)[change_type],
+                    'requirements': requirements.get(change_type, {})
+                }
+                for change_type in available_changes
+            ],
+            'change_restrictions': restrictions,
+            'requirements': requirements
+        }
+        
+        serializer = UserTypeChangeInfoSerializer(info_data)
+        
+        return Response({
+            'data': serializer.data,
+            'message': f'User type change information for {user.get_user_type_display()}',
+            'status': 'success'
+        }, status=status.HTTP_200_OK)
+    
+    def post(self, request, *args, **kwargs):
+        """Change user type"""
+        user = request.user
+        serializer = UserTypeChangeSerializer(data=request.data, context={'request': request})
+        
+        if serializer.is_valid():
+            to_type = serializer.validated_data['to']
+            reason = serializer.validated_data.get('reason', '')
+            from_type = user.user_type
+            
+            try:
+                with transaction.atomic():
+                    # Store the change for audit purposes
+                    old_type = user.user_type
+                    user.user_type = to_type
+                    
+                    # Preserve user data when changing types since users can be both customer and provider
+                    # No need to clear provider-specific data when switching to customer
+                    # No need to reset customer data when switching to provider
+                    
+                    # Initialize provider-specific data only if user doesn't have any provider experience
+                    if to_type == 'provider' and old_type == 'customer':
+                        # Keep existing skills if user has any, otherwise initialize empty skills
+                        if user.skills is None:
+                            user.skills = {}
+                        # Keep existing rating and booking count (user might have been a provider before)
+                    
+                    # When switching to customer, preserve all provider data
+                    # User might want to switch back to provider later
+                    
+                    user.save()
+                    
+                    # Log the change
+                    logger.info(f"User {user.id} ({user.username}) changed type from {old_type} to {to_type}. Reason: {reason}")
+                    
+                    # Send notification about type change
+                    try:
+                        from notifications.utils import send_notification
+                        send_notification(
+                            recipient=user,
+                            notification_type='account_update',
+                            title='User Type Changed',
+                            message=f'Your account type has been changed from {dict(User.USER_TYPE_CHOICES)[old_type]} to {dict(User.USER_TYPE_CHOICES)[to_type]}.',
+                            action_url='/account/profile/'
+                        )
+                    except ImportError:
+                        # Notifications app might not be available
+                        pass
+                    except Exception as e:
+                        logger.warning(f"Failed to send notification for user type change: {e}")
+                
+                return Response({
+                    'message': f'User type successfully changed from {dict(User.USER_TYPE_CHOICES)[from_type]} to {dict(User.USER_TYPE_CHOICES)[to_type]}',
+                    'from': from_type,
+                    'to': to_type,
+                    'user': UserProfileSerializer(user).data,
+                    'status': 'success'
+                }, status=status.HTTP_200_OK)
+                
+            except Exception as e:
+                logger.error(f"Error changing user type for user {user.id}: {e}", exc_info=True)
+                return Response({
+                    'detail': 'An error occurred while changing user type. Please try again.'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

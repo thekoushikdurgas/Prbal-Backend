@@ -11,13 +11,15 @@ class ServiceCategory(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     icon = models.ImageField(upload_to='category_icons/', blank=True, null=True)
+    icon_url = models.URLField(max_length=500, blank=True, null=True, help_text="External icon URL")
+    sort_order = models.PositiveIntegerField(default=0, help_text="Order for displaying categories")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name_plural = 'Service Categories'
-        ordering = ['name']
+        ordering = ['sort_order', 'name']
     
     def __str__(self):
         return self.name
@@ -29,13 +31,15 @@ class ServiceSubCategory(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     icon = models.CharField(max_length=50, blank=True, null=True)
+    icon_url = models.URLField(max_length=500, blank=True, null=True, help_text="External icon URL")
+    sort_order = models.PositiveIntegerField(default=0, help_text="Order for displaying subcategories within category")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         verbose_name_plural = 'Service SubCategories'
-        ordering = ['category__name', 'name']
+        ordering = ['category__sort_order', 'category__name', 'sort_order', 'name']
         unique_together = ['category', 'name']
     
     def __str__(self):

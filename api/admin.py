@@ -4,22 +4,26 @@ from .models import ServiceCategory, ServiceSubCategory, Service, ServiceImage, 
 # Register your models here.
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'is_active', 'created_at')
+    list_display = ('name', 'sort_order', 'is_active', 'created_at')
     list_filter = ('is_active',)
     search_fields = ('name', 'description')
+    ordering = ('sort_order', 'name')
+    list_editable = ('sort_order', 'is_active')
     prepopulated_fields = {'name': ('name',)}
 
 class ServiceSubCategoryInline(admin.TabularInline):
     model = ServiceSubCategory
     extra = 1
-    fields = ('name', 'description', 'icon', 'is_active')
+    fields = ('name', 'description', 'icon', 'icon_url', 'sort_order', 'is_active')
 
 @admin.register(ServiceSubCategory)
 class ServiceSubCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'is_active', 'created_at')
+    list_display = ('name', 'category', 'sort_order', 'is_active', 'created_at')
     list_filter = ('is_active', 'category')
     search_fields = ('name', 'description', 'category__name')
     raw_id_fields = ('category',)
+    ordering = ('category__sort_order', 'category__name', 'sort_order', 'name')
+    list_editable = ('sort_order', 'is_active')
 
 class ServiceImageInline(admin.TabularInline):
     model = ServiceImage

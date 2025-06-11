@@ -12,7 +12,7 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
     """Serializer for service categories"""
     class Meta:
         model = ServiceCategory
-        fields = ['id', 'name', 'description', 'icon', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'icon', 'icon_url', 'sort_order', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 
@@ -22,7 +22,7 @@ class ServiceSubCategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceSubCategory
-        fields = ['id', 'category', 'category_name', 'name', 'description', 'icon', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'category', 'category_name', 'name', 'description', 'icon', 'icon_url', 'sort_order', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 class ServiceListSerializer(serializers.ModelSerializer):

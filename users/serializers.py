@@ -369,3 +369,69 @@ class UserTypeSerializer(serializers.Serializer):
     
     def get_is_admin(self, obj):
         return obj.user_type == 'admin'
+
+
+class UserTypeChangeSerializer(serializers.Serializer):
+    """Serializer for user type change requests"""
+    to = serializers.ChoiceField(choices=User.USER_TYPE_CHOICES, required=True)
+    reason = serializers.CharField(max_length=500, required=False, allow_blank=True)
+    
+    def validate_to(self, value):
+        """Validate the target user type"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            current_user_type = request.user.user_type
+            
+            # Prevent changing to the same type
+            if value == current_user_type:
+                raise serializers.ValidationError(f'You are already a {request.user.get_user_type_display()}')
+            
+            # Define allowed transitions
+            allowed_transitions = {
+                'customer': ['provider'],  # Customers can become providers
+                'provider': ['customer'],  # Providers can become customers
+                'admin': []  # Admins cannot change type (or add specific rules)
+            }
+            
+            if current_user_type not in allowed_transitions:
+                raise serializers.ValidationError('Invalid current user type')
+            
+            if value not in allowed_transitions[current_user_type]:
+                raise serializers.ValidationError(
+                    f'Cannot change from {request.user.get_user_type_display()} to {dict(User.USER_TYPE_CHOICES)[value]}'
+                )
+        
+        return value
+    
+    def validate(self, attrs):
+        """Additional validation for user type change"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            user = request.user
+            to_type = attrs.get('to')
+            
+            # Add any additional business rules here
+            # For example, check if user has completed certain requirements
+            
+            if to_type == 'provider':
+                # Example: Check if user has required information to become a provider
+                if not user.phone_number:
+                    raise serializers.ValidationError(
+                        'Phone number is required to become a service provider'
+                    )
+                    
+            elif to_type == 'customer':
+                # Example: Check if provider has any pending bookings
+                # This would require importing booking models
+                pass
+        
+        return attrs
+
+
+class UserTypeChangeInfoSerializer(serializers.Serializer):
+    """Serializer for user type change information"""
+    current_type = serializers.CharField(read_only=True)
+    current_type_display = serializers.CharField(read_only=True)
+    available_changes = serializers.ListField(read_only=True)
+    change_restrictions = serializers.DictField(read_only=True)
+    requirements = serializers.DictField(read_only=True)

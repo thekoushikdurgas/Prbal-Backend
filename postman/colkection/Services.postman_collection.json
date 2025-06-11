@@ -76,6 +76,37 @@
           "response": []
         },
         {
+          "name": "List Categories with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/?active_only=true&page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "categories", ""],
+              "query": [
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "description": "Filter by active status (true/false)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "description": "Number of items per page"
+                }
+              ]
+            },
+            "description": "Get service categories with pagination and active status filtering."
+          },
+          "response": []
+        },
+        {
           "name": "Get Category",
           "request": {
             "method": "GET",
@@ -83,7 +114,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "categories", "{{service_category_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
             },
             "description": "Get details of a specific service category."
           },
@@ -105,14 +143,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"New Category\",\n  \"description\": \"Description of the new category\",\n  \"is_active\": true\n}"
+              "raw": "{\n  \"name\": \"New Category\",\n  \"description\": \"Description of the new category\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/icon.png\",\n  \"sort_order\": 1\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/services/categories/",
               "host": ["{{base_url}}"],
               "path": ["api", "v1", "services", "categories", ""]
             },
-            "description": "Create a new service category (admin only)."
+            "description": "Create a new service category (admin only). Fields: name (required), description (required), is_active (optional), icon_url (optional), sort_order (optional)."
           },
           "response": []
         },
@@ -132,14 +170,21 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Category\",\n  \"description\": \"Updated description\",\n  \"is_active\": true\n}"
+              "raw": "{\n  \"name\": \"Updated Category\",\n  \"description\": \"Updated description\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/updated-icon.png\",\n  \"sort_order\": 2\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "categories", "{{service_category_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
             },
-            "description": "Update a service category (admin only)."
+            "description": "Update a service category (admin only). All fields are optional but name and description are recommended."
           },
           "response": []
         },
@@ -159,14 +204,21 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Updated description only\"\n}"
+              "raw": "{\n  \"description\": \"Updated description only\",\n  \"is_active\": false\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "categories", "{{service_category_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
             },
-            "description": "Partially update a service category (admin only)."
+            "description": "Partially update specific fields of a service category (admin only)."
           },
           "response": []
         },
@@ -183,7 +235,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "categories", "{{service_category_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
             },
             "description": "Delete a service category (admin only)."
           },
@@ -229,6 +288,37 @@
           "response": []
         },
         {
+          "name": "List Subcategories with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/?active_only=true&page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""],
+              "query": [
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "description": "Filter by active status (true/false)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "description": "Number of items per page"
+                }
+              ]
+            },
+            "description": "Get service subcategories with pagination and active status filtering."
+          },
+          "response": []
+        },
+        {
           "name": "Filter Subcategories by Category",
           "request": {
             "method": "GET",
@@ -249,6 +339,42 @@
           "response": []
         },
         {
+          "name": "Filter Subcategories by Category with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/?category={{service_category_id}}&active_only=true&page=1&page_size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{service_category_id}}",
+                  "description": "Filter by specific category ID"
+                },
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "description": "Filter by active status (true/false)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "page_size",
+                  "value": "10",
+                  "description": "Number of items per page"
+                }
+              ]
+            },
+            "description": "Get service subcategories filtered by category with pagination and active status filtering."
+          },
+          "response": []
+        },
+        {
           "name": "Get Subcategory",
           "request": {
             "method": "GET",
@@ -256,7 +382,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "subcategories", "{{service_subcategory_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
             },
             "description": "Get details of a specific service subcategory."
           },
@@ -278,14 +411,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"name\": \"New Subcategory\",\n  \"description\": \"Description of the new subcategory\",\n  \"is_active\": true\n}"
+              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"name\": \"New Subcategory\",\n  \"description\": \"Description of the new subcategory\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/subcategory-icon.png\",\n  \"sort_order\": 1\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/services/subcategories/",
               "host": ["{{base_url}}"],
               "path": ["api", "v1", "services", "subcategories", ""]
             },
-            "description": "Create a new service subcategory (admin only)."
+            "description": "Create a new service subcategory (admin only). Fields: category (required), name (required), description (required), is_active (optional), icon_url (optional), sort_order (optional)."
           },
           "response": []
         },
@@ -305,14 +438,21 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"name\": \"Updated Subcategory\",\n  \"description\": \"Updated description\",\n  \"is_active\": true\n}"
+              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"name\": \"Updated Subcategory\",\n  \"description\": \"Updated description\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/updated-subcategory-icon.png\",\n  \"sort_order\": 2\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "subcategories", "{{service_subcategory_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
             },
-            "description": "Update a service subcategory (admin only)."
+            "description": "Update a service subcategory (admin only). Category, name, and description are recommended."
           },
           "response": []
         },
@@ -332,14 +472,21 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Updated description only\"\n}"
+              "raw": "{\n  \"description\": \"Updated description only\",\n  \"is_active\": false\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "subcategories", "{{service_subcategory_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
             },
-            "description": "Partially update a service subcategory (admin only)."
+            "description": "Partially update specific fields of a service subcategory (admin only)."
           },
           "response": []
         },
@@ -356,7 +503,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "subcategories", "{{service_subcategory_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
             },
             "description": "Delete a service subcategory (admin only)."
           },
@@ -677,7 +831,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/services/{{service_request_id}}/matching_services/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "{{service_request_id}}", "matching_services", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "{{service_request_id}}",
+                "matching_services",
+                ""
+              ]
             },
             "description": "Customer-only endpoint to find services that match a specific service request."
           },
@@ -704,7 +865,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/services/{{service_request_id}}/fulfill_request/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "services", "{{service_request_id}}", "fulfill_request", ""]
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "{{service_request_id}}",
+                "fulfill_request",
+                ""
+              ]
             },
             "description": "Provider-only action to fulfill a service request by creating a matching service."
           },
@@ -778,7 +946,13 @@
             "url": {
               "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "service-requests", "{{service_request_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
             },
             "description": "Get details of a specific service request."
           },
@@ -832,7 +1006,13 @@
             "url": {
               "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "service-requests", "{{service_request_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
             },
             "description": "Update a service request (owner only)."
           },
@@ -859,7 +1039,13 @@
             "url": {
               "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "service-requests", "{{service_request_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
             },
             "description": "Partially update a service request (owner only)."
           },
@@ -878,7 +1064,13 @@
             "url": {
               "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "service-requests", "{{service_request_id}}", ""]
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
             },
             "description": "Delete a service request (owner only)."
           },
@@ -935,7 +1127,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/recommended_providers/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "service-requests", "{{service_request_id}}", "recommended_providers", ""]
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                "recommended_providers",
+                ""
+              ]
             },
             "description": "Customer endpoint to get recommended providers for a specific service request."
           },
@@ -981,7 +1180,14 @@
             "url": {
               "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/cancel/",
               "host": ["{{base_url}}"],
-              "path": ["api", "v1", "service-requests", "{{service_request_id}}", "cancel", ""]
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                "cancel",
+                ""
+              ]
             },
             "description": "Customer-only action to cancel their service request."
           },
