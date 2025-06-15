@@ -1,0 +1,65 @@
+# ================================================================
+# DEVELOPMENT DEPENDENCIES - PRBAL BACKEND
+# Additional packages needed only for development and testing
+# Install with: pip install -r requirements.txt -r requirements-dev.txt
+# ================================================================
+
+# Include base requirements
+-r requirements.txt
+
+# ----------------------------------------------------------------
+# Development & Debugging Tools
+# ----------------------------------------------------------------
+django-debug-toolbar>=5.2.0,<6.0.0    # Development debugging interface
+django-extensions>=3.2.0,<4.0.0        # Additional Django management commands
+ipython>=8.20.0,<9.0.0                 # Enhanced Python shell
+
+# ----------------------------------------------------------------
+# Code Quality & Formatting
+# ----------------------------------------------------------------
+black>=24.0.0,<25.0.0                  # Code formatting
+isort>=5.13.0,<6.0.0                   # Import sorting
+flake8>=7.0.0,<8.0.0                   # Linting
+mypy>=1.8.0,<2.0.0                     # Type checking
+pre-commit>=3.6.0,<4.0.0               # Git hooks for code quality
+
+# ----------------------------------------------------------------
+# Testing & Coverage
+# ----------------------------------------------------------------
+pytest>=8.0.0,<9.0.0                   # Testing framework
+pytest-django>=4.8.0,<5.0.0            # Django integration for pytest
+pytest-cov>=4.0.0,<5.0.0               # Coverage plugin for pytest
+pytest-mock>=3.12.0,<4.0.0             # Mocking utilities
+factory-boy>=3.3.0,<4.0.0              # Test data generation
+faker>=22.0.0,<23.0.0                  # Fake data generation
+
+# ----------------------------------------------------------------
+# API Testing & Documentation
+# ----------------------------------------------------------------
+httpie>=3.2.0,<4.0.0                   # Command-line HTTP client
+requests-mock>=1.11.0,<2.0.0           # Mock HTTP requests for testing
+
+# ----------------------------------------------------------------
+# Database Tools
+# ----------------------------------------------------------------
+django-seed>=0.3.1,<1.0.0              # Database seeding with fake data
+
+# ----------------------------------------------------------------
+# Performance & Profiling
+# ----------------------------------------------------------------
+django-silk>=5.0.0,<6.0.0              # Request profiling and inspection
+memory-profiler>=0.61.0,<1.0.0         # Memory usage profiling
+
+# ----------------------------------------------------------------
+# Development Utilities
+# ----------------------------------------------------------------
+python-dotenv>=1.0.0,<2.0.0            # Load .env files in development
+watchdog>=3.0.0,<4.0.0                 # File system monitoring
+invoke>=2.2.0,<3.0.0                   # Task automation
+
+# ----------------------------------------------------------------
+# Optional: Advanced Development Tools
+# ----------------------------------------------------------------
+# django-querycount>=0.8.0,<1.0.0      # Query counting for optimization
+# django-cors-headers>=4.0.0,<5.0.0    # Already in main requirements
+# jupyter>=1.0.0,<2.0.0                # Jupyter notebooks for data analysis 

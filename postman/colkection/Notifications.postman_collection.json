@@ -1,0 +1,675 @@
+{
+    "info": {
+        "_postman_id": "c6ef0913-c0ce-4753-8c17-259e292edb57",
+        "name": "Prbal API for Notifications",
+        "description": "Comprehensive API collection for the Prbal application notifications system. Supports providers, customers, and admin users with both REST API and WebSocket endpoints.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "20572666",
+        "_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+    },
+    "item": [
+        {
+            "name": "Notifications (HTTP)",
+            "item": [
+                {
+                    "name": "List User Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/?notification_type={{notification_type}}&is_read={{is_read}}&ordering={{ordering}}",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "notification_type",
+                                    "value": "{{notification_type}}",
+                                    "description": "Filter by notification type (bid_received, bid_accepted, etc.)"
+                                },
+                                {
+                                    "key": "is_read",
+                                    "value": "{{is_read}}",
+                                    "description": "Filter by read status (true/false)"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "{{ordering}}",
+                                    "description": "Order by field (created_at, -created_at)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Notification Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/{{notification_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "{{notification_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Unread Notifications Count",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/unread_count/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "unread_count",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Specific Notifications as Read",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"notification_ids\": [\n        \"{{notification_id}}\",\n        \"{{another_notification_id}}\"\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/mark_read/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "mark_read",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark All Notifications as Read",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"mark_all\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/mark_read/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "mark_read",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Single Notification as Read (PUT)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"mark_all\": false\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/{{notification_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "{{notification_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark Single Notification as Read (PATCH)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"mark_all\": false\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/{{notification_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "{{notification_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Notification",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/{{notification_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "{{notification_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Archive Notification",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"is_archived\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/{{notification_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                "{{notification_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "[Admin] Create Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"recipient\": \"{{user_id}}\",\n    \"notification_type\": \"system\",\n    \"title\": \"System Notification\",\n    \"message\": \"This is a system notification for testing purposes.\",\n    \"action_url\": \"/dashboard\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "[Admin] List All Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/?all=true",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "all",
+                                    "value": "true",
+                                    "description": "Admin can see all notifications"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "HTTP REST API endpoints for notifications management. Includes CRUD operations and notification-specific actions.",
+            "event": [],
+            "protocolProfileBehavior": {}
+        },
+        {
+            "name": "Provider Notifications",
+            "item": [
+                {
+                    "name": "[Provider] List My Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{provider_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/?notification_type=bid_received,booking_created,payment_received",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "notification_type",
+                                    "value": "bid_received,booking_created,payment_received",
+                                    "description": "Provider-relevant notification types"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "[Provider] Get Bid Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{provider_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/?notification_type=bid_received&is_read=false",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "notification_type",
+                                    "value": "bid_received",
+                                    "description": "Filter for bid notifications"
+                                },
+                                {
+                                    "key": "is_read",
+                                    "value": "false",
+                                    "description": "Only unread notifications"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Notification endpoints specifically for service providers. Includes bid notifications, booking confirmations, and payment notifications.",
+            "event": [],
+            "protocolProfileBehavior": {}
+        },
+        {
+            "name": "Customer Notifications",
+            "item": [
+                {
+                    "name": "[Customer] List My Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customer_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/?notification_type=bid_accepted,bid_rejected,booking_status_updated",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "notification_type",
+                                    "value": "bid_accepted,bid_rejected,booking_status_updated",
+                                    "description": "Customer-relevant notification types"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "[Customer] Get Booking Status Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customer_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/notifications/?notification_type=booking_status_updated&is_read=false",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "notifications",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "notification_type",
+                                    "value": "booking_status_updated",
+                                    "description": "Filter for booking status notifications"
+                                },
+                                {
+                                    "key": "is_read",
+                                    "value": "false",
+                                    "description": "Only unread notifications"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Notification endpoints specifically for customers. Includes bid responses, booking updates, and service completion notifications.",
+            "event": [],
+            "protocolProfileBehavior": {}
+        },
+        {
+            "name": "Real-time Notifications (WebSocket)",
+            "item": [
+                {
+                    "name": "Connect to Notifications WebSocket",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Upgrade",
+                                "value": "websocket",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Connection",
+                                "value": "Upgrade",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Sec-WebSocket-Key",
+                                "value": "dGhlIHNhbXBsZSBub25jZQ==",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Sec-WebSocket-Version",
+                                "value": "13",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url_ws}}/ws/notifications/",
+                            "host": [
+                                "{{base_url_ws}}"
+                            ],
+                            "path": [
+                                "ws",
+                                "notifications",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ],
+            "description": "WebSocket endpoints for real-time notification handling. Supports live updates, marking notifications as read, and receiving push notifications.",
+            "event": [],
+            "protocolProfileBehavior": {}
+        },
+        {
+            "name": "WebSocket Message Examples",
+            "item": [
+                {
+                    "name": "Mark Notification as Read (WebSocket)",
+                    "request": {
+                        "description": "Send this JSON message through WebSocket connection:\n```json\n{\n    \"type\": \"mark_read\",\n    \"notification_id\": \"{{notification_id}}\"\n}\n```"
+                    }
+                },
+                {
+                    "name": "Mark All Notifications as Read (WebSocket)",
+                    "request": {
+                        "description": "Send this JSON message through WebSocket connection:\n```json\n{\n    \"type\": \"mark_all_read\"\n}\n```"
+                    }
+                },
+                {
+                    "name": "Get Recent Notifications (WebSocket)",
+                    "request": {
+                        "description": "Send this JSON message through WebSocket connection:\n```json\n{\n    \"type\": \"get_notifications\"\n}\n```"
+                    }
+                },
+                {
+                    "name": "Archive Notification (WebSocket)",
+                    "request": {
+                        "description": "Send this JSON message through WebSocket connection:\n```json\n{\n    \"type\": \"archive_notification\",\n    \"notification_id\": \"{{notification_id}}\"\n}\n```"
+                    }
+                }
+            ],
+            "description": "Example WebSocket messages that can be sent to the notification WebSocket endpoint. These are not HTTP requests but JSON messages sent over WebSocket connection.",
+            "event": [],
+            "protocolProfileBehavior": {}
+        }
+    ]
+}

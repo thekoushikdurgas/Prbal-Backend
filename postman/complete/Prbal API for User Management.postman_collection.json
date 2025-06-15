@@ -1,0 +1,1458 @@
+{
+  "info": {
+    "_postman_id": "69f2d8fe-b3e6-4517-8630-7631bde1b068",
+    "name": "Prbal API for User Management - Enhanced",
+    "description": "Complete API collection for Prbal user management with 36 endpoints enhanced with Universal Document/Image Conversion. All responses follow standardized format: {message, data, time, statusCode}. Now supports URLs, base64, local files, and cloud storage for documents/images across all endpoints. Includes Authentication (11), User Profile Management (6), Token Management (4), Social Features (2), User Search (3), and Verification (10) endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20572666",
+    "_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-69f2d8fe-b3e6-4517-8630-7631bde1b068?action=share&source=collection_link&creator=20572666"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "sampleImageUrl",
+      "value": "https://example.com/sample-image.jpg",
+      "type": "string"
+    },
+    {
+      "key": "sampleDocumentUrl",
+      "value": "https://example.com/sample-document.pdf",
+      "type": "string"
+    },
+    {
+      "key": "sampleBase64Image",
+      "value": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD...",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "PIN Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+1234567890\",\n  \"pin\": \"1234\",\n  \"device_type\": \"web\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/auth/login/",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "auth", "login", ""]
+            }
+          },
+          "response": [
+            {
+              "name": "Login Success",
+              "originalRequest": {
+                "method": "POST",
+                "body": {"mode": "raw", "raw": "{\n  \"phone_number\": \"+1234567890\",\n  \"pin\": \"1234\"\n}"},
+                "url": {"raw": "{{baseUrl}}/users/auth/login/"}
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Login successful\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid\",\n      \"username\": \"testuser\",\n      \"email\": \"test@example.com\",\n      \"user_type\": \"customer\"\n    },\n    \"tokens\": {\n      \"access\": \"jwt_access_token\",\n      \"refresh\": \"jwt_refresh_token\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Login Failed",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/login/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"PIN login failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"non_field_errors\": \"Invalid phone number or PIN\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "PIN Registration",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newuser\",\n  \"email\": \"newuser@example.com\",\n  \"phone_number\": \"+1234567890\",\n  \"pin\": \"1234\",\n  \"confirm_pin\": \"1234\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/auth/register/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "register", ""]}
+          },
+          "response": [
+            {
+              "name": "Registration Success",
+              "originalRequest": {
+                "method": "POST",
+                "body": {"mode": "raw", "raw": "{\n  \"username\": \"newuser\",\n  \"email\": \"newuser@example.com\",\n  \"phone_number\": \"+1234567890\",\n  \"pin\": \"1234\",\n  \"confirm_pin\": \"1234\"\n}"},
+                "url": {"raw": "{{baseUrl}}/users/auth/register/"}
+              },
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"message\": \"Customer registered successfully\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"newuser\",\n      \"email\": \"newuser@example.com\",\n      \"user_type\": \"customer\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n      \"phone_number\": \"+1234567890\"\n    },\n    \"tokens\": {\n      \"access\": \"jwt_access_token\",\n      \"refresh\": \"jwt_refresh_token\"\n    },\n    \"registration_details\": {\n      \"user_type\": \"customer\",\n      \"user_type_display\": \"Customer\",\n      \"device_type\": \"web\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+            },
+            {
+              "name": "Registration Failed - Validation Error",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/register/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Registration failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"email\": \"A user with that email address already exists.\",\n    \"confirm_pin\": \"PINs do not match\"\n  }\n}"
+            },
+            {
+              "name": "Registration Failed - Database Error",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/register/"}},
+              "status": "Internal Server Error",
+              "code": 500,
+              "body": "{\n  \"message\": \"An unexpected error occurred during registration. Please try again later.\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 500\n}"
+            }
+          ]
+        },
+        {
+          "name": "Admin Registration",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@example.com\",\n  \"phone_number\": \"+1234567890\",\n  \"pin\": \"1234\",\n  \"confirm_pin\": \"1234\",\n  \"admin_code\": \"123\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/auth/admin/register/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "admin", "register", ""]}
+          },
+          "response": [
+            {
+              "name": "Admin Registration Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/admin/register/"}},
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"message\": \"Administrator registered successfully\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"admin\",\n      \"email\": \"admin@example.com\",\n      \"user_type\": \"admin\",\n      \"is_staff\": true\n    },\n    \"tokens\": {\n      \"access\": \"jwt_access_token\",\n      \"refresh\": \"jwt_refresh_token\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+            },
+            {
+              "name": "Admin Registration Failed - Invalid Code",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/admin/register/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Registration failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"admin_code\": \"Invalid administrator verification code\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Change PIN",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"current_pin\": \"1234\",\n  \"new_pin\": \"5678\",\n  \"confirm_new_pin\": \"5678\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/auth/pin/change/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "pin", "change", ""]}
+          },
+          "response": [
+            {
+              "name": "PIN Changed Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/pin/change/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"PIN changed successfully\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"pin_updated_at\": \"2024-01-01T12:00:00Z\",\n    \"pin_change_details\": {\n      \"changed_by\": \"user_request\",\n      \"ip_address\": \"192.168.1.1\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "PIN Change Failed - Wrong Current PIN",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/pin/change/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"PIN change failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"current_pin\": \"Current PIN is incorrect\"\n  }\n}"
+            },
+            {
+              "name": "PIN Change Failed - Unauthorized",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/pin/change/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset PIN",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+1234567890\",\n  \"new_pin\": \"5678\",\n  \"confirm_new_pin\": \"5678\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/auth/pin/reset/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "pin", "reset", ""]}
+          },
+          "response": [
+            {
+              "name": "PIN Reset Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/pin/reset/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"PIN reset successfully\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"phone_number\": \"+1234567890\",\n    \"pin_updated_at\": \"2024-01-01T12:00:00Z\",\n    \"reset_details\": {\n      \"method\": \"phone_verification\",\n      \"verification_required\": false,\n      \"ip_address\": \"192.168.1.1\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "PIN Reset Failed - User Not Found",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/pin/reset/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"User not found with this phone number\",\n  \"data\": {\n    \"phone_number\": \"+1234567890\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            },
+            {
+              "name": "PIN Reset Failed - Validation Error",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/pin/reset/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"PIN reset failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"confirm_new_pin\": \"PINs do not match\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "PIN Status",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/auth/pin/status/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "pin", "status", ""]}
+          },
+          "response": [
+            {
+              "name": "PIN Status Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/auth/pin/status/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"PIN status retrieved successfully\",\n  \"data\": {\n    \"pin_status\": {\n      \"is_pin_locked\": false,\n      \"failed_attempts\": 0,\n      \"remaining_lock_time\": 0,\n      \"pin_last_updated\": \"2024-01-01T12:00:00Z\"\n    },\n    \"user_id\": \"uuid-here\",\n    \"username\": \"testuser\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "PIN Status Unauthorized",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/auth/pin/status/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get User Type",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/auth/user-type/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "user-type", ""]}
+          },
+          "response": [
+            {
+              "name": "User Type Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/auth/user-type/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User is a Customer\",\n  \"data\": {\n    \"user_type_info\": {\n      \"user_id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"user_type\": \"customer\",\n      \"user_type_display\": \"Customer\",\n      \"is_customer\": true,\n      \"is_provider\": false,\n      \"is_admin\": false\n    },\n    \"user_id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"user_type_display\": \"Customer\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "User Type Unauthorized",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/auth/user-type/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get User Type Change Info",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/auth/user-type-change/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "user-type-change", ""]}
+          },
+          "response": [
+            {
+              "name": "User Type Change Info Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/auth/user-type-change/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User type change information for Customer\",\n  \"data\": {\n    \"change_info\": {\n      \"current_type\": \"customer\",\n      \"current_type_display\": \"Customer\",\n      \"available_changes\": [\n        {\n          \"type\": \"provider\",\n          \"display\": \"Service Provider\",\n          \"requirements\": {\n            \"phone_number\": \"Phone number is required\",\n            \"skills\": \"At least one skill must be specified\"\n          }\n        }\n      ]\n    },\n    \"user_id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"current_type\": \"customer\",\n    \"current_type_display\": \"Customer\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Change User Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"provider\",\n  \"reason\": \"Want to offer services\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/auth/user-type-change/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "user-type-change", ""]}
+          },
+          "response": [
+            {
+              "name": "User Type Change Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/user-type-change/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User type successfully changed from Customer to Service Provider\",\n  \"data\": {\n    \"user_type_change\": {\n      \"from\": \"customer\",\n      \"to\": \"provider\",\n      \"from_display\": \"Customer\",\n      \"to_display\": \"Service Provider\",\n      \"reason\": \"Want to offer services\"\n    },\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"user_type\": \"provider\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "User Type Change Failed - Same Type",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/user-type-change/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"User type change failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"to\": \"You are already a Customer\"\n  }\n}"
+            },
+            {
+              "name": "User Type Change Failed - Missing Requirements",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/user-type-change/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"User type change failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"non_field_errors\": \"Phone number is required to become a service provider\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"jwt_refresh_token\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/auth/token/refresh/", "host": ["{{baseUrl}}"], "path": ["users", "auth", "token", "refresh", ""]}
+          },
+          "response": [
+            {
+              "name": "Token Refresh Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/token/refresh/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"access\": \"new_jwt_access_token\"\n}"
+            },
+            {
+              "name": "Token Refresh Failed - Invalid Token",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/token/refresh/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Token is invalid or expired\",\n  \"code\": \"token_not_valid\"\n}"
+            },
+            {
+              "name": "Token Refresh Failed - Missing Token",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/auth/token/refresh/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"refresh\": [\n    \"This field is required.\"\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User Profile Management",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/me/", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", ""]}
+          },
+          "response": [
+            {
+              "name": "Get Profile Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/me/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User profile retrieved successfully\",\n  \"data\": {\n    \"id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"phone_number\": \"+1234567890\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"user_type\": \"customer\",\n    \"profile_picture\": null,\n    \"bio\": \"User bio here\",\n    \"location\": \"New York\",\n    \"is_verified\": false,\n    \"rating\": 0.0,\n    \"balance\": 0.0,\n    \"created_at\": \"2024-01-01T12:00:00Z\",\n    \"updated_at\": \"2024-01-01T12:00:00Z\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Get Profile Unauthorized",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/me/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update My Profile (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"updateduser\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"bio\": \"Updated bio\",\n  \"location\": \"New York\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/me/", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", ""]}
+          },
+          "response": [
+            {
+              "name": "Update Profile Success",
+              "originalRequest": {"method": "PUT", "url": {"raw": "{{baseUrl}}/users/users/me/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Profile updated successfully\",\n  \"data\": {\n    \"id\": \"uuid-here\",\n    \"username\": \"updateduser\",\n    \"email\": \"test@example.com\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"bio\": \"Updated bio\",\n    \"location\": \"New York\",\n    \"user_type\": \"customer\",\n    \"updated_at\": \"2024-01-01T12:30:00Z\"\n  },\n  \"time\": \"2024-01-01T12:30:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Update Profile Failed - Duplicate Username",
+              "originalRequest": {"method": "PUT", "url": {"raw": "{{baseUrl}}/users/users/me/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Profile update failed due to duplicate information\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"username\": \"A user with that username already exists.\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update My Profile (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Updated bio only\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/me/", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", ""]}
+          },
+          "response": [
+            {
+              "name": "Partial Update Success",
+              "originalRequest": {"method": "PATCH", "url": {"raw": "{{baseUrl}}/users/users/me/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Profile updated successfully\",\n  \"data\": {\n    \"id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"bio\": \"Updated bio only\",\n    \"updated_at\": \"2024-01-01T12:30:00Z\"\n  },\n  \"time\": \"2024-01-01T12:30:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Upload Profile Image (Enhanced)",
+          "item": [
+            {
+              "name": "Upload Profile Image - File Upload",
+              "request": {
+                "method": "POST",
+                "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {"key": "profile_image", "type": "file", "src": "path/to/image.jpg", "description": "Traditional file upload"}
+                  ]
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/profile/image/", "host": ["{{baseUrl}}"], "path": ["users", "users", "profile", "image", ""]}
+              },
+              "response": [
+                {
+                  "name": "Image Upload Success",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/profile/image/"}},
+                  "status": "OK",
+                  "code": 200,
+                  "body": "{\n  \"message\": \"Profile image uploaded successfully\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"profile_picture\": \"https://example.com/profile_pictures/image.jpg\"\n    },\n    \"upload_details\": {\n      \"file_name\": \"image.jpg\",\n      \"file_size\": 102400,\n      \"file_type\": \"image/jpeg\",\n      \"processing_method\": \"direct_upload\",\n      \"optimized\": true\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+                }
+              ]
+            },
+            {
+              "name": "Upload Profile Image - URL",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+                  {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_link\": \"{{sampleImageUrl}}\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/profile/image/", "host": ["{{baseUrl}}"], "path": ["users", "users", "profile", "image", ""]}
+              },
+              "response": [
+                {
+                  "name": "Image URL Upload Success",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/profile/image/"}},
+                  "status": "OK",
+                  "code": 200,
+                  "body": "{\n  \"message\": \"Profile image uploaded successfully from URL\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"profile_picture\": \"https://example.com/profile_pictures/converted_image.jpg\"\n    },\n    \"upload_details\": {\n      \"source_url\": \"https://example.com/sample-image.jpg\",\n      \"file_name\": \"converted_image.jpg\",\n      \"file_size\": 98304,\n      \"file_type\": \"image/jpeg\",\n      \"processing_method\": \"url_download\",\n      \"optimized\": true,\n      \"conversion_time_ms\": 1250\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+                }
+              ]
+            },
+            {
+              "name": "Upload Profile Image - Base64",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"},
+                  {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_base64\": \"{{sampleBase64Image}}\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/profile/image/", "host": ["{{baseUrl}}"], "path": ["users", "users", "profile", "image", ""]}
+              },
+              "response": [
+                {
+                  "name": "Base64 Upload Success",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/profile/image/"}},
+                  "status": "OK",
+                  "code": 200,
+                  "body": "{\n  \"message\": \"Profile image uploaded successfully from base64 data\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"profile_picture\": \"https://example.com/profile_pictures/base64_image.jpg\"\n    },\n    \"upload_details\": {\n      \"file_name\": \"base64_image.jpg\",\n      \"file_size\": 95232,\n      \"file_type\": \"image/jpeg\",\n      \"processing_method\": \"base64_decode\",\n      \"optimized\": true,\n      \"conversion_time_ms\": 800\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Upload Profile Image (Legacy)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {"key": "profile_image", "type": "file", "src": "path/to/image.jpg"}
+              ]
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/profile/image/", "host": ["{{baseUrl}}"], "path": ["users", "users", "profile", "image", ""]}
+          },
+          "response": [
+            {
+              "name": "Image Upload Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/profile/image/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Profile image uploaded successfully\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"profile_picture\": \"https://example.com/profile_pictures/image.jpg\"\n    },\n    \"upload_details\": {\n      \"file_name\": \"image.jpg\",\n      \"file_size\": 102400,\n      \"file_type\": \"image/jpeg\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Image Upload Failed - No File",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/profile/image/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"No image file provided\",\n  \"data\": {\n    \"user_id\": \"uuid-here\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "Image Upload Failed - Invalid Type",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/profile/image/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Invalid file type. Allowed types are: image/jpeg, image/png, image/gif.\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"uploaded_file_type\": \"text/plain\",\"allowed_types\": [\"image/jpeg\", \"image/png\", \"image/gif\"]\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Public Profile",
+          "request": {
+            "method": "GET",
+            "url": {"raw": "{{baseUrl}}/users/users/:userId/", "host": ["{{baseUrl}}"], "path": ["users", "users", ":userId", ""], "variable": [{"key": "userId", "value": "user-uuid-here"}]}
+          },
+          "response": [
+            {
+              "name": "Public Profile Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/uuid-here/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User profile retrieved successfully\",\n  \"data\": {\n    \"id\": \"uuid-here\",\n    \"username\": \"publicuser\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"user_type\": \"provider\",\n    \"profile_picture\": \"https://example.com/profile.jpg\",\n    \"bio\": \"Professional service provider\",\n    \"location\": \"New York\",\n    \"is_verified\": true,\n    \"rating\": 4.8,\n    \"total_bookings\": 150,\n    \"skills\": {\n      \"plumbing\": \"Expert\",\n      \"electrical\": \"Intermediate\"\n    },\n    \"availability\": {\n      \"is_available\": true,\n      \"next_available\": \"2024-01-02T09:00:00Z\"\n    },\n    \"created_at\": \"2023-01-01T12:00:00Z\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Public Profile Not Found",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/invalid-uuid/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"User not found\",\n  \"data\": {\n    \"user_id\": \"invalid-uuid\",\n    \"requested_by\": \"uuid-requester\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            },
+            {
+              "name": "Public Profile - Private Account",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/private-uuid/"}},
+              "status": "Forbidden",
+              "code": 403,
+              "body": "{\n  \"message\": \"This user profile is private\",\n  \"data\": {\n    \"user_id\": \"private-uuid\",\n    \"privacy_level\": \"private\",\n    \"requested_by\": \"uuid-requester\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 403\n}"
+            }
+          ]
+        },
+        {
+          "name": "Deactivate Account",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/deactivate/", "host": ["{{baseUrl}}"], "path": ["users", "users", "deactivate", ""]}
+          },
+          "response": [
+            {
+              "name": "Account Deactivated Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/deactivate/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Account deactivated successfully\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"testuser\",\n      \"is_active\": false,\n      \"deactivated_at\": \"2024-01-01T12:00:00Z\"\n    },\n    \"deactivation_details\": {\n      \"reason\": \"user_request\",\n      \"can_reactivate\": true,\n      \"data_retention_days\": 30,\n      \"tokens_revoked\": 5\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Deactivation Failed - Already Deactivated",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/deactivate/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Account is already deactivated\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"current_status\": \"inactive\",\n    \"deactivated_at\": \"2023-12-01T12:00:00Z\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "Deactivation Unauthorized",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/deactivate/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Token Management",
+      "item": [
+        {
+          "name": "List Access Tokens",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/me/tokens/?active_only=true", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", "tokens", ""], "query": [{"key": "active_only", "value": "true"}]}
+          },
+          "response": [
+            {
+              "name": "List Tokens Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/me/tokens/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Access tokens retrieved successfully\",\n  \"data\": {\n    \"tokens\": [\n      {\n        \"jti\": \"token-uuid-1\",\n        \"token_type\": \"access\",\n        \"is_active\": true,\n        \"created_at\": \"2024-01-01T12:00:00Z\",\n        \"expires_at\": \"2024-01-02T12:00:00Z\",\n        \"last_used\": \"2024-01-01T12:00:00Z\",\n        \"device_info\": {\n          \"ip_address\": \"192.168.1.1\",\n          \"user_agent\": \"Mozilla/5.0\"\n        }\n      }\n    ],\n    \"pagination\": {\n      \"total_count\": 5,\n      \"active_count\": 3,\n      \"expired_count\": 2\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Revoke Specific Token",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/me/tokens/:tokenId/revoke/", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", "tokens", ":tokenId", "revoke", ""], "variable": [{"key": "tokenId", "value": "token-uuid-here"}]}
+          },
+          "response": [
+            {
+              "name": "Token Revoked Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/me/tokens/token-uuid/revoke/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Access token revoked successfully\",\n  \"data\": {\n    \"revoked_token\": {\n      \"jti\": \"token-uuid-1\",\n      \"revoked_at\": \"2024-01-01T12:00:00Z\"\n    },\n    \"user_id\": \"user-uuid\",\n    \"remaining_active_tokens\": 2\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Token Not Found",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/me/tokens/invalid/revoke/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"Token not found\",\n  \"data\": {\n    \"token_id\": \"invalid\",\n    \"user_id\": \"user-uuid\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            }
+          ]
+        },
+        {
+          "name": "Revoke All Tokens",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/me/tokens/revoke_all/", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", "tokens", "revoke_all", ""]}
+          },
+          "response": [
+            {
+              "name": "All Tokens Revoked",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/me/tokens/revoke_all/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"All access tokens revoked successfully\",\n  \"data\": {\n    \"revocation_summary\": {\n      \"total_revoked\": 5,\n      \"revoked_at\": \"2024-01-01T12:00:00Z\",\n      \"revoked_by\": \"user_request\"\n    },\n    \"user_id\": \"user-uuid\",\n    \"active_tokens_remaining\": 0\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Social Features",
+      "item": [
+        {
+          "name": "Like User Profile",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/:userId/like/", "host": ["{{baseUrl}}"], "path": ["users", "users", ":userId", "like", ""], "variable": [{"key": "userId", "value": "user-uuid-here"}]}
+          },
+          "response": [
+            {
+              "name": "Like Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/target-uuid/like/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User liked successfully\",\n  \"data\": {\n    \"like_action\": {\n      \"liker_id\": \"uuid-here\",\n      \"liked_user_id\": \"target-uuid\",\n      \"action\": \"like\",\n      \"timestamp\": \"2024-01-01T12:00:00Z\"\n    },\n    \"match_status\": {\n      \"is_mutual_like\": false,\n      \"match_created\": false\n    },\n    \"liked_user\": {\n      \"id\": \"target-uuid\",\n      \"username\": \"targetuser\",\n      \"user_type\": \"provider\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Like Success - Match Created",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/target-uuid/like/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User liked successfully - It's a match!\",\n  \"data\": {\n    \"like_action\": {\n      \"liker_id\": \"uuid-here\",\n      \"liked_user_id\": \"target-uuid\",\n      \"action\": \"like\",\n      \"timestamp\": \"2024-01-01T12:00:00Z\"\n    },\n    \"match_status\": {\n      \"is_mutual_like\": true,\n      \"match_created\": true,\n      \"match_id\": \"match-uuid\",\n      \"match_created_at\": \"2024-01-01T12:00:00Z\"\n    },\n    \"liked_user\": {\n      \"id\": \"target-uuid\",\n      \"username\": \"targetuser\",\n      \"user_type\": \"provider\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Like Failed - User Not Found",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/invalid-uuid/like/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"User not found\",\n  \"data\": {\n    \"target_user_id\": \"invalid-uuid\",\n    \"liker_id\": \"uuid-here\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            },
+            {
+              "name": "Like Failed - Cannot Like Self",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/uuid-here/like/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"You cannot like your own profile\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"action\": \"like\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400\n}"
+            }
+          ]
+        },
+        {
+          "name": "Pass User Profile",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/:userId/pass/", "host": ["{{baseUrl}}"], "path": ["users", "users", ":userId", "pass", ""], "variable": [{"key": "userId", "value": "user-uuid-here"}]}
+          },
+          "response": [
+            {
+              "name": "Pass Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/target-uuid/pass/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User passed successfully\",\n  \"data\": {\n    \"pass_action\": {\n      \"passer_id\": \"uuid-here\",\n      \"passed_user_id\": \"target-uuid\",\n      \"action\": \"pass\",\n      \"timestamp\": \"2024-01-01T12:00:00Z\"\n    },\n    \"passed_user\": {\n      \"id\": \"target-uuid\",\n      \"username\": \"targetuser\",\n      \"user_type\": \"provider\"\n    },\n    \"next_recommendation\": {\n      \"available\": true,\n      \"next_user_id\": \"next-uuid\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Pass Failed - User Not Found",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/invalid-uuid/pass/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"User not found\",\n  \"data\": {\n    \"target_user_id\": \"invalid-uuid\",\n    \"passer_id\": \"uuid-here\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            },
+            {
+              "name": "Pass Failed - Cannot Pass Self",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/uuid-here/pass/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"You cannot pass your own profile\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"action\": \"pass\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User Search",
+      "item": [
+        {
+          "name": "Search Users (GET)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/users/search/?q=john&type=provider&page=1&page_size=10", "host": ["{{baseUrl}}"], "path": ["users", "users", "search", ""], "query": [{"key": "q", "value": "john"}, {"key": "type", "value": "provider"}, {"key": "page", "value": "1"}, {"key": "page_size", "value": "10"}]}
+          },
+          "response": [
+            {
+              "name": "Search GET Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/search/?q=john&type=provider"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Found 3 user(s)\",\n  \"data\": {\n    \"providers\": [\n      {\n        \"id\": \"uuid-1\",\n        \"username\": \"johnsmith\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\",\n        \"user_type\": \"provider\",\n        \"rating\": 4.7,\n        \"location\": \"New York\",\n        \"skills\": {\"plumbing\": \"Expert\"},\n        \"profile_picture\": \"https://example.com/john.jpg\",\n        \"is_verified\": true,\n        \"total_bookings\": 75\n      }\n    ],\n    \"pagination\": {\n      \"page\": 1,\n      \"page_size\": 10,\n      \"total_count\": 3,\n      \"total_pages\": 1\n    },\n    \"search_metadata\": {\n      \"query\": \"john\",\n      \"filters\": {\"type\": \"provider\"},\n      \"search_context\": \"As a customer, you are viewing service providers\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Search GET No Results",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/users/search/?q=nonexistent"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"No users found matching the search criteria\",\n  \"data\": {\n    \"search_criteria\": {\n      \"query\": \"nonexistent\"\n    },\n    \"pagination\": {\n      \"page\": 1,\n      \"page_size\": 10,\n      \"total_count\": 0,\n      \"total_pages\": 0\n    },\n    \"requester_id\": \"uuid-here\",\n    \"requester_type\": \"customer\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search Users (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"search_term\": \"john\",\n  \"user_types\": [\"provider\"],\n  \"location\": \"New York\",\n  \"min_rating\": 4.0,\n  \"page\": 1,\n  \"page_size\": 10\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/search/", "host": ["{{baseUrl}}"], "path": ["users", "users", "search", ""]}
+          },
+          "response": [
+            {
+              "name": "Search Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/search/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Found 5 user(s)\",\n  \"data\": {\n    \"providers\": [\n      {\n        \"id\": \"uuid-1\",\n        \"username\": \"johnprovider\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\",\n        \"user_type\": \"provider\",\n        \"rating\": 4.5,\n        \"location\": \"New York\",\n        \"skills\": {\"plumbing\": \"Expert\"},\n        \"total_bookings\": 50\n      }\n    ],\n    \"total_count\": 5,\n    \"page\": 1,\n    \"page_size\": 10,\n    \"total_pages\": 1,\n    \"search_context\": \"As a customer, you are viewing service providers\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Search No Results",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/search/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"No users found matching the search criteria\",\n  \"data\": {\n    \"search_criteria\": {\n      \"search_term\": \"nonexistent\"\n    },\n    \"total_count\": 0,\n    \"page\": 1,\n    \"page_size\": 10,\n    \"total_pages\": 0,\n    \"requester_id\": \"uuid-here\",\n    \"requester_type\": \"customer\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search by Phone Number",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+1234567890\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/search/phone/", "host": ["{{baseUrl}}"], "path": ["users", "users", "search", "phone", ""]}
+          },
+          "response": [
+            {
+              "name": "Phone Search Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/search/phone/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"User found with phone number\",\n  \"data\": {\n    \"user\": {\n      \"id\": \"uuid-here\",\n      \"username\": \"founduser\",\n      \"phone_number\": \"+1234567890\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n      \"user_type\": \"customer\",\n      \"profile_picture\": \"https://example.com/profile.jpg\",\n      \"is_verified\": true,\n      \"created_at\": \"2023-01-01T12:00:00Z\"\n    },\n    \"search_details\": {\n      \"phone_number\": \"+1234567890\",\n      \"search_timestamp\": \"2024-01-01T12:00:00Z\",\n      \"privacy_level\": \"public\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Phone Search Not Found",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/search/phone/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"No user found with this phone number\",\n  \"data\": {\n    \"phone_number\": \"+9999999999\",\n    \"search_timestamp\": \"2024-01-01T12:00:00Z\",\n    \"suggestions\": {\n      \"check_format\": \"Ensure phone number includes country code\",\n      \"verify_number\": \"Double-check the phone number is correct\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            },
+            {
+              "name": "Phone Search Validation Error",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/search/phone/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Phone search failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"phone_number\": \"Enter a valid phone number with country code (e.g., +1234567890)\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Verification Management",
+      "item": [
+        {
+          "name": "List Verifications",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/verifications/?status=pending&verification_type=identity&page=1&page_size=10", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ""], "query": [{"key": "status", "value": "pending"}, {"key": "verification_type", "value": "identity"}, {"key": "page", "value": "1"}, {"key": "page_size", "value": "10"}]}
+          },
+          "response": [
+            {
+              "name": "List Verifications Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verifications retrieved successfully\",\n  \"data\": {\n    \"verifications\": [\n      {\n        \"id\": 1,\n        \"user\": \"uuid-here\",\n        \"verification_type\": \"identity\",\n        \"document_type\": \"passport\",\n        \"status\": \"pending\",\n        \"document_link\": \"https://example.com/document.pdf\",\n        \"admin_notes\": null,\n        \"created_at\": \"2024-01-01T12:00:00Z\",\n        \"updated_at\": \"2024-01-01T12:00:00Z\",\n        \"verified_at\": null\n      }\n    ],\n    \"pagination\": {\n      \"count\": 15,\n      \"page\": 1,\n      \"page_size\": 10,\n      \"total_pages\": 2\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "List Verifications Empty",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"No verifications found\",\n  \"data\": {\n    \"verifications\": [],\n    \"pagination\": {\n      \"count\": 0,\n      \"page\": 1,\n      \"page_size\": 10,\n      \"total_pages\": 0\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Verification Request (Enhanced)",
+          "item": [
+            {
+              "name": "Create Verification - URL Documents",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {"key": "Content-Type", "value": "application/json"},
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"passport\",\n  \"document_number\": \"A1234567\",\n  \"document_link\": \"{{sampleDocumentUrl}}\",\n  \"document_back_link\": \"https://example.com/passport-back.jpg\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/verifications/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ""]}
+              },
+              "response": [
+                {
+                  "name": "Create Verification Success - URL",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+                  "status": "Created",
+                  "code": 201,
+                  "body": "{\n  \"message\": \"Verification request created successfully from URLs\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"passport\",\n      \"document_number\": \"A1234567\",\n      \"status\": \"pending\",\n      \"document_url\": \"verification_documents/uuid-here/passport/primary_doc.pdf\",\n      \"document_back_url\": \"verification_documents/uuid-here/passport/back_doc.jpg\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T12:00:00Z\",\n      \"verified_at\": null\n    },\n    \"processing_details\": {\n      \"source_urls\": {\n        \"primary\": \"https://example.com/sample-document.pdf\",\n        \"back\": \"https://example.com/passport-back.jpg\"\n      },\n      \"conversion_summary\": {\n        \"total_time_ms\": 3200,\n        \"files_processed\": 2,\n        \"security_scanned\": true,\n        \"format_validated\": true\n      }\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+                }
+              ]
+            },
+            {
+              "name": "Create Verification - Base64 Documents",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {"key": "Content-Type", "value": "application/json"},
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"driver_license\",\n  \"document_number\": \"DL987654321\",\n  \"document_base64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD...\",\n  \"document_back_base64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD...\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/verifications/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ""]}
+              },
+              "response": [
+                {
+                  "name": "Create Verification Success - Base64",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+                  "status": "Created",
+                  "code": 201,
+                  "body": "{\n  \"message\": \"Verification request created successfully from base64 data\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 2,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"driver_license\",\n      \"document_number\": \"DL987654321\",\n      \"status\": \"pending\",\n      \"document_url\": \"verification_documents/uuid-here/driver_license/primary_doc.jpg\",\n      \"document_back_url\": \"verification_documents/uuid-here/driver_license/back_doc.jpg\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T12:00:00Z\",\n      \"verified_at\": null\n    },\n    \"processing_details\": {\n      \"source_type\": \"base64\",\n      \"conversion_summary\": {\n        \"total_time_ms\": 1850,\n        \"files_processed\": 2,\n        \"image_optimization\": true,\n        \"security_validated\": true,\n        \"format_detected\": \"image/jpeg\"\n      }\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+                }
+              ]
+            },
+            {
+              "name": "Create Verification - File Upload",
+              "request": {
+                "method": "POST",
+                "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {"key": "verification_type", "value": "address", "type": "text"},
+                    {"key": "document_type", "value": "utility_bill", "type": "text"},
+                    {"key": "document_file", "type": "file", "src": "path/to/utility_bill.pdf"}
+                  ]
+                },
+                "url": {"raw": "{{baseUrl}}/users/verifications/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ""]}
+              },
+              "response": [
+                {
+                  "name": "Create Verification Success - File",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+                  "status": "Created",
+                  "code": 201,
+                  "body": "{\n  \"message\": \"Verification request created successfully with file upload\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 3,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"address\",\n      \"document_type\": \"utility_bill\",\n      \"status\": \"pending\",\n      \"document_url\": \"verification_documents/uuid-here/utility_bill/primary_doc.pdf\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T12:00:00Z\",\n      \"verified_at\": null\n    },\n    \"processing_details\": {\n      \"original_filename\": \"utility_bill.pdf\",\n      \"file_size\": 1920000,\n      \"file_type\": \"application/pdf\",\n      \"processing_method\": \"direct_upload\",\n      \"conversion_time_ms\": 680\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Create Verification Request (Legacy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"passport\",\n  \"document_link\": \"https://example.com/document.pdf\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/verifications/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ""]}
+          },
+          "response": [
+            {
+              "name": "Create Verification Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"message\": \"Verification request created successfully\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"passport\",\n      \"status\": \"pending\",\n      \"document_link\": \"https://example.com/document.pdf\",\n      \"admin_notes\": null,\n      \"created_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T12:00:00Z\",\n      \"verified_at\": null\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+            },
+            {
+              "name": "Create Verification Failed - Validation Error",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Verification creation failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"verification_type\": \"This field is required.\",\n    \"document_link\": \"Enter a valid URL.\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Verification Details",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Get Verification Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/verifications/1/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification details retrieved successfully\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"passport\",\n      \"status\": \"pending\",\n      \"document_link\": \"https://example.com/document.pdf\",\n      \"admin_notes\": \"Document under review\",\n      \"created_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T12:30:00Z\",\n      \"verified_at\": null,\n      \"user_details\": {\n        \"username\": \"testuser\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Doe\"\n      }\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Get Verification Not Found",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/verifications/999/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"Verification not found\",\n  \"data\": {\n    \"verification_id\": 999,\n    \"user_id\": \"uuid-here\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Verification (Full)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"driver_license\",\n  \"document_link\": \"https://example.com/updated-document.pdf\",\n  \"admin_notes\": \"Updated document provided\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Update Verification Success",
+              "originalRequest": {"method": "PUT", "url": {"raw": "{{baseUrl}}/users/verifications/1/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification updated successfully\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"driver_license\",\n      \"status\": \"pending\",\n      \"document_link\": \"https://example.com/updated-document.pdf\",\n      \"admin_notes\": \"Updated document provided\",\n      \"created_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T13:00:00Z\",\n      \"verified_at\": null\n    }\n  },\n  \"time\": \"2024-01-01T13:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Verification (Partial)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"admin_notes\": \"Additional documentation requested\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Partial Update Success",
+              "originalRequest": {"method": "PATCH", "url": {"raw": "{{baseUrl}}/users/verifications/1/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification partially updated successfully\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"passport\",\n      \"status\": \"pending\",\n      \"document_link\": \"https://example.com/document.pdf\",\n      \"admin_notes\": \"Additional documentation requested\",\n      \"created_at\": \"2024-01-01T12:00:00Z\",\n      \"updated_at\": \"2024-01-01T13:30:00Z\",\n      \"verified_at\": null\n    }\n  },\n  \"time\": \"2024-01-01T13:30:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Initiate User Verification (Enhanced)",
+          "item": [
+            {
+              "name": "Verify with Document URL",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {"key": "Content-Type", "value": "application/json"},
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"passport\",\n  \"document_number\": \"A1234567\",\n  \"document_link\": \"{{sampleDocumentUrl}}\",\n  \"document_back_link\": \"https://example.com/document-back.jpg\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+              },
+              "response": [
+                {
+                  "name": "Verification URL Success",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+                  "status": "Created",
+                  "code": 201,
+                  "body": "{\n  \"message\": \"Verification request submitted successfully from URL\",\n  \"data\": {\n    \"verification_request\": {\n      \"id\": \"verification-uuid\",\n      \"user_id\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"passport\",\n      \"document_number\": \"A1234567\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"estimated_review_time\": \"24-48 hours\"\n    },\n    \"documents\": {\n      \"primary_document\": {\n        \"source_url\": \"https://example.com/sample-document.pdf\",\n        \"processed_file\": \"verification_documents/uuid-here/passport/primary_doc.pdf\",\n        \"file_size\": 2048576,\n        \"processing_method\": \"url_download\",\n        \"conversion_time_ms\": 2100\n      },\n      \"back_document\": {\n        \"source_url\": \"https://example.com/document-back.jpg\",\n        \"processed_file\": \"verification_documents/uuid-here/passport/back_doc.jpg\",\n        \"file_size\": 1536000,\n        \"processing_method\": \"url_download\",\n        \"conversion_time_ms\": 1800\n      }\n    },\n    \"next_steps\": {\n      \"wait_for_review\": \"Our team will review your documents within 24-48 hours\",\n      \"notification_method\": \"email_and_app\",\n      \"can_track_status\": true\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+                }
+              ]
+            },
+            {
+              "name": "Verify with Base64 Documents",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {"key": "Content-Type", "value": "application/json"},
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"driver_license\",\n  \"document_number\": \"DL123456789\",\n  \"document_base64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD...\",\n  \"document_back_base64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD...\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+              },
+              "response": [
+                {
+                  "name": "Verification Base64 Success",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+                  "status": "Created",
+                  "code": 201,
+                  "body": "{\n  \"message\": \"Verification request submitted successfully from base64 data\",\n  \"data\": {\n    \"verification_request\": {\n      \"id\": \"verification-uuid-2\",\n      \"user_id\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"driver_license\",\n      \"document_number\": \"DL123456789\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"estimated_review_time\": \"24-48 hours\"\n    },\n    \"documents\": {\n      \"primary_document\": {\n        \"source_type\": \"base64\",\n        \"processed_file\": \"verification_documents/uuid-here/driver_license/primary_doc.jpg\",\n        \"file_size\": 1792000,\n        \"file_type\": \"image/jpeg\",\n        \"processing_method\": \"base64_decode\",\n        \"conversion_time_ms\": 950\n      },\n      \"back_document\": {\n        \"source_type\": \"base64\",\n        \"processed_file\": \"verification_documents/uuid-here/driver_license/back_doc.jpg\",\n        \"file_size\": 1690000,\n        \"file_type\": \"image/jpeg\",\n        \"processing_method\": \"base64_decode\",\n        \"conversion_time_ms\": 880\n      }\n    },\n    \"processing_summary\": {\n      \"total_conversion_time_ms\": 1830,\n      \"documents_processed\": 2,\n      \"optimization_applied\": true,\n      \"security_validated\": true\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+                }
+              ]
+            },
+            {
+              "name": "Verify with File Upload",
+              "request": {
+                "method": "POST",
+                "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {"key": "verification_type", "value": "identity", "type": "text"},
+                    {"key": "document_type", "value": "passport", "type": "text"},
+                    {"key": "document_number", "value": "P1234567", "type": "text"},
+                    {"key": "document_file", "type": "file", "src": "path/to/passport.pdf"},
+                    {"key": "document_back_file", "type": "file", "src": "path/to/passport_back.jpg"}
+                  ]
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+              },
+              "response": [
+                {
+                  "name": "Verification File Upload Success",
+                  "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+                  "status": "Created",
+                  "code": 201,
+                  "body": "{\n  \"message\": \"Verification request submitted successfully with file uploads\",\n  \"data\": {\n    \"verification_request\": {\n      \"id\": \"verification-uuid-3\",\n      \"user_id\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"document_type\": \"passport\",\n      \"document_number\": \"P1234567\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"estimated_review_time\": \"24-48 hours\"\n    },\n    \"documents\": {\n      \"primary_document\": {\n        \"original_filename\": \"passport.pdf\",\n        \"processed_file\": \"verification_documents/uuid-here/passport/primary_doc.pdf\",\n        \"file_size\": 2560000,\n        \"file_type\": \"application/pdf\",\n        \"processing_method\": \"direct_upload\",\n        \"conversion_time_ms\": 450\n      },\n      \"back_document\": {\n        \"original_filename\": \"passport_back.jpg\",\n        \"processed_file\": \"verification_documents/uuid-here/passport/back_doc.jpg\",\n        \"file_size\": 1843200,\n        \"file_type\": \"image/jpeg\",\n        \"processing_method\": \"direct_upload\",\n        \"optimized\": true,\n        \"conversion_time_ms\": 320\n      }\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Initiate User Verification (Legacy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_link\": \"https://example.com/document.pdf\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+          },
+          "response": [
+            {
+              "name": "Verification Initiated Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"message\": \"Verification request submitted successfully\",\n  \"data\": {\n    \"verification_request\": {\n      \"id\": \"verification-uuid\",\n      \"user_id\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\",\n      \"estimated_review_time\": \"24-48 hours\"\n    },\n    \"documents\": {\n      \"document_link\": \"https://example.com/document.pdf\",\n      \"document_type\": \"identity_document\",\n      \"uploaded_at\": \"2024-01-01T12:00:00Z\"\n    },\n    \"next_steps\": {\n      \"wait_for_review\": \"Our team will review your documents within 24-48 hours\",\n      \"notification_method\": \"email_and_app\",\n      \"can_track_status\": true\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+            },
+            {
+              "name": "Verification Failed - Already Verified",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"User is already verified\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"current_verification_status\": \"verified\",\n    \"verified_at\": \"2023-12-01T12:00:00Z\",\n    \"verification_type\": \"identity\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400\n}"
+            },
+            {
+              "name": "Verification Failed - Pending Request",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"message\": \"A verification request is already pending for this user\",\n  \"data\": {\n    \"user_id\": \"uuid-here\",\n    \"existing_request\": {\n      \"id\": \"existing-verification-uuid\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T10:00:00Z\",\n      \"estimated_completion\": \"2024-01-03T10:00:00Z\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 409\n}"
+            },
+            {
+              "name": "Verification Failed - Invalid Document",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Verification failed due to validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"document_link\": \"Document link is invalid or inaccessible\",\n    \"verification_type\": \"Supported types: identity, address, business\"\n  }\n}"
+            },
+            {
+              "name": "Verification Unauthorized",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Verification",
+          "request": {
+            "method": "DELETE",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Delete Verification Success",
+              "originalRequest": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/users/verifications/1/"}},
+              "status": "No Content",
+              "code": 204,
+              "body": ""
+            },
+            {
+              "name": "Delete Verification Not Found",
+              "originalRequest": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/users/verifications/999/"}},
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"message\": \"Verification not found\",\n  \"data\": {\n    \"verification_id\": 999,\n    \"user_id\": \"uuid-here\"\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 404\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cancel Verification",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/cancel/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", "cancel", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Cancel Verification Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/1/cancel/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification cancelled successfully\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"status\": \"cancelled\",\n      \"cancelled_at\": \"2024-01-01T14:00:00Z\",\n      \"cancelled_by\": \"user\",\n      \"admin_notes\": \"Cancelled by user request\"\n    }\n  },\n  \"time\": \"2024-01-01T14:00:00Z\",\n  \"statusCode\": 200\n}"
+            },
+            {
+              "name": "Cancel Verification Failed - Already Processed",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/1/cancel/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Cannot cancel verification that has already been processed\",\n  \"data\": {\n    \"verification_id\": 1,\n    \"current_status\": \"verified\",\n    \"processed_at\": \"2024-01-01T13:00:00Z\"\n  },\n  \"time\": \"2024-01-01T14:00:00Z\",\n  \"statusCode\": 400\n}"
+            }
+          ]
+        },
+        {
+          "name": "Mark Verification In Progress",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"admin_notes\": \"Review started by admin team\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/mark_in_progress/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", "mark_in_progress", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Mark In Progress Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/1/mark_in_progress/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification marked as in progress\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"status\": \"in_progress\",\n      \"admin_notes\": \"Review started by admin team\",\n      \"updated_at\": \"2024-01-01T14:30:00Z\",\n      \"reviewed_by\": \"admin-uuid\"\n    }\n  },\n  \"time\": \"2024-01-01T14:30:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Mark Verification Verified",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"admin_notes\": \"Identity verification completed successfully\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/mark_verified/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", "mark_verified", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Mark Verified Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/1/mark_verified/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification marked as verified\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"status\": \"verified\",\n      \"admin_notes\": \"Identity verification completed successfully\",\n      \"verified_at\": \"2024-01-01T15:00:00Z\",\n      \"verified_by\": \"admin-uuid\",\n      \"user_notified\": true\n    }\n  },\n  \"time\": \"2024-01-01T15:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Mark Verification Rejected",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"admin_notes\": \"Document quality insufficient, please resubmit with clearer images\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/verifications/:verificationId/mark_rejected/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", ":verificationId", "mark_rejected", ""], "variable": [{"key": "verificationId", "value": "1"}]}
+          },
+          "response": [
+            {
+              "name": "Mark Rejected Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/verifications/1/mark_rejected/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification marked as rejected\",\n  \"data\": {\n    \"verification\": {\n      \"id\": 1,\n      \"user\": \"uuid-here\",\n      \"verification_type\": \"identity\",\n      \"status\": \"rejected\",\n      \"admin_notes\": \"Document quality insufficient, please resubmit with clearer images\",\n      \"rejected_at\": \"2024-01-01T15:30:00Z\",\n      \"rejected_by\": \"admin-uuid\",\n      \"can_resubmit\": true,\n      \"resubmit_after\": \"2024-01-02T00:00:00Z\"\n    }\n  },\n  \"time\": \"2024-01-01T15:30:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Verifications Status Summary",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{accessToken}}"}],
+            "url": {"raw": "{{baseUrl}}/users/verifications/status_summary/", "host": ["{{baseUrl}}"], "path": ["users", "verifications", "status_summary", ""]}
+          },
+          "response": [
+            {
+              "name": "Status Summary Success",
+              "originalRequest": {"method": "GET", "url": {"raw": "{{baseUrl}}/users/verifications/status_summary/"}},
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Verification status summary retrieved successfully\",\n  \"data\": {\n    \"summary\": {\n      \"total_verifications\": 25,\n      \"pending\": 8,\n      \"in_progress\": 3,\n      \"verified\": 12,\n      \"rejected\": 1,\n      \"cancelled\": 1\n    },\n    \"by_type\": {\n      \"identity\": {\n        \"total\": 15,\n        \"verified\": 10,\n        \"pending\": 5\n      },\n      \"address\": {\n        \"total\": 8,\n        \"verified\": 2,\n        \"pending\": 3,\n        \"in_progress\": 3\n      },\n      \"business\": {\n        \"total\": 2,\n        \"verified\": 0,\n        \"rejected\": 1,\n        \"cancelled\": 1\n      }\n    },\n    \"recent_activity\": {\n      \"last_7_days\": 5,\n      \"last_30_days\": 18\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 200\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Universal Document/Image Conversion Testing",
+      "description": "Test endpoints for the enhanced universal document/image conversion capabilities. Tests various input methods: URLs, base64, file uploads, and cloud storage references.",
+      "item": [
+        {
+          "name": "Test Document Conversion - Mixed Methods",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"business\",\n  \"document_type\": \"business_license\",\n  \"document_number\": \"BL123456\",\n  \"document_link\": \"{{sampleDocumentUrl}}\",\n  \"document_back_base64\": \"{{sampleBase64Image}}\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+          },
+          "response": [
+            {
+              "name": "Mixed Methods Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"message\": \"Verification request submitted successfully with mixed input methods\",\n  \"data\": {\n    \"verification_request\": {\n      \"id\": \"verification-mixed-uuid\",\n      \"user_id\": \"uuid-here\",\n      \"verification_type\": \"business\",\n      \"document_type\": \"business_license\",\n      \"document_number\": \"BL123456\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\"\n    },\n    \"processing_details\": {\n      \"primary_document\": {\n        \"source_type\": \"url\",\n        \"source_url\": \"https://example.com/sample-document.pdf\",\n        \"processed_file\": \"verification_documents/uuid-here/business_license/primary_doc.pdf\",\n        \"processing_method\": \"url_download\",\n        \"conversion_time_ms\": 2400\n      },\n      \"back_document\": {\n        \"source_type\": \"base64\",\n        \"processed_file\": \"verification_documents/uuid-here/business_license/back_doc.jpg\",\n        \"processing_method\": \"base64_decode\",\n        \"image_optimized\": true,\n        \"conversion_time_ms\": 950\n      },\n      \"total_processing_time_ms\": 3350,\n      \"security_validation\": \"passed\",\n      \"format_validation\": \"passed\"\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+            }
+          ]
+        },
+        {
+          "name": "Test Profile Image - All Methods",
+          "item": [
+            {
+              "name": "Profile Update with URL & Base64",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {"key": "Content-Type", "value": "application/json"},
+                  {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"Enhanced\",\n  \"last_name\": \"User\",\n  \"profile_picture_link\": \"{{sampleImageUrl}}\",\n  \"bio\": \"Testing universal image conversion\"\n}"
+                },
+                "url": {"raw": "{{baseUrl}}/users/users/me/", "host": ["{{baseUrl}}"], "path": ["users", "users", "me", ""]}
+              },
+              "response": [
+                {
+                  "name": "Profile Update with Image URL Success",
+                  "originalRequest": {"method": "PATCH", "url": {"raw": "{{baseUrl}}/users/users/me/"}},
+                  "status": "OK",
+                  "code": 200,
+                  "body": "{\n  \"message\": \"Profile updated successfully with image conversion\",\n  \"data\": {\n    \"id\": \"uuid-here\",\n    \"username\": \"testuser\",\n    \"first_name\": \"Enhanced\",\n    \"last_name\": \"User\",\n    \"bio\": \"Testing universal image conversion\",\n    \"profile_picture\": \"https://example.com/profile_pictures/converted_image.jpg\",\n    \"updated_at\": \"2024-01-01T12:30:00Z\",\n    \"image_processing\": {\n      \"source_url\": \"https://example.com/sample-image.jpg\",\n      \"conversion_method\": \"url_download\",\n      \"optimization_applied\": true,\n      \"final_size\": 95232,\n      \"processing_time_ms\": 1100\n    }\n  },\n  \"time\": \"2024-01-01T12:30:00Z\",\n  \"statusCode\": 200\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Test Error Handling - Invalid Formats",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"identity\",\n  \"document_type\": \"passport\",\n  \"document_link\": \"https://example.com/invalid-file.txt\",\n  \"document_base64\": \"invalid-base64-data\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+          },
+          "response": [
+            {
+              "name": "Conversion Error - Invalid Format",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Document conversion failed due to format validation errors\",\n  \"data\": null,\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"document_link\": \"Unsupported file format: text/plain. Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPEG, PNG, GIF, WebP, BMP\",\n    \"document_base64\": \"Invalid base64 data format. Expected valid base64 string or data URL format.\"\n  },\n  \"processing_details\": {\n    \"attempted_conversions\": 2,\n    \"successful_conversions\": 0,\n    \"validation_failures\": [\n      \"unsupported_content_type\",\n      \"invalid_base64_format\"\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Test Large File Handling",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"address\",\n  \"document_type\": \"utility_bill\",\n  \"document_link\": \"https://example.com/large-document-20mb.pdf\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+          },
+          "response": [
+            {
+              "name": "Large File Error",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"message\": \"Document processing failed: File size exceeds limit\",\n  \"data\": {\n    \"file_details\": {\n      \"source_url\": \"https://example.com/large-document-20mb.pdf\",\n      \"detected_size\": 20971520,\n      \"max_allowed_size\": 15728640,\n      \"size_limit_mb\": 15\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 400,\n  \"errors\": {\n    \"document_link\": \"File size (20MB) exceeds maximum allowed size (15MB) for document uploads.\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Test Performance - Multiple Documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{accessToken}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verification_type\": \"comprehensive\",\n  \"document_type\": \"multiple\",\n  \"document_link\": \"{{sampleDocumentUrl}}\",\n  \"document_back_link\": \"{{sampleImageUrl}}\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/users/users/verify/", "host": ["{{baseUrl}}"], "path": ["users", "users", "verify", ""]}
+          },
+          "response": [
+            {
+              "name": "Performance Test Success",
+              "originalRequest": {"method": "POST", "url": {"raw": "{{baseUrl}}/users/users/verify/"}},
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"message\": \"Multiple documents processed successfully\",\n  \"data\": {\n    \"verification_request\": {\n      \"id\": \"verification-perf-uuid\",\n      \"status\": \"pending\",\n      \"submitted_at\": \"2024-01-01T12:00:00Z\"\n    },\n    \"performance_metrics\": {\n      \"total_processing_time_ms\": 4200,\n      \"documents_processed\": 2,\n      \"average_time_per_document_ms\": 2100,\n      \"parallel_processing\": true,\n      \"optimization_savings_ms\": 1800,\n      \"memory_usage_mb\": 45.6,\n      \"cpu_usage_percent\": 12.3\n    },\n    \"processing_breakdown\": {\n      \"download_time_ms\": 2400,\n      \"validation_time_ms\": 300,\n      \"conversion_time_ms\": 800,\n      \"optimization_time_ms\": 500,\n      \"storage_time_ms\": 200\n    }\n  },\n  \"time\": \"2024-01-01T12:00:00Z\",\n  \"statusCode\": 201\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

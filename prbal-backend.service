@@ -1,0 +1,37 @@
+[Unit]
+Description=Prbal Backend Django Application
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/your/Prbal_backend
+Environment=PATH=/path/to/your/Prbal_backend/venv/bin
+ExecStart=/path/to/your/Prbal_backend/venv/bin/gunicorn -c gunicorn.conf.py prbal_project.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+KillMode=mixed
+TimeoutStopSec=10
+PrivateTmp=true
+NoNewPrivileges=true
+
+# Security settings
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+MemoryDenyWriteExecute=true
+
+# Allow write access to specific directories
+ReadWritePaths=/path/to/your/Prbal_backend/media
+ReadWritePaths=/path/to/your/Prbal_backend/staticfiles
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=multi-user.target 

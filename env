@@ -1,0 +1,50 @@
+# Django settings
+SECRET_KEY=i4+uzk64k!zejr9gml*!39kb4fmzb$o7^$l!xtl*ix+!2v&%fj
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1,391fe935-4d49-4781-be95-ac0773559dcb-00-25e80q0svv2q.riker.replit.dev/
+
+# Database settings
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+DB_USER=postgres.zpfcxjkrihvsuumwmylv
+DB_PASSWORD=EXwVvpqOEe9oMpxv
+DB_HOST=aws-0-ap-southeast-1.pooler.supabase.com
+DB_PORT=5432
+DATABASE_URL=postgresql://postgres:EXwVvpqOEe9oMpxv@db.zpfcxjkrihvsuumwmylv.supabase.co:5432/postgres
+
+# Database Connection Pool (Optional - for production)
+USE_DB_POOL=False
+DB_POOL_SIZE=5
+DB_MAX_OVERFLOW=10
+
+# Redis settings removed
+
+# Stripe settings
+STRIPE_PUBLISHABLE_KEY=your-publishable-key-here
+STRIPE_SECRET_KEY=your-secret-key-here
+STRIPE_WEBHOOK_SECRET=your-webhook-secret-here
+
+# Frontend URL
+FRONTEND_URL=http://localhost:3000
+
+# Email settings (optional)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-specific-password
+
+# Security & Monitoring (Production)
+SENTRY_DSN=
+ENVIRONMENT=development
+RELEASE_VERSION=1.0.0
+
+# SSL Certificate paths (Production - if using custom certificates)
+# SSL_KEY_PATH=/path/to/private.key
+# SSL_CERT_PATH=/path/to/certificate.crt
+
+# AI Service Settings
+OPENROUTER_API_KEY=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
+SITE_URL=https://prbal.com
+AI_SUGGESTIONS_ENABLED=True
+AI_DEFAULT_MODEL=openai/gpt-3.5-turbo

@@ -1,0 +1,1097 @@
+{
+    "info": {
+        "_postman_id": "69f2d8fe-b3e6-4517-8630-7631bde1b068",
+        "name": "Prbal API for User Management",
+        "description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "20572666",
+        "_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-69f2d8fe-b3e6-4517-8630-7631bde1b068?action=share&source=collection_link&creator=20572666"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "User Registration",
+                    "item": [
+                        {
+                            "name": "Generic User Registration (Defaults to Customer)",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Customer Registration",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Provider Specific Registration",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Admin Specific Registration",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "\ud83d\udcdd **Passwordless Registration Endpoints**\n\nThese endpoints create user accounts without passwords. Users must set up PIN authentication separately for login using the PIN Authentication endpoints.\n\n\ud83d\udd04 **Migration Note:** Password-based authentication has been removed. Use PIN Registration endpoints for integrated signup + PIN setup."
+                },
+                {
+                    "name": "PIN Authentication",
+                    "item": [
+                        {
+                            "name": "PIN Login",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "PIN Registration - Generic",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "PIN Registration - Customer",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "PIN Registration - Provider",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Change PIN",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Reset PIN",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "PIN Status",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "User Type Detection",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "User Type Change Info",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Change User Type",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "PIN-based authentication endpoints for secure user login and registration without traditional passwords."
+                },
+                {
+                    "name": "User Login",
+                    "item": [
+                        {
+                            "name": "Search User by Phone Number",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Generic User Login",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Customer Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Provider Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Admin Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "\u26a0\ufe0f **DEPRECATED - Password-Based Login Endpoints**\n\nThese endpoints are deprecated as password authentication has been removed from the system. Use PIN Authentication endpoints instead.\n\n\ud83d\udd04 **Migration:** Replace with PIN Login endpoints for secure authentication."
+                },
+                {
+                    "name": "Refresh Access Token",
+                    "item": [
+                        {
+                            "name": "Refresh JWT Access Token",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "pm.variables.set('access_token', pm.response.json().access_token);"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoint for refreshing JWT access tokens."
+                },
+                {
+                    "name": "User Logout",
+                    "item": [
+                        {
+                            "name": "User Logout",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoint for user logout."
+                },
+                {
+                    "name": "Access Token Management",
+                    "item": [
+                        {
+                            "name": "List User Access Tokens",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Revoke a Specific Access Token",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Revoke All Access Tokens",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoints for managing user access tokens."
+                }
+            ],
+            "description": "User registration, login, and token management."
+        },
+        {
+            "name": "User Management",
+            "item": [
+                {
+                    "name": "Generic User Endpoints (Me)",
+                    "item": [
+                        {
+                            "name": "Retrieve My Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update My Profile (PUT)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Partially Update My Profile (PATCH)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Upload User Avatar",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Profile Image Upload (Alternate)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Deactivate Own Account",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoints for the authenticated user to manage their own profile (/api/{{api_version}}/users/me/)."
+                },
+                {
+                    "name": "General User Actions",
+                    "item": [
+                        {
+                            "name": "Retrieve Public User Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Like a User's Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Pass on a User's Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Submit User Verification Details",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "General actions related to user profiles and interactions, typically involving other users or system-wide user processes (e.g., viewing public profiles, liking, verification). Base path: /api/{{api_version}}/users/"
+                },
+                {
+                    "name": "Customer Specific Endpoints (Me)",
+                    "item": [
+                        {
+                            "name": "Retrieve Customer Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update Customer Profile (Full Update)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Partially Update Customer Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoints specific to an authenticated customer for managing their own profile and related data. Base path: /api/{{api_version}}/users/customer/me/"
+                },
+                {
+                    "name": "Provider Specific Endpoints (Me)",
+                    "item": [
+                        {
+                            "name": "Retrieve Provider Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update Provider Profile (Full Update)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Partially Update Provider Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoints specific to an authenticated service provider for managing their own profile and related data. Base path: /api/{{api_version}}/users/provider/me/"
+                },
+                {
+                    "name": "Admin Specific Endpoints (Me)",
+                    "item": [
+                        {
+                            "name": "Retrieve Admin Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update Admin Profile (Full Update)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Partially Update Admin Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoints specific to an authenticated admin for managing their own profile and related data. Base path: /api/{{api_version}}/users/admin/me/"
+                },
+                {
+                    "name": "User Search Endpoints",
+                    "item": [
+                        {
+                            "name": "General User Search",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ]
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "Endpoints related to searching for users within the Prbal platform."
+                }
+            ],
+            "description": "Endpoints for managing user profiles and related data."
+        }
+    ]
+}

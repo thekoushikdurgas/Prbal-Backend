@@ -1,0 +1,1275 @@
+{
+    "info": {
+        "_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb59",
+        "name": "Prbal API for Bookings",
+        "description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "20572666",
+        "_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+    },
+    "item": [
+        {
+            "name": "Bookings",
+            "item": [
+                {
+                    "name": "List Bookings",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/?role=&status=&service=&customer=&provider=&search=&ordering=",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "role",
+                                    "value": "",
+                                    "description": "Filter by user role: provider or customer"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "description": "Filter by booking status: pending, confirmed, in_progress, completed, cancelled, disputed"
+                                },
+                                {
+                                    "key": "service",
+                                    "value": "",
+                                    "description": "Filter by service ID"
+                                },
+                                {
+                                    "key": "customer",
+                                    "value": "",
+                                    "description": "Filter by customer ID"
+                                },
+                                {
+                                    "key": "provider",
+                                    "value": "",
+                                    "description": "Filter by provider ID"
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "",
+                                    "description": "Search in requirements and notes"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "",
+                                    "description": "Order by: created_at, booking_date, amount (prefix with - for descending)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const responseJson = pm.response.json();",
+                                    "    if (responseJson.results && responseJson.results.length > 0) {",
+                                    "        pm.environment.set('booking_id', responseJson.results[0].id);",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a New Booking",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"service\": \"{{service_id}}\",\n    \"booking_date\": \"2024-12-25\",\n    \"start_time\": \"10:00:00\",\n    \"end_time\": \"12:00:00\",\n    \"amount\": \"150.00\",\n    \"address\": \"123 Main St, City, State\",\n    \"latitude\": \"40.7128\",\n    \"longitude\": \"-74.0060\",\n    \"requirements\": \"Please bring your own tools and materials. Access through main entrance.\",\n    \"notes\": \"Customer will be available from 9:30 AM onwards\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    const responseJson = pm.response.json();",
+                                    "    pm.environment.set('booking_id', responseJson.id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a Specific Booking",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                "{{booking_id}}",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Booking Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"confirmed\",\n    \"notes\": \"Status updated by customer\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                "{{booking_id}}",
+                                "status",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Reschedule Booking",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"booking_date\": \"2024-12-30\",\n    \"start_time\": \"14:00:00\",\n    \"end_time\": \"16:00:00\",\n    \"rescheduled_reason\": \"Customer requested different time due to scheduling conflict\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/reschedule/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                "{{booking_id}}",
+                                "reschedule",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Cancel Booking",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"cancellation_reason\": \"customer_request\",\n    \"notes\": \"Customer cancelled due to emergency\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/cancel/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                "{{booking_id}}",
+                                "cancel",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Booking from Bid",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customer_access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"bid_id\": \"{{bid_id}}\",\n    \"booking_date\": \"2024-12-25\",\n    \"start_time\": \"10:00:00\",\n    \"end_time\": \"12:00:00\",\n    \"requirements\": \"Additional requirements from customer\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 201) {",
+                                    "    const responseJson = pm.response.json();",
+                                    "    pm.environment.set('booking_id', responseJson.id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "List Provider Bookings",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{provider_access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/?role=provider&status=&ordering=-created_at",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "role",
+                                    "value": "provider",
+                                    "description": "Filter by provider role"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "description": "Filter by booking status"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "-created_at",
+                                    "description": "Order by creation date (newest first)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "List Customer Bookings",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customer_access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/?role=customer&status=&ordering=-created_at",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "role",
+                                    "value": "customer",
+                                    "description": "Filter by customer role"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "description": "Filter by booking status"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "-created_at",
+                                    "description": "Order by creation date (newest first)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Bookings",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/?search=plumbing&status=pending&ordering=-booking_date",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                ""
+                            ],
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "plumbing",
+                                    "description": "Search in requirements and notes"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "pending",
+                                    "description": "Filter by status"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "-booking_date",
+                                    "description": "Order by booking date (newest first)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "description": "Endpoints for managing service bookings between customers and providers.",
+            "event": [],
+            "protocolProfileBehavior": {}
+        },
+        {
+            "name": "Calendar Integration",
+            "item": [
+                {
+                    "name": "Sync Booking to Calendar",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"booking_id\": \"{{booking_id}}\",\n    \"provider\": \"google\",\n    \"auth_token\": \"your_calendar_auth_token_here\",\n    \"calendar_id\": \"primary\",\n    \"create_reminder\": true,\n    \"reminder_minutes\": 30\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/{{api_version}}/bookings/calendar/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "{{api_version}}",
+                                "bookings",
+                                "calendar",
+                                ""
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success response"
+                        },
+                        {
+                            "name": "Error response"
+                        }
+                    ],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status code is 201\", function () {",
+                                    "    pm.response.to.have.status(201);",
+                                    "});"
+                                ]
+                            }
+                        }
+                                         ]
+                 }
+             ],
+             "description": "Endpoints for syncing bookings with external calendar services like Google Calendar, Microsoft Outlook, and Apple Calendar.",
+             "event": [],
+             "protocolProfileBehavior": {}
+         },
+         {
+             "name": "Role-Based Status Updates",
+             "item": [
+                 {
+                     "name": "Customer - Confirm Booking",
+                     "request": {
+                         "method": "PATCH",
+                         "header": [
+                             {
+                                 "key": "Authorization",
+                                 "value": "Bearer {{customer_access_token}}",
+                                 "type": "text"
+                             },
+                             {
+                                 "key": "Content-Type",
+                                 "value": "application/json",
+                                 "type": "text"
+                             }
+                         ],
+                         "body": {
+                             "mode": "raw",
+                             "raw": "{\n    \"status\": \"confirmed\",\n    \"notes\": \"Booking confirmed by customer\"\n}",
+                             "options": {
+                                 "raw": {
+                                     "language": "json"
+                                 }
+                             }
+                         },
+                         "url": {
+                             "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                             "host": [
+                                 "{{base_url}}"
+                             ],
+                             "path": [
+                                 "api",
+                                 "{{api_version}}",
+                                 "bookings",
+                                 "{{booking_id}}",
+                                 "status",
+                                 ""
+                             ]
+                         }
+                     },
+                     "response": [
+                         {
+                             "name": "Success response"
+                         },
+                         {
+                             "name": "Error response"
+                         }
+                     ],
+                     "event": [
+                         {
+                             "listen": "test",
+                             "script": {
+                                 "type": "text/javascript",
+                                 "exec": [
+                                     "pm.test(\"Status code is 200\", function () {",
+                                     "    pm.response.to.have.status(200);",
+                                     "});"
+                                 ]
+                             }
+                         }
+                     ]
+                 },
+                 {
+                     "name": "Provider - Start Service",
+                     "request": {
+                         "method": "PATCH",
+                         "header": [
+                             {
+                                 "key": "Authorization",
+                                 "value": "Bearer {{provider_access_token}}",
+                                 "type": "text"
+                             },
+                             {
+                                 "key": "Content-Type",
+                                 "value": "application/json",
+                                 "type": "text"
+                             }
+                         ],
+                         "body": {
+                             "mode": "raw",
+                             "raw": "{\n    \"status\": \"in_progress\",\n    \"notes\": \"Service started by provider\"\n}",
+                             "options": {
+                                 "raw": {
+                                     "language": "json"
+                                 }
+                             }
+                         },
+                         "url": {
+                             "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                             "host": [
+                                 "{{base_url}}"
+                             ],
+                             "path": [
+                                 "api",
+                                 "{{api_version}}",
+                                 "bookings",
+                                 "{{booking_id}}",
+                                 "status",
+                                 ""
+                             ]
+                         }
+                     },
+                     "response": [
+                         {
+                             "name": "Success response"
+                         },
+                         {
+                             "name": "Error response"
+                         }
+                     ],
+                     "event": [
+                         {
+                             "listen": "test",
+                             "script": {
+                                 "type": "text/javascript",
+                                 "exec": [
+                                     "pm.test(\"Status code is 200\", function () {",
+                                     "    pm.response.to.have.status(200);",
+                                     "});"
+                                 ]
+                             }
+                         }
+                     ]
+                 },
+                 {
+                     "name": "Provider - Complete Service",
+                     "request": {
+                         "method": "PATCH",
+                         "header": [
+                             {
+                                 "key": "Authorization",
+                                 "value": "Bearer {{provider_access_token}}",
+                                 "type": "text"
+                             },
+                             {
+                                 "key": "Content-Type",
+                                 "value": "application/json",
+                                 "type": "text"
+                             }
+                         ],
+                         "body": {
+                             "mode": "raw",
+                             "raw": "{\n    \"status\": \"completed\",\n    \"notes\": \"Service completed successfully\"\n}",
+                             "options": {
+                                 "raw": {
+                                     "language": "json"
+                                 }
+                             }
+                         },
+                         "url": {
+                             "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                             "host": [
+                                 "{{base_url}}"
+                             ],
+                             "path": [
+                                 "api",
+                                 "{{api_version}}",
+                                 "bookings",
+                                 "{{booking_id}}",
+                                 "status",
+                                 ""
+                             ]
+                         }
+                     },
+                     "response": [
+                         {
+                             "name": "Success response"
+                         },
+                         {
+                             "name": "Error response"
+                         }
+                     ],
+                     "event": [
+                         {
+                             "listen": "test",
+                             "script": {
+                                 "type": "text/javascript",
+                                 "exec": [
+                                     "pm.test(\"Status code is 200\", function () {",
+                                     "    pm.response.to.have.status(200);",
+                                     "});"
+                                 ]
+                             }
+                         }
+                     ]
+                 },
+                 {
+                     "name": "Customer - Mark as Disputed",
+                     "request": {
+                         "method": "PATCH",
+                         "header": [
+                             {
+                                 "key": "Authorization",
+                                 "value": "Bearer {{customer_access_token}}",
+                                 "type": "text"
+                             },
+                             {
+                                 "key": "Content-Type",
+                                 "value": "application/json",
+                                 "type": "text"
+                             }
+                         ],
+                         "body": {
+                             "mode": "raw",
+                             "raw": "{\n    \"status\": \"disputed\",\n    \"notes\": \"Service quality issues reported by customer\"\n}",
+                             "options": {
+                                 "raw": {
+                                     "language": "json"
+                                 }
+                             }
+                         },
+                         "url": {
+                             "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                             "host": [
+                                 "{{base_url}}"
+                             ],
+                             "path": [
+                                 "api",
+                                 "{{api_version}}",
+                                 "bookings",
+                                 "{{booking_id}}",
+                                 "status",
+                                 ""
+                             ]
+                         }
+                     },
+                     "response": [
+                         {
+                             "name": "Success response"
+                         },
+                         {
+                             "name": "Error response"
+                         }
+                     ],
+                     "event": [
+                         {
+                             "listen": "test",
+                             "script": {
+                                 "type": "text/javascript",
+                                 "exec": [
+                                     "pm.test(\"Status code is 200\", function () {",
+                                     "    pm.response.to.have.status(200);",
+                                     "});"
+                                 ]
+                             }
+                         }
+                     ]
+                 },
+                 {
+                     "name": "Provider - Mark as Disputed",
+                     "request": {
+                         "method": "PATCH",
+                         "header": [
+                             {
+                                 "key": "Authorization",
+                                 "value": "Bearer {{provider_access_token}}",
+                                 "type": "text"
+                             },
+                             {
+                                 "key": "Content-Type",
+                                 "value": "application/json",
+                                 "type": "text"
+                             }
+                         ],
+                         "body": {
+                             "mode": "raw",
+                             "raw": "{\n    \"status\": \"disputed\",\n    \"notes\": \"Payment or customer behavior issues reported by provider\"\n}",
+                             "options": {
+                                 "raw": {
+                                     "language": "json"
+                                 }
+                             }
+                         },
+                         "url": {
+                             "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                             "host": [
+                                 "{{base_url}}"
+                             ],
+                             "path": [
+                                 "api",
+                                 "{{api_version}}",
+                                 "bookings",
+                                 "{{booking_id}}",
+                                 "status",
+                                 ""
+                             ]
+                         }
+                     },
+                     "response": [
+                         {
+                             "name": "Success response"
+                         },
+                         {
+                             "name": "Error response"
+                         }
+                     ],
+                     "event": [
+                         {
+                             "listen": "test",
+                             "script": {
+                                 "type": "text/javascript",
+                                 "exec": [
+                                     "pm.test(\"Status code is 200\", function () {",
+                                     "    pm.response.to.have.status(200);",
+                                     "});"
+                                 ]
+                             }
+                         }
+                     ]
+                 }
+             ],
+                           "description": "Role-based status update endpoints with different permissions for providers and customers.",
+              "event": [],
+              "protocolProfileBehavior": {}
+          },
+          {
+              "name": "Admin Operations",
+              "item": [
+                  {
+                      "name": "Admin - List All Bookings",
+                      "request": {
+                          "method": "GET",
+                          "header": [
+                              {
+                                  "key": "Authorization",
+                                  "value": "Bearer {{admin_access_token}}",
+                                  "type": "text"
+                              }
+                          ],
+                          "url": {
+                              "raw": "{{base_url}}/api/{{api_version}}/bookings/?status=&service=&ordering=-created_at",
+                              "host": [
+                                  "{{base_url}}"
+                              ],
+                              "path": [
+                                  "api",
+                                  "{{api_version}}",
+                                  "bookings",
+                                  ""
+                              ],
+                              "query": [
+                                  {
+                                      "key": "status",
+                                      "value": "",
+                                      "description": "Filter by booking status"
+                                  },
+                                  {
+                                      "key": "service",
+                                      "value": "",
+                                      "description": "Filter by service ID"
+                                  },
+                                  {
+                                      "key": "ordering",
+                                      "value": "-created_at",
+                                      "description": "Order by creation date (newest first)"
+                                  }
+                              ]
+                          }
+                      },
+                      "response": [
+                          {
+                              "name": "Success response"
+                          },
+                          {
+                              "name": "Error response"
+                          }
+                      ],
+                      "event": [
+                          {
+                              "listen": "test",
+                              "script": {
+                                  "type": "text/javascript",
+                                  "exec": [
+                                      "pm.test(\"Status code is 200\", function () {",
+                                      "    pm.response.to.have.status(200);",
+                                      "});"
+                                  ]
+                              }
+                          }
+                      ]
+                  },
+                  {
+                      "name": "Admin - List Disputed Bookings",
+                      "request": {
+                          "method": "GET",
+                          "header": [
+                              {
+                                  "key": "Authorization",
+                                  "value": "Bearer {{admin_access_token}}",
+                                  "type": "text"
+                              }
+                          ],
+                          "url": {
+                              "raw": "{{base_url}}/api/{{api_version}}/bookings/?status=disputed&ordering=-created_at",
+                              "host": [
+                                  "{{base_url}}"
+                              ],
+                              "path": [
+                                  "api",
+                                  "{{api_version}}",
+                                  "bookings",
+                                  ""
+                              ],
+                              "query": [
+                                  {
+                                      "key": "status",
+                                      "value": "disputed",
+                                      "description": "Filter by disputed status"
+                                  },
+                                  {
+                                      "key": "ordering",
+                                      "value": "-created_at",
+                                      "description": "Order by creation date (newest first)"
+                                  }
+                              ]
+                          }
+                      },
+                      "response": [
+                          {
+                              "name": "Success response"
+                          },
+                          {
+                              "name": "Error response"
+                          }
+                      ],
+                      "event": [
+                          {
+                              "listen": "test",
+                              "script": {
+                                  "type": "text/javascript",
+                                  "exec": [
+                                      "pm.test(\"Status code is 200\", function () {",
+                                      "    pm.response.to.have.status(200);",
+                                      "});"
+                                  ]
+                              }
+                          }
+                      ]
+                  },
+                  {
+                      "name": "Admin - Force Status Update",
+                      "request": {
+                          "method": "PATCH",
+                          "header": [
+                              {
+                                  "key": "Authorization",
+                                  "value": "Bearer {{admin_access_token}}",
+                                  "type": "text"
+                              },
+                              {
+                                  "key": "Content-Type",
+                                  "value": "application/json",
+                                  "type": "text"
+                              }
+                          ],
+                          "body": {
+                              "mode": "raw",
+                              "raw": "{\n    \"status\": \"completed\",\n    \"notes\": \"Status updated by admin after dispute resolution\"\n}",
+                              "options": {
+                                  "raw": {
+                                      "language": "json"
+                                  }
+                              }
+                          },
+                          "url": {
+                              "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/status/",
+                              "host": [
+                                  "{{base_url}}"
+                              ],
+                              "path": [
+                                  "api",
+                                  "{{api_version}}",
+                                  "bookings",
+                                  "{{booking_id}}",
+                                  "status",
+                                  ""
+                              ]
+                          }
+                      },
+                      "response": [
+                          {
+                              "name": "Success response"
+                          },
+                          {
+                              "name": "Error response"
+                          }
+                      ],
+                      "event": [
+                          {
+                              "listen": "test",
+                              "script": {
+                                  "type": "text/javascript",
+                                  "exec": [
+                                      "pm.test(\"Status code is 200\", function () {",
+                                      "    pm.response.to.have.status(200);",
+                                      "});"
+                                  ]
+                              }
+                          }
+                      ]
+                  },
+                  {
+                      "name": "Admin - View Booking Details",
+                      "request": {
+                          "method": "GET",
+                          "header": [
+                              {
+                                  "key": "Authorization",
+                                  "value": "Bearer {{admin_access_token}}",
+                                  "type": "text"
+                              }
+                          ],
+                          "url": {
+                              "raw": "{{base_url}}/api/{{api_version}}/bookings/{{booking_id}}/",
+                              "host": [
+                                  "{{base_url}}"
+                              ],
+                              "path": [
+                                  "api",
+                                  "{{api_version}}",
+                                  "bookings",
+                                  "{{booking_id}}",
+                                  ""
+                              ]
+                          }
+                      },
+                      "response": [
+                          {
+                              "name": "Success response"
+                          },
+                          {
+                              "name": "Error response"
+                          }
+                      ],
+                      "event": [
+                          {
+                              "listen": "test",
+                              "script": {
+                                  "type": "text/javascript",
+                                  "exec": [
+                                      "pm.test(\"Status code is 200\", function () {",
+                                      "    pm.response.to.have.status(200);",
+                                      "});"
+                                  ]
+                              }
+                          }
+                      ]
+                  }
+              ],
+              "description": "Admin-only endpoints for managing bookings, resolving disputes, and viewing all booking data.",
+              "event": [],
+              "protocolProfileBehavior": {}
+          }
+      ]
+  }

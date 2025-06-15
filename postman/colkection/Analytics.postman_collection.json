@@ -1,0 +1,558 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb53",
+		"name": "Prbal API for Analytics",
+		"description": "API collection for analytics and admin management in the Prbal application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Analytics & Admin Management",
+			"item": [
+				{
+					"name": "Analytics Reports",
+					"item": [
+						{
+							"name": "Platform Overview Analytics",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/overview/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "overview", ""]
+								},
+								"description": "Get comprehensive platform overview analytics including user stats, booking metrics, revenue data, and growth rates. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Provider Earnings Analytics",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/earnings/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "earnings", ""]
+								},
+								"description": "Get detailed provider earnings analytics including total earnings, earnings by category, top providers, and commission statistics. Admin only."
+							},
+							"response": []
+						}
+					],
+					"description": "Analytics dashboard endpoints for platform insights",
+					"event": [],
+					"protocolProfileBehavior": {}
+				},
+				{
+					"name": "Admin User Management",
+					"item": [
+						{
+							"name": "List All Users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", ""]
+								},
+								"description": "Get a list of all users with booking counts and financial statistics. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Users by Type",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/?user_type=provider",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", ""],
+									"query": [
+										{
+											"key": "user_type",
+											"value": "provider"
+										}
+									]
+								},
+								"description": "Filter users by type (provider, customer, admin). Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Users by Verification Status",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/?is_verified=true",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", ""],
+									"query": [
+										{
+											"key": "is_verified",
+											"value": "true"
+										}
+									]
+								},
+								"description": "Filter users by verification status. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Search Users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/?search={{search_user_term}}",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", ""],
+									"query": [
+										{
+											"key": "search",
+											"value": "{{search_user_term}}"
+										}
+									]
+								},
+								"description": "Search users by username, name, or email. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/{{user_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", "{{user_id}}", ""]
+								},
+								"description": "Get detailed information about a specific user. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"newuser123\",\n  \"email\": \"newuser@example.com\",\n  \"password\": \"securepassword123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"user_type\": \"customer\",\n  \"is_active\": true,\n  \"is_verified\": false\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", ""]
+								},
+								"description": "Create a new user account. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"updateduser123\",\n  \"email\": \"updated@example.com\",\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Smith\",\n  \"user_type\": \"provider\",\n  \"is_active\": true,\n  \"is_verified\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/{{user_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", "{{user_id}}", ""]
+								},
+								"description": "Update a user account completely. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Partial Update User",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"is_verified\": true,\n  \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/{{user_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", "{{user_id}}", ""]
+								},
+								"description": "Partially update a user account (e.g., verify or activate). Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/users/{{user_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "users", "{{user_id}}", ""]
+								},
+								"description": "Delete a user account. Admin only. Use with caution."
+							},
+							"response": []
+						}
+					],
+					"description": "Admin endpoints for managing users",
+					"event": [],
+					"protocolProfileBehavior": {}
+				},
+				{
+					"name": "Admin Service Management",
+					"item": [
+						{
+							"name": "List All Services",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""]
+								},
+								"description": "Get a list of all services with booking counts and revenue statistics. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Services by Status",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/?status=active",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""],
+									"query": [
+										{
+											"key": "status",
+											"value": "active"
+										}
+									]
+								},
+								"description": "Filter services by status (active, pending, inactive). Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Services by Category",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/?category={{service_category_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""],
+									"query": [
+										{
+											"key": "category",
+											"value": "{{service_category_id}}"
+										}
+									]
+								},
+								"description": "Filter services by category. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Services by Provider",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/?provider={{provider_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""],
+									"query": [
+										{
+											"key": "provider",
+											"value": "{{provider_id}}"
+										}
+									]
+								},
+								"description": "Filter services by provider. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Featured Services",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/?is_featured=true",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""],
+									"query": [
+										{
+											"key": "is_featured",
+											"value": "true"
+										}
+									]
+								},
+								"description": "Filter featured services. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Search Services",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/?search={{search_query}}",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""],
+									"query": [
+										{
+											"key": "search",
+											"value": "{{search_query}}"
+										}
+									]
+								},
+								"description": "Search services by name, description, location, or provider. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Service Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/{{service_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", "{{service_id}}", ""]
+								},
+								"description": "Get detailed information about a specific service. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Create Service",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Professional House Cleaning\",\n  \"description\": \"Comprehensive house cleaning service including all rooms\",\n  \"provider\": \"{{provider_id}}\",\n  \"category\": \"{{service_category_id}}\",\n  \"subcategories\": [\"{{service_subcategory_id}}\"],\n  \"hourly_rate\": 50.00,\n  \"currency\": \"INR\",\n  \"min_hours\": 2,\n  \"max_hours\": 8,\n  \"location\": \"Bangalore, India\",\n  \"latitude\": 12.9716,\n  \"longitude\": 77.5946,\n  \"status\": \"active\",\n  \"is_featured\": false,\n  \"tags\": [\"cleaning\", \"home\", \"professional\"],\n  \"pricing_options\": {},\n  \"availability\": {},\n  \"required_tools\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", ""]
+								},
+								"description": "Create a new service. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Service",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Premium House Cleaning Service\",\n  \"description\": \"Premium comprehensive house cleaning service with eco-friendly products\",\n  \"provider\": \"{{provider_id}}\",\n  \"category\": \"{{service_category_id}}\",\n  \"subcategories\": [\"{{service_subcategory_id}}\"],\n  \"hourly_rate\": 75.00,\n  \"currency\": \"INR\",\n  \"min_hours\": 3,\n  \"max_hours\": 10,\n  \"location\": \"Bangalore, India\",\n  \"latitude\": 12.9716,\n  \"longitude\": 77.5946,\n  \"status\": \"active\",\n  \"is_featured\": true,\n  \"tags\": [\"cleaning\", \"home\", \"premium\", \"eco-friendly\"],\n  \"pricing_options\": {},\n  \"availability\": {},\n  \"required_tools\": []\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/{{service_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", "{{service_id}}", ""]
+								},
+								"description": "Update a service completely. Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Partial Update Service",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": \"active\",\n  \"is_featured\": true,\n  \"hourly_rate\": 60.00\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/{{service_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", "{{service_id}}", ""]
+								},
+								"description": "Partially update a service (e.g., approve, feature, or change pricing). Admin only."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Service",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/analytics/admin/services/{{service_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["analytics", "admin", "services", "{{service_id}}", ""]
+								},
+								"description": "Delete a service. Admin only. Use with caution."
+							},
+							"response": []
+						}
+					],
+					"description": "Admin endpoints for managing services",
+					"event": [],
+					"protocolProfileBehavior": {}
+				}
+			],
+			"description": "Analytics and administrative management endpoints",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+	]
+}

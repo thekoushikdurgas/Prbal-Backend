@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4353-8c17-259e292edb57",
+		"name": "Prbal API for Payments",
+		"description": "Complete API collection for payment processing, payment gateway accounts, and payouts in the Prbal application. Covers all user types: providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Payment Processing",
+			"item": [
+				{
+					"name": "List Payments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payments/?status={{payment_status}}&payment_method={{payment_method}}&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payments",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "{{payment_status}}",
+									"description": "Filter by payment status (pending, processing, completed, failed, refunded, cancelled)"
+								},
+								{
+									"key": "payment_method",
+									"value": "{{payment_method}}",
+									"description": "Filter by payment method"
+								},
+								{
+									"key": "booking",
+									"value": "{{booking_id}}",
+									"description": "Filter by booking ID",
+									"disabled": true
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field (created_at, amount, payment_date)"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search in payment notes",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payments/{{payment_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payments",
+								"{{payment_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Initiate Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_id\": \"{{booking_id}}\",\n    \"payment_method\": \"credit_card\",\n    \"save_payment_method\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payments/initiate/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payments",
+								"initiate",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_id\": \"{{payment_id}}\",\n    \"transaction_id\": \"txn_{{$randomUUID}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payments/confirm/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payments",
+								"confirm",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payments/history/?role={{payment_role}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payments",
+								"history",
+								""
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "{{payment_role}}",
+									"description": "Filter by role (payer/payee)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment Gateway Accounts",
+			"item": [
+				{
+					"name": "List Payment Accounts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/accounts/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"accounts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Payment Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_type\": \"stripe\",\n    \"account_id\": \"acct_{{$randomAlphaNumeric}}\",\n    \"account_details\": {\n        \"email\": \"{{provider_email}}\",\n        \"country\": \"IN\",\n        \"currency\": \"INR\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/accounts/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"accounts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment Account Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/accounts/{{payment_method_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"accounts",
+								"{{payment_method_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Payment Account",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_type\": \"stripe\",\n    \"account_id\": \"acct_{{$randomAlphaNumeric}}\",\n    \"is_active\": true,\n    \"account_details\": {\n        \"email\": \"{{provider_email}}\",\n        \"country\": \"IN\",\n        \"currency\": \"INR\",\n        \"updated_at\": \"{{$isoTimestamp}}\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/accounts/{{payment_method_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"accounts",
+								"{{payment_method_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Payment Account",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/accounts/{{payment_method_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"accounts",
+								"{{payment_method_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payouts",
+			"item": [
+				{
+					"name": "List Payouts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payouts/?status={{payout_status}}&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payouts",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "{{payout_status}}",
+									"description": "Filter by payout status (pending, processing, completed, failed, cancelled)"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field (created_at, processed_at, amount)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payout Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payouts/{{payout_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payouts",
+								"{{payout_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Payout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_account_id\": \"{{payment_method_id}}\",\n    \"amount\": \"{{payout_amount}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payouts/request/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payouts",
+								"request",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Earnings Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payouts/earnings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payouts",
+								"earnings",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Payment Management",
+			"item": [
+				{
+					"name": "List All Payments (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payments/?status={{payment_status}}&payment_method={{payment_method}}&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payments",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "{{payment_status}}",
+									"description": "Filter by payment status"
+								},
+								{
+									"key": "payment_method",
+									"value": "{{payment_method}}",
+									"description": "Filter by payment method"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Payouts (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/payouts/?status={{payout_status}}&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payouts",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "{{payout_status}}",
+									"description": "Filter by payout status"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

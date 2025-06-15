@@ -1,0 +1,543 @@
+{
+    "info": {
+        "_postman_id": "c6ef0918-c0ce-4753-8c17-239e292edb57",
+        "name": "Prbal API for Products",
+        "description": "API collection for the Prbal application, generated from Prbal-API.md. Covers user types: providers, customers, and admins.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "20572666",
+        "_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+    },
+    "item": [
+        {
+            "name": "Products",
+            "item": [
+                {
+                    "name": "Product Categories",
+                    "item": [
+                        {
+                            "name": "List Product Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/categories/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "categories",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ],
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "if (pm.response.code === 200) {",
+                                            "    const responseJson = pm.response.json();",
+                                            "    if (responseJson.results && responseJson.results.length > 0) {",
+                                            "        pm.environment.set('product_category_id', responseJson.results[0].id);",
+                                            "    }",
+                                            "}"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create Product Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Electronics\",\n    \"description\": \"Electronic products and gadgets\",\n    \"is_active\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/categories/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "categories",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ],
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "if (pm.response.code === 201) {",
+                                            "    const responseJson = pm.response.json();",
+                                            "    pm.environment.set('product_category_id', responseJson.id);",
+                                            "}"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Retrieve Product Category",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "categories",
+                                        "{{product_category_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ],
+                            "event": []
+                        },
+                        {
+                            "name": "Update Product Category (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Updated Electronics\",\n    \"description\": \"Updated description for electronic products\",\n    \"is_active\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "categories",
+                                        "{{product_category_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ],
+                            "event": []
+                        },
+                        {
+                            "name": "Partially Update Product Category (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"description\": \"Partially updated description for electronics category\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "categories",
+                                        "{{product_category_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ],
+                            "event": []
+                        },
+                        {
+                            "name": "Delete Product Category",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{admin_access_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/categories/{{product_category_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "categories",
+                                        "{{product_category_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "name": "Success response "
+                                },
+                                {
+                                    "name": "Error response "
+                                }
+                            ],
+                            "event": []
+                        }
+                    ],
+                    "description": "",
+                    "event": [],
+                    "protocolProfileBehavior": {}
+                },
+                {
+                    "name": "Products",
+                    "item": [
+                        {
+                            "name": "List Products",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/?search={{search_query}}&category={{product_category_id}}&is_featured={{is_featured}}&ordering={{ordering}}",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        ""
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "search",
+                                            "value": "{{search_query}}",
+                                            "description": "Search in product name and description"
+                                        },
+                                        {
+                                            "key": "category",
+                                            "value": "{{product_category_id}}",
+                                            "description": "Filter by category ID"
+                                        },
+                                        {
+                                            "key": "is_featured",
+                                            "value": "{{is_featured}}",
+                                            "description": "Filter by featured products"
+                                        },
+                                        {
+                                            "key": "ordering",
+                                            "value": "{{ordering}}",
+                                            "description": "Order by: created_at, -created_at, price, -price"
+                                        },
+                                        {
+                                            "key": "product_type",
+                                            "value": "{{product_type}}",
+                                            "description": "Filter by product type"
+                                        },
+                                        {
+                                            "key": "seller",
+                                            "value": "{{seller_id}}",
+                                            "description": "Filter by seller ID"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [],
+                            "event": []
+                        },
+                        {
+                            "name": "Create Product",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"category\": \"{{product_category_id}}\",\n    \"related_service_category\": \"{{service_category_id}}\",\n    \"name\": \"Professional Website Development Package\",\n    \"description\": \"Complete website development package including design, development, and deployment\",\n    \"price\": \"999.99\",\n    \"discount_price\": \"799.99\",\n    \"product_type\": \"packaged_service\",\n    \"stock_quantity\": 10,\n    \"images\": [\n        \"https://example.com/image1.jpg\",\n        \"https://example.com/image2.jpg\"\n    ],\n    \"features\": [\n        \"Responsive Design\",\n        \"SEO Optimized\",\n        \"Mobile Friendly\",\n        \"Fast Loading\"\n    ],\n    \"specifications\": {\n        \"delivery_time\": \"7-14 days\",\n        \"revisions\": \"3 free revisions\",\n        \"support\": \"30 days free support\",\n        \"technologies\": [\"HTML5\", \"CSS3\", \"JavaScript\", \"React\"]\n    }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [],
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "type": "text/javascript",
+                                        "exec": [
+                                            "if (pm.response.code === 201) {",
+                                            "    const responseJson = pm.response.json();",
+                                            "    pm.environment.set('product_id', responseJson.id);",
+                                            "}"
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Retrieve Product",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{access_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/{{product_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "{{product_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [],
+                            "event": []
+                        },
+                        {
+                            "name": "Update Product (PUT)",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"category\": \"{{product_category_id}}\",\n    \"related_service_category\": \"{{service_category_id}}\",\n    \"name\": \"Updated Professional Website Development Package\",\n    \"description\": \"Updated complete website development package with additional features\",\n    \"price\": \"1199.99\",\n    \"discount_price\": \"999.99\",\n    \"product_type\": \"packaged_service\",\n    \"stock_quantity\": 15,\n    \"images\": [\n        \"https://example.com/updated-image1.jpg\",\n        \"https://example.com/updated-image2.jpg\",\n        \"https://example.com/new-image3.jpg\"\n    ],\n    \"features\": [\n        \"Responsive Design\",\n        \"SEO Optimized\",\n        \"Mobile Friendly\",\n        \"Fast Loading\",\n        \"Analytics Integration\"\n    ],\n    \"specifications\": {\n        \"delivery_time\": \"5-10 days\",\n        \"revisions\": \"5 free revisions\",\n        \"support\": \"60 days free support\",\n        \"technologies\": [\"HTML5\", \"CSS3\", \"JavaScript\", \"React\", \"Next.js\"]\n    }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/{{product_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "{{product_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [],
+                            "event": []
+                        },
+                        {
+                            "name": "Partially Update Product (PATCH)",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"price\": \"899.99\",\n    \"discount_price\": \"749.99\",\n    \"stock_quantity\": 20\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/{{product_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "{{product_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [],
+                            "event": []
+                        },
+                        {
+                            "name": "Delete Product",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{provider_access_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/api/{{api_version}}/products/{{product_id}}/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "{{api_version}}",
+                                        "products",
+                                        "{{product_id}}",
+                                        ""
+                                    ]
+                                }
+                            },
+                            "response": [],
+                            "event": []
+                        }
+                    ],
+                    "description": "Product CRUD operations - Create (Provider only), Read (All), Update/Delete (Owner only)",
+                    "event": [],
+                    "protocolProfileBehavior": {}
+                }
+            ],
+            "description": "",
+            "event": [],
+            "protocolProfileBehavior": {}
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: daphne -b 0.0.0.0 -p 8000 prbal_project.asgi:application
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  celery:
+    build: .
+    command: celery -A prbal_project worker -l info
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+    restart: always
+
+  celery-beat:
+    build: .
+    command: celery -A prbal_project beat -l info
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+    restart: always
+
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    image: nginx:1.21
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - static_volume:/home/app/staticfiles
+      - media_volume:/home/app/media
+    depends_on:
+      - web
+    restart: always
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:

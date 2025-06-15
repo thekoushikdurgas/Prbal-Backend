@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb55",
+		"name": "Prbal API for Bids",
+		"description": "API collection for bidding system in the Prbal application. Covers bid management for providers, customers, and admins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Bids",
+			"item": [
+				{
+					"name": "List Bids",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""]
+						},
+						"description": "Get a list of bids. Providers see their own bids, customers see bids on their services."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bid Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/{{bid_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "{{bid_id}}", ""]
+						},
+						"description": "Get detailed information about a specific bid. Only accessible to bid participants (provider or customer)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bid (Provider)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service\": \"{{service_id}}\",\n  \"amount\": 75.00,\n  \"currency\": \"INR\",\n  \"duration\": \"3 hours\",\n  \"scheduled_date_time\": \"2023-06-20T14:00:00Z\",\n  \"message\": \"I can provide high-quality cleaning service with eco-friendly products. I have 5 years of experience.\",\n  \"location\": \"Bangalore, India\",\n  \"payment_details\": {\"payment_method\": \"cash\", \"advance_required\": false}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""]
+						},
+						"description": "Create a new bid on a service. Only providers can create bids, and they cannot bid on their own services."
+					},
+					"response": []
+				},
+				{
+					"name": "Create AI-Suggested Bid (Provider)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"service\": \"{{service_id}}\",\n  \"amount\": 65.00,\n  \"currency\": \"INR\",\n  \"duration\": \"2.5 hours\",\n  \"scheduled_date_time\": \"2023-06-20T10:00:00Z\",\n  \"message\": \"Professional cleaning service as suggested by AI analysis. Competitive pricing based on market research.\",\n  \"location\": \"Bangalore, India\",\n  \"is_ai_suggested\": true,\n  \"ai_suggestion_id\": \"{{suggestion_id}}\",\n  \"ai_suggested_amount\": 65.00,\n  \"payment_details\": {\"payment_method\": \"online\", \"advance_required\": true}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""]
+						},
+						"description": "Create a bid based on AI suggestions. Includes AI suggestion tracking and analytics."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bid (Owner)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 80.00,\n  \"currency\": \"INR\",\n  \"duration\": \"4 hours\",\n  \"scheduled_date_time\": \"2023-06-21T15:00:00Z\",\n  \"message\": \"Updated bid with revised pricing and timeline based on detailed requirements.\",\n  \"location\": \"Bangalore, India\",\n  \"payment_details\": {\"payment_method\": \"online\", \"advance_required\": true, \"advance_percentage\": 20}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/{{bid_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "{{bid_id}}", ""]
+						},
+						"description": "Update a bid completely. Only the bid owner (provider) can update, and only if status is still 'pending'."
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update Bid (Owner)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 70.00,\n  \"message\": \"Reduced price for quick booking. Same quality service guaranteed.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/{{bid_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "{{bid_id}}", ""]
+						},
+						"description": "Partially update a bid (e.g., adjust price or message). Only the bid owner can update pending bids."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Bid (Owner)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/{{bid_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "{{bid_id}}", ""]
+						},
+						"description": "Delete a bid. Only the bid owner (provider) can delete their bid."
+					},
+					"response": []
+				},
+				{
+					"name": "Accept Bid (Customer)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"booking_date\": \"2023-06-20T14:00:00Z\",\n  \"special_instructions\": \"Please bring eco-friendly cleaning supplies. Contact me 30 minutes before arrival.\",\n  \"payment_method\": \"online\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/{{bid_id}}/accept/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "{{bid_id}}", "accept", ""]
+						},
+						"description": "Accept a bid and automatically create a booking. Only the customer (service owner) can accept bids on their service."
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Bid (Customer)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{customer_access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/{{bid_id}}/reject/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "{{bid_id}}", "reject", ""]
+						},
+						"description": "Reject a bid. Only the customer (service owner) can reject bids on their service."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Bids by Service",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/?service={{service_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""],
+							"query": [
+								{
+									"key": "service",
+									"value": "{{service_id}}"
+								}
+							]
+						},
+						"description": "Filter bids by a specific service ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Bids by Provider",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/?provider={{provider_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""],
+							"query": [
+								{
+									"key": "provider",
+									"value": "{{provider_id}}"
+								}
+							]
+						},
+						"description": "Filter bids by a specific provider ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Bids by Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/?status=pending",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending"
+								}
+							]
+						},
+						"description": "Filter bids by status (pending, accepted, rejected, expired, completed, cancelled)."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Bids by Description",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/?search={{search_query}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""],
+							"query": [
+								{
+									"key": "search",
+									"value": "{{search_query}}"
+								}
+							]
+						},
+						"description": "Search bids by description/message content."
+					},
+					"response": []
+				},
+				{
+					"name": "Sort Bids by Amount",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/?ordering=amount",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""],
+							"query": [
+								{
+									"key": "ordering",
+									"value": "amount"
+								}
+							]
+						},
+						"description": "Sort bids by amount (ascending). Use '-amount' for descending order."
+					},
+					"response": []
+				},
+				{
+					"name": "Sort Bids by Date",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/?ordering=-created_at",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", ""],
+							"query": [
+								{
+									"key": "ordering",
+									"value": "-created_at"
+								}
+							]
+						},
+						"description": "Sort bids by creation date (newest first). Use 'created_at' for oldest first."
+					},
+					"response": []
+				},
+				{
+					"name": "Get AI Smart Pricing (Provider)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bids/smart_price/?service_id={{service_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "bids", "smart_price", ""],
+							"query": [
+								{
+									"key": "service_id",
+									"value": "{{service_id}}"
+								}
+							]
+						},
+						"description": "Get AI-suggested pricing for a service. Provides min, max, and optimal price recommendations based on market analysis."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing bids on service requests.",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+	]
+}

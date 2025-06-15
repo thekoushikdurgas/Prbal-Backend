@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-9753-8c17-259e292edb57",
+		"name": "Prbal API for Sync",
+		"description": "API collection for the Prbal application sync functionality. Enables offline functionality by allowing users to download data for offline use and upload changes made while offline. Supports mobile apps with limited connectivity and provides efficient data synchronization capabilities.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "Sync",
+			"item": [
+				{
+					"name": "Download User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"profile",
+								""
+							]
+						},
+						"description": "Download the authenticated user's profile for offline use.\n\n**Permissions:** Authenticated users only\n\n**Returns:**\n- Complete user profile including:\n  - Basic info (id, username, first_name, last_name, email)\n  - Profile details (user_type, phone_number, profile_picture, bio)\n  - Location and verification status\n  - Rating and balance information\n  - Account timestamps (date_joined, last_login)\n\n**Use Cases:**\n- Mobile app offline functionality\n- Profile caching for better performance\n- User dashboard data synchronization"
+					},
+					"response": []
+				},
+				{
+					"name": "Download Services for Offline",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/services/?category={{service_category_id}}&location={{sync_location}}&max_price={{sync_max_price}}&search={{search_query}}&ordering=-created_at&limit={{sync_limit}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "{{service_category_id}}",
+									"description": "Filter by service category ID"
+								},
+								{
+									"key": "location",
+									"value": "{{sync_location}}",
+									"description": "Filter by location (partial match)"
+								},
+								{
+									"key": "max_price",
+									"value": "{{sync_max_price}}",
+									"description": "Filter by maximum price"
+								},
+								{
+									"key": "search",
+									"value": "{{search_query}}",
+									"description": "Search in title, description, location"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field (created_at, price, rating, -created_at, -price, -rating)"
+								},
+								{
+									"key": "limit",
+									"value": "{{sync_limit}}",
+									"description": "Limit number of services for faster sync"
+								}
+							]
+						},
+						"description": "Download available services for offline browsing.\n\n**Permissions:** Authenticated users only\n\n**Query Parameters:**\n- category (optional): Filter by service category ID\n- location (optional): Filter by location (partial match)\n- max_price (optional): Filter by maximum price\n- search (optional): Search in title, description, location\n- ordering (optional): Order by field (created_at, price, rating, -created_at, -price, -rating)\n- limit (optional): Limit number of services for faster sync\n\n**Returns:**\n- Array of services with complete information:\n  - Service details (id, title, description, price, location, image)\n  - Provider information (simplified)\n  - Category information\n  - Status and featured flag\n  - Timestamps\n- Sync metadata (sync_timestamp, expires_after)\n\n**Use Cases:**\n- Mobile app offline service browsing\n- Service catalog caching\n- Reduced API calls for better performance"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Offline Changes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timestamp\": \"{{sync_timestamp}}\",\n    \"bids\": [\n        {\n            \"client_temp_id\": \"temp_bid_1\",\n            \"service\": \"{{service_id}}\",\n            \"amount\": {{bid_amount}},\n            \"message\": \"{{bid_message}}\",\n            \"duration\": \"{{bid_duration}}\",\n            \"currency\": \"{{bid_currency}}\",\n            \"scheduled_date_time\": \"{{scheduled_date_time}}\"\n        }\n    ],\n    \"bookings\": [\n        {\n            \"client_temp_id\": \"temp_booking_1\",\n            \"service\": \"{{service_id}}\",\n            \"provider\": \"{{provider_id}}\",\n            \"booking_date\": \"{{booking_date}}\",\n            \"start_time\": \"{{booking_start_time}}\",\n            \"end_time\": \"{{booking_end_time}}\",\n            \"amount\": {{booking_amount}},\n            \"address\": \"{{booking_address}}\",\n            \"requirements\": \"{{booking_requirements}}\"\n        }\n    ],\n    \"messages\": [\n        {\n            \"client_temp_id\": \"temp_message_1\",\n            \"thread\": \"{{thread_id}}\",\n            \"content\": \"Message sent while offline\",\n            \"message_type\": \"text\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/upload/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"upload",
+								""
+							]
+						},
+						"description": "Upload offline changes to the backend.\n\n**Permissions:** Authenticated users only\n\n**Request Body:**\n- timestamp (required): When the changes were made offline\n- bids (optional): Array of bids created offline\n- bookings (optional): Array of bookings created offline\n- messages (optional): Array of messages sent offline\n\n**Processing:**\n- All operations are processed in a single database transaction\n- Each item can have a client_temp_id for mapping responses\n- Validation is performed for each item\n- Errors are collected and returned\n\n**Returns:**\n- success: Boolean indicating if all operations succeeded\n- processed: Object containing arrays of processed items\n  - bids: Successfully created bids with server IDs\n  - bookings: Successfully created bookings with server IDs\n  - messages: Successfully sent messages with server IDs\n  - errors: Array of items that failed with error details\n- sync_timestamp: Server timestamp of the sync operation\n\n**Use Cases:**\n- Mobile app offline functionality\n- Batch processing of offline changes\n- Data synchronization after connectivity is restored"
+					},
+					"response": []
+				},
+				{
+					"name": "Download Services by Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/services/?category={{service_category_id}}&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "{{service_category_id}}",
+									"description": "Filter by specific service category"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by most recent first"
+								}
+							]
+						},
+						"description": "Download services for a specific category for offline browsing.\n\n**Permissions:** Authenticated users only\n\n**Use Case:** Category-specific offline browsing (e.g., only download cleaning services)"
+					},
+					"response": []
+				},
+				{
+					"name": "Download Services by Location",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/services/?location={{sync_location}}&ordering=price",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "{{sync_location}}",
+									"description": "Filter by location"
+								},
+								{
+									"key": "ordering",
+									"value": "price",
+									"description": "Order by price (lowest first)"
+								}
+							]
+						},
+						"description": "Download services for a specific location for offline browsing.\n\n**Permissions:** Authenticated users only\n\n**Use Case:** Location-specific offline browsing (e.g., only download services in user's city)"
+					},
+					"response": []
+				},
+				{
+					"name": "Download Limited Services (Fast Sync)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/services/?limit=50&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Limit to 50 services for faster sync"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Get most recent services first"
+								}
+							]
+						},
+						"description": "Download a limited number of services for fast synchronization.\n\n**Permissions:** Authenticated users only\n\n**Use Case:** Quick sync for mobile apps with limited bandwidth or storage"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Bids Only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timestamp\": \"{{sync_timestamp}}\",\n    \"bids\": [\n        {\n            \"client_temp_id\": \"offline_bid_001\",\n            \"service\": \"{{service_id}}\",\n            \"amount\": {{bid_amount}},\n            \"message\": \"Bid created while offline\",\n            \"duration\": \"2 hours\",\n            \"currency\": \"INR\",\n            \"scheduled_date_time\": \"{{scheduled_date_time}}\"\n        },\n        {\n            \"client_temp_id\": \"offline_bid_002\",\n            \"service\": \"{{service_id_example}}\",\n            \"amount\": 150.00,\n            \"message\": \"Another offline bid\",\n            \"duration\": \"1 day\",\n            \"currency\": \"INR\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/upload/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"upload",
+								""
+							]
+						},
+						"description": "Upload only bids created offline.\n\n**Permissions:** Authenticated users only\n\n**Use Case:** Provider uploading bids created while offline"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Messages Only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timestamp\": \"{{sync_timestamp}}\",\n    \"messages\": [\n        {\n            \"client_temp_id\": \"offline_msg_001\",\n            \"thread\": \"{{thread_id}}\",\n            \"content\": \"Message sent while offline - checking availability\",\n            \"message_type\": \"text\"\n        },\n        {\n            \"client_temp_id\": \"offline_msg_002\",\n            \"thread\": \"{{thread_id}}\",\n            \"content\": \"Follow-up message sent offline\",\n            \"message_type\": \"text\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/sync/upload/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"sync",
+								"upload",
+								""
+							]
+						},
+						"description": "Upload only messages sent while offline.\n\n**Permissions:** Authenticated users only\n\n**Use Case:** Uploading messages that were queued while offline"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for offline functionality and data synchronization. Allows downloading data for offline use and uploading changes made while offline.",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+    ]
+}

@@ -1,0 +1,422 @@
+{
+	"info": {
+		"_postman_id": "c6ef0918-c0ce-4753-8c17-259e292edb52",
+		"name": "Prbal API for AI",
+		"description": "API collection for AI suggestions and feedback in the Prbal application.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-c6ef0918-c0ce-4753-8c17-259e292edb57?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "AI Suggestions & Feedback",
+			"item": [
+				{
+					"name": "AI Suggestions",
+					"item": [
+						{
+							"name": "List AI Suggestions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", ""]
+								},
+								"description": "Get a list of AI suggestions for the authenticated user."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Suggestions by Type",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/?suggestion_type=bid_amount",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", ""],
+									"query": [
+										{
+											"key": "suggestion_type",
+											"value": "bid_amount"
+										}
+									]
+								},
+								"description": "Filter AI suggestions by type (bid_amount, pricing, service_improvement, etc.)."
+							},
+							"response": []
+						},
+						{
+							"name": "Filter Suggestions by Status",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/?status=new",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", ""],
+									"query": [
+										{
+											"key": "status",
+											"value": "new"
+										}
+									]
+								},
+								"description": "Filter AI suggestions by status (new, viewed, implemented, rejected)."
+							},
+							"response": []
+						},
+						{
+							"name": "Get AI Suggestion Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/{{suggestion_id_example}}/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", "{{suggestion_id_example}}", ""]
+								},
+								"description": "Get details of a specific AI suggestion. This marks the suggestion as viewed."
+							},
+							"response": []
+						},
+						{
+							"name": "Admin View All Suggestions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/?all=true",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", ""],
+									"query": [
+										{
+											"key": "all",
+											"value": "true"
+										}
+									]
+								},
+								"description": "Admin-only endpoint to view all AI suggestions from all users."
+							},
+							"response": []
+						},
+						{
+							"name": "Provide Feedback on Suggestion",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"feedback\": \"This suggestion was very helpful and I implemented it successfully.\",\n  \"is_used\": true,\n  \"status\": \"implemented\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/{{suggestion_id_example}}/provide_feedback/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", "{{suggestion_id_example}}", "provide_feedback", ""]
+								},
+								"description": "Provide feedback on an AI suggestion including whether it was used."
+							},
+							"response": []
+						},
+						{
+							"name": "Generate Service Suggestions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"preferences\": {\n    \"interests\": [\"home cleaning\", \"gardening\", \"repairs\"],\n    \"location\": \"Bangalore, India\",\n    \"budget\": \"₹500-2000\"\n  },\n  \"category_id\": \"{{service_category_id}}\",\n  \"max_suggestions\": 5\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/generate_service_suggestions/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", "generate_service_suggestions", ""]
+								},
+								"description": "Generate AI-powered service suggestions based on user preferences and history."
+							},
+							"response": []
+						},
+						{
+							"name": "Suggest Bid Amount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"service_id\": \"{{service_id}}\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/suggest_bid_amount/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", "suggest_bid_amount", ""]
+								},
+								"description": "Get an AI-suggested bid amount for a service based on market analysis."
+							},
+							"response": []
+						},
+						{
+							"name": "Suggest Bid Message",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"service_id\": \"{{service_id}}\",\n  \"customer_id\": \"{{customer_id}}\",\n  \"bid_amount\": 1500.00,\n  \"message_tone\": \"professional\",\n  \"timeframe_days\": 7\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/suggest_bid_message/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", "suggest_bid_message", ""]
+								},
+								"description": "Generate an AI-suggested message template for a bid proposal."
+							},
+							"response": []
+						},
+						{
+							"name": "Suggest Message Template",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{provider_access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"service_id\": \"{{service_id}}\",\n  \"message_type\": \"bid_proposal\",\n  \"preferences\": {\n    \"tone\": \"friendly\",\n    \"include_experience\": true\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/suggestions/suggest_message/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "suggestions", "suggest_message", ""]
+								},
+								"description": "Generate an AI suggested message for different types (bid_proposal, follow_up, negotiation)."
+							},
+							"response": []
+						}
+					],
+					"description": "Basic CRUD operations for AI suggestions",
+					"event": [],
+					"protocolProfileBehavior": {}
+				},
+				{
+					"name": "AI Feedback Logs",
+					"item": [
+						{
+							"name": "List Feedback Logs",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/feedback/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "feedback", ""]
+								},
+								"description": "Get a list of AI feedback logs for the authenticated user."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Feedback Log Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/feedback/{{feedback_log_id}}/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "feedback", "{{feedback_log_id}}", ""]
+								},
+								"description": "Get details of a specific feedback log entry."
+							},
+							"response": []
+						},
+						{
+							"name": "Log Interaction",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"suggestion\": \"{{suggestion_id_example}}\",\n  \"interaction_type\": \"use\",\n  \"interaction_data\": {\n    \"outcome\": \"successful\",\n    \"notes\": \"Used the suggested bid amount and won the project\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/feedback/log/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "feedback", "log", ""]
+								},
+								"description": "Log an interaction with an AI suggestion for tracking and improvement."
+							},
+							"response": []
+						},
+						{
+							"name": "Log Bid Interaction",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"bid\": \"{{bid_id}}\",\n  \"interaction_type\": \"accept_bid\",\n  \"interaction_data\": {\n    \"ai_assisted\": true,\n    \"suggestion_used\": \"bid_amount\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/feedback/log/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "feedback", "log", ""]
+								},
+								"description": "Log a bid-related interaction for AI model training."
+							},
+							"response": []
+						},
+						{
+							"name": "Log Feedback Only",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"suggestion\": \"{{suggestion_id_example}}\",\n  \"interaction_type\": \"feedback\",\n  \"interaction_data\": {\n    \"rating\": 4,\n    \"comments\": \"Good suggestion but could be more specific\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/feedback/log/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "feedback", "log", ""]
+								},
+								"description": "Log general feedback about an AI suggestion."
+							},
+							"response": []
+						},
+						{
+							"name": "Admin View All Feedback Logs",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ai_suggestions/feedback/",
+									"host": ["{{base_url}}"],
+									"path": ["ai_suggestions", "feedback", ""]
+								},
+								"description": "Admin-only endpoint to view all feedback logs for system analysis."
+							},
+							"response": []
+						}
+					],
+					"description": "Endpoints for AI feedback logging",
+					"event": [],
+					"protocolProfileBehavior": {}
+				}
+			],
+			"description": "AI-powered suggestions and feedback tracking",
+			"event": [],
+			"protocolProfileBehavior": {}
+		}
+	]
+}

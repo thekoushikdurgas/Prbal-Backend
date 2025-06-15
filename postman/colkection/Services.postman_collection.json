@@ -1,0 +1,1199 @@
+{
+  "info": {
+    "name": "Prbal Services API",
+    "description": "A comprehensive collection for testing the Prbal Services API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "User authentication endpoints",
+      "item": [
+        {
+          "name": "Get JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", ""]
+            },
+            "description": "Get JWT access and refresh tokens by providing valid credentials."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", "refresh", ""]
+            },
+            "description": "Get a new access token using a valid refresh token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Service Categories",
+      "description": "Endpoints for managing service categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "categories", ""]
+            },
+            "description": "Get a list of all service categories."
+          },
+          "response": []
+        },
+        {
+          "name": "List Categories with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/?active_only=true&page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "categories", ""],
+              "query": [
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "description": "Filter by active status (true/false)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "description": "Number of items per page"
+                }
+              ]
+            },
+            "description": "Get service categories with pagination and active status filtering."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
+            },
+            "description": "Get details of a specific service category."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Category\",\n  \"description\": \"Description of the new category\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/icon.png\",\n  \"sort_order\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "categories", ""]
+            },
+            "description": "Create a new service category (admin only). Fields: name (required), description (required), is_active (optional), icon_url (optional), sort_order (optional)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Category\",\n  \"description\": \"Updated description\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/updated-icon.png\",\n  \"sort_order\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
+            },
+            "description": "Update a service category (admin only). All fields are optional but name and description are recommended."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Category (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description only\",\n  \"is_active\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
+            },
+            "description": "Partially update specific fields of a service category (admin only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/{{service_category_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "categories",
+                "{{service_category_id}}",
+                ""
+              ]
+            },
+            "description": "Delete a service category (admin only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Category Statistics (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/categories/statistics/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "categories", "statistics", ""]
+            },
+            "description": "Get statistics about service distribution by category (admin only)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Service Subcategories",
+      "description": "Endpoints for managing service subcategories",
+      "item": [
+        {
+          "name": "List Subcategories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""]
+            },
+            "description": "Get a list of all service subcategories."
+          },
+          "response": []
+        },
+        {
+          "name": "List Subcategories with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/?active_only=true&page=1&page_size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""],
+              "query": [
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "description": "Filter by active status (true/false)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "description": "Number of items per page"
+                }
+              ]
+            },
+            "description": "Get service subcategories with pagination and active status filtering."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Subcategories by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/?category={{service_category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{service_category_id}}"
+                }
+              ]
+            },
+            "description": "Get service subcategories filtered by category."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Subcategories by Category with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/?category={{service_category_id}}&active_only=true&page=1&page_size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{service_category_id}}",
+                  "description": "Filter by specific category ID"
+                },
+                {
+                  "key": "active_only",
+                  "value": "true",
+                  "description": "Filter by active status (true/false)"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "key": "page_size",
+                  "value": "10",
+                  "description": "Number of items per page"
+                }
+              ]
+            },
+            "description": "Get service subcategories filtered by category with pagination and active status filtering."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Subcategory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
+            },
+            "description": "Get details of a specific service subcategory."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Subcategory (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"name\": \"New Subcategory\",\n  \"description\": \"Description of the new subcategory\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/subcategory-icon.png\",\n  \"sort_order\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "subcategories", ""]
+            },
+            "description": "Create a new service subcategory (admin only). Fields: category (required), name (required), description (required), is_active (optional), icon_url (optional), sort_order (optional)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Subcategory (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"name\": \"Updated Subcategory\",\n  \"description\": \"Updated description\",\n  \"is_active\": true,\n  \"icon_url\": \"https://example.com/updated-subcategory-icon.png\",\n  \"sort_order\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
+            },
+            "description": "Update a service subcategory (admin only). Category, name, and description are recommended."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Subcategory (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description only\",\n  \"is_active\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
+            },
+            "description": "Partially update specific fields of a service subcategory (admin only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Subcategory (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/subcategories/{{service_subcategory_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "subcategories",
+                "{{service_subcategory_id}}",
+                ""
+              ]
+            },
+            "description": "Delete a service subcategory (admin only)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "description": "Endpoints for managing services",
+      "item": [
+        {
+          "name": "List Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", ""]
+            },
+            "description": "Get a list of all active services."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Services by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/?category={{service_category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{service_category_id}}"
+                }
+              ]
+            },
+            "description": "Get services filtered by category."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Services by Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/?min_price=10&max_price=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", ""],
+              "query": [
+                {
+                  "key": "min_price",
+                  "value": "10"
+                },
+                {
+                  "key": "max_price",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Get services filtered by price range."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Services by Provider",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/?provider={{provider_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", ""],
+              "query": [
+                {
+                  "key": "provider",
+                  "value": "{{provider_id}}"
+                }
+              ]
+            },
+            "description": "Get services filtered by provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "{{service_id}}", ""]
+            },
+            "description": "Get details of a specific service."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Service (Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"subcategories\": [\"{{service_subcategory_id}}\"],\n  \"name\": \"New Service\",\n  \"description\": \"Description of the new service\",\n  \"hourly_rate\": 50,\n  \"currency\": \"INR\",\n  \"min_hours\": 1,\n  \"max_hours\": 8,\n  \"location\": \"Bangalore, India\",\n  \"latitude\": 12.9716,\n  \"longitude\": 77.5946,\n  \"tags\": [\"cleaning\", \"home\"],\n  \"pricing_options\": {},\n  \"availability\": {},\n  \"required_tools\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", ""]
+            },
+            "description": "Create a new service (provider only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service (Owner)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"{{service_category_id}}\",\n  \"subcategories\": [\"{{service_subcategory_id}}\"],\n  \"name\": \"Updated Service\",\n  \"description\": \"Updated description\",\n  \"hourly_rate\": 60,\n  \"currency\": \"INR\",\n  \"min_hours\": 2,\n  \"max_hours\": 6,\n  \"location\": \"Bangalore, India\",\n  \"latitude\": 12.9716,\n  \"longitude\": 77.5946,\n  \"tags\": [\"cleaning\", \"home\", \"premium\"],\n  \"pricing_options\": {},\n  \"availability\": {},\n  \"required_tools\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "{{service_id}}", ""]
+            },
+            "description": "Update a service (owner only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Service (Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description only\",\n  \"hourly_rate\": 55\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "{{service_id}}", ""]
+            },
+            "description": "Partially update a service (owner only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Service (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/{{service_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "{{service_id}}", ""]
+            },
+            "description": "Delete a service (owner only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Nearby Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/nearby/?lat=12.9716&lng=77.5946&radius=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "nearby", ""],
+              "query": [
+                {
+                  "key": "lat",
+                  "value": "12.9716"
+                },
+                {
+                  "key": "lng",
+                  "value": "77.5946"
+                },
+                {
+                  "key": "radius",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Find services near a given location."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin View All Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/admin/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "admin", ""]
+            },
+            "description": "Admin-only endpoint to list all services regardless of status."
+          },
+          "response": []
+        },
+        {
+          "name": "Trending Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/trending/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "trending", ""]
+            },
+            "description": "Get trending services based on popularity metrics."
+          },
+          "response": []
+        },
+        {
+          "name": "Matching Requests (Provider)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/matching_requests/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "matching_requests", ""]
+            },
+            "description": "Provider-only endpoint to list service requests that match the provider's profile."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by Availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/by_availability/?date=2023-06-15&time=14:00",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "services", "by_availability", ""],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2023-06-15"
+                },
+                {
+                  "key": "time",
+                  "value": "14:00"
+                }
+              ]
+            },
+            "description": "Filter services by availability on a specific date/time."
+          },
+          "response": []
+        },
+        {
+          "name": "Matching Services for Request",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/{{service_request_id}}/matching_services/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "{{service_request_id}}",
+                "matching_services",
+                ""
+              ]
+            },
+            "description": "Customer-only endpoint to find services that match a specific service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Fulfill Request (Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{provider_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/services/{{service_request_id}}/fulfill_request/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "services",
+                "{{service_request_id}}",
+                "fulfill_request",
+                ""
+              ]
+            },
+            "description": "Provider-only action to fulfill a service request by creating a matching service."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Service Requests",
+      "description": "Endpoints for managing service requests",
+      "item": [
+        {
+          "name": "List Service Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", ""]
+            },
+            "description": "Get a list of all open, non-expired service requests."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Service Requests by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/?category={{service_category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{service_category_id}}"
+                }
+              ]
+            },
+            "description": "Get service requests filtered by category."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Service Requests by Urgency",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/?urgency=high",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", ""],
+              "query": [
+                {
+                  "key": "urgency",
+                  "value": "high"
+                }
+              ]
+            },
+            "description": "Get service requests filtered by urgency level."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
+            },
+            "description": "Get details of a specific service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Service Request (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Need Home Cleaning Service\",\n  \"description\": \"Looking for a professional to clean a 2BHK apartment\",\n  \"category\": \"{{service_category_id}}\",\n  \"subcategories\": [\"{{service_subcategory_id}}\"],\n  \"budget_min\": 500,\n  \"budget_max\": 1000,\n  \"currency\": \"INR\",\n  \"urgency\": \"medium\",\n  \"requested_date_time\": \"2023-06-20T14:00:00Z\",\n  \"location\": \"Bangalore, India\",\n  \"latitude\": 12.9716,\n  \"longitude\": 77.5946,\n  \"requirements\": {\"floor_area\": \"1200 sqft\", \"pets\": true}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", ""]
+            },
+            "description": "Create a new service request (customer only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service Request (Owner)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated: Need Home Cleaning Service\",\n  \"description\": \"Looking for a professional to clean a 2BHK apartment with balcony\",\n  \"category\": \"{{service_category_id}}\",\n  \"subcategories\": [\"{{service_subcategory_id}}\"],\n  \"budget_min\": 600,\n  \"budget_max\": 1200,\n  \"currency\": \"INR\",\n  \"urgency\": \"high\",\n  \"requested_date_time\": \"2023-06-21T16:00:00Z\",\n  \"location\": \"Bangalore, India\",\n  \"latitude\": 12.9716,\n  \"longitude\": 77.5946,\n  \"requirements\": {\"floor_area\": \"1200 sqft\", \"pets\": true, \"balcony\": true}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
+            },
+            "description": "Update a service request (owner only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Service Request (Owner)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description only\",\n  \"budget_max\": 1100\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
+            },
+            "description": "Partially update a service request (owner only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Service Request (Owner)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                ""
+              ]
+            },
+            "description": "Delete a service request (owner only)."
+          },
+          "response": []
+        },
+        {
+          "name": "My Requests (Customer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/my_requests/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", "my_requests", ""]
+            },
+            "description": "Customer-only endpoint to list their own service requests regardless of status."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin View All Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/admin/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", "admin", ""]
+            },
+            "description": "Admin-only endpoint to list all service requests regardless of status."
+          },
+          "response": []
+        },
+        {
+          "name": "Recommended Providers for Request",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/recommended_providers/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                "recommended_providers",
+                ""
+              ]
+            },
+            "description": "Customer endpoint to get recommended providers for a specific service request."
+          },
+          "response": []
+        },
+        {
+          "name": "Batch Expire Requests (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/batch_expire/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "service-requests", "batch_expire", ""]
+            },
+            "description": "Admin-only action to expire all service requests that have passed their expiration date."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Request (Owner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customer_access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/service-requests/{{service_request_id}}/cancel/",
+              "host": ["{{base_url}}"],
+              "path": [
+                "api",
+                "v1",
+                "service-requests",
+                "{{service_request_id}}",
+                "cancel",
+                ""
+              ]
+            },
+            "description": "Customer-only action to cancel their service request."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

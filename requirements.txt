@@ -1,0 +1,104 @@
+# ================================================================
+# PRBAL BACKEND - SERVICE MARKETPLACE PLATFORM
+# Updated based on actual codebase analysis and usage patterns
+# ================================================================
+
+# ----------------------------------------------------------------
+# Core Django Framework
+# ----------------------------------------------------------------
+django>=5.2.1
+djangorestframework>=3.16.0
+djangorestframework-simplejwt>=5.5.0
+django-filter>=25.1
+django-cors-headers>=4.7.0
+
+# ----------------------------------------------------------------
+# Database & ORM
+# ----------------------------------------------------------------
+psycopg2-binary>=2.9.10  # PostgreSQL adapter with binary dependencies
+# Note: django-db-pool removed due to Django 5.2+ compatibility issues
+# Use built-in connection pooling with CONN_MAX_AGE setting instead
+
+# ----------------------------------------------------------------
+# Authentication & Security
+# ----------------------------------------------------------------
+# JWT token blacklisting handled by djangorestframework-simplejwt
+
+# ----------------------------------------------------------------
+# Real-time Features & WebSockets
+# ----------------------------------------------------------------
+channels>=4.2.0           # WebSocket support for messaging & notifications
+daphne>=4.2.0             # ASGI server for channels
+
+# ----------------------------------------------------------------
+# Background Tasks & Job Processing  
+# ----------------------------------------------------------------
+celery>=5.3.4             # Background task processing
+flower>=2.0.1             # Celery monitoring interface
+redis>=5.0.0              # Message broker for Celery (optional)
+
+# ----------------------------------------------------------------
+# Payment Processing
+# ----------------------------------------------------------------
+stripe>=12.2.0           # Payment processing integration
+
+# ----------------------------------------------------------------
+# Media & File Handling
+# ----------------------------------------------------------------
+Pillow>=11.2.1           # Image processing for profile pictures & service images
+django-storages>=1.14.6   # Cloud storage backends (AWS S3, etc.)
+
+# ----------------------------------------------------------------
+# API Documentation & Schema
+# ----------------------------------------------------------------
+drf-yasg>=1.21.10         # Swagger/OpenAPI 2.0 documentation
+drf-spectacular>=0.28.0   # OpenAPI 3.0 schema generation (alternative)
+coreapi>=2.3.3            # API schema introspection
+Pygments>=2.19.0          # Syntax highlighting for docs
+Markdown>=3.8             # Markdown support for documentation
+
+# ----------------------------------------------------------------
+# Production Web Servers
+# ----------------------------------------------------------------
+gunicorn>=23.0.0          # Production WSGI server (Unix)
+waitress>=3.0.0           # Production WSGI server (Windows compatible)
+whitenoise>=6.6.0         # Static file serving
+
+# ----------------------------------------------------------------
+# Monitoring & Performance
+# ----------------------------------------------------------------
+sentry-sdk>=2.29.0        # Error tracking & performance monitoring
+django-prometheus>=2.3.1  # Prometheus metrics collection
+python-json-logger>=3.3.0 # Structured JSON logging
+
+# ----------------------------------------------------------------
+# Configuration & Environment
+# ----------------------------------------------------------------
+python-decouple>=3.8      # Environment variable management
+
+# ----------------------------------------------------------------
+# Development & Testing Tools
+# ----------------------------------------------------------------
+coverage>=7.8.0           # Test coverage reporting
+django-debug-toolbar>=5.2.0  # Development debugging (DEV only)
+locust>=2.37.0            # Load testing framework
+
+# ----------------------------------------------------------------
+# Optional: Enhanced Security (uncomment if needed)
+# ----------------------------------------------------------------
+# django-axes>=8.0.0      # Login attempt protection
+# django-csp>=4.0         # Content Security Policy
+# django-ratelimit>=4.1.0 # Additional rate limiting
+
+# ----------------------------------------------------------------
+# Optional: Additional Monitoring (uncomment if needed)
+# ----------------------------------------------------------------
+# statsd>=4.0.1           # StatsD metrics client
+# prometheus_client>=0.22.0  # Prometheus client metrics
+
+# ----------------------------------------------------------------
+# WebSocket & Real-time Dependencies (automatically included)
+# ----------------------------------------------------------------
+# asgiref                         # Included with Django
+# channels-redis                 # Include if using Redis for channel layers
+# twisted                         # Included with channels
