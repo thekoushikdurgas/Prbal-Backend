@@ -14,7 +14,6 @@ import mimetypes
 from PIL import Image
 import io
 import logging
-from django.conf import settings
 
 User = get_user_model()
 
@@ -671,13 +670,14 @@ def secure_upload_path(instance, filename, subfolder):
 
 # Enhanced document path functions
 def profile_picture_path(instance, filename):
-    """Generate secure path for profile pictures with user-specific organization"""
-    return secure_upload_path(instance, filename, f'profile_pictures/{instance.id}')
+    """Enhanced profile picture upload path"""
+    return secure_upload_path(instance, filename, 'profile_pictures')
 
 
 def verification_document_enhanced_path(instance, filename):
-    """Enhanced path for verification documents with better organization"""
-    return secure_upload_path(instance, filename, f'verification_documents/{instance.user.id}/{instance.verification_type}')
+    """Enhanced verification document upload path"""
+    verification_type = getattr(instance, 'verification_type', 'general')
+    return f"verification_documents/{instance.user.id}/{verification_type}/{uuid.uuid4()}.{filename.split('.')[-1].lower()}"
 
 
 class DocumentImageProcessor:
@@ -1114,94 +1114,4 @@ class FileConversionHelper:
     @staticmethod
     def process_profile_image(image_data):
         """Convenience method for profile images"""
-        return DocumentImageProcessor.process_profile_images(image_data)
-
-
-def get_media_url(file_field, request=None):
-    """
-    Helper function to get the proper media URL for a file field.
-    Handles both development and production URLs consistently.
-    """
-    if not file_field:
-        return None
-    
-    if hasattr(file_field, 'url'):
-        url = file_field.url
-        
-        # Handle different URL formats
-        if url.startswith('/media/'):
-            return url
-        elif url.startswith('media/'):
-            return f'/{url}'
-        elif not url.startswith(('http://', 'https://')):
-            return f'/media/{url}'
-        else:
-            return url
-    
-    return None
-
-
-def clean_media_url(url):
-    """
-    Clean and normalize media URLs to prevent duplicate /media/ prefixes
-    """
-    if not url:
-        return None
-    
-    # Remove any duplicate /media/ prefixes
-    if url.count('/media/') > 1:
-        # Find the last occurrence of /media/ and use that
-        last_media_index = url.rfind('/media/')
-        url = url[last_media_index:]
-    
-    # Ensure proper format
-    if not url.startswith('/media/') and not url.startswith(('http://', 'https://')):
-        if url.startswith('media/'):
-            url = f'/{url}'
-        else:
-            url = f'/media/{url}'
-    
-    return url
-
-
-def get_absolute_media_url(relative_url, request=None):
-    """
-    Convert a relative media URL to an absolute URL with domain
-    
-    Args:
-        relative_url (str): Relative URL path (e.g., '/media/path/file.jpg')
-        request: HTTP request object for building absolute URI
-        
-    Returns:
-        str: Absolute URL with domain or relative URL if no request/domain available
-    """
-    if not relative_url:
-        return None
-        
-    # Clean the URL first
-    cleaned_url = clean_media_url(relative_url)
-    
-    # If request is provided, use it to build absolute URI
-    if request:
-        return request.build_absolute_uri(cleaned_url)
-    
-    # Fallback: try to get domain from Django settings
-    try:
-        from django.contrib.sites.models import Site
-        current_site = Site.objects.get_current()
-        protocol = 'https' if getattr(settings, 'SECURE_SSL_REDIRECT', False) else 'http'
-        return f"{protocol}://{current_site.domain}{cleaned_url}"
-    except:
-        # If Sites framework is not available, try getting from settings
-        try:
-            from django.conf import settings
-            allowed_hosts = getattr(settings, 'ALLOWED_HOSTS', [])
-            if allowed_hosts and allowed_hosts[0] != '*':
-                host = allowed_hosts[0]
-                protocol = 'https' if getattr(settings, 'SECURE_SSL_REDIRECT', False) else 'http'
-                return f"{protocol}://{host}{cleaned_url}"
-        except:
-            pass
-    
-    # Final fallback: return relative URL
-    return cleaned_url 
+        return DocumentImageProcessor.process_profile_images(image_data) 

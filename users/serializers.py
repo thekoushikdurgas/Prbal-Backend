@@ -151,35 +151,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
     profile_picture_file = EnhancedFileField(file_type="image", required=False, write_only=True, help_text="Profile picture file (any format)")
     profile_picture_link = serializers.URLField(required=False, write_only=True, help_text="URL to profile picture")
     profile_picture_base64 = serializers.CharField(required=False, write_only=True, help_text="Base64 encoded profile picture")
-    profile_picture_url = serializers.SerializerMethodField()
     
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'phone_number', 'first_name', 'last_name', 
-                 'user_type', 'profile_picture', 'profile_picture_url', 'bio', 'location', 'is_verified', 
+                 'user_type', 'profile_picture', 'bio', 'location', 'is_verified', 
                  'rating', 'balance', 'created_at', 'updated_at',
                  'profile_picture_file', 'profile_picture_link', 'profile_picture_base64']
-        read_only_fields = ['id', 'email', 'user_type', 'is_verified', 'rating', 'balance', 'created_at', 'updated_at', 'profile_picture_url']
-    
-    def get_profile_picture_url(self, obj):
-        """Get absolute URL for profile picture"""
-        request = self.context.get('request')
-        return obj.profile_picture_url(request)
-    
-    def to_representation(self, instance):
-        """Custom representation to ensure consistent profile picture URL formatting"""
-        data = super().to_representation(instance)
-        
-        # Get request from context for absolute URLs
-        request = self.context.get('request')
-        
-        # Ensure consistent profile picture URL formatting with absolute domain
-        if instance.profile_picture:
-            data['profile_picture_url'] = instance.profile_picture_url(request)
-        else:
-            data['profile_picture_url'] = None
-        
-        return data
+        read_only_fields = ['id', 'email', 'user_type', 'is_verified', 'rating', 'balance', 'created_at', 'updated_at']
     
     def update(self, instance, validated_data):
         from .utils import DocumentImageProcessor
@@ -210,131 +189,49 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return instance
 
 class PublicUserProfileSerializer(serializers.ModelSerializer):
-    """Serializer for public user profile information"""
-    profile_picture_url = serializers.SerializerMethodField()
-    
+    """Serializer for the public view of a user profile"""
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture', 'profile_picture_url',
-                  'bio', 'location', 'user_type', 'is_verified', 'is_email_verified', 'is_phone_verified',
-                  'rating', 'total_bookings', 'skills', 'balance', 'created_at']
-        read_only_fields = fields  # All fields are read-only for public profile
-    
-    def get_profile_picture_url(self, obj):
-        """Get absolute URL for profile picture"""
-        request = self.context.get('request')
-        return obj.profile_picture_url(request)
-    
-    def to_representation(self, instance):
-        """Custom representation to ensure consistent profile picture URL formatting"""
-        data = super().to_representation(instance)
-        
-        # Get request from context for absolute URLs
-        request = self.context.get('request')
-        
-        # Ensure consistent profile picture URL formatting with absolute domain
-        if instance.profile_picture:
-            data['profile_picture_url'] = instance.profile_picture_url(request)
-        else:
-            data['profile_picture_url'] = None
-        
-        return data
+        fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture', 
+                 'bio', 'location', 'user_type', 'is_verified', 'rating', 'created_at']
+        read_only_fields = fields  # All fields are read-only in public view
 
 
 class CustomerSearchResultSerializer(serializers.ModelSerializer):
     """Serializer for customer search results"""
-    profile_picture_url = serializers.SerializerMethodField()
-    
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture', 'profile_picture_url',
-                  'bio', 'location', 'user_type', 'is_verified', 'balance', 'created_at']
+        fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture',
+                 'bio', 'location', 'user_type', 'is_verified', 'created_at']
         read_only_fields = fields
-    
-    def get_profile_picture_url(self, obj):
-        """Get absolute URL for profile picture"""
-        request = self.context.get('request')
-        return obj.profile_picture_url(request)
-    
-    def to_representation(self, instance):
-        """Custom representation to ensure consistent profile picture URL formatting"""
-        data = super().to_representation(instance)
-        
-        # Get request from context for absolute URLs
-        request = self.context.get('request')
-        
-        # Ensure consistent profile picture URL formatting with absolute domain
-        if instance.profile_picture:
-            data['profile_picture_url'] = instance.profile_picture_url(request)
-        else:
-            data['profile_picture_url'] = None
-        
-        return data
 
 
 class ProviderSearchResultSerializer(serializers.ModelSerializer):
-    """Serializer for provider search results"""
-    profile_picture_url = serializers.SerializerMethodField()
+    """Serializer for service provider search results"""
+    services_count = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture', 'profile_picture_url',
-                  'bio', 'location', 'user_type', 'is_verified', 'is_email_verified', 'is_phone_verified',
-                  'rating', 'total_bookings', 'skills', 'created_at']
+        fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture',
+                 'bio', 'location', 'user_type', 'is_verified', 'rating', 
+                 'skills', 'total_bookings', 'services_count', 'created_at']
         read_only_fields = fields
     
-    def get_profile_picture_url(self, obj):
-        """Get absolute URL for profile picture"""
-        request = self.context.get('request')
-        return obj.profile_picture_url(request)
-    
-    def to_representation(self, instance):
-        """Custom representation to ensure consistent profile picture URL formatting"""
-        data = super().to_representation(instance)
-        
-        # Get request from context for absolute URLs
-        request = self.context.get('request')
-        
-        # Ensure consistent profile picture URL formatting with absolute domain
-        if instance.profile_picture:
-            data['profile_picture_url'] = instance.profile_picture_url(request)
-        else:
-            data['profile_picture_url'] = None
-        
-        return data
+    def get_services_count(self, obj):
+        # Import here to avoid circular imports
+        from services.models import Service
+        return Service.objects.filter(service_provider=obj).count()
 
 
 class AdminSearchResultSerializer(serializers.ModelSerializer):
-    """Serializer for admin search results (admin view of any user)"""
-    profile_picture_url = serializers.SerializerMethodField()
-    
+    """Serializer for admin search results with extended information"""
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'phone_number',
-                  'profile_picture', 'profile_picture_url', 'bio', 'location', 'user_type', 'is_verified',
-                  'is_email_verified', 'is_phone_verified', 'is_active', 'is_staff',
-                  'rating', 'total_bookings', 'skills', 'balance', 'created_at', 'last_login']
+        fields = ['id', 'username', 'email', 'phone_number', 'first_name', 'last_name',
+                 'profile_picture', 'bio', 'location', 'user_type', 'is_verified',
+                 'is_email_verified', 'is_phone_verified', 'rating', 'total_bookings',
+                 'balance', 'created_at', 'updated_at', 'last_login', 'is_active']
         read_only_fields = fields
-    
-    def get_profile_picture_url(self, obj):
-        """Get absolute URL for profile picture"""
-        request = self.context.get('request')
-        return obj.profile_picture_url(request)
-    
-    def to_representation(self, instance):
-        """Custom representation to ensure consistent profile picture URL formatting"""
-        data = super().to_representation(instance)
-        
-        # Get request from context for absolute URLs
-        request = self.context.get('request')
-        
-        # Ensure consistent profile picture URL formatting with absolute domain
-        if instance.profile_picture:
-            data['profile_picture_url'] = instance.profile_picture_url(request)
-        else:
-            data['profile_picture_url'] = None
-        
-        return data
 
 
 class AccessTokenSerializer(serializers.ModelSerializer):
