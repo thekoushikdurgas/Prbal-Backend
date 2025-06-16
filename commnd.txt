@@ -964,3 +964,6 @@ flutter clean
 cd android && gradlew clean && cd ..
 flutter pub get
 flutter run --android-skip-build-dependency-validation --verbose
+
+
+In @views.py @utils.py @urls.py @tokens.py @tests.py @serializers.py @permissions.py @models.py @apps.py @admin.py @/migrations @__init__.py @/management check all endpoints and all methods all success json and all error json like { message: "" data:"" time:'" statusCode:"" } Please break down your tasks into smaller chunks, and add debug prints, and comments to gain a better understanding of the code in these files.

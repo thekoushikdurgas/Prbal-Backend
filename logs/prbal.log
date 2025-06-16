@@ -1310,3 +1310,34 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. Y
 INFO 2025-06-16 00:45:08,518 autoreload 7844 17488 Watching for file changes with StatReloader
 INFO 2025-06-16 03:47:59,777 autoreload 16156 17992 Watching for file changes with StatReloader
 INFO 2025-06-16 04:28:32,799 autoreload 14252 21268 Watching for file changes with StatReloader
+INFO 2025-06-16 12:06:27,280 autoreload 12412 18428 Watching for file changes with StatReloader
+INFO 2025-06-16 12:07:57,584 utils 12412 9728 📊 Common validation errors detected in fields: ['phone_number']
+INFO 2025-06-16 12:07:57,587 middleware 12412 9728 API Request
+WARNING 2025-06-16 12:07:57,590 basehttp 12412 9728 "POST /api/v1/auth/admin/register/ HTTP/1.1" 400 251
+INFO 2025-06-16 12:08:50,265 middleware 12412 9728 API Request
+INFO 2025-06-16 12:08:50,266 basehttp 12412 9728 "POST /api/v1/auth/admin/register/ HTTP/1.1" 201 1273
+INFO 2025-06-16 12:12:11,716 middleware 12412 23172 API Request
+INFO 2025-06-16 12:12:18,646 middleware 12412 24400 API Request
+INFO 2025-06-16 12:12:18,647 basehttp 12412 24400 "POST /api/v1/users/profile/image/ HTTP/1.1" 200 893
+INFO 2025-06-16 12:14:19,230 middleware 12412 7728 API Request
+WARNING 2025-06-16 12:14:19,231 basehttp 12412 7728 "POST /api/v1/auth/login/ HTTP/1.1" 400 236
+INFO 2025-06-16 12:14:46,433 middleware 12412 7728 API Request
+WARNING 2025-06-16 12:14:46,435 basehttp 12412 7728 "POST /api/v1/auth/login/ HTTP/1.1" 400 237
+INFO 2025-06-16 12:15:05,575 utils 12412 7728 📊 Common validation errors detected in fields: ['username', 'email', 'phone_number']
+INFO 2025-06-16 12:15:05,576 middleware 12412 7728 API Request
+WARNING 2025-06-16 12:15:05,577 basehttp 12412 7728 "POST /api/v1/auth/register/ HTTP/1.1" 400 363
+INFO 2025-06-16 12:15:48,000 middleware 12412 7728 API Request
+INFO 2025-06-16 12:15:48,001 basehttp 12412 7728 "POST /api/v1/auth/register/ HTTP/1.1" 201 1280
+INFO 2025-06-16 12:17:10,982 middleware 12412 14020 API Request
+INFO 2025-06-16 12:17:10,983 basehttp 12412 14020 "POST /api/v1/users/profile/image/ HTTP/1.1" 200 923
+INFO 2025-06-16 12:17:51,474 views 12412 14020 User ee8ccb36-0897-40ab-bf97-deb0456c484e (newuser1) logged in successfully with PIN
+INFO 2025-06-16 12:17:51,474 middleware 12412 14020 API Request
+INFO 2025-06-16 12:17:51,475 basehttp 12412 14020 "POST /api/v1/auth/login/ HTTP/1.1" 200 1319
+INFO 2025-06-16 12:21:48,577 autoreload 12412 18428 D:\durgas\Prbal-App\prbal_server\users\models.py changed, reloading.
+INFO 2025-06-16 12:21:50,451 autoreload 13396 18168 Watching for file changes with StatReloader
+INFO 2025-06-16 12:22:08,782 autoreload 13396 18168 D:\durgas\Prbal-App\prbal_server\users\serializers.py changed, reloading.
+INFO 2025-06-16 12:22:10,255 autoreload 23028 2324 Watching for file changes with StatReloader
+INFO 2025-06-16 12:22:22,658 autoreload 23028 2324 D:\durgas\Prbal-App\prbal_server\users\serializers.py changed, reloading.
+INFO 2025-06-16 12:22:24,190 autoreload 7728 14020 Watching for file changes with StatReloader
+INFO 2025-06-16 12:22:42,100 autoreload 7728 14020 D:\durgas\Prbal-App\prbal_server\users\serializers.py changed, reloading.
+INFO 2025-06-16 12:22:43,363 autoreload 20196 10672 Watching for file changes with StatReloader

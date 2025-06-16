@@ -1,7 +1,7 @@
 # Django settings
 SECRET_KEY=i4+uzk64k!zejr9gml*!39kb4fmzb$o7^$l!xtl*ix+!2v&%fj
 DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1,391fe935-4d49-4781-be95-ac0773559dcb-00-25e80q0svv2q.riker.replit.dev/
+ALLOWED_HOSTS=localhost,127.0.0.1,eaed6938-43a2-4c33-9d25-e658261a3beb-00-19b31ea6yhe0i.spock.replit.dev
 
 # Database settings
 DB_ENGINE=django.db.backends.postgresql

@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     # Generic user views
@@ -27,51 +28,54 @@ from .views import (
     # User type detection
     UserTypeView,
     UserTypeChangeView,
-    VerificationViewSet
+    VerificationViewSet,
+    ProfilePictureUrlTestView
 )
 
+# Create router for ViewSets
+router = DefaultRouter()
+router.register(r'verifications', VerificationViewSet, basename='verification')
+
+app_name = 'users'
+
 urlpatterns = [
-    # PIN-based authentication endpoints
+    # Authentication endpoints
     path('auth/login/', PinLoginView.as_view(), name='pin-login'),
     path('auth/register/', PinRegistrationView.as_view(), name='pin-register'),
-    path('auth/pin/change/', ChangePinView.as_view(), name='change-pin'),
-    path('auth/pin/reset/', ResetPinView.as_view(), name='reset-pin'),
+    path('auth/admin/register/', AdminRegistrationView.as_view(), name='admin-register'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    
+    # PIN management endpoints
+    path('auth/pin/change/', ChangePinView.as_view(), name='pin-change'),
+    path('auth/pin/reset/', ResetPinView.as_view(), name='pin-reset'),
     path('auth/pin/status/', PinStatusView.as_view(), name='pin-status'),
     
-    # User type detection endpoint
+    # User type management endpoints
     path('auth/user-type/', UserTypeView.as_view(), name='user-type'),
     path('auth/user-type-change/', UserTypeChangeView.as_view(), name='user-type-change'),
     
-    # Admin-specific endpoints
-    path('auth/admin/register/', AdminRegistrationView.as_view(), name='admin-register'),
-    
-    # Generic user profile endpoints
+    # Profile management endpoints
     path('users/me/', UserProfileView.as_view(), name='user-profile'),
     path('users/deactivate/', UserDeactivateView.as_view(), name='user-deactivate'), # Added for account deactivation
     path('users/profile/image/', ProfileImageUploadView.as_view(), name='profile-image-upload'),
     path('users/<uuid:id>/', UserPublicProfileView.as_view(), name='user-public-profile'),
-    path('users/<uuid:id>/like/', UserProfileLikeView.as_view(), name='user-profile-like'),
-    path('users/<uuid:id>/pass/', UserProfilePassView.as_view(), name='user-profile-pass'),
-    
-    # Verification endpoints
-    path('users/verify/', UserVerificationView.as_view(), name='user-verify'),
-    path('users/verifications/', VerificationViewSet.as_view({'get': 'list', 'post': 'create'}), name='user-verifications'),
-    path('users/verifications/<int:pk>/', VerificationViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='user-verification-detail'),
-    path('users/verifications/<int:pk>/cancel/', VerificationViewSet.as_view({'post': 'cancel'}), name='user-verification-cancel'),
-    path('users/verifications/<int:pk>/mark_in_progress/', VerificationViewSet.as_view({'post': 'mark_in_progress'}), name='user-verification-mark-in-progress'),
-    path('users/verifications/<int:pk>/mark_verified/', VerificationViewSet.as_view({'post': 'mark_verified'}), name='user-verification-mark-verified'),
-    path('users/verifications/<int:pk>/mark_rejected/', VerificationViewSet.as_view({'post': 'mark_rejected'}), name='user-verification-mark-rejected'),
-    path('users/verifications/status_summary/', VerificationViewSet.as_view({'get': 'status_summary'}), name='user-verifications-status-summary'),
-    
-    # Access token management endpoints
-    path('users/me/tokens/', UserAccessTokensView.as_view(), name='user-access-tokens'),
-    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
-    path('users/me/tokens/<uuid:token_id>/revoke/', UserAccessTokenRevokeView.as_view(), name='user-token-revoke'),
-    path('users/me/tokens/revoke_all/', UserAccessTokenRevokeAllView.as_view(), name='user-tokens-revoke-all'),
+    path('users/<uuid:id>/like/', UserProfileLikeView.as_view(), name='user-like'),
+    path('users/<uuid:id>/pass/', UserProfilePassView.as_view(), name='user-pass'),
     
     # Search endpoints
     path('users/search/', UserSearchView.as_view(), name='user-search'),
-    path('users/search/phone/', UserSearchByPhoneView.as_view(), name='user-search-by-phone'),
+    path('users/search/phone/', UserSearchByPhoneView.as_view(), name='user-search-phone'),
+    
+    # Verification endpoints
+    path('users/verify/', UserVerificationView.as_view(), name='user-verification'),
+    
+    # Token management endpoints
+    path('users/me/tokens/', UserAccessTokensView.as_view(), name='user-tokens'),
+    path('users/me/tokens/<uuid:token_id>/revoke/', UserAccessTokenRevokeView.as_view(), name='user-token-revoke'),
+    path('users/me/tokens/revoke_all/', UserAccessTokenRevokeAllView.as_view(), name='user-tokens-revoke-all'),
+    
+    # Include ViewSet URLs
+    path('users/', include(router.urls)),
 ]
 
 # Note: All login endpoints removed as password functionality is being removed:

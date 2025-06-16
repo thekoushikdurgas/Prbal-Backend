@@ -17,6 +17,20 @@ import uuid
 import os
 from django.utils import timezone
 
+
+def profile_picture_path(instance, filename):
+    """Generate secure path for profile pictures"""
+    from .utils import secure_upload_path
+    return secure_upload_path(instance, filename, 'profile_pictures')
+
+
+def verification_document_path(instance, filename):
+    """Generate a secure, unique path for storing verification documents"""
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    return f"verification_documents/{instance.user.id}/{instance.verification_type}/{filename}"
+
+
 class UserManager(BaseUserManager):
     def create_user(self, username, email, **extra_fields):
         """Create and return a regular user."""
@@ -75,18 +89,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_verified = models.BooleanField(default=False)
     is_email_verified = models.BooleanField(default=False)
     is_phone_verified = models.BooleanField(default=False)
-    # Profile fields
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    
+    # Profile fields - Fixed to use proper path function
+    profile_picture = models.ImageField(upload_to=profile_picture_path, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
+    
     # Provider specific fields
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0, null=True, blank=True)
     total_bookings = models.IntegerField(default=0)
     skills = models.JSONField(default=dict, blank=True, null=True)
+    
     # User preferences and financial info
     preferences = models.JSONField(default=dict, blank=True, null=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -124,6 +142,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     def name(self):
         """Returns the user's full name for API compatibility"""
         return self.get_full_name() or self.username
+    
+    def profile_picture_url(self, request=None):
+        """
+        Get the full URL for the profile picture with absolute domain
+        
+        Args:
+            request: HTTP request object for building absolute URI
+            
+        Returns:
+            str: Full URL with domain or relative URL if no request provided
+        """
+        from .utils import get_media_url, get_absolute_media_url
+        
+        if not self.profile_picture:
+            return None
+            
+        # Get the relative URL first
+        relative_url = get_media_url(self.profile_picture.url)
+        
+        # Get absolute URL with domain
+        return get_absolute_media_url(relative_url, request)
     
     def set_pin(self, raw_pin):
         """Set the PIN for the user (stores as hash for security)"""
@@ -239,11 +278,6 @@ class AccessToken(models.Model):
         self.last_refreshed_at = timezone.now()
         self.save(update_fields=['last_refreshed_at'])
 
-def verification_document_path(instance, filename):
-    # Generate a secure, unique path for storing verification documents
-    ext = filename.split('.')[-1]
-    filename = f"{uuid.uuid4()}.{ext}"
-    return f"verification_documents/{instance.user.id}/{instance.verification_type}/{filename}"
 
 # Create your models here.
 class Verification(models.Model):

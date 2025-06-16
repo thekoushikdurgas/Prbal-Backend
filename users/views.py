@@ -670,7 +670,7 @@ class ProfileImageUploadView(APIView):
             # Debug: Log successful upload
             logger.debug(f"Profile image uploaded successfully for user {user.id}")
             
-            # Return updated user profile
+            # Return updated user profile with consistent URL formatting
             serializer = UserProfileSerializer(user)
             
             # Get file details for response
@@ -687,7 +687,8 @@ class ProfileImageUploadView(APIView):
                     data={
                         'user': serializer.data,
                         'upload_details': file_details,
-                        'image_url': user.profile_picture.url if user.profile_picture else None
+                        'image_url': user.profile_picture_url(request),  # Use the new method with request
+                        'image_path': user.profile_picture.url if user.profile_picture else None
                     },
                     status_code=200
                 ),
@@ -2432,3 +2433,51 @@ class VerificationViewSet(viewsets.ModelViewSet):
                 ),
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+class ProfilePictureUrlTestView(APIView):
+    """Test view to demonstrate absolute URL functionality for profile pictures"""
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        
+        # Test different URL generation methods
+        test_results = {
+            'user_id': str(user.id),
+            'username': user.username,
+            'has_profile_picture': bool(user.profile_picture),
+            'url_tests': {}
+        }
+        
+        if user.profile_picture:
+            # Test with request (should return absolute URL)
+            absolute_url = user.profile_picture_url(request)
+            
+            # Test without request (should use fallback method)
+            fallback_url = user.profile_picture_url()
+            
+            # Test direct file URL
+            direct_url = user.profile_picture.url
+            
+            test_results['url_tests'] = {
+                'absolute_url_with_request': absolute_url,
+                'fallback_url_without_request': fallback_url,
+                'direct_file_url': direct_url,
+                'request_host': request.get_host(),
+                'request_scheme': request.scheme,
+                'expected_format': f"{request.scheme}://{request.get_host()}/media/profile_pictures/{user.id}/filename.ext"
+            }
+        else:
+            test_results['url_tests'] = {
+                'message': 'No profile picture uploaded for this user',
+                'suggestion': 'Upload a profile picture first using the profile image upload endpoint'
+            }
+        
+        return Response(
+            StandardizedResponseHelper.success_response(
+                message='Profile picture URL test results',
+                data=test_results,
+                status_code=200
+            ),
+            status=status.HTTP_200_OK
+        )
