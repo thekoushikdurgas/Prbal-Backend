@@ -218,9 +218,27 @@ class ProviderSearchResultSerializer(serializers.ModelSerializer):
         read_only_fields = fields
     
     def get_services_count(self, obj):
-        # Import here to avoid circular imports
-        from services.models import Service
-        return Service.objects.filter(service_provider=obj).count()
+        """
+        Get count of services offered by this provider.
+        Uses proper error handling for when services app is not available.
+        """
+        try:
+            # Import here to avoid circular imports
+            from services.models import Service
+            # Fixed: using 'provider' instead of 'service_provider' field name
+            return Service.objects.filter(provider=obj).count()
+        except ImportError:
+            # Handle case when services app is not available
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning("Services app not available for services count calculation")
+            return 0
+        except Exception as e:
+            # General exception handling with logging
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error calculating services count for user {obj.id}: {e}")
+            return 0
 
 
 class AdminSearchResultSerializer(serializers.ModelSerializer):
