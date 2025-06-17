@@ -297,6 +297,171 @@ class UserAccessTokenRevokeAllViewTestCase(APITestCase):
         self.assertIsInstance(response.data['revoked_count'], int)
 
 
+class UserSearchByPhoneViewTestCase(APITestCase):
+    """Test cases for the UserSearchByPhoneView endpoint - both GET and POST methods"""
+    
+    def setUp(self):
+        """Set up test data"""
+        # Create test users with different phone numbers
+        self.customer_user = User.objects.create_user(
+            username='customer1',
+            email='customer1@test.com',
+            phone_number='+1234567890',
+            user_type='customer'
+        )
+        
+        self.provider_user = User.objects.create_user(
+            username='provider1',
+            email='provider1@test.com',
+            phone_number='+1987654321',
+            user_type='provider'
+        )
+        
+        self.admin_user = User.objects.create_user(
+            username='admin1',
+            email='admin1@test.com',
+            phone_number='+1555123456',
+            user_type='admin',
+            is_staff=True
+        )
+        
+        # User without phone number
+        self.user_no_phone = User.objects.create_user(
+            username='nophone',
+            email='nophone@test.com',
+            user_type='customer'
+        )
+        
+        self.search_by_phone_url = reverse('user-search-by-phone')
+    
+    def test_get_search_by_phone_exact_match(self):
+        """Test GET method with exact phone number match"""
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={self.customer_user.phone_number}")
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['status'], 'success')
+        self.assertIn('User found with exact phone match', response.data['message'])
+        self.assertEqual(response.data['data']['user']['id'], str(self.customer_user.id))
+        self.assertEqual(response.data['data']['search_details']['match_type'], 'exact')
+    
+    def test_get_search_by_phone_partial_match(self):
+        """Test GET method with partial phone number match"""
+        # Search with partial phone number
+        partial_phone = self.provider_user.phone_number[-4:]  # Last 4 digits
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={partial_phone}")
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['status'], 'success')
+        self.assertIn('user(s) with similar phone numbers', response.data['message'])
+        self.assertEqual(response.data['data']['search_details']['match_type'], 'partial')
+        self.assertGreater(len(response.data['data']['users']), 0)
+    
+    def test_get_search_by_phone_no_match(self):
+        """Test GET method with no phone number match"""
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number=+9999999999")
+        
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['status'], 'error')
+        self.assertIn('No users found', response.data['message'])
+    
+    def test_get_search_by_phone_missing_parameter(self):
+        """Test GET method without phone number parameter"""
+        response = self.client.get(self.search_by_phone_url)
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['status'], 'error')
+        self.assertIn('Phone number is required as a query parameter', response.data['message'])
+        self.assertIn('example_usage', response.data['data'])
+    
+    def test_post_search_by_phone_exact_match(self):
+        """Test POST method with exact phone number match"""
+        data = {'phone_number': self.provider_user.phone_number}
+        response = self.client.post(self.search_by_phone_url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['status'], 'success')
+        self.assertIn('User found with exact phone match', response.data['message'])
+        self.assertEqual(response.data['data']['user']['id'], str(self.provider_user.id))
+        self.assertEqual(response.data['data']['search_details']['match_type'], 'exact')
+    
+    def test_post_search_by_phone_missing_data(self):
+        """Test POST method without phone number in request body"""
+        response = self.client.post(self.search_by_phone_url, {}, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['status'], 'error')
+        self.assertIn('Phone number is required in request body', response.data['message'])
+        self.assertIn('example_usage', response.data['data'])
+    
+    def test_search_returns_correct_serializer_data(self):
+        """Test that search returns appropriate user data based on user type"""
+        # Test customer user data
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={self.customer_user.phone_number}")
+        customer_data = response.data['data']['user']
+        
+        expected_customer_fields = ['id', 'username', 'first_name', 'last_name', 'profile_picture',
+                                  'bio', 'location', 'user_type', 'is_verified', 'created_at']
+        for field in expected_customer_fields:
+            self.assertIn(field, customer_data)
+        
+        # Test provider user data (should have additional fields)
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={self.provider_user.phone_number}")
+        provider_data = response.data['data']['user']
+        
+        expected_provider_fields = expected_customer_fields + ['rating', 'skills', 'total_bookings', 'services_count']
+        for field in expected_provider_fields:
+            self.assertIn(field, provider_data)
+    
+    def test_unauthenticated_access_allowed(self):
+        """Test that unauthenticated users can access the endpoint"""
+        # GET method
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={self.customer_user.phone_number}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # POST method
+        data = {'phone_number': self.provider_user.phone_number}
+        response = self.client.post(self.search_by_phone_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_authenticated_access_also_works(self):
+        """Test that authenticated users can also access the endpoint"""
+        # Create an authenticated user
+        auth_user = User.objects.create_user(
+            username='authuser',
+            email='auth@test.com',
+            user_type='customer'
+        )
+        self.client.force_authenticate(user=auth_user)
+        
+        # GET method
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={self.customer_user.phone_number}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # POST method
+        data = {'phone_number': self.provider_user.phone_number}
+        response = self.client.post(self.search_by_phone_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_search_response_structure(self):
+        """Test that both GET and POST methods return standardized response structure"""
+        # GET method
+        response = self.client.get(f"{self.search_by_phone_url}?phone_number={self.customer_user.phone_number}")
+        self.assertIn('message', response.data)
+        self.assertIn('data', response.data)
+        self.assertIn('time', response.data)
+        self.assertIn('statusCode', response.data)
+        self.assertIn('search_details', response.data['data'])
+        
+        # POST method
+        data = {'phone_number': self.provider_user.phone_number}
+        response = self.client.post(self.search_by_phone_url, data, format='json')
+        self.assertIn('message', response.data)
+        self.assertIn('data', response.data)
+        self.assertIn('time', response.data)
+        self.assertIn('statusCode', response.data)
+        self.assertIn('search_details', response.data['data'])
+
+
 class UserTypeChangeViewTestCase(APITestCase):
     """Test cases for the UserTypeChangeView endpoint"""
     

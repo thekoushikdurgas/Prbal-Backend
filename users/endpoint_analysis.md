@@ -796,3 +796,240 @@ response = requests.post('/api/v1/users/verifications/', json=verification_data)
 - Performance monitoring
 
 This comprehensive document and image conversion system ensures that all endpoints in the users app can handle files from any source while maintaining security, performance, and user experience standards.
+
+# Users App Endpoint Analysis
+
+## Overview
+
+This document provides a comprehensive analysis of all endpoints in the users app, with special attention to authentication requirements and access patterns.
+
+## Authentication Summary
+
+### Public Endpoints (No Authentication Required)
+
+These endpoints use `permissions.AllowAny` and can be accessed without authentication tokens:
+
+1. **Phone Search Endpoint** ⭐
+   - **URL**: `/api/users/search/phone/`
+   - **Methods**: `GET`, `POST`
+   - **Permission**: `permissions.AllowAny`
+   - **Purpose**: Search users by phone number
+   - **GET Usage**: `GET /api/users/search/phone/?phone_number=1234567890`
+   - **POST Usage**: `POST /api/users/search/phone/` with `{"phone_number": "1234567890"}`
+   - **Response**: Returns user profile data based on user type (customer, provider, admin)
+
+2. **User Registration Endpoints**
+   - **PIN Registration**: `/api/users/auth/register/`
+   - **Admin Registration**: `/api/users/auth/admin/register/`
+   - **Permission**: `permissions.AllowAny`
+
+3. **Authentication Endpoints**
+   - **PIN Login**: `/api/users/auth/login/`
+   - **PIN Reset**: `/api/users/auth/pin/reset/`
+   - **Permission**: `permissions.AllowAny`
+
+4. **Public Profile View**
+   - **URL**: `/api/users/{user_id}/`
+   - **Method**: `GET`
+   - **Permission**: `permissions.AllowAny`
+   - **Purpose**: View public profile of any user
+
+### Authenticated Endpoints (Require Authentication Token)
+
+These endpoints require valid JWT token in Authorization header:
+
+1. **Profile Management**
+   - **Own Profile**: `/api/users/me/` (GET, PUT, PATCH)
+   - **Profile Image Upload**: `/api/users/profile/image/` (POST)
+   - **Account Deactivation**: `/api/users/deactivate/` (POST)
+
+2. **Social Features**
+   - **Like Profile**: `/api/users/{user_id}/like/` (POST)
+   - **Pass Profile**: `/api/users/{user_id}/pass/` (POST)
+
+3. **Advanced Search**
+   - **General User Search**: `/api/users/search/` (GET, POST)
+   - **Note**: This is different from phone search - requires authentication for role-based filtering
+
+4. **Token Management**
+   - **List Tokens**: `/api/users/me/tokens/` (GET)
+   - **Revoke Token**: `/api/users/me/tokens/{token_id}/revoke/` (POST)
+   - **Revoke All Tokens**: `/api/users/me/tokens/revoke_all/` (POST)
+
+5. **PIN Management**
+   - **Change PIN**: `/api/users/auth/pin/change/` (POST)
+   - **PIN Status**: `/api/users/auth/pin/status/` (GET)
+
+6. **User Type Management**
+   - **Get User Type**: `/api/users/auth/user-type/` (GET)
+   - **Change User Type**: `/api/users/auth/user-type-change/` (GET, POST)
+
+7. **Verification System**
+   - **Submit Verification**: `/api/users/verify/` (POST)
+   - **Verification Management**: `/api/users/verifications/` (GET, POST)
+   - **Verification Details**: `/api/users/verifications/{id}/` (GET, PUT, PATCH, DELETE)
+
+## Phone Search Endpoint Details
+
+### Key Features
+
+- **No Authentication Required**: Anyone can search without tokens
+- **Dual Method Support**: Both GET and POST methods supported
+- **Intelligent Matching**: Exact match first, then partial match
+- **User Type Aware**: Returns appropriate data based on user type
+- **Standardized Responses**: Uses `StandardizedResponseHelper` for consistent API responses
+
+### Usage Examples
+
+#### GET Method (Query Parameters)
+
+```bash
+# Search by exact phone number
+GET /api/users/search/phone/?phone_number=+1234567890
+
+# Search by partial phone number
+GET /api/users/search/phone/?phone_number=7890
+```
+
+#### POST Method (Request Body)
+
+```bash
+# Search by exact phone number
+POST /api/users/search/phone/
+Content-Type: application/json
+
+{
+    "phone_number": "+1234567890"
+}
+```
+
+### Response Format
+
+```json
+{
+    "message": "User found with exact phone match",
+    "data": {
+        "user": {
+            "id": "uuid",
+            "username": "johndoe",
+            "first_name": "John",
+            "last_name": "Doe",
+            "user_type": "customer",
+            "is_verified": true,
+            // ... other fields based on user type
+        },
+        "search_details": {
+            "phone_number": "+1234567890",
+            "match_type": "exact",
+            "requester": "anonymous"
+        }
+    },
+    "time": "2023-12-07T10:30:00Z",
+    "statusCode": 200
+}
+```
+
+### User Type Specific Data
+
+#### Customer Data Fields
+
+- `id`, `username`, `first_name`, `last_name`
+- `profile_picture`, `bio`, `location`
+- `user_type`, `is_verified`, `created_at`
+
+#### Provider Data Fields (Additional)
+
+- `rating`, `skills`, `total_bookings`
+- `services_count` (computed field)
+
+#### Admin Data Fields (Full Access)
+
+- All customer and provider fields plus:
+- `email`, `phone_number`, `is_email_verified`
+- `is_phone_verified`, `balance`, `updated_at`
+- `last_login`, `is_active`
+
+### Error Handling1
+
+#### Missing Phone Number
+
+- **GET**: `400 Bad Request` - "Phone number is required as a query parameter"
+- **POST**: `400 Bad Request` - "Phone number is required in request body"
+
+#### No Match Found
+
+- **Status**: `404 Not Found`
+- **Message**: "No users found with the given phone number"
+
+#### Database Errors
+
+- **Status**: `500 Internal Server Error`
+- **Message**: "A database error occurred while searching by phone number."
+
+## Security Considerations
+
+### Phone Search Endpoint Security
+
+1. **Public Access**: Intentionally public to enable contact discovery
+2. **Rate Limiting**: Should be implemented at infrastructure level
+3. **Data Exposure**: Limited to public profile information only
+4. **Privacy**: Admin-only fields are excluded for non-admin users
+
+### General Security Features
+
+1. **JWT Authentication**: Secure token-based authentication
+2. **PIN Security**: 4-digit PIN with lockout mechanism
+3. **Role-Based Access**: Different data exposure based on user type
+4. **Permission Classes**: Granular control over endpoint access
+
+## Testing Coverage
+
+### Phone Search Tests
+
+- ✅ GET method with exact match
+- ✅ GET method with partial match
+- ✅ GET method with no match
+- ✅ GET method without phone parameter
+- ✅ POST method with exact match
+- ✅ POST method without phone data
+- ✅ Unauthenticated access validation
+- ✅ Authenticated access compatibility
+- ✅ Response structure validation
+- ✅ User type specific serialization
+
+### Authentication Tests
+
+- ✅ Token generation and validation
+- ✅ PIN authentication flow
+- ✅ Permission class enforcement
+- ✅ User type detection
+- ✅ Token management operations
+
+## API Documentation URLs
+
+### Swagger/OpenAPI
+
+- **Development**: `http://localhost:8000/swagger/`
+- **ReDoc**: `http://localhost:8000/redoc/`
+
+### Postman Collections
+
+Located in `/postman/` directory:
+
+- `User.postman_collection.json` - Main user endpoints
+- `complete/Prbal API for User Management.postman_collection.json` - Complete collection
+
+## Conclusion
+
+The phone search endpoint (`/api/users/search/phone/`) is correctly configured for public access without authentication requirements. It supports both GET and POST methods, provides intelligent matching, and returns appropriate user data based on user types while maintaining security and privacy standards.
+
+Key Implementation Features:
+
+- ✅ `permissions.AllowAny` for public access
+- ✅ Both GET and POST method support
+- ✅ Query parameter and request body support
+- ✅ Exact and partial phone number matching
+- ✅ User type aware data serialization
+- ✅ Comprehensive error handling
+- ✅ Standardized API responses
+- ✅ Extensive test coverage

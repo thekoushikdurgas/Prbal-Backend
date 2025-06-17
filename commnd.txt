@@ -880,8 +880,7 @@ python manage.py makemigrations services
 python manage.py makemigrations sync
 python manage.py makemigrations users
 
-python manage.py makemigrations
-python manage.py migrate
+python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:3000
 python manage.py runserver
 python manage.py runserver 0.0.0.0:8000
 

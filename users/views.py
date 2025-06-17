@@ -878,7 +878,7 @@ class UserProfilePassView(APIView):
 
 
 class UserSearchByPhoneView(APIView):
-    """View for searching users by phone number from request body"""
+    """View for searching users by phone number - supports both GET and POST methods"""
     permission_classes = [permissions.AllowAny]
     
     def get_serializer_for_user(self, user):
@@ -892,25 +892,17 @@ class UserSearchByPhoneView(APIView):
         else:
             return CustomerSearchResultSerializer(user)  # default
     
-    def post(self, request, *args, **kwargs):
-        # Debug: Log phone search attempt
-        requester = request.user.id if request.user.is_authenticated else 'anonymous'
-        logger.debug(f"User {requester} attempting to search by phone number")
+    def _search_users_by_phone(self, phone_number, requester):
+        """
+        Common method to search users by phone number
         
-        # Get phone number from request body
-        phone_number = request.data.get('phone_number')
-        
-        if not phone_number:
-            logger.debug(f"Phone search failed - no phone number provided by user {requester}")
-            return Response(
-                StandardizedResponseHelper.error_response(
-                    message='Phone number is required',
-                    data={'requester': str(requester)},
-                    status_code=400
-                ),
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
+        Args:
+            phone_number (str): Phone number to search for
+            requester (str): ID of the requesting user (or 'anonymous')
+            
+        Returns:
+            Response: Standardized API response
+        """
         try:
             # First try exact match (for performance and accuracy)
             exact_match = User.objects.filter(phone_number=phone_number).first()
@@ -1000,6 +992,74 @@ class UserSearchByPhoneView(APIView):
                 ),
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    def get(self, request, *args, **kwargs):
+        """
+        GET method for searching users by phone number using query parameters
+        Supports public access without authentication
+        
+        Query Parameters:
+            phone_number (str): Phone number to search for
+            
+        Example: GET /api/users/search/phone/?phone_number=1234567890
+        """
+        # Debug: Log phone search attempt
+        requester = request.user.id if request.user.is_authenticated else 'anonymous'
+        logger.debug(f"User {requester} attempting to search by phone number via GET")
+        
+        # Get phone number from query parameters
+        phone_number = request.query_params.get('phone_number')
+        
+        if not phone_number:
+            logger.debug(f"Phone search failed - no phone number provided by user {requester}")
+            return Response(
+                StandardizedResponseHelper.error_response(
+                    message='Phone number is required as a query parameter',
+                    data={
+                        'requester': str(requester),
+                        'example_usage': 'GET /api/users/search/phone/?phone_number=1234567890',
+                        'method': 'GET'
+                    },
+                    status_code=400
+                ),
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        return self._search_users_by_phone(phone_number, requester)
+    
+    def post(self, request, *args, **kwargs):
+        """
+        POST method for searching users by phone number from request body
+        Supports public access without authentication
+        
+        Request Body:
+            {
+                "phone_number": "1234567890"
+            }
+        """
+        # Debug: Log phone search attempt
+        requester = request.user.id if request.user.is_authenticated else 'anonymous'
+        logger.debug(f"User {requester} attempting to search by phone number via POST")
+        
+        # Get phone number from request body
+        phone_number = request.data.get('phone_number')
+        
+        if not phone_number:
+            logger.debug(f"Phone search failed - no phone number provided by user {requester}")
+            return Response(
+                StandardizedResponseHelper.error_response(
+                    message='Phone number is required in request body',
+                    data={
+                        'requester': str(requester),
+                        'example_usage': '{"phone_number": "1234567890"}',
+                        'method': 'POST'
+                    },
+                    status_code=400
+                ),
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        return self._search_users_by_phone(phone_number, requester)
 
 
 class UserSearchView(APIView):
