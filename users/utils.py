@@ -56,26 +56,90 @@ def validate_phone_number(phone_number):
 
 def authenticate_user_with_pin(phone_number, pin):
     """
-    Authenticate user using phone number and PIN
-    Returns user object if authentication successful, None otherwise
+    🔐 Authenticate user using phone number and PIN - SUPPORTS ALL USER TYPES
+    
+    This function authenticates users regardless of their user_type:
+    - ✅ Customers (user_type='customer')
+    - ✅ Providers (user_type='provider')
+    - ✅ Admins (user_type='admin')
+    
+    Authentication Process:
+    1. Validate phone number format
+    2. Validate PIN format (4 digits)
+    3. Find active user by phone number
+    4. Verify PIN against stored hash
+    5. Update last_login timestamp
+    6. Return authenticated user object
+    
+    Returns:
+        User object if authentication successful, None otherwise
+    
+    Security Features:
+    - Validates input format before database query
+    - Only searches active users (is_active=True)
+    - Uses secure PIN verification with check_pin()
+    - Updates last_login for audit tracking
     """
     try:
-        validate_phone_number(phone_number)
-        validate_pin(pin)
+        # 📝 Debug: Log authentication attempt (sanitized)
+        phone_display = f"***{phone_number[-4:]}" if phone_number and len(phone_number) > 4 else "N/A"
+        logger.debug(f"🔐 AUTHENTICATE_USER_WITH_PIN | Phone: {phone_display}")
         
-        # Find user by phone number
+        # 🔍 Step 1: Validate phone number format
+        validate_phone_number(phone_number)
+        logger.debug(f"✅ Phone number validation passed: {phone_display}")
+        
+        # 🔍 Step 2: Validate PIN format
+        validate_pin(pin)
+        logger.debug(f"✅ PIN format validation passed")
+        
+        # 🔍 Step 3: Find user by phone number (REGARDLESS OF USER TYPE)
+        logger.debug(f"🔍 Searching for active user with phone: {phone_display}")
         user = User.objects.get(phone_number=phone_number, is_active=True)
         
-        # Check if PIN is correct
+        # 📊 Debug: Log found user details
+        logger.debug(f"👤 USER FOUND | ID: {user.id} | Username: {user.username} | Type: {user.user_type} | Active: {user.is_active}")
+        
+        # 🎯 Log user type specific information for verification
+        if user.user_type == 'customer':
+            logger.debug(f"🛒 CUSTOMER AUTHENTICATION | User: {user.username}")
+        elif user.user_type == 'provider':
+            logger.debug(f"🔧 PROVIDER AUTHENTICATION | User: {user.username} | Rating: {user.rating}")
+        elif user.user_type == 'admin':
+            logger.debug(f"👑 ADMIN AUTHENTICATION | User: {user.username} | Staff: {user.is_staff}")
+        else:
+            logger.warning(f"❓ UNKNOWN USER TYPE | User: {user.username} | Type: {user.user_type}")
+        
+        # 🔍 Step 4: Check if PIN is correct using secure verification
+        logger.debug(f"🔐 Verifying PIN for user {user.id}")
         if user.check_pin(pin):
-            # Update last login
+            # ✅ PIN verification successful
+            logger.debug(f"✅ PIN verification successful for user {user.id}")
+            
+            # 🔍 Step 5: Update last login timestamp for audit tracking
             user.last_login = timezone.now()
             user.save(update_fields=['last_login'])
+            logger.debug(f"📅 Last login updated for user {user.id}")
+            
+            # 🎉 Authentication completely successful
+            logger.info(f"🎉 AUTHENTICATION SUCCESS | User: {user.id} ({user.username}) | Type: {user.user_type}")
             return user
         else:
+            # ❌ PIN verification failed
+            logger.warning(f"❌ PIN verification failed for user {user.id} ({user.username})")
             return None
             
-    except (User.DoesNotExist, ValidationError):
+    except User.DoesNotExist:
+        # 👤 No user found with this phone number
+        logger.warning(f"👤 USER NOT FOUND | Phone: {phone_display}")
+        return None
+    except ValidationError as e:
+        # 📝 Input validation failed
+        logger.warning(f"📝 VALIDATION ERROR | Phone: {phone_display} | Error: {e}")
+        return None
+    except Exception as e:
+        # 🚨 Unexpected error during authentication
+        logger.error(f"🚨 AUTHENTICATION ERROR | Phone: {phone_display} | Error: {e}", exc_info=True)
         return None
 
 

@@ -269,34 +269,101 @@ class AccessTokenSerializer(serializers.ModelSerializer):
 # PIN-related Serializers
 
 class PinLoginSerializer(serializers.Serializer):
-    """Serializer for phone + PIN authentication"""
+    """
+    🔐 Serializer for phone + PIN authentication - SUPPORTS ALL USER TYPES
+    
+    This serializer validates and authenticates users regardless of user_type:
+    - ✅ Customer users (user_type='customer')
+    - ✅ Provider users (user_type='provider')
+    - ✅ Admin users (user_type='admin')
+    
+    Validation Process:
+    1. Validate phone number format
+    2. Validate PIN format (4 digits)
+    3. Authenticate user with phone + PIN
+    4. Check PIN lock status
+    5. Return authenticated user in validated_data
+    
+    Security Features:
+    - Format validation before authentication
+    - PIN lock detection and messaging
+    - Secure error messages (no user enumeration)
+    """
     phone_number = serializers.CharField(max_length=15)
     pin = serializers.CharField(max_length=4, min_length=4)
     
     def validate_phone_number(self, value):
+        """🔍 Validate phone number format"""
+        # Import logging here to avoid circular imports
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        # Sanitize for logging
+        phone_display = f"***{value[-4:]}" if value and len(value) > 4 else "N/A"
+        logger.debug(f"📞 Validating phone number format: {phone_display}")
+        
         validate_phone_number(value)
+        logger.debug(f"✅ Phone number format valid: {phone_display}")
         return value
     
     def validate_pin(self, value):
+        """🔐 Validate PIN format"""
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        logger.debug(f"🔢 Validating PIN format")
         validate_pin(value)
+        logger.debug(f"✅ PIN format valid")
         return value
     
     def validate(self, attrs):
+        """
+        🎯 Main validation: Authenticate user and check all security constraints
+        
+        This method handles authentication for ALL user types without discrimination.
+        """
+        import logging
+        logger = logging.getLogger(__name__)
+        
         phone_number = attrs.get('phone_number')
         pin = attrs.get('pin')
         
+        # Sanitize phone for logging
+        phone_display = f"***{phone_number[-4:]}" if phone_number and len(phone_number) > 4 else "N/A"
+        
         if phone_number and pin:
+            logger.debug(f"🔐 SERIALIZER AUTHENTICATION | Phone: {phone_display}")
+            
+            # 🎯 Attempt user authentication (supports all user types)
             user = authenticate_user_with_pin(phone_number, pin)
+            
             if not user:
+                # ❌ Authentication failed - could be invalid credentials or user not found
+                logger.warning(f"❌ AUTHENTICATION FAILED | Phone: {phone_display}")
                 raise serializers.ValidationError('Invalid phone number or PIN')
             
+            # 📊 Log successful authentication with user type
+            logger.debug(f"✅ SERIALIZER AUTH SUCCESS | User: {user.id} | Type: {user.user_type} | Username: {user.username}")
+            
+            # 🔒 Check if PIN is currently locked due to failed attempts
             if user.is_pin_locked():
                 remaining_time = user.get_pin_lock_remaining_time()
+                logger.warning(f"🔒 PIN LOCKED | User: {user.id} | Remaining: {remaining_time} minutes")
                 raise serializers.ValidationError(
                     f'PIN is locked due to multiple failed attempts. Try again in {remaining_time} minutes.'
                 )
             
+            # 🎯 Log user type specific success information
+            if user.user_type == 'customer':
+                logger.info(f"🛒 CUSTOMER AUTH SUCCESS | User: {user.username}")
+            elif user.user_type == 'provider':
+                logger.info(f"🔧 PROVIDER AUTH SUCCESS | User: {user.username} | Rating: {user.rating}")
+            elif user.user_type == 'admin':
+                logger.info(f"👑 ADMIN AUTH SUCCESS | User: {user.username} | Staff: {user.is_staff}")
+            
+            # ✅ Add authenticated user to validated data
             attrs['user'] = user
+            logger.debug(f"✅ User added to validated data: {user.id}")
         
         return attrs
 

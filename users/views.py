@@ -1667,11 +1667,34 @@ class UserVerificationView(APIView):
 # PIN Authentication Views
 
 class PinLoginView(APIView):
-    """View for authenticating users with phone number and PIN"""
+    """
+    🔐 PIN-based Authentication Endpoint
+    
+    This view handles authentication for ALL user types using phone number and PIN:
+    - ✅ Customer users (user_type='customer')
+    - ✅ Provider users (user_type='provider')  
+    - ✅ Admin users (user_type='admin')
+    
+    Authentication Flow:
+    1. Validate phone number and PIN format
+    2. Find user by phone number (regardless of user_type)
+    3. Verify PIN against stored hash
+    4. Check PIN lock status 
+    5. Generate JWT tokens on success
+    6. Track device/session information
+    7. Return user profile with tokens
+    
+    Security Features:
+    - PIN locking after 5 failed attempts (30-minute lockout)
+    - Device tracking and session management
+    - IP address logging
+    - Failed attempt tracking
+    """
     permission_classes = [permissions.AllowAny]
     serializer_class = PinLoginSerializer
     
     def get_client_ip(self, request):
+        """Extract client IP address from request headers"""
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             ip = x_forwarded_for.split(',')[0]
@@ -1680,59 +1703,108 @@ class PinLoginView(APIView):
         return ip
     
     def post(self, request, *args, **kwargs):
-        # Debug: Log login attempt
-        phone_number = request.data.get('phone_number', 'N/A')
-        logger.debug(f"PIN login attempt for phone: {phone_number}")
+        """
+        🚀 Handle PIN-based login for all user types
         
+        Expected payload:
+        {
+            "phone_number": "+1234567890",
+            "pin": "1234",
+            "device_type": "web|mobile|tablet|desktop|other"  # optional
+        }
+        """
+        # 📝 Debug: Log login attempt with sanitized phone number
+        phone_number = request.data.get('phone_number', 'N/A')
+        device_type = request.data.get('device_type', 'web')
+        client_ip = self.get_client_ip(request)
+        
+        # Sanitize phone number for logging (show only last 4 digits)
+        phone_display = f"***{phone_number[-4:]}" if phone_number and len(phone_number) > 4 else "N/A"
+        logger.debug(f"🔐 PIN LOGIN ATTEMPT | Phone: {phone_display} | Device: {device_type} | IP: {client_ip}")
+        
+        # 🔍 Validate request data using serializer
         serializer = self.serializer_class(data=request.data)
         
         if serializer.is_valid():
+            # ✅ Serializer validation passed - user found and PIN verified
             user = serializer.validated_data['user']
             
-            # Debug: Log user found
-            logger.debug(f"PIN login user found: {user.id} ({user.username})")
+            # 📊 Debug: Log successful user authentication with detailed info
+            logger.debug(f"✅ USER AUTHENTICATED | ID: {user.id} | Username: {user.username} | Type: {user.user_type} | Email: {user.email}")
+            
+            # 🎯 Special logging for different user types to ensure all work properly
+            if user.user_type == 'customer':
+                logger.info(f"🛒 CUSTOMER LOGIN | User: {user.username} | Phone: {phone_display}")
+            elif user.user_type == 'provider':
+                logger.info(f"🔧 PROVIDER LOGIN | User: {user.username} | Phone: {phone_display} | Rating: {user.rating}")
+            elif user.user_type == 'admin':
+                logger.info(f"👑 ADMIN LOGIN | User: {user.username} | Phone: {phone_display} | Staff: {user.is_staff}")
+            else:
+                logger.warning(f"❓ UNKNOWN USER TYPE LOGIN | User: {user.username} | Type: {user.user_type}")
             
             try:
-                # Generate JWT tokens
+                # 🎫 Generate JWT tokens for authenticated user
+                logger.debug(f"🎫 Generating JWT tokens for user {user.id}")
                 refresh = CustomRefreshToken.for_user(user)
                 tokens = {
                     'refresh': str(refresh),
                     'access': str(refresh.access_token)
                 }
                 
-                # Debug: Log token generation success
-                logger.debug(f"JWT tokens generated successfully for user {user.id}")
+                # ✅ Debug: Log successful token generation
+                logger.debug(f"✅ JWT tokens generated successfully | User: {user.id} | JTI: {refresh['jti']}")
                 
-                # Track the access token with device information
-                device_type = request.data.get('device_type', 'web')
+                # 📱 Track the access token with device information for security monitoring
                 try:
-                    AccessToken.objects.create(
+                    access_token_record = AccessToken.objects.create(
                         user=user,
-                        token_jti=refresh["jti"],
+                        token_jti=refresh["jti"],  # JWT ID for token tracking
                         device_type=device_type,
-                        device_name=request.META.get('HTTP_USER_AGENT', ''),
-                        ip_address=self.get_client_ip(request)
+                        device_name=request.META.get('HTTP_USER_AGENT', '')[:255],  # Truncate long user agents
+                        ip_address=client_ip
                     )
-                    logger.debug(f"Access token tracking saved for user {user.id}, device: {device_type}")
+                    logger.debug(f"📱 Access token tracking saved | Token ID: {access_token_record.id} | Device: {device_type}")
                 except Exception as e:
-                    logger.error(f"Token tracking error for user {user.id}: {e}", exc_info=True)
+                    # 🚨 Non-critical error - log but don't fail login
+                    logger.error(f"❌ Token tracking error for user {user.id}: {e}", exc_info=True)
                 
-                # Get user profile data
+                # 👤 Get comprehensive user profile data for response
                 user_data = UserProfileSerializer(user).data
                 
-                logger.info(f"User {user.id} ({user.username}) logged in successfully with PIN")
+                # 📈 Log successful login completion with user type for analytics
+                logger.info(f"🎉 LOGIN SUCCESSFUL | User: {user.id} ({user.username}) | Type: {user.user_type} | Device: {device_type}")
+                
+                # 🎯 Add user-type-specific data to response for frontend customization
+                login_context = {
+                    'device_type': device_type,
+                    'login_method': 'PIN',
+                    'ip_address': client_ip,
+                    'user_type': user.user_type,
+                    'user_type_display': user.get_user_type_display(),
+                    'is_staff': user.is_staff,
+                    'is_verified': user.is_verified
+                }
+                
+                # 🌟 Add type-specific context
+                if user.user_type == 'provider':
+                    login_context.update({
+                        'provider_rating': float(user.rating) if user.rating else 0.0,
+                        'total_bookings': user.total_bookings,
+                        'has_skills': bool(user.skills and len(user.skills) > 0)
+                    })
+                elif user.user_type == 'admin':
+                    login_context.update({
+                        'admin_permissions': user.is_staff,
+                        'superuser': user.is_superuser
+                    })
                 
                 return Response(
                     StandardizedResponseHelper.success_response(
-                        message='Login successful',
+                        message=f'{user.get_user_type_display()} login successful',
                         data={
                             'user': user_data,
                             'tokens': tokens,
-                            'login_details': {
-                                'device_type': device_type,
-                                'login_method': 'PIN',
-                                'ip_address': self.get_client_ip(request)
-                            }
+                            'login_details': login_context
                         },
                         status_code=200
                     ),
@@ -1740,15 +1812,32 @@ class PinLoginView(APIView):
                 )
                 
             except Exception as e:
-                logger.error(f"Token generation error during PIN login for user {user.id}: {e}", exc_info=True)
+                # 🚨 Critical error during token generation
+                logger.error(f"💥 TOKEN GENERATION ERROR | User: {user.id} | Error: {e}", exc_info=True)
                 return Response(
                     StandardizedResponseHelper.error_response(
                         message='Authentication successful but token generation failed. Please try again.',
-                        data={'user_id': str(user.id)},
+                        data={
+                            'user_id': str(user.id),
+                            'user_type': user.user_type,
+                            'error_type': 'token_generation_failure'
+                        },
                         status_code=500
                     ),
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
+        
+        # ❌ Serializer validation failed - authentication errors
+        logger.warning(f"❌ PIN LOGIN FAILED | Phone: {phone_display} | Errors: {serializer.errors}")
+        
+        # 🔍 Check for specific error types to provide helpful debugging
+        errors = serializer.errors
+        if 'phone_number' in errors:
+            logger.debug(f"📞 Phone number validation failed: {errors['phone_number']}")
+        if 'pin' in errors:
+            logger.debug(f"🔢 PIN validation failed: {errors['pin']}")
+        if 'non_field_errors' in errors:
+            logger.debug(f"🚫 Authentication failed: {errors['non_field_errors']}")
         
         return Response(
             StandardizedResponseHelper.validation_error_response(

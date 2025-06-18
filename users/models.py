@@ -16,6 +16,7 @@ from django.conf import settings
 import uuid
 import os
 from django.utils import timezone
+import logging
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, **extra_fields):
@@ -135,25 +136,78 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.pin_locked_until = None
     
     def check_pin(self, raw_pin):
-        """Check if the provided PIN matches the stored PIN"""
+        """
+        🔐 Check if the provided PIN matches the stored PIN - WORKS FOR ALL USER TYPES
+        
+        This method verifies PIN for all user types without discrimination:
+        - ✅ Customer users (user_type='customer')
+        - ✅ Provider users (user_type='provider')
+        - ✅ Admin users (user_type='admin')
+        
+        Security Features:
+        - PIN lock mechanism (5 failed attempts = 30 minute lockout)
+        - Automatic unlock when lockout period expires
+        - Failed attempt tracking
+        - Secure password hashing verification
+        
+        Returns:
+            bool: True if PIN is correct and not locked, False otherwise
+        """
+        logger = logging.getLogger(__name__)
+        
+        # 📊 Debug: Log PIN verification attempt with user context
+        logger.debug(f"🔐 PIN VERIFICATION | User: {self.id} ({self.username}) | Type: {self.user_type}")
+        
+        # 🔒 Check if PIN is currently locked
         if self.is_pin_locked():
+            remaining_time = self.get_pin_lock_remaining_time()
+            logger.warning(f"🔒 PIN LOCKED | User: {self.id} | Type: {self.user_type} | Remaining: {remaining_time} minutes")
             return False
         
-        # Check if PIN matches
+        # 🔍 Verify PIN against stored hash using Django's secure check_password
+        logger.debug(f"🔍 Verifying PIN hash for user {self.id}")
         is_correct = check_password(str(raw_pin), self.pin)
         
         if is_correct:
-            # Reset failed attempts on successful PIN entry
-            self.failed_pin_attempts = 0
-            self.pin_locked_until = None
-            self.save(update_fields=['failed_pin_attempts', 'pin_locked_until'])
+            # ✅ PIN verification successful
+            logger.debug(f"✅ PIN CORRECT | User: {self.id} | Type: {self.user_type}")
+            
+            # 🔄 Reset failed attempts on successful PIN entry
+            if self.failed_pin_attempts > 0 or self.pin_locked_until:
+                logger.debug(f"🔄 Resetting failed attempts for user {self.id} (was: {self.failed_pin_attempts})")
+                self.failed_pin_attempts = 0
+                self.pin_locked_until = None
+                self.save(update_fields=['failed_pin_attempts', 'pin_locked_until'])
+            
+            # 🎯 Log success for specific user types
+            if self.user_type == 'customer':
+                logger.info(f"🛒 CUSTOMER PIN SUCCESS | User: {self.username}")
+            elif self.user_type == 'provider':
+                logger.info(f"🔧 PROVIDER PIN SUCCESS | User: {self.username}")
+            elif self.user_type == 'admin':
+                logger.info(f"👑 ADMIN PIN SUCCESS | User: {self.username}")
+            
         else:
-            # Increment failed attempts
+            # ❌ PIN verification failed
+            logger.warning(f"❌ PIN INCORRECT | User: {self.id} | Type: {self.user_type} | Attempt: {self.failed_pin_attempts + 1}")
+            
+            # 📈 Increment failed attempts counter
             self.failed_pin_attempts += 1
-            # Lock PIN after 5 failed attempts for 30 minutes
+            
+            # 🔒 Lock PIN after 5 failed attempts for 30 minutes
             if self.failed_pin_attempts >= 5:
                 self.pin_locked_until = timezone.now() + timezone.timedelta(minutes=30)
+                logger.warning(f"🔒 PIN LOCKED | User: {self.id} | Type: {self.user_type} | Failed attempts: {self.failed_pin_attempts}")
+            
             self.save(update_fields=['failed_pin_attempts', 'pin_locked_until'])
+            
+            # 🎯 Log failure for specific user types
+            if self.user_type == 'customer':
+                logger.warning(f"🛒 CUSTOMER PIN FAILED | User: {self.username} | Attempts: {self.failed_pin_attempts}")
+            elif self.user_type == 'provider':
+                logger.warning(f"🔧 PROVIDER PIN FAILED | User: {self.username} | Attempts: {self.failed_pin_attempts}")
+            elif self.user_type == 'admin':
+                logger.warning(f"👑 ADMIN PIN FAILED | User: {self.username} | Attempts: {self.failed_pin_attempts}")
         
         return is_correct
     

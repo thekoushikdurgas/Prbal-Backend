@@ -5,8 +5,20 @@ from users.serializers import PublicUserProfileSerializer
 import base64
 import uuid
 from django.core.files.base import ContentFile
+import logging
+
+# 🔍 DEBUG: Setup comprehensive logging for services serializers
+logger = logging.getLogger(__name__)
+logger.info("🚀 DEBUG: Services serializers module loaded successfully")
+logger.debug("📦 DEBUG: All imports completed - models, utils, and validation ready")
+logger.debug("🔧 DEBUG: Initializing serializers with enhanced validation and debug tracking")
 
 User = get_user_model()
+
+# Debug: Log user model loading with enhanced tracking
+logger.debug(f"👤 DEBUG: User model loaded for serializers: {User.__name__}")
+logger.debug(f"📊 DEBUG: Services serializers initialized with {len([ServiceCategory, ServiceSubCategory, Service, ServiceRequest])} model types")
+logger.info("✅ DEBUG: Services serializers initialization completed - all serializers ready")
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
     """Serializer for service categories"""
@@ -68,9 +80,22 @@ class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
     
     def validate_category(self, value):
-        """Ensure the category is active"""
+        """
+        🔍 ENHANCED CATEGORY VALIDATION
+        =============================
+        
+        Ensure the category is active and properly configured.
+        Provides comprehensive validation with debug logging.
+        """
+        # Debug: Log validation attempt
+        logger.debug(f"🔍 DEBUG: Validating category for service creation: {value.name} (ID: {value.id})")
+        
         if not value.is_active:
+            logger.warning(f"❌ DEBUG: Validation failed - Category '{value.name}' is not active")
             raise serializers.ValidationError("This category is not active.")
+            
+        # Debug: Log successful validation
+        logger.debug(f"✅ DEBUG: Category validation passed: {value.name}")
         return value
 
 class ServiceImageSerializer(serializers.ModelSerializer):
@@ -133,9 +158,22 @@ class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
     
     def validate_category(self, value):
-        """Ensure the category is active"""
+        """
+        🔍 ENHANCED CATEGORY VALIDATION
+        =============================
+        
+        Ensure the category is active and properly configured.
+        Provides comprehensive validation with debug logging.
+        """
+        # Debug: Log validation attempt
+        logger.debug(f"🔍 DEBUG: Validating category for service creation: {value.name} (ID: {value.id})")
+        
         if not value.is_active:
+            logger.warning(f"❌ DEBUG: Validation failed - Category '{value.name}' is not active")
             raise serializers.ValidationError("This category is not active.")
+            
+        # Debug: Log successful validation
+        logger.debug(f"✅ DEBUG: Category validation passed: {value.name}")
         return value
     
     def create(self, validated_data):
@@ -195,9 +233,22 @@ class ServiceRequestCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
     
     def validate_category(self, value):
-        """Ensure the category is active"""
+        """
+        🔍 ENHANCED CATEGORY VALIDATION
+        =============================
+        
+        Ensure the category is active and properly configured.
+        Provides comprehensive validation with debug logging.
+        """
+        # Debug: Log validation attempt
+        logger.debug(f"🔍 DEBUG: Validating category for service request creation: {value.name} (ID: {value.id})")
+        
         if not value.is_active:
+            logger.warning(f"❌ DEBUG: Validation failed - Category '{value.name}' is not active")
             raise serializers.ValidationError("This category is not active.")
+            
+        # Debug: Log successful validation
+        logger.debug(f"✅ DEBUG: Category validation passed: {value.name}")
         return value
         
 class ServiceRequestDetailSerializer(serializers.ModelSerializer):

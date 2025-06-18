@@ -30,7 +30,7 @@ def clean_item(subitem):
      else:
           name_item(subitem)
 env = 'Prbal API for User Management'
-with open(r'postman\colkection\Prbal API for User Management.postman_collection.json', 'r') as file:
+with open(r'postman\colkection\Services.postman_collection.json', 'r') as file:
     data = json.load(file)
 
 # for item in data['item']:
@@ -42,5 +42,5 @@ with open(r'postman\colkection\Prbal API for User Management.postman_collection.
 for item in data['item']:
     clean_item(item)
 
-with open(r'postman\colkection\{env}.postman_collection.json', 'w') as file:
+with open(r'postman\colkection\Services.postman_collection.json', 'w') as file:
     json.dump(data, file, indent=4)
