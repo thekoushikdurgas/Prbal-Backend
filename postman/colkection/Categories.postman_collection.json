@@ -1,0 +1,715 @@
+{
+    "info": {
+      "name": "Prbal Services API",
+      "description": "A comprehensive collection for testing the Prbal Services API with standardized responses format: {message, data, time, statusCode}",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        
+        {
+            "name": "🗂️ Service Categories",
+            "item": [
+                {
+                    "name": "List Categories",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/categories/",
+                            "query": [
+                                {
+                                    "key": "is_active",
+                                    "value": "true",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "home",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "sort_order",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "page_size",
+                                    "value": "10",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service categories retrieved successfully\",\n    \"data\": {\n        \"count\": 2,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\",\n                \"description\": \"Professional home maintenance and repair services\",\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/home.svg\",\n                \"sort_order\": 1,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T10:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440002\",\n                \"name\": \"Tech Services\",\n                \"description\": \"Technology and digital services\",\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/tech.svg\",\n                \"sort_order\": 2,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T11:00:00Z\",\n                \"updated_at\": \"2024-01-20T11:00:00Z\"\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Internal Server Error",
+                            "code": 500,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"An error occurred while retrieving service categories\",\n    \"data\": {\n        \"error_type\": \"DatabaseError\",\n        \"error_details\": \"Database connection failed\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 500\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Category Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/categories/{{category_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service category retrieved successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home Services\",\n        \"description\": \"Professional home maintenance and repair services including plumbing, electrical, cleaning, and repair work\",\n        \"icon\": null,\n        \"icon_url\": \"https://example.com/icons/home.svg\",\n        \"sort_order\": 1,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T10:00:00Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Not Found",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/invalid-id/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service category not found\",\n    \"data\": {\n        \"category_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Category (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Home Services\",\n    \"description\": \"Professional home maintenance and repair services\",\n    \"sort_order\": 1,\n    \"is_active\": true\n}"
+                        },
+                        "url": "{{base_url}}/categories/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Home Services\",\n    \"description\": \"Professional home maintenance and repair services\",\n    \"sort_order\": 1,\n    \"is_active\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service category created successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home Services\",\n        \"description\": \"Professional home maintenance and repair services\",\"icon\": null,\n        \"icon_url\": null,\n        \"sort_order\": 1,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T15:30:45.123Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 201\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Home Services\",\n    \"description\": \"Professional home maintenance and repair services\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"You do not have permission to perform this action\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"current_user_type\": \"customer\",\n        \"action\": \"create_category\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        },
+                        {
+                            "name": "Error Response - Validation Error",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"description\": \"Missing name field\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"name\": [\"This field is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Category (Admin)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Home Services Updated\",\n    \"description\": \"Updated description for home services\",\n    \"sort_order\": 2,\n    \"is_active\": true\n}"
+                        },
+                        "url": "{{base_url}}/categories/{{category_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Home Services Updated\",\n    \"description\": \"Updated description for home services\",\n    \"sort_order\": 2,\n    \"is_active\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service category updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home Services Updated\",\n        \"description\": \"Updated description for home services\",\n        \"icon\": null,\n        \"icon_url\": null,\n        \"sort_order\": 2,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Home Services Updated\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"You do not have permission to perform this action\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"current_user_type\": \"customer\",\n        \"action\": \"update_category\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Partial Update Category (Admin)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"description\": \"Updated description for home services with new features\",\n    \"sort_order\": 3\n}"
+                        },
+                        "url": "{{base_url}}/categories/{{category_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"description\": \"Updated description for home services with new features\",\n    \"sort_order\": 3\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service category updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home Services\",\n        \"description\": \"Updated description for home services with new features\",\n        \"icon\": null,\n        \"icon_url\": \"https://example.com/icons/home.svg\",\n        \"sort_order\": 3,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"sort_order\": 3\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"You do not have permission to perform this action\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"current_user_type\": \"customer\",\n        \"action\": \"update_category\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        },
+                        {
+                            "name": "Error Response - Not Found",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"sort_order\": 3\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/invalid-id/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service category not found\",\n    \"data\": {\n        \"category_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        },
+                        {
+                            "name": "Error Response - Validation Error",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"sort_order\": \"invalid_order\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"sort_order\": [\"A valid integer is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Category (Admin)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/categories/{{category_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"You do not have permission to perform this action\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"current_user_type\": \"customer\",\n        \"action\": \"delete_category\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "List Categories (Filtered & Searched)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/categories/?is_active=true&search=home&ordering=sort_order&page=1&page_size=5",
+                            "query": [
+                                {
+                                    "key": "is_active",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "home"
+                                },
+                                {
+                                    "key": "ordering",
+                                    "value": "sort_order"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "page_size",
+                                    "value": "5"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/?is_active=true&search=home&ordering=sort_order",
+                                    "query": [
+                                        {
+                                            "key": "is_active",
+                                            "value": "true"
+                                        },
+                                        {
+                                            "key": "search",
+                                            "value": "home"
+                                        },
+                                        {
+                                            "key": "ordering",
+                                            "value": "sort_order"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service categories retrieved successfully\",\n    \"data\": {\n        \"count\": 1,\n        \"next\": null,\n        \"previous\": null,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\",\n                \"description\": \"Professional home maintenance and repair services\",\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/home.svg\",\n                \"sort_order\": 1,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T10:00:00Z\"\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Category Statistics (Admin)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/categories/statistics/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/statistics/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Category statistics retrieved successfully\",\n    \"data\": {\n        \"summary\": {\n            \"total_categories\": 5,\n            \"total_services\": 150,\n            \"total_requests\": 75,\n            \"generated_by\": \"admin@example.com\",\n            \"generated_at\": \"2024-01-20T15:30:45.123Z\"\n        },\n        \"category_statistics\": [\n            {\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\",\n                    \"description\": \"Professional home maintenance and repair services\"\n                },\n                \"service_counts\": {\n                    \"total\": 45,\n                    \"active\": 40,\n                    \"inactive\": 5\n                },\n                \"request_counts\": {\n                    \"total\": 25,\n                    \"open\": 15,\n                    \"fulfilled_or_expired\": 10\n                },\n                \"provider_count\": 20,\n                \"subcategory_count\": 8\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/categories/statistics/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"You do not have permission to access this endpoint\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"user_type\": \"customer\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "event": [
+       {
+           "listen": "prerequest",
+           "script": {
+               "type": "text/javascript",
+               "exec": [
+                   "// Set base URL if not already set",
+                   "if (!pm.environment.get('base_url')) {",
+                   "    pm.environment.set('base_url', 'http://localhost:8000');",
+                   "}",
+                   "",
+                   "// Add timestamp for debugging",
+                   "pm.globals.set('timestamp', new Date().toISOString());"
+               ]
+           }
+       },
+       {
+           "listen": "test",
+           "script": {
+               "type": "text/javascript",
+               "exec": [
+                   "// Test for standardized response format",
+                   "pm.test('Response has standardized format', function () {",
+                   "    const jsonData = pm.response.json();",
+                   "    pm.expect(jsonData).to.have.property('message');",
+                   "    pm.expect(jsonData).to.have.property('data');",
+                   "    pm.expect(jsonData).to.have.property('time');",
+                   "    pm.expect(jsonData).to.have.property('statusCode');",
+                   "});",
+                   "",
+                   "// Test response time",
+                   "pm.test('Response time is less than 5000ms', function () {",
+                   "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+                   "});",
+                   "",
+                   "// Store response data for chaining",
+                   "if (pm.response.code === 200 || pm.response.code === 201) {",
+                   "    const jsonData = pm.response.json();",
+                   "    ",
+                   "    // Store IDs for use in other requests",
+                   "    if (jsonData.data && jsonData.data.id) {",
+                   "        pm.environment.set('last_created_id', jsonData.data.id);",
+                   "    }",
+                   "    ",
+                   "    // Store category ID if this is a category response",
+                   "    if (jsonData.data && jsonData.data.category) {",
+                   "        pm.environment.set('category_id', jsonData.data.category);",
+                   "    }",
+                   "}"
+               ]
+           }
+       }
+   ]
+  }
+  

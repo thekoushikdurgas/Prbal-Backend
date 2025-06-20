@@ -1,9 +1,1390 @@
 {
     "info": {
         "name": "Prbal Services API",
-        "description": "A comprehensive collection for testing the Prbal Services API",
+        "description": "A comprehensive collection for testing the Prbal Services API with standardized responses format: {message, data, time, statusCode}",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
+        {
+            "name": "🔧 Services",
+            "item": [
+                {
+                    "name": "List Services",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/services/",
+                            "query": [
+                                {
+                                    "key": "category",
+                                    "value": "{{category_id}}",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "min_price",
+                                    "value": "100",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "max_price",
+                                    "value": "1000",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "plumbing",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Services retrieved successfully\",\n    \"data\": {\n        \"count\": 2,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n                    \"user_type\": \"provider\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156\n                },\n                \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"category_name\": \"Home Services\",\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    }\n                ],\n                \"title\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n                \"price\": 500.00,\n                \"location\": \"Mumbai, Maharashtra\",\n                \"image\": \"https://example.com/services/plumbing1.jpg\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T15:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203\n                },\n                \"name\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 450.00,\n                \"currency\": \"INR\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"latitude\": 19.1356,\n                \"longitude\": 72.8266,\n                \"distance_km\": 7.2,\n                \"status\": \"active\",\n                \"is_featured\": false,\n                \"availability_today\": false\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Internal Server Error",
+                            "code": 500,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"An error occurred while retrieving services\",\n    \"data\": {\n        \"error_type\": \"DatabaseError\",\n        \"error_details\": \"Database connection failed\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 500\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Service Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/services/{{service_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service details retrieved successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n            \"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156,\n            \"verified\": true\n        },\n        \"name\": \"Professional Plumbing Service\",\n        \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Professional plumbing services\"\n            }\n        ],\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\"],\n        \"hourly_rate\": 500.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 750.00,\n            \"weekend_rate\": 600.00\n        },\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 8,\n        \"availability\": {\n            \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"emergency\": true\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\"],\n        \"status\": \"active\",\n        \"is_featured\": true,\n        \"service_images\": [\n            {\n                \"id\": \"img-1\",\n                \"image\": \"https://example.com/services/plumbing1.jpg\",\n                \"description\": \"Main service image\",\n                \"order\": 1\n            }\n        ],\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:00:00Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Not Found",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/invalid-id/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service not found\",\n    \"data\": {\n        \"service_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Service (Provider)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Professional Plumbing Service\",\n    \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n    \"category\": \"{{category_id}}\",\n    \"hourly_rate\": 500.00,\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 8,\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\"],\n    \"availability\": {\n        \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"}\n    }\n}"
+                        },
+                        "url": "{{base_url}}/services/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Professional Plumbing Service\",\n    \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"hourly_rate\": 500.00,\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 8,\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\"],\n    \"availability\": {\n        \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"}\n    }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service created successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156\n        },\n        \"name\": \"Professional Plumbing Service\",\n        \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [],\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\"],\n        \"hourly_rate\": 500.00,\n        \"pricing_options\": {},\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 8,\n        \"availability\": {\n            \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"}\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [],\n        \"status\": \"pending\",\n        \"is_featured\": false,\n        \"service_images\": [],\n        \"created_at\": \"2024-01-20T15:30:45.123Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 201\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Professional Plumbing Service\",\n    \"description\": \"Expert plumbing repairs\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to create services\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
+                        },
+                        {
+                            "name": "Error Response - Validation Error",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"description\": \"Missing required fields\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"name\": [\"This field is required.\"],\n        \"category\": [\"This field is required.\"],\n        \"hourly_rate\": [\"This field is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        },
+                        {
+                            "name": "Error Response - Permission Denied",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Test Service\",\n    \"description\": \"Test\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"hourly_rate\": 100.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only providers can create services\",\n        \"required_permission\": \"IsProviderOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Service (Owner)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Professional Plumbing Service\",\n    \"description\": \"Updated description with new certifications\",\n    \"hourly_rate\": 600.00\n}"
+                        },
+                        "url": "{{base_url}}/services/{{service_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Updated Professional Plumbing Service\",\n    \"description\": \"Updated description with new certifications\",\n    \"hourly_rate\": 600.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n            \"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156\n        },\n        \"name\": \"Updated Professional Plumbing Service\",\n        \"description\": \"Updated description with new certifications\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Professional plumbing services\"\n            }\n        ],\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\"],\n        \"hourly_rate\": 600.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 900.00,\n            \"weekend_rate\": 720.00\n        },\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 8,\n        \"availability\": {\n            \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"emergency\": true\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\"],\n        \"status\": \"active\",\n        \"is_featured\": true,\n        \"service_images\": [\n            {\n                \"id\": \"img-1\",\n                \"image\": \"https://example.com/services/plumbing1.jpg\",\n                \"description\": \"Main service image\",\n                \"order\": 1\n            }\n        ],\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Updated Service\",\n    \"hourly_rate\": 600.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to update services\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
+                        },
+                        {
+                            "name": "Error Response - Not Found",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Updated Service\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/invalid-id/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service not found\",\n    \"data\": {\n        \"service_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        },
+                        {
+                            "name": "Error Response - Permission Denied",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{another_provider_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Unauthorized Update\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only update your own services\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        },
+                        {
+                            "name": "Error Response - Validation Error",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"hourly_rate\": \"invalid_rate\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"hourly_rate\": [\"A valid number is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Partial Update Service (Owner)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"hourly_rate\": 650.00,\n    \"availability\": {\n        \"monday\": {\"start\": \"08:00\", \"end\": \"20:00\"},\n        \"emergency\": true\n    },\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"24/7\"]\n}"
+                        },
+                        "url": "{{base_url}}/services/{{service_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"hourly_rate\": 650.00,\n    \"availability\": {\n        \"monday\": {\"start\": \"08:00\", \"end\": \"20:00\"},\n        \"emergency\": true\n    }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n            \"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156\n        },\n        \"name\": \"Professional Plumbing Service\",\n        \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Professional plumbing services\"\n            }\n        ],\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"24/7\"],\n        \"hourly_rate\": 650.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 975.00,\n            \"weekend_rate\": 780.00\n        },\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 8,\n        \"availability\": {\n            \"monday\": {\"start\": \"08:00\", \"end\": \"20:00\"},\n            \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"emergency\": true\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\"],\n        \"status\": \"active\",\n        \"is_featured\": true,\n        \"service_images\": [\n            {\n                \"id\": \"img-1\",\n                \"image\": \"https://example.com/services/plumbing1.jpg\",\n                \"description\": \"Main service image\",\n                \"order\": 1\n            }\n        ],\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"hourly_rate\": 650.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to update services\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
+                        },
+                        {
+                            "name": "Error Response - Permission Denied",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{another_provider_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"hourly_rate\": 650.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only update your own services\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        },
+                        {
+                            "name": "Error Response - Not Found",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"hourly_rate\": 650.00\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/invalid-id/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service not found\",\n    \"data\": {\n        \"service_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        },
+                        {
+                            "name": "Error Response - Validation Error",
+                            "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"hourly_rate\": \"invalid_rate\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"hourly_rate\": [\"A valid number is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Service (Owner)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/services/{{service_id}}/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to delete services\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
+                        },
+                        {
+                            "name": "Error Response - Permission Denied",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{another_provider_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only delete your own services\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        },
+                        {
+                            "name": "Error Response - Not Found",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/invalid-id/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service not found\",\n    \"data\": {\n        \"service_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        },
+                        {
+                            "name": "Error Response - Conflict",
+                            "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440020/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Conflict",
+                            "code": 409,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Cannot delete service with active bookings\",\n    \"data\": {\n        \"service_id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"error_type\": \"active_dependencies\",\n        \"error_details\": \"Service has 3 active bookings that must be completed first\",\n        \"active_bookings_count\": 3,\n        \"suggested_action\": \"Consider deactivating the service instead\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 409\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Nearby Services",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/services/nearby/",
+                            "query": [
+                                {
+                                    "key": "lat",
+                                    "value": "19.0760"
+                                },
+                                {
+                                    "key": "lng",
+                                    "value": "72.8777"
+                                },
+                                {
+                                    "key": "radius",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/nearby/?lat=19.0760&lng=72.8777&radius=10",
+                                    "query": [
+                                        {
+                                            "key": "lat",
+                                            "value": "19.0760"
+                                        },
+                                        {
+                                            "key": "lng",
+                                            "value": "72.8777"
+                                        },
+                                        {
+                                            "key": "radius",
+                                            "value": "10"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Found 3 services within 10km of the specified location\",\n    \"data\": {\n        \"services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"location\": \"Mumbai, Maharashtra\",\n                \"latitude\": 19.0760,\n                \"longitude\": 72.8777,\n                \"distance_km\": 0.5,\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"availability_today\": true\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203\n                },\n                \"name\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 450.00,\n                \"currency\": \"INR\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"latitude\": 19.1356,\n                \"longitude\": 72.8266,\n                \"distance_km\": 7.2,\n                \"status\": \"active\",\n                \"is_featured\": false,\n                \"availability_today\": false\n            }\n        ],\n        \"search_criteria\": {\n            \"center_point\": {\"latitude\": 19.0760, \"longitude\": 72.8777},\n            \"radius_km\": 10,\n            \"bounding_box\": {\n                \"min_lat\": 19.0660, \"max_lat\": 19.0860,\n                \"min_lng\": 72.8677, \"max_lng\": 72.8877\n            }\n        },\n        \"result_summary\": {\n            \"total_found\": 3,\n            \"total_active_services\": 150\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Missing Parameters",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/nearby/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Latitude and longitude are required parameters\",\n    \"data\": {\n        \"required_params\": [\"lat\", \"lng\"],\n        \"optional_params\": {\"radius\": \"10km (default)\"},\n        \"received_params\": {\n            \"lat\": null,\n            \"lng\": null,\n            \"radius\": \"10\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        },
+                        {
+                            "name": "Error Response - Invalid Coordinates",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/nearby/?lat=invalid&lng=invalid&radius=10",
+                                    "query": [
+                                        {
+                                            "key": "lat",
+                                            "value": "invalid"
+                                        },
+                                        {
+                                            "key": "lng",
+                                            "value": "invalid"
+                                        },
+                                        {
+                                            "key": "radius",
+                                            "value": "10"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Invalid coordinate or radius format\",\n    \"data\": {\n        \"error_details\": \"Coordinates must be valid numbers\",\n        \"provided_values\": {\n            \"lat\": \"invalid\",\n            \"lng\": \"invalid\",\n            \"radius\": \"10\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Trending Services",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/services/trending/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/services/trending/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Top 10 trending services retrieved successfully\",\n    \"data\": {\n        \"trending_services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156\n                },\n                \"title\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"category_name\": \"Home Services\",\n                \"price\": 500.00,\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"trending_score\": 95,\n                \"recent_bookings\": 24,\n                \"created_at\": \"2024-01-15T10:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203\n                },\n                \"title\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services\",\n                \"category_name\": \"Home Services\",\n                \"price\": 450.00,\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"trending_score\": 92,\n                \"recent_bookings\": 19,\n                \"created_at\": \"2024-01-12T14:00:00Z\"\n            }\n        ],\n        \"trending_criteria\": {\n            \"algorithm\": \"featured_and_recent\",\n            \"description\": \"Services ordered by featured status first, then by most recent updates\",\n            \"limit\": 10,\n            \"total_active_services\": 150\n        },\n        \"metrics\": {\n            \"total_trending\": 10,\n            \"featured_count\": 8,\n            \"regular_count\": 2,\n            \"generated_at\": \"2024-01-20T15:30:45.123Z\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Server Error",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/trending/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Internal Server Error",
+                            "code": 500,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"An error occurred while calculating trending services\",\n    \"data\": {\n        \"error_type\": \"DatabaseError\",\n        \"requester\": \"anonymous\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 500\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Services by Availability",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/services/by_availability/",
+                            "query": [
+                                {
+                                    "key": "date",
+                                    "value": "2024-01-25"
+                                },
+                                {
+                                    "key": "time",
+                                    "value": "14:30",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/by_availability/?date=2024-01-25&time=14:30",
+                                    "query": [
+                                        {
+                                            "key": "date",
+                                            "value": "2024-01-25"
+                                        },
+                                        {
+                                            "key": "time",
+                                            "value": "14:30"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Services available on 2024-01-25 at 14:30\",\n    \"data\": {\n        \"services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156\n                },\n                \"title\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"category_name\": \"Home Services\",\n                \"price\": 500.00,\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"availability_status\": \"available\",\n                \"availability_slots\": [\n                    {\"start\": \"14:00\", \"end\": \"16:00\"},\n                    {\"start\": \"16:30\", \"end\": \"18:00\"}\n                ],\n                \"created_at\": \"2024-01-20T10:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203\n                },\n                \"title\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services\",\n                \"category_name\": \"Home Services\",\n                \"price\": 450.00,\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": false,\n                \"availability_status\": \"partially_available\",\n                \"availability_slots\": [\n                    {\"start\": \"15:00\", \"end\": \"17:00\"}\n                ],\n                \"created_at\": \"2024-01-18T14:00:00Z\"\n            }\n        ],\n        \"search_criteria\": {\n            \"date\": \"2024-01-25\",\n            \"time\": \"14:30\",\n            \"search_type\": \"availability_filter\"\n        },\n        \"metadata\": {\n            \"total_services_found\": 2,\n            \"note\": \"In production, this would filter based on provider availability JSON field\",\n            \"generated_at\": \"2024-01-20T15:30:45.123Z\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Missing Date",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/by_availability/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Date parameter is required for availability search\",\n    \"data\": {\n        \"required_format\": \"YYYY-MM-DD\",\n        \"optional_time_format\": \"HH:MM\",\n        \"example\": \"date=2024-01-15&time=14:30\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
+                        },
+                        {
+                            "name": "Error Response - Server Error",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/by_availability/?date=2024-01-25",
+                                    "query": [
+                                        {
+                                            "key": "date",
+                                            "value": "2024-01-25"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "Internal Server Error",
+                            "code": 500,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"An error occurred while filtering services by availability\",\n    \"data\": {\n        \"error_type\": \"DatabaseError\",\n        \"search_params\": {\"date\": \"2024-01-25\", \"time\": null}\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 500\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Admin Services View (Admin)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/services/admin/",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "pending",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "{{category_id}}",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/admin/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Admin services view retrieved successfully\",\n    \"data\": {\n        \"count\": 25,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"email\": \"john.smith@example.com\",\n                    \"user_type\": \"provider\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    }\n                ],\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"pending\",\n                \"is_featured\": false,\n                \"admin_notes\": \"Pending verification of certifications\",\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T15:00:00Z\",\n                \"review_priority\": \"high\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"email\": \"mike.johnson@example.com\",\n                    \"user_type\": \"provider\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203,\n                    \"verified\": true\n                },\n                \"name\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services for residential and commercial properties\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440011\",\n                        \"name\": \"Electrical\"\n                    }\n                ],\n                \"hourly_rate\": 450.00,\n                \"currency\": \"INR\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"admin_notes\": \"High-performing provider\",\n                \"created_at\": \"2024-01-18T14:00:00Z\",\n                \"updated_at\": \"2024-01-20T12:00:00Z\",\n                \"review_priority\": \"low\"\n            }\n        ],\n        \"statistics\": {\n            \"total_services\": 150,\n            \"pending_approval\": 15,\n            \"active_services\": 120,\n            \"suspended_services\": 10,\n            \"rejected_services\": 5\n        },\n        \"filters_applied\": {\n            \"status\": null,\n            \"category\": null,\n            \"date_range\": \"last_30_days\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/admin/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to access admin features\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
+                        },
+                        {
+                            "name": "Error Response - Forbidden",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/admin/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only administrators can access this endpoint\",\n        \"required_permission\": \"IsAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Matching Requests (Provider)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/services/matching_requests/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/matching_requests/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Matching service requests found successfully\",\n    \"data\": {\n        \"matching_requests\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n                    \"username\": \"home_owner\",\n                    \"first_name\": \"Sarah\",\n                    \"last_name\": \"Williams\",\n                    \"profile_picture\": \"https://example.com/profiles/sarah.jpg\",\n                    \"rating\": 4.6,\n                    \"verified\": true\n                },\n                \"title\": \"Need Emergency Plumbing Service\",\n                \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    }\n                ],\n                \"budget_min\": 500.00,\n                \"budget_max\": 1500.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"urgent\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"latitude\": 19.1356,\n                \"longitude\": 72.8266,\n                \"distance_km\": 2.5,\n                \"requirements\": {\n                    \"tools_needed\": [\"pipe wrench\", \"sealant\"],\n                    \"access_requirements\": \"Ground floor apartment\"\n                },\n                \"created_at\": \"2024-01-20T12:00:00Z\",\n                \"expires_at\": \"2024-01-27T12:00:00Z\",\n                \"match_score\": 95,\n                \"match_reasons\": [\n                    \"Category match: Home Services > Plumbing\",\n                    \"Price within your service range\",\n                    \"Close proximity (2.5km)\",\n                    \"Urgent request matches your availability\"\n                ]\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440031\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440201\",\n                    \"username\": \"apartment_dweller\",\n                    \"first_name\": \"Michael\",\n                    \"last_name\": \"Brown\",\n                    \"profile_picture\": \"https://example.com/profiles/michael.jpg\",\n                    \"rating\": 4.8,\n                    \"verified\": true\n                },\n                \"title\": \"Regular Plumbing Maintenance\",\n                \"description\": \"Monthly plumbing check and maintenance for apartment\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    }\n                ],\n                \"budget_min\": 800.00,\n                \"budget_max\": 2000.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"low\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-28T10:00:00Z\",\n                \"location\": \"Bandra, Mumbai\",\n                \"latitude\": 19.0596,\n                \"longitude\": 72.8295,\n                \"distance_km\": 8.2,\n                \"requirements\": {\n                    \"recurring_service\": true,\n                    \"access_requirements\": \"2nd floor, elevator available\"\n                },\n                \"created_at\": \"2024-01-20T14:00:00Z\",\n                \"expires_at\": \"2024-01-27T14:00:00Z\",\n                \"match_score\": 87,\n                \"match_reasons\": [\n                    \"Category match: Home Services > Plumbing\",\n                    \"Price within your service range\",\n                    \"Recurring opportunity\",\n                    \"High-rated customer\"\n                ]\n            }\n        ],\n        \"provider_services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"name\": \"Professional Plumbing Service\",\n                \"category\": \"Home Services\",\n                \"subcategories\": [\"Plumbing\"],\n                \"hourly_rate\": 500.00\n            }\n        ],\n        \"matching_criteria\": {\n            \"category_match\": true,\n            \"location_radius_km\": 15,\n            \"budget_compatibility\": true,\n            \"availability_check\": true\n        },\n        \"total_matches\": 2,\n        \"new_matches_since_last_check\": 1\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response - Unauthorized",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/matching_requests/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to access matching requests\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
+                        },
+                        {
+                            "name": "Error Response - Permission Denied",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{customer_auth_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/services/matching_requests/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only providers can access matching requests\",\n        \"required_permission\": \"IsProvider\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Matching Services for Request",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/services/{{service_request_id}}/matching_services/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440030/matching_services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Matching services retrieved successfully\",\n    \"data\": {\n        \"count\": 3,\n        \"service_request\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n            \"title\": \"Need Emergency Plumbing Service\",\n            \"category\": \"Home Services\",\n            \"budget_range\": \"₹500 - ₹1500\",\n            \"urgency\": \"urgent\"\n        },\n        \"matching_services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"business_name\": \"Mumbai Plumbing Experts\",\n                    \"username\": \"mumbai_plumber\",\n                    \"profile_picture\": \"https://example.com/profiles/mumbai_plumber.jpg\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 127,\n                    \"verified\": true\n                },\n                \"title\": \"Emergency Plumbing Services\",\n                \"description\": \"24/7 emergency plumbing repairs and maintenance\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    }\n                ],\n                \"price_range_min\": 400.00,\n                \"price_range_max\": 1200.00,\n                \"currency\": \"INR\",\n                \"availability\": \"immediate\",\n                \"location\": \"Andheri, Mumbai\",\n                \"distance_km\": 2.5,\n                \"match_score\": 95,\n                \"match_reasons\": [\n                    \"Same service category\",\n                    \"Budget compatible\",\n                    \"Available immediately\",\n                    \"Close proximity\"\n                ]\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"business_name\": \"Quick Fix Services\",\n                    \"username\": \"quick_fix_team\",\n                    \"profile_picture\": \"https://example.com/profiles/quick_fix.jpg\",\"rating\": 4.6,\n                    \"total_reviews\": 89,\n                    \"verified\": true\n                },\n                \"title\": \"Home Repair & Maintenance\",\n                \"description\": \"Professional home repair services including plumbing\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    },\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440011\",\n                        \"name\": \"General Repair\"\n                    }\n                ],\n                \"price_range_min\": 600.00,\n                \"price_range_max\": 1800.00,\n                \"currency\": \"INR\",\n                \"availability\": \"within_2_hours\",\n                \"location\": \"Bandra, Mumbai\",\n                \"distance_km\": 4.2,\n                \"match_score\": 88,\n                \"match_reasons\": [\n                    \"Same service category\",\n                    \"Budget partially compatible\",\n                    \"Available within 2 hours\"\n                ]\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440022\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440102\",\n                    \"business_name\": \"Elite Home Solutions\",\n                    \"username\": \"elite_home_care\",\n                    \"profile_picture\": \"https://example.com/profiles/elite_home.jpg\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 201,\n                    \"verified\": true\n                },\n                \"title\": \"Premium Plumbing Solutions\",\n                \"description\": \"High-quality plumbing services with warranty\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\"\n                    }\n                ],\n                \"price_range_min\": 800.00,\n                \"price_range_max\": 2500.00,\n                \"currency\": \"INR\",\n                \"availability\": \"same_day\",\n                \"location\": \"Powai, Mumbai\",\n                \"distance_km\": 8.1,\n                \"match_score\": 82,\n                \"match_reasons\": [\n                    \"Same service category\",\n                    \"Premium quality service\",\n                    \"Available same day\"\n                ]\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/services/invalid-id/matching_services/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"service_request_id\": \"invalid-id\",\n        \"error_type\": \"not_found\",\n        \"error_details\": \"The specified service request does not exist or has been removed\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Fulfill Service Request (Provider)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{auth_token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": "{{base_url}}/services/{{service_request_id}}/fulfill_request/"
+                    },
+                    "response": [
+                        {
+                            "name": "Success Response",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440030/fulfill_request/",
+                                    "query": []
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Service request fulfilled successfully\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n            \"title\": \"Need Emergency Plumbing Service\",\n            \"status\": \"fulfilled\",\n            \"customer\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n                \"username\": \"home_owner\",\n                \"first_name\": \"Sarah\",\n                \"last_name\": \"Williams\"\n            },\n            \"fulfilled_by\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                \"business_name\": \"Mumbai Plumbing Experts\",\n                \"username\": \"mumbai_plumber\",\n                \"verified\": true\n            },\n            \"fulfilled_at\": \"2024-01-20T15:30:45.123Z\",\n            \"budget_min\": 500.00,\n            \"budget_max\": 1500.00,\n            \"currency\": \"INR\"\n        },\n        \"notification_sent\": true,\n        \"next_steps\": {\n            \"customer_actions\": [\n                \"Provider will contact you within 30 minutes\",\n                \"Prepare the work area if possible\",\n                \"Have payment method ready\"\n            ],\n            \"provider_actions\": [\n                \"Contact customer to confirm details\",\n                \"Arrive at specified time\",\n                \"Complete the service professionally\"\n            ]\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                        },
+                        {
+                            "name": "Error Response",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{auth_token}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/services/550e8400-e29b-41d4-a716-446655440030/fulfill_request/",
+                                    "query": []
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only verified providers can fulfill service requests\",\n        \"required_permission\": \"IsProvider\",\n        \"user_type\": \"customer\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                        }
+                    ]
+                }
+            ]
+        }
+     ],
+     "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Set base URL if not already set",
+                    "if (!pm.environment.get('base_url')) {",
+                    "    pm.environment.set('base_url', 'http://localhost:8000');",
+                    "}",
+                    "",
+                    "// Add timestamp for debugging",
+                    "pm.globals.set('timestamp', new Date().toISOString());"
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Test for standardized response format",
+                    "pm.test('Response has standardized format', function () {",
+                    "    const jsonData = pm.response.json();",
+                    "    pm.expect(jsonData).to.have.property('message');",
+                    "    pm.expect(jsonData).to.have.property('data');",
+                    "    pm.expect(jsonData).to.have.property('time');",
+                    "    pm.expect(jsonData).to.have.property('statusCode');",
+                    "});",
+                    "",
+                    "// Test response time",
+                    "pm.test('Response time is less than 5000ms', function () {",
+                    "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+                    "});",
+                    "",
+                    "// Store response data for chaining",
+                    "if (pm.response.code === 200 || pm.response.code === 201) {",
+                    "    const jsonData = pm.response.json();",
+                    "    ",
+                    "    // Store IDs for use in other requests",
+                    "    if (jsonData.data && jsonData.data.id) {",
+                    "        pm.environment.set('last_created_id', jsonData.data.id);",
+                    "    }",
+                    "    ",
+                    "    // Store category ID if this is a category response",
+                    "    if (jsonData.data && jsonData.data.category) {",
+                    "        pm.environment.set('category_id', jsonData.data.category);",
+                    "    }",
+                    "}"
+                ]
+            }
+        }
     ]
 }

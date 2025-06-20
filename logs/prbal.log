@@ -1341,3 +1341,16 @@ INFO 2025-06-16 12:22:22,658 autoreload 23028 2324 D:\durgas\Prbal-App\prbal_ser
 INFO 2025-06-16 12:22:24,190 autoreload 7728 14020 Watching for file changes with StatReloader
 INFO 2025-06-16 12:22:42,100 autoreload 7728 14020 D:\durgas\Prbal-App\prbal_server\users\serializers.py changed, reloading.
 INFO 2025-06-16 12:22:43,363 autoreload 20196 10672 Watching for file changes with StatReloader
+INFO 2025-06-21 04:46:39,111 urls 26952 30324 🔗 Loading Users App URL Configuration...
+INFO 2025-06-21 04:46:39,894 urls 26952 30324 ✅ Users App URLs loaded successfully!
+INFO 2025-06-21 04:46:39,896 urls 26952 30324 📊 Total URL patterns: 28
+INFO 2025-06-21 04:46:39,917 urls 26952 30324 🔗 Users App URL configuration complete!
+INFO 2025-06-21 04:46:51,599 urls 14496 12940 🔗 Loading Users App URL Configuration...
+INFO 2025-06-21 04:46:51,711 urls 14496 12940 ✅ Users App URLs loaded successfully!
+INFO 2025-06-21 04:46:51,712 urls 14496 12940 📊 Total URL patterns: 28
+INFO 2025-06-21 04:46:51,728 urls 14496 12940 🔗 Users App URL configuration complete!
+INFO 2025-06-21 04:47:34,493 autoreload 24460 19712 Watching for file changes with StatReloader
+INFO 2025-06-21 04:47:37,923 urls 24460 19712 🔗 Loading Users App URL Configuration...
+INFO 2025-06-21 04:47:38,094 urls 24460 19712 ✅ Users App URLs loaded successfully!
+INFO 2025-06-21 04:47:38,096 urls 24460 19712 📊 Total URL patterns: 28
+INFO 2025-06-21 04:47:38,149 urls 24460 19712 🔗 Users App URL configuration complete!

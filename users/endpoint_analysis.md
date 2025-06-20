@@ -2,7 +2,7 @@
 
 ## 📋 Table of Contents
 
-1. [Authentication Endpoints](#authentication-endpoints)
+<!-- 1. [Authentication Endpoints](#authentication-endpoints)
 2. [User Profile Endpoints](#user-profile-endpoints)  
 3. [User Search Endpoints](#user-search-endpoints)
 4. [User Verification Endpoints](#user-verification-endpoints)
@@ -10,7 +10,7 @@
 6. [User Type Management](#user-type-management)
 7. [PIN Management](#pin-management)
 8. [Response Format Standards](#response-format-standards)
-9. [Summary Statistics](#summary-statistics)
+9. [Summary Statistics](#summary-statistics) -->
 
 ---
 
@@ -461,7 +461,7 @@ All responses are created using `StandardizedResponseHelper` from `users/utils.p
 
 **🎉 All endpoints are now fully compliant with the standardized response format!**
 
-# Users App Endpoint Analysis: Document & Image Conversion Support
+# Users App Endpoint Analysis: Document & Image Conversion Support1
 
 ## Overview
 
@@ -1037,16 +1037,19 @@ Key Implementation Features:
 # User Search by Phone Endpoint Analysis
 
 ## Overview
+
 The `UserSearchByPhoneView` endpoint allows **unauthenticated access** to search users by their phone number. This is a public endpoint that does not require authentication tokens.
 
 ## Endpoint Details
 
 ### URL Pattern
+
 ```
 path('users/search/phone/', UserSearchByPhoneView.as_view(), name='user-search-by-phone')
 ```
 
 ### Full URL
+
 ```
 /api/users/search/phone/
 ```
@@ -1066,25 +1069,31 @@ The `permission_classes = [permissions.AllowAny]` explicitly allows **anyone** t
 ## HTTP Methods Supported
 
 ### 1. GET Method
+
 **Query Parameter Based Search**
 
 **URL Format:**
+
 ```
 GET /api/users/search/phone/?phone_number=1234567890
 ```
 
 **Example Request:**
+
 ```bash
 curl -X GET "http://localhost:8000/api/users/search/phone/?phone_number=1234567890"
 ```
 
 **Query Parameters:**
+
 - `phone_number` (required): The phone number to search for
 
 ### 2. POST Method
+
 **Request Body Based Search**
 
 **Example Request:**
+
 ```bash
 curl -X POST "http://localhost:8000/api/users/search/phone/" \
   -H "Content-Type: application/json" \
@@ -1092,6 +1101,7 @@ curl -X POST "http://localhost:8000/api/users/search/phone/" \
 ```
 
 **Request Body:**
+
 ```json
 {
   "phone_number": "1234567890"
@@ -1101,12 +1111,14 @@ curl -X POST "http://localhost:8000/api/users/search/phone/" \
 ## Search Logic & Implementation
 
 ### 1. Search Strategy
+
 The endpoint uses a **two-tier search approach**:
 
 1. **Exact Match First**: Searches for users with the exact phone number
 2. **Partial Match Fallback**: If no exact match, searches for partial matches using `icontains`
 
 ### 2. Code Implementation
+
 ```python
 def _search_users_by_phone(self, phone_number, requester):
     try:
@@ -1121,7 +1133,9 @@ def _search_users_by_phone(self, phone_number, requester):
 ```
 
 ### 3. User Identification
+
 The endpoint tracks requesters as either:
+
 - **Authenticated User ID**: If user is logged in
 - **"anonymous"**: If user is not authenticated
 
@@ -1132,6 +1146,7 @@ requester = request.user.id if request.user.is_authenticated else 'anonymous'
 ## Response Format
 
 ### Success Response (Exact Match)
+
 ```json
 {
   "message": "User found with exact phone match",
@@ -1161,6 +1176,7 @@ requester = request.user.id if request.user.is_authenticated else 'anonymous'
 ```
 
 ### Success Response (Partial Matches)
+
 ```json
 {
   "message": "Found 3 user(s) with similar phone numbers",
@@ -1183,6 +1199,7 @@ requester = request.user.id if request.user.is_authenticated else 'anonymous'
 ```
 
 ### Error Response (No Match)
+
 ```json
 {
   "message": "No users found with the given phone number",
@@ -1197,6 +1214,7 @@ requester = request.user.id if request.user.is_authenticated else 'anonymous'
 ```
 
 ### Error Response (Missing Parameter)
+
 ```json
 {
   "message": "Phone number is required as a query parameter",
@@ -1215,18 +1233,24 @@ requester = request.user.id if request.user.is_authenticated else 'anonymous'
 The endpoint uses **different serializers based on user type**:
 
 ### 1. CustomerSearchResultSerializer
+
 **Fields Returned:**
+
 - `id`, `username`, `first_name`, `last_name`
 - `profile_picture`, `bio`, `location`
 - `user_type`, `is_verified`, `created_at`
 
 ### 2. ProviderSearchResultSerializer
+
 **Fields Returned:**
+
 - All customer fields PLUS:
 - `rating`, `skills`, `total_bookings`, `services_count`
 
 ### 3. AdminSearchResultSerializer
+
 **Fields Returned:**
+
 - All fields including:
 - `email`, `phone_number`, `is_email_verified`, `is_phone_verified`
 - `balance`, `updated_at`, `last_login`, `is_active`
@@ -1234,17 +1258,20 @@ The endpoint uses **different serializers based on user type**:
 ## Security Considerations
 
 ### ✅ Positive Security Aspects
+
 1. **Public Profile Data Only**: Only returns public profile information
 2. **No Sensitive Data**: Excludes sensitive fields like PIN, password hashes
 3. **Proper Error Handling**: Standardized error responses
 4. **Rate Limiting Ready**: Can be easily integrated with DRF throttling
 
 ### ⚠️ Privacy Considerations
+
 1. **Phone Number Exposure**: Allows anyone to search users by phone number
 2. **User Enumeration**: Attackers could potentially enumerate users
 3. **Partial Matching**: Could reveal partial phone number patterns
 
 ### 🔒 Recommended Security Enhancements
+
 1. **Rate Limiting**: Implement throttling to prevent abuse
 2. **Logging**: Monitor search patterns for suspicious activity
 3. **Optional Authentication**: Consider requiring auth for full details
@@ -1253,10 +1280,12 @@ The endpoint uses **different serializers based on user type**:
 ## Database Queries
 
 ### Query Performance
+
 1. **Exact Match**: `User.objects.filter(phone_number=phone_number).first()`
 2. **Partial Match**: `User.objects.filter(phone_number__icontains=phone_number)`
 
 ### Optimization Recommendations
+
 1. **Database Index**: Ensure `phone_number` field is indexed
 2. **Query Limit**: Add LIMIT to partial match queries
 3. **Caching**: Consider caching frequent searches
@@ -1266,19 +1295,24 @@ The endpoint uses **different serializers based on user type**:
 The endpoint implements comprehensive error handling:
 
 ### 1. Validation Errors
+
 - Missing phone number parameter
 - Invalid request format
 
 ### 2. Database Errors
+
 - Database connection issues
 - Query execution errors
 
 ### 3. Application Errors
+
 - Serialization errors
 - Unexpected exceptions
 
 ### 4. Logging
+
 All operations are logged with appropriate levels:
+
 - DEBUG: Search attempts and results
 - INFO: Successful searches
 - WARNING: Invalid requests
@@ -1287,6 +1321,7 @@ All operations are logged with appropriate levels:
 ## Integration Testing
 
 ### Test Cases Implemented
+
 1. ✅ **GET search with exact match**
 2. ✅ **GET search with partial match**
 3. ✅ **GET search with no match**
@@ -1301,12 +1336,14 @@ All operations are logged with appropriate levels:
 ## Example Usage Scenarios
 
 ### 1. Anonymous User Search
+
 ```bash
 # No authentication required
 curl -X GET "http://localhost:8000/api/users/search/phone/?phone_number=1234567890"
 ```
 
 ### 2. Mobile App Integration
+
 ```javascript
 // JavaScript/React Native example
 const searchByPhone = async (phoneNumber) => {
@@ -1317,6 +1354,7 @@ const searchByPhone = async (phoneNumber) => {
 ```
 
 ### 3. Web Application
+
 ```python
 # Python requests example
 import requests
@@ -1331,6 +1369,7 @@ data = response.json()
 ## Monitoring and Analytics
 
 ### Logged Information
+
 - Search attempts (successful/failed)
 - Requester identification (authenticated/anonymous)
 - Search patterns and frequency
@@ -1338,6 +1377,7 @@ data = response.json()
 - Error occurrences
 
 ### Metrics to Track
+
 1. **Search Volume**: Number of searches per day/hour
 2. **Success Rate**: Percentage of successful matches
 3. **Popular Numbers**: Most searched phone numbers
@@ -1349,6 +1389,7 @@ data = response.json()
 ✅ **The UserSearchByPhoneView endpoint is correctly configured for unauthenticated access.**
 
 **Key Points:**
+
 - ✅ `permission_classes = [permissions.AllowAny]` allows public access
 - ✅ Supports both GET and POST methods
 - ✅ Returns appropriate public user data only

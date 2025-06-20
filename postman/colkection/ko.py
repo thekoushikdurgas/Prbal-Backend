@@ -1,27 +1,27 @@
 import json
 
 def name_item(subitem):
-    subitem['request'] = {
-                "method": "POST",
-                "header": [
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer {{access_token}}",
-                        "type": "text"
-                    }
-                ]
-            }
+    # subitem['request'] = {
+    #             "method": "POST",
+    #             "header": [
+    #                 {
+    #                     "key": "Authorization",
+    #                     "value": "Bearer {{access_token}}",
+    #                     "type": "text"
+    #                 }
+    #             ]
+    #         }
     if 'event' in list(subitem.keys()):
         for event in subitem['event']:
-                event['script'] = {
-                    "type": "text/javascript",
-                    "exec": [
-                        "pm.variables.set('access_token', pm.response.json().access_token);"
-                    ]
-                }
-    subitem['response'] = [
-                {"name": "Success response "},
-                {"name": "Error response "}
+                # event['script'] = {
+                #     "type": "text/javascript",
+                #     "exec": [
+                #         "pm.variables.set('access_token', pm.response.json().access_token);"
+                #     ]
+                # }
+                subitem['response'] = [
+                            {"name": "Success response "},
+                            {"name": "Error response "}
             ]
 def clean_item(subitem):
      if 'item' in list(subitem.keys()):

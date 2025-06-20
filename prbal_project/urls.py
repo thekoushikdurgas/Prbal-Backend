@@ -80,11 +80,7 @@ urlpatterns = [
     
     # Sync APIs for offline functionality
     path('api/v1/sync/', include('sync.urls')),
-    
-    # Integration APIs for external services
-    path('api/v1/integrations/calendar/sync/', include('bookings.calendar_urls')),
 
-    
     # Analytics & Admin APIs
     path('api/v1/analytics/', include('analytics.urls')),
     

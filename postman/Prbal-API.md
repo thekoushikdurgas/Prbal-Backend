@@ -162,7 +162,7 @@ Registers a new user in the system. If no specific user type is provided, it def
 }
 ```
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/users/register \
@@ -214,14 +214,14 @@ curl -X POST http://localhost:8000/api/users/register \
 }
 ```
 
-
-####  Customer Specific Registration
+#### Customer Specific Registration
 
 Registers a new user with a 'customer' role, including customer-specific profile information.
 
 **Endpoint:** `POST /api/users/register/customer`
 
 **Request Body:**
+
 ```json
 {
   "email": "customer@example.com",
@@ -239,7 +239,8 @@ Registers a new user with a 'customer' role, including customer-specific profile
 }
 ```
 
-**`curl` Command:** 
+**`curl` Command:**
+
 ```bash
 curl -X POST http://localhost:8000/api/users/register/customer \
 -H "Content-Type: application/json" \
@@ -260,14 +261,14 @@ curl -X POST http://localhost:8000/api/users/register/customer \
 }'
 ```
 
-
-####  Provider Specific Registration
+#### Provider Specific Registration
 
 Registers a new user with a 'provider' role, including provider-specific details like company name and service categories.
 
 **Endpoint:** `POST /api/users/register/provider`
 
 **Request Body:**
+
 ```json
 {
   "email": "provider@example.com",
@@ -288,8 +289,8 @@ Registers a new user with a 'provider' role, including provider-specific details
 }
 ```
 
+**`curl` Command:**
 
-**`curl` Command:** 
 ```bash
 curl -X POST http://localhost:8000/api/users/register/provider \
 -H "Content-Type: application/json" \
@@ -370,7 +371,7 @@ Registers a new admin user in the system. This typically requires elevated permi
 }
 ```
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/admins/register \
@@ -388,7 +389,7 @@ curl -X POST http://localhost:8000/api/admins/register \
 }'
 ```
 
-**Possible Output Response (201 Created):** 
+**Possible Output Response (201 Created):**
 
 ```json
 {
@@ -406,7 +407,7 @@ curl -X POST http://localhost:8000/api/admins/register \
 }
 ```
 
-**Error Response (400 Bad Request - Invalid Data):** 
+**Error Response (400 Bad Request - Invalid Data):**
 
 ```json
 {
@@ -422,7 +423,7 @@ curl -X POST http://localhost:8000/api/admins/register \
 }
 ```
 
-**Error Response (401 Unauthorized / 403 Forbidden):** 
+**Error Response (401 Unauthorized / 403 Forbidden):**
 
 ```json
 {
@@ -460,7 +461,7 @@ curl -X POST http://localhost:8000/api/users/logout \
 -d '{}' # Or include refresh_token if applicable
 ```
 
-**Possible Output Response (200 OK or 204 No Content):** 
+**Possible Output Response (200 OK or 204 No Content):**
 
 ```json
 // For 200 OK with a message:
@@ -470,7 +471,7 @@ curl -X POST http://localhost:8000/api/users/logout \
 // For 204 No Content, the response body will be empty.
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -478,7 +479,7 @@ curl -X POST http://localhost:8000/api/users/logout \
 }
 ```
 
-**Error Response (400 Bad Request - e.g., if refresh token is invalid/required and not provided):** 
+**Error Response (400 Bad Request - e.g., if refresh token is invalid/required and not provided):**
 
 ```json
 {
@@ -509,7 +510,7 @@ curl -X GET http://localhost:8000/api/users/tokens \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (200 OK):** 
+**Possible Output Response (200 OK):**
 
 ```json
 {
@@ -538,7 +539,7 @@ curl -X GET http://localhost:8000/api/users/tokens \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -569,10 +570,10 @@ curl -X DELETE http://localhost:8000/api/users/tokens/token_id_to_revoke \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (204 No Content):** 
+**Possible Output Response (204 No Content):**
 (Response body will be empty, indicating successful revocation.)
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -580,7 +581,7 @@ curl -X DELETE http://localhost:8000/api/users/tokens/token_id_to_revoke \
 }
 ```
 
-**Error Response (403 Forbidden):** 
+**Error Response (403 Forbidden):**
 (If the user tries to revoke a token that doesn't belong to them, or if the token_id is malformed/not found and the system distinguishes this from a general auth error)
 
 ```json
@@ -590,7 +591,7 @@ curl -X DELETE http://localhost:8000/api/users/tokens/token_id_to_revoke \
 }
 ```
 
-**Error Response (404 Not Found):** 
+**Error Response (404 Not Found):**
 (If the specified `token_id` does not exist.)
 
 ```json
@@ -627,7 +628,7 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
 }'
 ```
 
-**Possible Output Response (200 OK):** 
+**Possible Output Response (200 OK):**
 
 ```json
 {
@@ -636,7 +637,7 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
 }
 ```
 
-**Error Response (401 Unauthorized / 400 Bad Request - Invalid Refresh Token):** 
+**Error Response (401 Unauthorized / 400 Bad Request - Invalid Refresh Token):**
 (The specific error code might vary; 401 is common for invalid/expired tokens)
 
 ```json
@@ -723,7 +724,7 @@ curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 }'
 ```
 
-**Possible Output Response (200 OK for GET, PUT, PATCH):** 
+**Possible Output Response (200 OK for GET, PUT, PATCH):**
 
 ```json
 {
@@ -744,7 +745,7 @@ curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 }
 ```
 
-**Error Response (400 Bad Request - Validation Error for PUT/PATCH):** 
+**Error Response (400 Bad Request - Validation Error for PUT/PATCH):**
 
 ```json
 {
@@ -758,7 +759,7 @@ curl -X PATCH http://localhost:8000/api/users/me/profile/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -802,7 +803,7 @@ curl -X DELETE http://localhost:8000/api/users/me/avatar/ \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (200 OK or 201 Created for POST/PUT):** 
+**Possible Output Response (200 OK or 201 Created for POST/PUT):**
 
 ```json
 {
@@ -820,10 +821,10 @@ curl -X DELETE http://localhost:8000/api/users/me/avatar/ \
 }
 ```
 
-**Possible Output Response (204 No Content for DELETE):** 
+**Possible Output Response (204 No Content for DELETE):**
 (Response body will be empty, indicating successful removal.)
 
-**Error Response (400 Bad Request - e.g., invalid file type, file too large):** 
+**Error Response (400 Bad Request - e.g., invalid file type, file too large):**
 
 ```json
 {
@@ -834,7 +835,7 @@ curl -X DELETE http://localhost:8000/api/users/me/avatar/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -885,7 +886,7 @@ curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 }'
 ```
 
-**Possible Output Response (200 OK or 204 No Content):** 
+**Possible Output Response (200 OK or 204 No Content):**
 
 ```json
 {
@@ -895,7 +896,7 @@ curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 
 *(If 204 No Content, the response body will be empty.)*
 
-**Error Response (400 Bad Request - e.g., incorrect password):** 
+**Error Response (400 Bad Request - e.g., incorrect password):**
 
 ```json
 {
@@ -905,7 +906,7 @@ curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -913,7 +914,7 @@ curl -X POST http://localhost:8000/api/users/me/deactivate/ \
 }
 ```
 
-**Error Response (403 Forbidden - e.g., if account has active subscriptions or pending actions):** 
+**Error Response (403 Forbidden - e.g., if account has active subscriptions or pending actions):**
 
 ```json
 {
@@ -961,7 +962,7 @@ curl -X POST http://localhost:8000/api/users/me/change-password/ \
 }'
 ```
 
-**Possible Output Response (200 OK):** 
+**Possible Output Response (200 OK):**
 
 ```json
 {
@@ -970,7 +971,7 @@ curl -X POST http://localhost:8000/api/users/me/change-password/ \
 }
 ```
 
-**Error Response (400 Bad Request - e.g., passwords don't match, new password too weak, current password incorrect):** 
+**Error Response (400 Bad Request - e.g., passwords don't match, new password too weak, current password incorrect):**
 
 ```json
 {
@@ -985,7 +986,7 @@ curl -X POST http://localhost:8000/api/users/me/change-password/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1086,7 +1087,7 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }'
 ```
 
-**Possible Output Response (200 OK for GET, PUT, PATCH):** 
+**Possible Output Response (200 OK for GET, PUT, PATCH):**
 
 ```json
 {
@@ -1111,7 +1112,7 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }
 ```
 
-**Error Response (400 Bad Request - Validation Error for PUT/PATCH):** 
+**Error Response (400 Bad Request - Validation Error for PUT/PATCH):**
 
 ```json
 {
@@ -1124,7 +1125,7 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1132,7 +1133,7 @@ curl -X PATCH http://localhost:8000/api/customers/me/profile/ \
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** 
+**Error Response (403 Forbidden - User is not a customer):**
 
 ```json
 {
@@ -1154,7 +1155,7 @@ Allows a logged-in provider to retrieve and update their own profile information
 
 **1. Retrieve Own Provider Profile (GET)**
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET http://localhost:8000/api/users/profile/provider/me/ \
@@ -1162,7 +1163,7 @@ curl -X GET http://localhost:8000/api/users/profile/provider/me/ \
 -H "Accept: application/json"
 ```
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1206,7 +1207,7 @@ curl -X GET http://localhost:8000/api/users/profile/provider/me/ \
 
 **2. Update Own Provider Profile (PUT)**
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
@@ -1243,7 +1244,7 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 }'
 ```
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1287,7 +1288,7 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1295,7 +1296,7 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** 
+**Error Response (403 Forbidden - User is not a provider):**
 
 ```json
 {
@@ -1303,7 +1304,7 @@ curl -X PUT http://localhost:8000/api/users/profile/provider/me/ \
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data for PUT):** 
+**Error Response (400 Bad Request - Invalid data for PUT):**
 
 ```json
 {
@@ -1328,7 +1329,7 @@ Allows a logged-in admin user to retrieve and update their own profile informati
 
 **1. Retrieve Own Admin Profile (GET)**
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET http://localhost:8000/api/users/profile/admin/me/ \
@@ -1336,7 +1337,7 @@ curl -X GET http://localhost:8000/api/users/profile/admin/me/ \
 -H "Accept: application/json"
 ```
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1362,7 +1363,7 @@ curl -X GET http://localhost:8000/api/users/profile/admin/me/ \
 
 **2. Update Own Admin Profile (PUT)**
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
@@ -1379,7 +1380,7 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 }'
 ```
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1405,7 +1406,7 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1413,7 +1414,7 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** 
+**Error Response (403 Forbidden - User is not an admin):**
 
 ```json
 {
@@ -1421,7 +1422,7 @@ curl -X PUT http://localhost:8000/api/users/profile/admin/me/ \
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data for PUT):** 
+**Error Response (400 Bad Request - Invalid data for PUT):**
 
 ```json
 {
@@ -1444,7 +1445,7 @@ Endpoints for searching users within the system. Access may be restricted based 
 
 Allows authorized users (e.g., admins) to search for users based on various criteria like name, email, or user type. Supports pagination.
 
-**`curl` Command (Admin Example):** 
+**`curl` Command (Admin Example):**
 
 ```bash
 curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=customer&page=1&page_size=10' \
@@ -1460,7 +1461,7 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 - `page` (integer, optional): Page number for pagination (default: 1).
 - `page_size` (integer, optional): Number of results per page (default: 10).
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1498,7 +1499,7 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 }
 ```
 
-**Possible Output Response (Success 200 OK - No Results):** 
+**Possible Output Response (Success 200 OK - No Results):**
 
 ```json
 {
@@ -1511,7 +1512,7 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1519,7 +1520,7 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 }
 ```
 
-**Error Response (403 Forbidden - Insufficient permissions):** 
+**Error Response (403 Forbidden - Insufficient permissions):**
 
 ```json
 {
@@ -1527,7 +1528,7 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 }
 ```
 
-**Error Response (400 Bad Request - Invalid query parameters):** 
+**Error Response (400 Bad Request - Invalid query parameters):**
 
 ```json
 {
@@ -1542,7 +1543,7 @@ curl -X GET 'http://localhost:8000/api/users/search/?query=john&user_type=custom
 
 Allows authorized users (e.g., admins) to search for a specific user by their exact phone number.
 
-**`curl` Command (Admin Example):** 
+**`curl` Command (Admin Example):**
 
 ```bash
 curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B1234567890' \
@@ -1554,7 +1555,7 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 
 - `phone_number` (string, required): The exact phone number to search for (URL-encoded if it contains special characters like '+').
 
-**Possible Output Response (Success 200 OK - User Found):** 
+**Possible Output Response (Success 200 OK - User Found):**
 
 ```json
 {
@@ -1571,7 +1572,7 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 }
 ```
 
-**Possible Output Response (Success 404 Not Found - User with phone number does not exist):** 
+**Possible Output Response (Success 404 Not Found - User with phone number does not exist):**
 
 ```json
 {
@@ -1581,7 +1582,7 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1589,7 +1590,7 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 }
 ```
 
-**Error Response (403 Forbidden - Insufficient permissions):** 
+**Error Response (403 Forbidden - Insufficient permissions):**
 
 ```json
 {
@@ -1597,7 +1598,7 @@ curl -X GET 'http://localhost:8000/api/users/search/phone/?phone_number=%2B12345
 }
 ```
 
-**Error Response (400 Bad Request - Missing or invalid phone_number parameter):** 
+**Error Response (400 Bad Request - Missing or invalid phone_number parameter):**
 
 ```json
 {
@@ -1635,7 +1636,7 @@ Endpoints for providers to manage their services, including creating, updating, 
 
 Allows a logged-in provider to create a new service offering.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/services/provider/ \
@@ -1655,7 +1656,7 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 }'
 ```
 
-**Possible Output Response (Success 201 Created):** 
+**Possible Output Response (Success 201 Created):**
 
 ```json
 {
@@ -1683,7 +1684,7 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1691,7 +1692,7 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** 
+**Error Response (403 Forbidden - User is not a provider):**
 
 ```json
 {
@@ -1699,7 +1700,7 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data):** 
+**Error Response (400 Bad Request - Invalid data):**
 
 ```json
 {
@@ -1713,7 +1714,7 @@ curl -X POST http://localhost:8000/api/services/provider/ \
 
 Allows a logged-in provider to retrieve a list of their own service offerings. Supports pagination.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&is_active=true' \
@@ -1729,7 +1730,7 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 - `category_id` (string, optional): Filter by category UUID.
 - `q` (string, optional): Search term for service title or description.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1772,7 +1773,7 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 }
 ```
 
-**Possible Output Response (Success 200 OK - No Services):** 
+**Possible Output Response (Success 200 OK - No Services):**
 
 ```json
 {
@@ -1785,7 +1786,7 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1793,7 +1794,7 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** 
+**Error Response (403 Forbidden - User is not a provider):**
 
 ```json
 {
@@ -1801,7 +1802,7 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 }
 ```
 
-**Error Response (400 Bad Request - Invalid query parameters):** 
+**Error Response (400 Bad Request - Invalid query parameters):**
 
 ```json
 {
@@ -1813,7 +1814,7 @@ curl -X GET 'http://localhost:8000/api/services/provider/me/?page=1&page_size=5&
 
 Allows a logged-in provider to retrieve details for a specific service they own by its ID.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/ \
@@ -1825,7 +1826,7 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 - `service_id` (uuid, required): The UUID of the service to retrieve.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1857,7 +1858,7 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Service does not exist or does not belong to provider):** 
+**Error Response (404 Not Found - Service does not exist or does not belong to provider):**
 
 ```json
 {
@@ -1865,7 +1866,7 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1873,7 +1874,7 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** 
+**Error Response (403 Forbidden - User is not a provider):**
 
 ```json
 {
@@ -1885,7 +1886,7 @@ curl -X GET http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 Allows a logged-in provider to update an existing service they own by its ID. Only fields provided in the request body will be updated (partial updates can be supported via PATCH, but this example uses PUT for a full update of allowed fields).
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/ \
@@ -1909,7 +1910,7 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 - `service_id` (uuid, required): The UUID of the service to update.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -1940,7 +1941,7 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Service does not exist or does not belong to provider):** 
+**Error Response (404 Not Found - Service does not exist or does not belong to provider):**
 
 ```json
 {
@@ -1948,7 +1949,7 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 }
 ```
 
-**Error Response (400 Bad Request - Invalid data):** 
+**Error Response (400 Bad Request - Invalid data):**
 
 ```json
 {
@@ -1958,7 +1959,7 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -1966,7 +1967,7 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** 
+**Error Response (403 Forbidden - User is not a provider):**
 
 ```json
 {
@@ -1978,7 +1979,7 @@ curl -X PUT http://localhost:8000/api/services/provider/me/service-uuid-abc-123/
 
 Allows a logged-in provider to delete a specific service they own by its ID.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-delete/ \
@@ -1990,12 +1991,12 @@ curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-de
 
 - `service_id` (uuid, required): The UUID of the service to delete.
 
-**Possible Output Response (Success 204 No Content):** 
+**Possible Output Response (Success 204 No Content):**
 (No JSON body is typically returned for a successful DELETE operation)
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Service does not exist or does not belong to provider):** 
+**Error Response (404 Not Found - Service does not exist or does not belong to provider):**
 
 ```json
 {
@@ -2003,7 +2004,7 @@ curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-de
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2011,7 +2012,7 @@ curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-de
 }
 ```
 
-**Error Response (403 Forbidden - User is not a provider):** 
+**Error Response (403 Forbidden - User is not a provider):**
 
 ```json
 {
@@ -2019,7 +2020,7 @@ curl -X DELETE http://localhost:8000/api/services/provider/me/service-uuid-to-de
 }
 ```
 
-**Error Response (409 Conflict - Service cannot be deleted, e.g., active bookings):** 
+**Error Response (409 Conflict - Service cannot be deleted, e.g., active bookings):**
 
 ```json
 {
@@ -2037,7 +2038,7 @@ These endpoints allow public users (typically not logged in, or any user type) t
 
 Allows any user (authenticated or anonymous) to submit a request for a service. Contact information is required for follow-up.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/service-requests/public/ \
@@ -2063,7 +2064,7 @@ curl -X POST http://localhost:8000/api/service-requests/public/ \
 }'
 ```
 
-**Possible Output Response (Success 201 Created):** 
+**Possible Output Response (Success 201 Created):**
 
 ```json
 {
@@ -2094,7 +2095,7 @@ curl -X POST http://localhost:8000/api/service-requests/public/ \
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data):** 
+**Error Response (400 Bad Request - Invalid data):**
 
 ```json
 {
@@ -2111,7 +2112,7 @@ curl -X POST http://localhost:8000/api/service-requests/public/ \
 
 Allows anyone to view the details of a specific public service request using its ID. This might be used by the original requester to check status or by providers considering the request.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET http://localhost:8000/api/service-requests/public/pub-req-uuid-newly-created/ \
@@ -2122,7 +2123,7 @@ curl -X GET http://localhost:8000/api/service-requests/public/pub-req-uuid-newly
 
 - `request_id` (uuid, required): The UUID of the public service request to retrieve.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2155,7 +2156,7 @@ curl -X GET http://localhost:8000/api/service-requests/public/pub-req-uuid-newly
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Request does not exist):** 
+**Error Response (404 Not Found - Request does not exist):**
 
 ```json
 {
@@ -2173,7 +2174,7 @@ These endpoints are for logged-in customers to manage their specific service req
 
 Allows a logged-in customer to create a service request for a specific service offered by a provider.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/service-requests/customer/ \
@@ -2188,7 +2189,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 }'
 ```
 
-**Possible Output Response (Success 201 Created):** 
+**Possible Output Response (Success 201 Created):**
 
 ```json
 {
@@ -2207,7 +2208,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data):** 
+**Error Response (400 Bad Request - Invalid data):**
 
 ```json
 {
@@ -2216,7 +2217,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2224,7 +2225,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** 
+**Error Response (403 Forbidden - User is not a customer):**
 
 ```json
 {
@@ -2232,7 +2233,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 }
 ```
 
-**Error Response (404 Not Found - Service ID does not exist):** 
+**Error Response (404 Not Found - Service ID does not exist):**
 
 ```json
 {
@@ -2244,7 +2245,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/ \
 
 Allows a logged-in customer to list all their service requests, with options for pagination and filtering by status.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page_size=10&status=pending_provider_acceptance' \
@@ -2258,7 +2259,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page
 - `page_size` (integer, optional): Number of items per page. Defaults to 10.
 - `status` (string, optional): Filter by request status (e.g., `pending_provider_acceptance`, `accepted`, `in_progress`, `completed`, `cancelled`, `declined`).
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2287,7 +2288,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2295,7 +2296,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** 
+**Error Response (403 Forbidden - User is not a customer):**
 
 ```json
 {
@@ -2307,7 +2308,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/customer/me/?page=1&page
 
 Allows a logged-in customer to retrieve details for a specific service request they made.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid-789/ \
@@ -2319,7 +2320,7 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 - `request_id` (uuid, required): The UUID of the service request to retrieve.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2345,7 +2346,7 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Request does not exist or does not belong to customer):** 
+**Error Response (404 Not Found - Request does not exist or does not belong to customer):**
 
 ```json
 {
@@ -2353,7 +2354,7 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2361,7 +2362,7 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** 
+**Error Response (403 Forbidden - User is not a customer):**
 
 ```json
 {
@@ -2373,7 +2374,7 @@ curl -X GET http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 Allows a logged-in customer to update certain details of a service request they made, typically before it's accepted or in progress. Not all fields may be updatable.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid-789/ \
@@ -2391,7 +2392,7 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 - `request_id` (uuid, required): The UUID of the service request to update.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2414,7 +2415,7 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data or update not allowed):** 
+**Error Response (400 Bad Request - Invalid data or update not allowed):**
 
 ```json
 {
@@ -2423,7 +2424,7 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 }
 ```
 
-**Error Response (404 Not Found - Request does not exist or does not belong to customer):** 
+**Error Response (404 Not Found - Request does not exist or does not belong to customer):**
 
 ```json
 {
@@ -2431,7 +2432,7 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2439,7 +2440,7 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** 
+**Error Response (403 Forbidden - User is not a customer):**
 
 ```json
 {
@@ -2451,7 +2452,7 @@ curl -X PUT http://localhost:8000/api/service-requests/customer/me/cust-req-uuid
 
 Allows a logged-in customer to cancel a service request they made, typically if it has not yet been completed or is in a state that allows cancellation.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uuid-789/cancel/ \
@@ -2471,7 +2472,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 
 - `reason` (string, optional): Customer's reason for cancellation.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2495,7 +2496,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Cancellation not allowed):** 
+**Error Response (400 Bad Request - Cancellation not allowed):**
 
 ```json
 {
@@ -2503,7 +2504,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 }
 ```
 
-**Error Response (404 Not Found - Request does not exist or does not belong to customer):** 
+**Error Response (404 Not Found - Request does not exist or does not belong to customer):**
 
 ```json
 {
@@ -2511,7 +2512,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2519,7 +2520,7 @@ curl -X POST http://localhost:8000/api/service-requests/customer/me/cust-req-uui
 }
 ```
 
-**Error Response (403 Forbidden - User is not a customer):** 
+**Error Response (403 Forbidden - User is not a customer):**
 
 ```json
 {
@@ -2537,7 +2538,7 @@ These endpoints are for administrators to oversee and manage all service request
 
 Allows an administrator to list all service requests in the system, with pagination and filtering options (e.g., by status, customer, provider, date range).
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_size=10&status=pending_provider_acceptance&customer_id=customer-uuid-456' \
@@ -2555,7 +2556,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 - `date_from` (date, optional, YYYY-MM-DD): Filter requests created on or after this date.
 - `date_to` (date, optional, YYYY-MM-DD): Filter requests created on or before this date.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2584,7 +2585,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 
 **Common Error Responses:**
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2592,7 +2593,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** 
+**Error Response (403 Forbidden - User is not an admin):**
 
 ```json
 {
@@ -2604,7 +2605,7 @@ curl -X GET 'http://localhost:8000/api/service-requests/admin/all/?page=1&page_s
 
 Allows an administrator to retrieve the full details of any specific service request by its ID.
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-789/ \
@@ -2616,7 +2617,7 @@ curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 
 - `request_id` (uuid, required): The UUID of the service request to retrieve.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2658,7 +2659,7 @@ curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 
 **Common Error Responses:**
 
-**Error Response (404 Not Found - Request does not exist):** 
+**Error Response (404 Not Found - Request does not exist):**
 
 ```json
 {
@@ -2666,7 +2667,7 @@ curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2674,7 +2675,7 @@ curl -X GET http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** 
+**Error Response (403 Forbidden - User is not an admin):**
 
 ```json
 {
@@ -2722,7 +2723,7 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
   - `admin_id` (string, required): ID of the admin making the note (usually taken from token).
   - `timestamp` (datetime, required): Timestamp of the note.
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -2747,7 +2748,7 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 
 **Common Error Responses:**
 
-**Error Response (400 Bad Request - Invalid data):** 
+**Error Response (400 Bad Request - Invalid data):**
 
 ```json
 {
@@ -2756,7 +2757,7 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 }
 ```
 
-**Error Response (404 Not Found - Request does not exist):** 
+**Error Response (404 Not Found - Request does not exist):**
 
 ```json
 {
@@ -2764,7 +2765,7 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
@@ -2772,7 +2773,7 @@ curl -X PUT http://localhost:8000/api/service-requests/admin/all/cust-req-uuid-7
 }
 ```
 
-**Error Response (403 Forbidden - User is not an admin):** 
+**Error Response (403 Forbidden - User is not an admin):**
 
 ```json
 {
@@ -3066,14 +3067,14 @@ Allows a user to mark all their unread notifications as read in a single operati
 
 **Request Body:** None required
 
-**`curl` Command:** 
+**`curl` Command:**
 
 ```bash
 curl -X POST http://localhost:8000/api/notifications/mark-all-read \
 -H "Authorization: Bearer <USER_ACCESS_TOKEN>"
 ```
 
-**Possible Output Response (Success 200 OK):** 
+**Possible Output Response (Success 200 OK):**
 
 ```json
 {
@@ -3082,7 +3083,7 @@ curl -X POST http://localhost:8000/api/notifications/mark-all-read \
 }
 ```
 
-**Error Response (401 Unauthorized):** 
+**Error Response (401 Unauthorized):**
 
 ```json
 {
