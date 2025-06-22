@@ -1997,3 +1997,43 @@ INFO 2025-06-22 20:31:27,062 urls 18584 16952 🔗 Loading Users App URL Configu
 INFO 2025-06-22 20:31:27,298 urls 18584 16952 ✅ Users App URLs loaded successfully!
 INFO 2025-06-22 20:31:27,301 urls 18584 16952 📊 Total URL patterns: 28
 INFO 2025-06-22 20:31:27,332 urls 18584 16952 🔗 Users App URL configuration complete!
+INFO 2025-06-22 15:54:03,322 urls 1145 140175372939904 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 15:54:03,350 urls 1145 140175372939904 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 15:54:03,350 urls 1145 140175372939904 📊 Total URL patterns: 28
+INFO 2025-06-22 15:54:03,353 urls 1145 140175372939904 🔗 Users App URL configuration complete!
+INFO 2025-06-22 15:54:04,489 urls 1151 140164851995264 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 15:54:04,493 urls 1151 140164851995264 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 15:54:04,493 urls 1151 140164851995264 📊 Total URL patterns: 28
+INFO 2025-06-22 15:54:04,493 urls 1151 140164851995264 🔗 Users App URL configuration complete!
+INFO 2025-06-22 15:54:05,881 autoreload 1166 140450095665792 Watching for file changes with StatReloader
+INFO 2025-06-22 15:54:06,048 urls 1166 140450095665792 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 15:54:06,052 urls 1166 140450095665792 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 15:54:06,052 urls 1166 140450095665792 📊 Total URL patterns: 28
+INFO 2025-06-22 15:54:06,052 urls 1166 140450095665792 🔗 Users App URL configuration complete!
+WARNING 2025-06-22 15:54:09,405 basehttp 1166 140449919530752 "GET / HTTP/1.1" 404 5749
+ERROR 2025-06-22 15:54:13,646 log 1166 140449919530752 Invalid HTTP_HOST header: 'jd8lhn-8000.csb.app'. You may need to add 'jd8lhn-8000.csb.app' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/python/3.10.13/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/python/3.10.13/lib/python3.10/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/usr/local/python/3.10.13/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/usr/local/python/3.10.13/lib/python3.10/site-packages/django/http/request.py", line 191, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'jd8lhn-8000.csb.app'. You may need to add 'jd8lhn-8000.csb.app' to ALLOWED_HOSTS.
+WARNING 2025-06-22 15:54:13,648 basehttp 1166 140449919530752 "GET / HTTP/1.1" 400 90318
+INFO 2025-06-22 15:56:19,556 urls 900 139986221208192 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 15:56:19,561 urls 900 139986221208192 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 15:56:19,561 urls 900 139986221208192 📊 Total URL patterns: 28
+INFO 2025-06-22 15:56:19,561 urls 900 139986221208192 🔗 Users App URL configuration complete!
+INFO 2025-06-22 15:56:21,962 urls 909 140383761023616 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 15:56:21,966 urls 909 140383761023616 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 15:56:21,966 urls 909 140383761023616 📊 Total URL patterns: 28
+INFO 2025-06-22 15:56:21,966 urls 909 140383761023616 🔗 Users App URL configuration complete!
+INFO 2025-06-22 15:56:39,367 autoreload 940 140550925644416 Watching for file changes with StatReloader
+INFO 2025-06-22 15:56:39,567 urls 940 140550925644416 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 15:56:39,572 urls 940 140550925644416 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 15:56:39,572 urls 940 140550925644416 📊 Total URL patterns: 28
+INFO 2025-06-22 15:56:39,572 urls 940 140550925644416 🔗 Users App URL configuration complete!
+WARNING 2025-06-22 15:56:43,615 basehttp 940 140550815610624 "GET / HTTP/1.1" 404 5749
