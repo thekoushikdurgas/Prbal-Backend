@@ -1,1354 +1,1081 @@
 {
     "info": {
-      "name": "Prbal Services API",
-      "description": "A comprehensive collection for testing the Prbal Services API with standardized responses format: {message, data, time, statusCode}",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+        "name": "Service Request API - Complete Collection",
+        "description": "Complete collection for testing ServiceRequestViewSet endpoints with standardized responses format: {message, data, time, statusCode}",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "📋 Service Requests",
-            "item": [
+            "name": "1. List Service Requests",
+            "event": [
                 {
-                    "name": "List Service Requests",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/requests/",
-                            "query": [
-                                {
-                                    "key": "category",
-                                    "value": "{{category_id}}",
-                                    "disabled": true
-                                },
-                                {
-                                    "key": "urgency",
-                                    "value": "high",
-                                    "disabled": true
-                                },
-                                {
-                                    "key": "search",
-                                    "value": "plumbing",
-                                    "disabled": true
-                                }
-                            ]
-                        }
-                    },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service requests retrieved successfully\",\n    \"data\": {\n        \"count\": 2,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n                    \"username\": \"home_owner\",\n                    \"first_name\": \"Sarah\",\n                    \"last_name\": \"Williams\",\n                    \"profile_picture\": \"https://example.com/profiles/sarah.jpg\"\n                },\n                \"title\": \"Need Emergency Plumbing Service\",\n                \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"budget_min\": 500.00,\n                \"budget_max\": 1500.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"urgent\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"latitude\": 19.1356,\n                \"longitude\": 72.8266,\n                \"requirements\": {\n                    \"tools_needed\": [\"pipe wrench\", \"sealant\"],\n                    \"access_requirements\": \"Ground floor apartment\"\n                },\n                \"created_at\": \"2024-01-20T12:00:00Z\",\n                \"expires_at\": \"2024-01-27T12:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440031\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440201\",\n                    \"username\": \"apartment_dweller\",\n                    \"first_name\": \"Michael\",\n                    \"last_name\": \"Brown\",\n                    \"profile_picture\": \"https://example.com/profiles/michael.jpg\"\n                },\n                \"title\": \"Electrical Wiring Check\",\n                \"description\": \"Need professional to check electrical wiring before renovation\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"budget_min\": 800.00,\n                \"budget_max\": 2000.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"medium\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-28T10:00:00Z\",\n                \"location\": \"Bandra, Mumbai\",\n                \"latitude\": 19.0596,\n                \"longitude\": 72.8295,\n                \"requirements\": {\n                    \"certification_required\": true,\n                    \"access_requirements\": \"2nd floor, elevator available\"\n                },\n                \"created_at\": \"2024-01-20T14:00:00Z\",\n                \"expires_at\": \"2024-01-27T14:00:00Z\"\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                        },
-                        {
-                            "name": "Error Response - Server Error",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Internal Server Error",
-                            "code": 500,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"An error occurred while retrieving service requests\",\n    \"data\": {\n        \"error_type\": \"DatabaseError\",\n        \"error_details\": \"Database connection failed\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 500\n}"
-                        }
-                    ]
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "// Test standardized response format",
+                            "pm.test('Response has standardized format', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('message');",
+                            "    pm.expect(jsonData).to.have.property('data');", 
+                            "    pm.expect(jsonData).to.have.property('time');",
+                            "    pm.expect(jsonData).to.have.property('statusCode');",
+                            "});",
+                            "",
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates success', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('Service requests retrieved successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains service_requests or requests array', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.satisfy(function(data) {",
+                            "        return data.hasOwnProperty('service_requests') || Array.isArray(data);",
+                            "    });",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", ""]
                 },
+                "description": "List all open service requests. Returns paginated results with summary information."
+            },
+            "response": [
                 {
-                    "name": "Get Service Request Details",
-                    "request": {
+                    "name": "200 Success - List Retrieved",
+                    "originalRequest": {
                         "method": "GET",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "url": "{{base_url}}/requests/{{service_request_id}}/"
+                        "header": [],
+                        "url": "{{base_url}}/api/services/requests/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request details retrieved successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n        \"customer\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n            \"username\": \"home_owner\",\n            \"first_name\": \"Sarah\",\n            \"last_name\": \"Williams\",\n            \"profile_picture\": \"https://example.com/profiles/sarah.jpg\",\n            \"phone\": \"+91-9876543210\",\n            \"user_type\": \"customer\",\n            \"verified\": true\n        },\n        \"title\": \"Need Emergency Plumbing Service\",\n        \"description\": \"Kitchen sink is leaking badly and needs immediate attention. Water is spreading to adjacent areas and needs urgent fixing.\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Professional plumbing services\"\n            }\n        ],\n        \"budget_min\": 500.00,\n        \"budget_max\": 1500.00,\n        \"currency\": \"INR\",\n        \"urgency\": \"urgent\",\n        \"status\": \"open\",\n        \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n        \"location\": \"Andheri West, Mumbai\",\n        \"latitude\": 19.1356,\n        \"longitude\": 72.8266,\n        \"requirements\": {\n            \"tools_needed\": [\"pipe wrench\", \"sealant\", \"pipe cutter\"],\n            \"access_requirements\": \"Ground floor apartment, easy access\",\n            \"special_instructions\": \"Ring doorbell twice\"\n        },\n        \"request_images\": [\n            {\n                \"id\": \"req-img-1\",\n                \"image\": \"https://example.com/requests/kitchen_leak.jpg\",\n                \"description\": \"Kitchen sink leak photo\",\n                \"uploaded_at\": \"2024-01-20T12:15:00Z\"\n            }\n        ],\n        \"created_at\": \"2024-01-20T12:00:00Z\",\n        \"updated_at\": \"2024-01-20T12:15:00Z\",\n        \"expires_at\": \"2024-01-27T12:00:00Z\",\n        \"interested_providers_count\": 5,\n        \"view_count\": 23\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                        },
-                        {
-                            "name": "Error Response - Not Found",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/invalid-id/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Not Found",
-                            "code": 404,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"service_request_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
-                        },
-                        {
-                            "name": "Error Response - Expired Request",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Gone",
-                            "code": 410,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request has expired\",\n    \"data\": {\n        \"service_request_id\": \"550e8400-e29b-41d4-a716-446655440030\",\n        \"status\": \"expired\",\n        \"expired_at\": \"2024-01-19T12:00:00Z\",\n        \"error_type\": \"expired_request\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 410\n}"
-                        }
-                    ]
-                },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service requests retrieved successfully\",\n    \"data\": {\n        \"service_requests\": [\n            {\n                \"id\": \"uuid-here\",\n                \"customer\": {\n                    \"id\": \"customer-uuid\",\n                    \"username\": \"customer1\",\n                    \"email\": \"customer@example.com\"\n                },\n                \"title\": \"Need help with plumbing\",\n                \"description\": \"Kitchen sink is leaking badly\",\n                \"category\": \"plumbing-uuid\",\n                \"category_name\": \"Plumbing\",\n                \"status\": \"open\",\n                \"status_display\": \"Open\",\n                \"urgency\": \"high\",\n                \"urgency_display\": \"High - Within 48 hours\",\n                \"location\": \"123 Main St, City\",\n                \"budget_min\": 100.00,\n                \"budget_max\": 500.00,\n                \"currency\": \"INR\",\n                \"is_featured\": false,\n                \"created_at\": \"2024-01-20T10:30:00Z\",\n                \"expires_at\": \"2024-02-20T10:30:00Z\"\n            }\n        ],\n        \"summary\": {\n            \"total_count\": 1,\n            \"filters_applied\": [],\n            \"retrieved_at\": \"2024-01-20T15:30:00Z\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:00Z\",\n    \"statusCode\": 200\n}"
+                }
+            ]
+        },
+        {
+            "name": "2. Create Service Request",
+            "event": [
                 {
-                    "name": "Create Service Request (Customer)",
-                    "request": {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "// Test standardized response format",
+                            "pm.test('Response has standardized format', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('message');",
+                            "    pm.expect(jsonData).to.have.property('data');",
+                            "    pm.expect(jsonData).to.have.property('time');",
+                            "    pm.expect(jsonData).to.have.property('statusCode');",
+                            "});",
+                            "",
+                            "pm.test('Status code is 201 for successful creation', function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates successful creation', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('created successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains service_request and creation_details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('service_request');",
+                            "    pm.expect(jsonData.data).to.have.property('creation_details');",
+                            "});",
+                            "",
+                            "// Store the created request ID for other tests",
+                            "if (pm.response.code === 201) {",
+                            "    const jsonData = pm.response.json();",
+                            "    if (jsonData.data && jsonData.data.service_request && jsonData.data.service_request.id) {",
+                            "        pm.environment.set('service_request_id', jsonData.data.service_request.id);",
+                            "    }",
+                            "}"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type", 
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Customer authentication required"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"Need urgent plumbing help\",\n    \"description\": \"Kitchen sink is completely blocked and water is overflowing. Need immediate help.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [],\n    \"budget_min\": 500.00,\n    \"budget_max\": 1500.00,\n    \"currency\": \"INR\",\n    \"urgency\": \"urgent\",\n    \"requested_date_time\": \"2024-01-21T09:00:00Z\",\n    \"location\": \"123 Emergency Lane, Urgent City\",\n    \"latitude\": 28.6139,\n    \"longitude\": 77.2090,\n    \"requirements\": {\n        \"tools_needed\": [\"drain_snake\", \"plunger\"],\n        \"access_requirements\": \"apartment_building\",\n        \"preferred_time\": \"morning\"\n    }\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", ""]
+                },
+                "description": "Create a new service request. Requires customer authentication."
+            },
+            "response": [
+                {
+                    "name": "201 Success - Request Created",
+                    "originalRequest": {
                         "method": "POST",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Content-Type", "value": "application/json"},
+                            {"key": "Authorization", "value": "Bearer customer-token"}
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"title\": \"Need Emergency Plumbing Service\",\n    \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n    \"category\": \"{{category_id}}\",\n    \"budget_min\": 500.00,\n    \"budget_max\": 1500.00,\n    \"currency\": \"INR\",\n    \"urgency\": \"urgent\",\n    \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n    \"location\": \"Andheri West, Mumbai\",\n    \"latitude\": 19.1356,\n    \"longitude\": 72.8266,\n    \"requirements\": {\n        \"tools_needed\": [\"pipe wrench\", \"sealant\"],\n        \"access_requirements\": \"Ground floor apartment\"\n    }\n}"
+                            "raw": "{\n    \"title\": \"Need urgent plumbing help\",\n    \"description\": \"Kitchen sink is completely blocked\",\n    \"category\": \"category-uuid\",\n    \"budget_min\": 500.00,\n    \"budget_max\": 1500.00,\n    \"urgency\": \"urgent\",\n    \"location\": \"123 Emergency Lane\"\n}"
                         },
-                        "url": "{{base_url}}/requests/"
+                        "url": "{{base_url}}/api/services/requests/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Need Emergency Plumbing Service\",\n    \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"budget_min\": 500.00,\n    \"budget_max\": 1500.00,\n    \"currency\": \"INR\",\n    \"urgency\": \"urgent\",\n    \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n    \"location\": \"Andheri West, Mumbai\",\n    \"latitude\": 19.1356,\n    \"longitude\": 72.8266,\n    \"requirements\": {\n        \"tools_needed\": [\"pipe wrench\", \"sealant\"],\n        \"access_requirements\": \"Ground floor apartment\"\n    }\n}"
-                                },
-                        "url": {
-                                    "raw": "{{base_url}}/requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Created",
-                            "code": 201,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request created successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n        \"customer\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n            \"username\": \"home_owner\",\n            \"first_name\": \"Sarah\",\n            \"last_name\": \"Williams\",\n            \"profile_picture\": \"https://example.com/profiles/sarah.jpg\",\n            \"user_type\": \"customer\",\n            \"verified\": true\n        },\n        \"title\": \"Need Emergency Plumbing Service\",\n        \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [],\n        \"budget_min\": 500.00,\n        \"budget_max\": 1500.00,\n        \"currency\": \"INR\",\n        \"urgency\": \"urgent\",\n        \"status\": \"open\",\n        \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n        \"location\": \"Andheri West, Mumbai\",\n        \"latitude\": 19.1356,\n        \"longitude\": 72.8266,\n        \"requirements\": {\n            \"tools_needed\": [\"pipe wrench\", \"sealant\"],\n            \"access_requirements\": \"Ground floor apartment\"\n        },\n        \"request_images\": [],\n        \"created_at\": \"2024-01-20T15:30:45.123Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\",\n        \"expires_at\": \"2024-01-27T15:30:45.123Z\",\n        \"interested_providers_count\": 0,\n        \"view_count\": 0\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 201\n}"
-                        },
-                        {
-                            "name": "Error Response - Unauthorized",
-                            "originalRequest": {
-                                "method": "POST",
-                                "header": [],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Need Emergency Plumbing Service\",\n    \"description\": \"Kitchen sink is leaking badly\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to create service requests\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                        },
-                        {
-                            "name": "Error Response - Validation Error",
-                            "originalRequest": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"description\": \"Missing required fields\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Bad Request",
-                            "code": 400,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"title\": [\"This field is required.\"],\n        \"category\": [\"This field is required.\"],\n        \"budget_max\": [\"This field is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
-                        },
-                        {
-                            "name": "Error Response - Permission Denied",
-                            "originalRequest": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{provider_auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Test Request\",\n    \"description\": \"Test\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"budget_max\": 1000.00\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Forbidden",
-                            "code": 403,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only customers can create service requests\",\n        \"required_permission\": \"IsCustomerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
-                        }
-                    ]
+                    "status": "Created",
+                    "code": 201,
+                    "_postman_previewlanguage": "json", 
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request 'Need urgent plumbing help' created successfully\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"new-request-uuid\",\n            \"title\": \"Need urgent plumbing help\",\n            \"description\": \"Kitchen sink is completely blocked\",\n            \"category\": \"category-uuid\",\n            \"budget_min\": 500.00,\n            \"budget_max\": 1500.00,\n            \"currency\": \"INR\",\n            \"urgency\": \"urgent\",\n            \"location\": \"123 Emergency Lane\"\n        },\n        \"creation_details\": {\n            \"created_by\": \"customer1\",\n            \"created_at\": \"2024-01-20T15:30:00Z\",\n            \"category_name\": \"Plumbing\",\n            \"request_id\": \"new-request-uuid\",\n            \"status\": \"open\",\n            \"expires_at\": \"2024-02-20T15:30:00Z\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:00Z\",\n    \"statusCode\": 201\n}"
                 },
                 {
-                    "name": "Update Service Request (Owner)",
-                    "request": {
+                    "name": "400 Validation Error",
+                    "originalRequest": {
+                        "method": "POST", 
+                        "header": [
+                            {"key": "Content-Type", "value": "application/json"},
+                            {"key": "Authorization", "value": "Bearer customer-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"\",\n    \"description\": \"Invalid request\"\n}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/"
+                    },
+                    "status": "Bad Request",
+                    "code": 400,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request validation failed\",\n    \"data\": {\n        \"validation_errors\": {\n            \"title\": [\"This field may not be blank.\"],\n            \"category\": [\"This field is required.\"]\n        },\n        \"provided_data\": {\n            \"title\": \"\",\n            \"description\": \"Invalid request\"\n        },\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:00Z\",\n    \"statusCode\": 400\n}"
+                },
+                {
+                    "name": "403 Permission Denied - Not Customer",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Content-Type", "value": "application/json"},
+                            {"key": "Authorization", "value": "Bearer provider-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Test request\",\n    \"category\": \"test-category\"\n}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/"
+                    },
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Only customers can create or modify service requests.\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"required_user_type\": \"customer\",\n        \"current_user_type\": \"provider\"\n    },\n    \"time\": \"2024-01-20T15:30:00Z\",\n    \"statusCode\": 403\n}"
+                }
+            ]
+        },
+        {
+            "name": "3. Retrieve Service Request",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates successful retrieval', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('retrieved successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains service_request and access_details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('service_request');",
+                            "    pm.expect(jsonData.data).to.have.property('access_details');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/{{service_request_id}}/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "{{service_request_id}}", ""]
+                },
+                "description": "Retrieve detailed information about a specific service request."
+            },
+            "response": [
+                {
+                    "name": "200 Success - Request Retrieved",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/"
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request 'Need urgent plumbing help' retrieved successfully\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"request-uuid\",\n            \"customer\": {\n                \"id\": \"customer-uuid\",\n                \"username\": \"customer1\",\n                \"email\": \"customer@example.com\"\n            },\n            \"title\": \"Need urgent plumbing help\",\n            \"description\": \"Kitchen sink is completely blocked\",\n            \"category\": {\n                \"id\": \"category-uuid\",\n                \"name\": \"Plumbing\"\n            },\n            \"subcategories\": [],\n            \"budget_min\": 500.00,\n            \"budget_max\": 1500.00,\n            \"currency\": \"INR\",\n            \"urgency\": \"urgent\",\n            \"urgency_display\": \"Urgent - Within 24 hours\",\n            \"status\": \"open\",\n            \"status_display\": \"Open\",\n            \"assigned_provider\": null,\n            \"fulfilled_by_service\": null,\n            \"created_at\": \"2024-01-20T15:30:00Z\",\n            \"updated_at\": \"2024-01-20T15:30:00Z\"\n        },\n        \"access_details\": {\n            \"accessed_by\": \"Anonymous\",\n            \"accessed_at\": \"2024-01-20T16:00:00Z\",\n            \"customer_name\": \"customer1\",\n            \"category_name\": \"Plumbing\",\n            \"request_status\": \"open\",\n            \"urgency\": \"urgent\"\n        }\n    },\n    \"time\": \"2024-01-20T16:00:00Z\",\n    \"statusCode\": 200\n}"
+                },
+                {
+                    "name": "404 Not Found",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/api/services/requests/invalid-uuid/"
+                    },
+                    "status": "Not Found",
+                    "code": 404,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"request_id\": \"invalid-uuid\",\n        \"error_type\": \"not_found\",\n        \"user_id\": null\n    },\n    \"time\": \"2024-01-20T16:00:00Z\",\n    \"statusCode\": 404\n}"
+                }
+            ]
+        },
+        {
+            "name": "4. Update Service Request (PUT)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates successful update', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('updated successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains update details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('service_request');",
+                            "    pm.expect(jsonData.data).to.have.property('update_details');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Owner authentication required"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"Updated: Need urgent plumbing help\",\n    \"description\": \"Kitchen sink is completely blocked and water is overflowing. Updated description with more details.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [],\n    \"budget_min\": 600.00,\n    \"budget_max\": 2000.00,\n    \"currency\": \"INR\",\n    \"urgency\": \"urgent\",\n    \"location\": \"123 Updated Emergency Lane, Urgent City\",\n    \"requirements\": {\n        \"tools_needed\": [\"drain_snake\", \"plunger\", \"wrench\"],\n        \"access_requirements\": \"apartment_building\",\n        \"preferred_time\": \"morning\"\n    }\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/{{service_request_id}}/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "{{service_request_id}}", ""]
+                },
+                "description": "Update an existing service request. Requires owner authentication."
+            },
+            "response": [
+                {
+                    "name": "200 Success - Request Updated",
+                    "originalRequest": {
                         "method": "PUT",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Content-Type", "value": "application/json"},
+                            {"key": "Authorization", "value": "Bearer customer-token"}
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"title\": \"Updated Emergency Plumbing Service\",\n    \"description\": \"Kitchen sink is leaking badly and needs immediate attention - updated requirements\",\n    \"category\": \"{{category_id}}\",\n    \"budget_min\": 600.00,\n    \"budget_max\": 1800.00,\n    \"currency\": \"INR\",\n    \"urgency\": \"urgent\",\n    \"requested_date_time\": \"2024-01-26T14:00:00Z\",\n    \"location\": \"Andheri West, Mumbai\",\n    \"latitude\": 19.1356,\n    \"longitude\": 72.8266,\n    \"requirements\": {\n        \"tools_needed\": [\"pipe wrench\", \"sealant\", \"pipe cutter\"],\n        \"access_requirements\": \"Ground floor apartment, updated access info\"\n    }\n}"
+                            "raw": "{\n    \"title\": \"Updated: Need urgent plumbing help\",\n    \"budget_min\": 600.00,\n    \"budget_max\": 2000.00\n}"
                         },
-                        "url": "{{base_url}}/requests/{{service_request_id}}/"
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Updated Emergency Plumbing Service\",\n    \"description\": \"Kitchen sink is leaking badly and needs immediate attention - updated requirements\",\n    \"budget_min\": 600.00,\n    \"budget_max\": 1800.00\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n        \"customer\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n            \"username\": \"home_owner\",\n            \"first_name\": \"Sarah\",\n            \"last_name\": \"Williams\",\n            \"profile_picture\": \"https://example.com/profiles/sarah.jpg\",\n            \"user_type\": \"customer\",\n            \"verified\": true\n        },\n        \"title\": \"Updated Emergency Plumbing Service\",\n        \"description\": \"Kitchen sink is leaking badly and needs immediate attention - updated requirements\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"budget_min\": 600.00,\n        \"budget_max\": 1800.00,\n        \"currency\": \"INR\",\n        \"urgency\": \"urgent\",\n        \"status\": \"open\",\n        \"requested_date_time\": \"2024-01-26T14:00:00Z\",\n        \"location\": \"Andheri West, Mumbai\",\n        \"latitude\": 19.1356,\n        \"longitude\": 72.8266,\n        \"requirements\": {\n            \"tools_needed\": [\"pipe wrench\", \"sealant\", \"pipe cutter\"],\n            \"access_requirements\": \"Ground floor apartment, updated access info\"\n        },\n        \"created_at\": \"2024-01-20T12:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\",\n        \"expires_at\": \"2024-01-27T12:00:00Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                        },
-                        {
-                            "name": "Error Response - Unauthorized",
-                            "originalRequest": {
-                                "method": "PUT",
-                                "header": [],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Updated Request\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to update service requests\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                        },
-                        {
-                            "name": "Error Response - Permission Denied",
-                            "originalRequest": {
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{another_user_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Unauthorized Update\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Forbidden",
-                            "code": 403,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only update your own service requests\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
-                        },
-                        {
-                            "name": "Error Response - Not Found",
-                            "originalRequest": {
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"title\": \"Updated Request\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/invalid-id/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Not Found",
-                            "code": 404,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"service_request_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
-                        }
-                    ]
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request 'Updated: Need urgent plumbing help' updated successfully\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"request-uuid\",\n            \"title\": \"Updated: Need urgent plumbing help\",\n            \"budget_min\": 600.00,\n            \"budget_max\": 2000.00,\n            \"updated_at\": \"2024-01-20T16:30:00Z\"\n        },\n        \"update_details\": {\n            \"updated_by\": \"customer1\",\n            \"updated_at\": \"2024-01-20T16:30:00Z\",\n            \"changes_made\": [\n                \"title: 'Need urgent plumbing help' → 'Updated: Need urgent plumbing help'\",\n                \"budget_min: 500.0 → 600.0\",\n                \"budget_max: 1500.0 → 2000.0\"\n            ],\n            \"category_name\": \"Plumbing\",\n            \"request_id\": \"request-uuid\"\n        }\n    },\n    \"time\": \"2024-01-20T16:30:00Z\",\n    \"statusCode\": 200\n}"
                 },
                 {
-                    "name": "Partial Update Service Request (Owner)",
-                    "request": {
+                    "name": "403 Permission Denied - Not Owner",
+                    "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                            {"key": "Content-Type", "value": "application/json"},
+                            {"key": "Authorization", "value": "Bearer other-customer-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Unauthorized update\"\n}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/"
+                    },
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"You must be the owner of this object to perform this action.\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"required_permission\": \"owner\",\n        \"request_id\": \"request-uuid\"\n    },\n    \"time\": \"2024-01-20T16:30:00Z\",\n    \"statusCode\": 403\n}"
+                }
+            ]
+        },
+        {
+            "name": "5. Partial Update Service Request (PATCH)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates successful partial update', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('partially updated successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains partial update details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('service_request');",
+                            "    pm.expect(jsonData.data).to.have.property('partial_update_details');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Owner authentication required"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"urgency\": \"high\",\n    \"budget_max\": 1800.00\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/{{service_request_id}}/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "{{service_request_id}}", ""]
+                },
+                "description": "Partially update a service request. Only provided fields are updated."
+            },
+            "response": [
+                {
+                    "name": "200 Success - Request Partially Updated", 
+                    "originalRequest": {
                         "method": "PATCH",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Content-Type", "value": "application/json"},
+                            {"key": "Authorization", "value": "Bearer customer-token"}
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"budget_max\": 2000.00,\n    \"urgency\": \"medium\",\n    \"requirements\": {\n        \"tools_needed\": [\"pipe wrench\", \"sealant\", \"pipe cutter\", \"adjustable wrench\"],\n        \"access_requirements\": \"Ground floor apartment, updated access info\",\n        \"special_instructions\": \"Please call before arriving\"\n    }\n}"
+                            "raw": "{\n    \"urgency\": \"high\",\n    \"budget_max\": 1800.00\n}"
                         },
-                        "url": "{{base_url}}/requests/{{service_request_id}}/"
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "PATCH",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"budget_max\": 2000.00,\n    \"urgency\": \"medium\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n        \"customer\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n            \"username\": \"home_owner\",\n            \"first_name\": \"Sarah\",\n            \"last_name\": \"Williams\",\n            \"profile_picture\": \"https://example.com/profiles/sarah.jpg\",\n            \"user_type\": \"customer\",\n            \"verified\": true\n        },\n        \"title\": \"Need Emergency Plumbing Service\",\n        \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"budget_min\": 500.00,\n        \"budget_max\": 2000.00,\n        \"currency\": \"INR\",\n        \"urgency\": \"medium\",\n        \"status\": \"open\",\n        \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n        \"location\": \"Andheri West, Mumbai\",\n        \"latitude\": 19.1356,\n        \"longitude\": 72.8266,\n        \"requirements\": {\n            \"tools_needed\": [\"pipe wrench\", \"sealant\", \"pipe cutter\", \"adjustable wrench\"],\n            \"access_requirements\": \"Ground floor apartment, updated access info\",\n            \"special_instructions\": \"Please call before arriving\"\n        },\n        \"created_at\": \"2024-01-20T12:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:35:45.123Z\",\n        \"expires_at\": \"2024-01-27T12:00:00Z\"\n    },\n    \"time\": \"2024-01-20T15:35:45.123Z\",\n    \"statusCode\": 200\n}"
-                        },
-                        {
-                            "name": "Error Response - Unauthorized",
-                            "originalRequest": {
-                                "method": "PATCH",
-                                "header": [],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"budget_max\": 2000.00\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to update service requests\"\n    },\n    \"time\": \"2024-01-20T15:35:45.123Z\",\n    \"statusCode\": 401\n}"
-                        },
-                        {
-                            "name": "Error Response - Permission Denied",
-                            "originalRequest": {
-                                "method": "PATCH",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{another_user_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"budget_max\": 2000.00\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Forbidden",
-                            "code": 403,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only update your own service requests\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:35:45.123Z\",\n    \"statusCode\": 403\n}"
-                        },
-                        {
-                            "name": "Error Response - Validation Error",
-                            "originalRequest": {
-                                "method": "PATCH",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"budget_max\": \"invalid_budget\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Bad Request",
-                            "code": 400,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"budget_max\": [\"A valid number is required.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:35:45.123Z\",\n    \"statusCode\": 400\n}"
-                        }
-                    ]
-                },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request 'Updated: Need urgent plumbing help' partially updated successfully\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"request-uuid\",\n            \"urgency\": \"high\",\n            \"budget_max\": 1800.00,\n            \"updated_at\": \"2024-01-20T17:00:00Z\"\n        },\n        \"partial_update_details\": {\n            \"updated_by\": \"customer1\",\n            \"updated_at\": \"2024-01-20T17:00:00Z\",\n            \"fields_updated\": [\"urgency\", \"budget_max\"],\n            \"changes_made\": [\n                \"urgency: urgent → high\",\n                \"budget_max: 2000.0 → 1800.0\"\n            ],\n            \"category_name\": \"Plumbing\",\n            \"request_id\": \"request-uuid\"\n        }\n    },\n    \"time\": \"2024-01-20T17:00:00Z\",\n    \"statusCode\": 200\n}"
+                }
+                         ]
+         },
+         {
+            "name": "6. Delete Service Request",
+            "event": [
                 {
-                    "name": "Delete Service Request (Owner)",
-                    "request": {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 204', function () {",
+                            "    pm.response.to.have.status(204);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates successful deletion', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('deleted successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains deletion details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('deleted_service_request');",
+                            "    pm.expect(jsonData.data).to.have.property('impact_analysis');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Owner authentication required"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/{{service_request_id}}/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "{{service_request_id}}", ""]
+                },
+                "description": "Delete a service request. Requires owner authentication."
+            },
+            "response": [
+                {
+                    "name": "204 Success - Request Deleted",
+                    "originalRequest": {
                         "method": "DELETE",
                         "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Authorization", "value": "Bearer customer-token"}
                         ],
-                        "url": "{{base_url}}/requests/{{service_request_id}}/"
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/"
                     },
-                    "response": [
+                    "status": "No Content",
+                    "code": 204,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request 'Need urgent plumbing help' deleted successfully\",\n    \"data\": {\n        \"deleted_service_request\": {\n            \"id\": \"request-uuid\",\n            \"title\": \"Need urgent plumbing help\",\n            \"customer_name\": \"customer1\",\n            \"category_name\": \"Plumbing\",\n            \"budget_range\": \"500.0-1500.0 INR\",\n            \"status\": \"open\",\n            \"urgency\": \"urgent\"\n        },\n        \"impact_analysis\": {\n            \"assigned_provider\": null,\n            \"fulfilled_by_service\": null,\n            \"was_in_progress\": false\n        },\n        \"deletion_metadata\": {\n            \"deleted_by\": \"customer1\",\n            \"deleted_at\": \"2024-01-20T17:30:00Z\",\n            \"deletion_type\": \"owner_action\"\n        }\n    },\n    \"time\": \"2024-01-20T17:30:00Z\",\n    \"statusCode\": 204\n}"
+                }
+            ]
+        },
+        {
+            "name": "7. My Requests (Customer Only)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates customer requests retrieved', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('Customer service requests retrieved successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains requests and summary', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('requests');",
+                            "    pm.expect(jsonData.data).to.have.property('summary');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Customer authentication required"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/my_requests/?status=open",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "my_requests", ""],
+                    "query": [
                         {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "No Content",
-                            "code": 204,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": ""
-                        },
-                        {
-                            "name": "Error Response - Unauthorized",
-                            "originalRequest": {
-                                "method": "DELETE",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to delete service requests\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                        },
-                        {
-                            "name": "Error Response - Permission Denied",
-                            "originalRequest": {
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{another_user_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Forbidden",
-                            "code": 403,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only delete your own service requests\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
-                        },
-                        {
-                            "name": "Error Response - Not Found",
-                            "originalRequest": {
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/invalid-id/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Not Found",
-                            "code": 404,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"service_request_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+                            "key": "status",
+                            "value": "open",
+                            "description": "Filter by status (optional)"
                         }
                     ]
                 },
+                "description": "Get all service requests for the authenticated customer."
+            },
+            "response": [
                 {
-                    "name": "My Service Requests (Customer)",
-                    "request": {
+                    "name": "200 Success - Customer Requests",
+                    "originalRequest": {
                         "method": "GET",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Authorization", "value": "Bearer customer-token"}
                         ],
-                        "url": {
-                            "raw": "{{base_url}}/requests/my_requests/",
-                            "query": [
-                                {
-                                    "key": "status",
-                                    "value": "open",
-                                    "disabled": true
-                                },
-                                {
-                                    "key": "category",
-                                    "value": "{{category_id}}",
-                                    "disabled": true
-                                }
-                            ]
-                        }
+                        "url": "{{base_url}}/api/services/requests/my_requests/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/my_requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Your service requests retrieved successfully\",\n    \"data\": {\n        \"count\": 3,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n                \"title\": \"Need Emergency Plumbing Service\",\n                \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"budget_min\": 500.00,\n                \"budget_max\": 1500.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"urgent\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"created_at\": \"2024-01-20T12:00:00Z\",\n                \"expires_at\": \"2024-01-27T12:00:00Z\",\n                \"interested_providers_count\": 5,\n                \"view_count\": 23\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440032\",\n                \"title\": \"House Cleaning Service\",\n                \"description\": \"Weekly deep cleaning for 3BHK apartment\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"budget_min\": 1000.00,\n                \"budget_max\": 2500.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"low\",\n                \"status\": \"fulfilled\",\n                \"requested_date_time\": \"2024-01-22T10:00:00Z\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"created_at\": \"2024-01-18T09:00:00Z\",\n                \"fulfilled_at\": \"2024-01-19T14:30:00Z\",\n                \"interested_providers_count\": 8,\n                \"view_count\": 45\n            }\n        ],\n        \"summary\": {\n            \"total_requests\": 3,\n            \"open_requests\": 1,\n            \"fulfilled_requests\": 1,\n            \"expired_requests\": 1\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                        },
-                        {
-                            "name": "Error Response - Unauthorized",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/my_requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to view your service requests\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                        },
-                        {
-                            "name": "Error Response - Permission Denied",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{provider_auth_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/my_requests/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Forbidden",
-                            "code": 403,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only customers can view their own service requests\",\n        \"required_permission\": \"IsCustomer\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
-                        }
-                    ]
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Customer service requests retrieved successfully\",\n    \"data\": {\n        \"requests\": [\n            {\n                \"id\": \"request-uuid\",\n                \"title\": \"Need urgent plumbing help\",\n                \"status\": \"open\",\n                \"urgency\": \"urgent\",\n                \"created_at\": \"2024-01-20T15:30:00Z\"\n            }\n        ],\n        \"summary\": {\n            \"total_count\": 1,\n            \"initial_count\": 3,\n            \"filters_applied\": [\"status=open\"],\n            \"customer_id\": \"customer-uuid\",\n            \"retrieved_at\": \"2024-01-20T18:00:00Z\"\n        }\n    },\n    \"time\": \"2024-01-20T18:00:00Z\",\n    \"statusCode\": 200\n}"
                 },
                 {
-                    "name": "Admin Service Requests View (Admin)",
-                    "request": {
+                    "name": "403 Permission Denied - Not Customer",
+                    "originalRequest": {
                         "method": "GET",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Authorization", "value": "Bearer provider-token"}
                         ],
-                        "url": {
-                            "raw": "{{base_url}}/requests/admin/",
-                            "query": [
-                                {
-                                    "key": "status",
-                                    "value": "open",
-                                    "disabled": true
-                                },
-                                {
-                                    "key": "urgency",
-                                    "value": "urgent",
-                                    "disabled": true
-                                },
-                                {
-                                    "key": "expired",
-                                    "value": "true",
-                                    "disabled": true
-                                }
-                            ]
-                        }
+                        "url": "{{base_url}}/api/services/requests/my_requests/"
                     },
-                    "response": [
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"You do not have permission to access this endpoint\",\n    \"data\": {\n        \"required_user_type\": \"customer\",\n        \"current_user_type\": \"provider\"\n    },\n    \"time\": \"2024-01-20T18:00:00Z\",\n    \"statusCode\": 403\n}"
+                }
+            ]
+        },
+        {
+            "name": "8. Admin View (Admin Only)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates admin requests retrieved', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('Admin service requests retrieved successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains service_requests and query_summary', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('service_requests');",
+                            "    pm.expect(jsonData.data).to.have.property('query_summary');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "description": "Admin authentication required"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/admin/?status=open&category={{category_id}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "admin", ""],
+                    "query": [
                         {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/admin/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service requests admin view retrieved successfully\",\n    \"data\": {\n        \"count\": 15,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n                    \"username\": \"home_owner\",\n                    \"first_name\": \"Sarah\",\n                    \"last_name\": \"Williams\",\n                    \"email\": \"sarah@example.com\"\n                },\n                \"title\": \"Need Emergency Plumbing Service\",\n                \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"budget_min\": 500.00,\n                \"budget_max\": 1500.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"urgent\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"created_at\": \"2024-01-20T12:00:00Z\",\n                \"expires_at\": \"2024-01-27T12:00:00Z\",\n                \"interested_providers_count\": 5,\n                \"view_count\": 23,\n                \"admin_notes\": \"High priority request\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440033\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440201\",\n                    \"username\": \"apartment_owner\",\n                    \"first_name\": \"Michael\",\n                    \"last_name\": \"Johnson\",\n                    \"email\": \"michael@example.com\"\n                },\n                \"title\": \"Electrical Inspection Required\",\n                \"description\": \"Pre-renovation electrical safety inspection\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"budget_min\": 800.00,\n                \"budget_max\": 2000.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"medium\",\n                \"status\": \"expired\",\n                \"requested_date_time\": \"2024-01-18T10:00:00Z\",\n                \"location\": \"Bandra, Mumbai\",\n                \"created_at\": \"2024-01-15T09:00:00Z\",\n                \"expires_at\": \"2024-01-18T09:00:00Z\",\n                \"interested_providers_count\": 2,\n                \"view_count\": 12,\n                \"admin_notes\": \"Expired - needs follow up\"\n            }\n        ],\n        \"statistics\": {\n            \"total_requests\": 150,\n            \"open_requests\": 45,\n            \"fulfilled_requests\": 85,\n            \"expired_requests\": 20,\n            \"urgent_requests\": 12,\n            \"high_value_requests\": 25\n        },\n        \"filters_applied\": {\n            \"status\": null,\n            \"urgency\": null,\n            \"date_range\": \"last_30_days\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                            "key": "status",
+                            "value": "open",
+                            "description": "Filter by status (optional)"
                         },
                         {
-                            "name": "Error Response - Unauthorized",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/admin/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to access admin features\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                        },
-                        {
-                            "name": "Error Response - Permission Denied",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{customer_auth_token}}"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/admin/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Forbidden",
-                            "code": 403,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only administrators can access this endpoint\",\n        \"required_permission\": \"IsAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+                            "key": "category",
+                            "value": "{{category_id}}",
+                            "description": "Filter by category (optional)"
                         }
                     ]
                 },
+                "description": "Get all service requests for admin management (all statuses)."
+            },
+            "response": [
                 {
-                    "name": "Get Recommended Providers",
-                    "request": {
+                    "name": "200 Success - Admin View",
+                    "originalRequest": {
                         "method": "GET",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
+                            {"key": "Authorization", "value": "Bearer admin-token"}
                         ],
-                        "url": {
-                            "raw": "{{base_url}}/requests/{{service_request_id}}/recommended_providers/",
-                            "query": [
-                                {
-                                    "key": "limit",
-                                    "value": "10",
-                                    "disabled": true
-                                },
-                                {
-                                    "key": "radius_km",
-                                    "value": "15",
-                                    "disabled": true
-                                }
-                            ]
-                        }
+                        "url": "{{base_url}}/api/services/requests/admin/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/recommended_providers/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Recommended providers for service request retrieved successfully\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n            \"title\": \"Need Emergency Plumbing Service\",\n            \"category\": \"Home Services\",\n            \"budget_range\": \"₹500 - ₹1500\",\n            \"location\": \"Andheri West, Mumbai\",\n            \"urgency\": \"urgent\"\n        },\n        \"recommended_providers\": [\n            {\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true\n                },\n                \"matching_services\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                        \"name\": \"Professional Plumbing Service\",\n                        \"hourly_rate\": 500.00,\n                        \"location\": \"Mumbai, Maharashtra\",\n                        \"distance_km\": 2.5\n                    }\n                ],\n                \"recommendation_score\": 95,\n                \"match_reasons\": [\n                    \"Category match: Home Services > Plumbing\",\n                    \"Price within budget range\",\n                    \"High rating (4.8/5)\",\n                    \"Close proximity (2.5km)\",\n                    \"Available for urgent requests\"\n                ],\n                \"availability_status\": \"available\",\n                \"estimated_response_time\": \"within 2 hours\"\n            },\n            {\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440102\",\n                    \"username\": \"emergency_plumber\",\n                    \"first_name\": \"David\",\n                    \"last_name\": \"Wilson\",\n                    \"profile_picture\": \"https://example.com/profiles/david.jpg\",\n                    \"rating\": 4.7,\n                    \"total_reviews\": 89,\n                    \"verified\": true\n                },\n                \"matching_services\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440025\",\n                        \"name\": \"24/7 Emergency Plumbing\",\n                        \"hourly_rate\": 750.00,\n                        \"location\": \"Andheri, Mumbai\",\n                        \"distance_km\": 1.2\n                    }\n                ],\n                \"recommendation_score\": 92,\n                \"match_reasons\": [\n                    \"Category match: Home Services > Plumbing\",\n                    \"Emergency service available\",\n                    \"Very close proximity (1.2km)\",\n                    \"High rating (4.7/5)\",\n                    \"Within budget for emergency rate\"\n                ],\n                \"availability_status\": \"available\",\n                \"estimated_response_time\": \"within 1 hour\"\n            }\n        ],\n        \"search_criteria\": {\n            \"category_match\": true,\n            \"budget_compatible\": true,\n            \"location_radius_km\": 15,\n            \"rating_threshold\": 4.0,\n            \"availability_required\": true\n        },\n        \"total_matches\": 5,\n        \"showing_top\": 2\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                        },
-                        {
-                            "name": "Error Response - Not Found",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/invalid-id/recommended_providers/",
-                                    "query": []
-                                }
-                            },
-                            "status": "Not Found",
-                            "code": 404,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"service_request_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
-                        },
-                        {
-                            "name": "Error Response - No Recommendations",
-                            "originalRequest": {
-                                "method": "GET",
-                                "header": [],
-                                "url": {
-                                    "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440035/recommended_providers/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"No recommended providers found for this service request\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440035\",\n            \"title\": \"Specialized Technical Service\",\n            \"category\": \"Tech Services\",\n            \"location\": \"Remote Location\"\n        },\n        \"recommended_providers\": [],\n        \"search_criteria\": {\n            \"category_match\": true,\n            \"budget_compatible\": true,\n            \"location_radius_km\": 15,\n            \"rating_threshold\": 4.0\n        },\n        \"total_matches\": 0,\n        \"suggestions\": [\n            \"Try expanding the search radius\",\n            \"Consider adjusting the budget range\",\n            \"Check if similar categories have available providers\"\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                        }
-                    ]
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Admin service requests retrieved successfully\",\n    \"data\": {\n        \"service_requests\": [\n            {\n                \"id\": \"request-uuid\",\n                \"title\": \"Need urgent plumbing help\",\n                \"customer\": {\n                    \"id\": \"customer-uuid\",\n                    \"username\": \"customer1\"\n                },\n                \"status\": \"open\",\n                \"urgency\": \"urgent\",\n                \"created_at\": \"2024-01-20T15:30:00Z\"\n            }\n        ],\n        \"query_summary\": {\n            \"total_count\": 1,\n            \"initial_count\": 5,\n            \"filters_applied\": [\"status=open\"],\n            \"requested_by\": \"admin1\",\n            \"retrieved_at\": \"2024-01-20T18:30:00Z\"\n        }\n    },\n    \"time\": \"2024-01-20T18:30:00Z\",\n    \"statusCode\": 200\n}"
                 },
                 {
-                    "name": "Batch Expire Old Requests (Admin)",
-                    "request": {
+                    "name": "403 Permission Denied - Not Admin",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer customer-token"}
+                        ],
+                        "url": "{{base_url}}/api/services/requests/admin/"
+                    },
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"You do not have permission to access this endpoint\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"user_type\": \"customer\"\n    },\n    \"time\": \"2024-01-20T18:30:00Z\",\n    \"statusCode\": 403\n}"
+                }
+                         ]
+         },
+         {
+            "name": "9. Get Recommended Providers",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates providers found', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('recommended providers');",
+                            "});",
+                            "",
+                            "pm.test('Data contains providers and recommendation criteria', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('recommended_providers');",
+                            "    pm.expect(jsonData.data).to.have.property('recommendation_criteria');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Customer (owner) or Admin authentication required"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/{{service_request_id}}/recommended_providers/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "{{service_request_id}}", "recommended_providers", ""]
+                },
+                "description": "Get recommended providers for a specific service request."
+            },
+            "response": [
+                {
+                    "name": "200 Success - Providers Found",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer customer-token"}
+                        ],
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/recommended_providers/"
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Found 3 recommended providers for your request\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"request-uuid\",\n            \"title\": \"Need urgent plumbing help\",\n            \"category\": {\n                \"id\": \"category-uuid\",\n                \"name\": \"Plumbing\"\n            }\n        },\n        \"recommended_providers\": [\n            {\n                \"id\": \"provider-uuid-1\",\n                \"username\": \"plumber_pro\",\n                \"email\": \"plumber@example.com\",\n                \"user_type\": \"provider\"\n            },\n            {\n                \"id\": \"provider-uuid-2\",\n                \"username\": \"fix_it_fast\",\n                \"email\": \"fixitfast@example.com\",\n                \"user_type\": \"provider\"\n            }\n        ],\n        \"recommendation_criteria\": {\n            \"category\": \"Plumbing\",\n            \"provider_requirements\": {\n                \"user_type\": \"provider\",\n                \"service_status\": \"active\",\n                \"category_match\": true\n            },\n            \"sorting\": \"most_recent_activity\",\n            \"location\": \"123 Emergency Lane\"\n        },\n        \"recommendation_summary\": {\n            \"total_providers\": 3,\n            \"request_id\": \"request-uuid\",\n            \"generated_at\": \"2024-01-20T19:00:00Z\"\n        }\n    },\n    \"time\": \"2024-01-20T19:00:00Z\",\n    \"statusCode\": 200\n}"
+                },
+                {
+                    "name": "403 Permission Denied - Not Owner",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer other-customer-token"}
+                        ],
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/recommended_providers/"
+                    },
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"You do not have permission to view provider recommendations for this request\",\n    \"data\": {\n        \"request_id\": \"request-uuid\",\n        \"owner_id\": \"owner-uuid\",\n        \"requester_id\": \"other-customer-uuid\",\n        \"error_type\": \"permission_denied\"\n    },\n    \"time\": \"2024-01-20T19:00:00Z\",\n    \"statusCode\": 403\n}"
+                }
+            ]
+        },
+        {
+            "name": "10. Batch Expire Requests (Admin Only)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates batch operation completed', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('expired');",
+                            "});",
+                            "",
+                            "pm.test('Data contains operation details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('operation');",
+                            "    pm.expect(jsonData.data).to.have.property('expired_count');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "description": "Admin authentication required"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/batch_expire/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "batch_expire", ""]
+                },
+                "description": "Expire all service requests that have passed their expiration date (Admin only)."
+            },
+            "response": [
+                {
+                    "name": "200 Success - Requests Expired",
+                    "originalRequest": {
                         "method": "POST",
                         "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{auth_token}}"
-                            }
+                            {"key": "Authorization", "value": "Bearer admin-token"}
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"days_old\": 7,\n    \"category_filter\": null,\n    \"dry_run\": false,\n    \"notify_customers\": true\n}"
+                            "raw": "{}"
                         },
-                        "url": "{{base_url}}/requests/batch_expire/"
+                        "url": "{{base_url}}/api/services/requests/batch_expire/"
                     },
-                    "response": [
-                        {
-                            "name": "Success Response",
-                            "originalRequest": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"days_old\": 7,\n    \"category_filter\": null,\n    \"dry_run\": false,\n    \"notify_customers\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/batch_expire/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Batch expiration of old service requests completed successfully\",\n    \"data\": {\n        \"operation_summary\": {\n            \"total_requests_processed\": 25,\n            \"requests_expired\": 18,\n            \"requests_skipped\": 7,\n            \"operation_type\": \"batch_expire\",\n            \"executed_by\": \"admin@example.com\",\n            \"executed_at\": \"2024-01-20T15:30:45.123Z\"\n        },\n        \"criteria_used\": {\n            \"days_old_threshold\": 7,\n            \"category_filter\": null,\n            \"status_filter\": [\"open\", \"pending\"],\n            \"exclude_high_priority\": false\n        },\n        \"expired_requests\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440031\",\n                \"title\": \"Garden Maintenance Service\",\n                \"customer_email\": \"customer1@example.com\",\n                \"created_at\": \"2024-01-10T12:00:00Z\",\n                \"expired_at\": \"2024-01-20T15:30:45.123Z\",\n                \"age_days\": 10,\n                \"notification_sent\": true\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440032\",\n                \"title\": \"Home Cleaning Service\",\n                \"customer_email\": \"customer2@example.com\",\n                \"created_at\": \"2024-01-08T14:30:00Z\",\n                \"expired_at\": \"2024-01-20T15:30:45.123Z\",\n                \"age_days\": 12,\n                \"notification_sent\": true\n            }\n        ],\n        \"skipped_requests\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440033\",\n                \"title\": \"Emergency Plumbing\",\n                \"skip_reason\": \"High priority request\",\n                \"age_days\": 8\n            }\n        ],\n        \"notifications\": {\n            \"customers_notified\": 18,\n            \"notification_failures\": 0\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Successfully expired 5 service requests\",\n    \"data\": {\n        \"operation\": \"batch_expire_service_requests\",\n        \"expired_count\": 5,\n        \"operation_summary\": {\n            \"initial_count\": 5,\n            \"processed_count\": 5,\n            \"performed_by\": \"admin1\",\n            \"admin_id\": \"admin-uuid\",\n            \"timestamp\": \"2024-01-20T19:30:00Z\"\n        },\n        \"search_criteria\": {\n            \"status\": \"open\",\n            \"expires_before\": \"2024-01-20T19:30:00Z\"\n        },\n        \"audit_trail\": {\n            \"operation_type\": \"batch_status_update\",\n            \"old_status\": \"open\",\n            \"new_status\": \"expired\",\n            \"processed_requests\": [\n                {\n                    \"request_id\": \"expired-request-1\",\n                    \"title\": \"Old plumbing request\",\n                    \"customer_id\": \"customer-uuid-1\",\n                    \"expired_at\": \"2024-01-15T10:00:00Z\",\n                    \"processed_at\": \"2024-01-20T19:30:00Z\"\n                }\n            ]\n        }\n    },\n    \"time\": \"2024-01-20T19:30:00Z\",\n    \"statusCode\": 200\n}"
+                },
+                {
+                    "name": "200 Success - No Expired Requests",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer admin-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
                         },
-                        {
-                            "name": "Success Response - Dry Run",
-                            "originalRequest": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Authorization",
-                                        "value": "Bearer {{auth_token}}"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"days_old\": 7,\n    \"dry_run\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/requests/batch_expire/",
-                                    "query": []
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n    \"message\": \"Dry run completed - no requests were actually expired\",\n    \"data\": {\n        \"operation_summary\": {\n            \"total_requests_found\": 25,\n            \"requests_would_expire\": 18,\n            \"requests_would_skip\": 7,\n            \"operation_type\": \"dry_run\",\n            \"executed_by\": \"admin@example.com\",\n            \"executed_at\": \"2024-01-20T15:30:45.123Z\"\n        },\n        \"criteria_used\": {\n            \"days_old_threshold\": 7,\n            \"category_filter\": null,\n            \"status_filter\": [\"open\", \"pending\"]\n        },\n        \"would_expire\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440031\",\n                \"title\": \"Garden Maintenance Service\",\n                \"age_days\": 10,\n                \"customer_email\": \"customer1@example.com\"\n            }\n        ],\n        \"would_skip\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440033\",\n                \"title\": \"Emergency Plumbing\",\n                \"skip_reason\": \"High priority request\",\n                \"age_days\": 8\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                         },
-                         {
-                             "name": "Error Response - Unauthorized",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"days_old\": 7\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/batch_expire/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Unauthorized",
-                             "code": 401,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to perform batch operations\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                         },
-                         {
-                             "name": "Error Response - Permission Denied",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [
-                                     {
-                                         "key": "Authorization",
-                                         "value": "Bearer {{customer_auth_token}}"
-                                     }
-                                 ],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"days_old\": 7\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/batch_expire/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Forbidden",
-                             "code": 403,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"Only administrators can perform batch operations\",\n        \"required_permission\": \"IsAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
-                         },
-                         {
-                             "name": "Error Response - Validation Error",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [
-                                     {
-                                         "key": "Authorization",
-                                         "value": "Bearer {{auth_token}}"
-                                     }
-                                 ],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"days_old\": -1\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/batch_expire/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Bad Request",
-                             "code": 400,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Validation error occurred\",\n    \"data\": {\n        \"days_old\": [\"Must be a positive integer.\"],\n        \"error_type\": \"validation_error\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
-                         }
-                     ]
-                 },
-                 {
-                     "name": "Cancel Service Request (Owner)",
-                     "request": {
-                         "method": "POST",
-                         "header": [
-                             {
-                                 "key": "Content-Type",
-                                 "value": "application/json"
-                             },
-                             {
-                                 "key": "Authorization",
-                                 "value": "Bearer {{auth_token}}"
-                             }
-                         ],
-                         "body": {
-                             "mode": "raw",
-                             "raw": "{\n    \"reason\": \"No longer needed\",\n    \"notify_interested_providers\": true\n}"
-                         },
-                         "url": "{{base_url}}/requests/{{service_request_id}}/cancel/"
-                     },
-                     "response": [
-                         {
-                             "name": "Success Response",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [
-                                     {
-                                         "key": "Authorization",
-                                         "value": "Bearer {{auth_token}}"
-                                     }
-                                 ],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"reason\": \"No longer needed\",\n    \"notify_interested_providers\": true\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/cancel/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "OK",
-                             "code": 200,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Service request cancelled successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n        \"title\": \"Need Emergency Plumbing Service\",\n        \"status\": \"cancelled\",\n        \"cancelled_at\": \"2024-01-20T15:30:45.123Z\",\n        \"cancellation_reason\": \"No longer needed\",\n        \"customer\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n            \"username\": \"home_owner\",\n            \"first_name\": \"Sarah\",\n            \"last_name\": \"Williams\"\n        },\n        \"notifications_sent\": {\n            \"interested_providers_count\": 5,\n            \"providers_notified\": 5,\n            \"notification_failures\": 0\n        },\n        \"refund_info\": {\n            \"refund_required\": false,\n            \"refund_amount\": 0.00,\n            \"refund_reason\": \"No payment made yet\"\n        },\n        \"created_at\": \"2024-01-20T12:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
-                         },
-                         {
-                             "name": "Error Response - Unauthorized",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"reason\": \"No longer needed\"\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/cancel/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Unauthorized",
-                             "code": 401,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Authentication required\",\n    \"data\": {\n        \"error_type\": \"authentication_required\",\n        \"error_details\": \"Valid authentication token required to cancel service requests\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 401\n}"
-                         },
-                         {
-                             "name": "Error Response - Permission Denied",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [
-                                     {
-                                         "key": "Authorization",
-                                         "value": "Bearer {{another_user_token}}"
-                                     }
-                                 ],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"reason\": \"Unauthorized cancel\"\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/cancel/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Forbidden",
-                             "code": 403,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Permission denied\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"error_details\": \"You can only cancel your own service requests\",\n        \"required_permission\": \"IsOwnerOrAdmin\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
-                         },
-                         {
-                             "name": "Error Response - Not Found",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [
-                                     {
-                                         "key": "Authorization",
-                                         "value": "Bearer {{auth_token}}"
-                                     }
-                                 ],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"reason\": \"Cancel non-existent request\"\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/invalid-id/cancel/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Not Found",
-                             "code": 404,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Service request not found\",\n    \"data\": {\n        \"service_request_id\": \"invalid-id\",\n        \"error_type\": \"not_found\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
-                         },
-                         {
-                             "name": "Error Response - Invalid Status",
-                             "originalRequest": {
-                                 "method": "POST",
-                                 "header": [
-                                     {
-                                         "key": "Authorization",
-                                         "value": "Bearer {{auth_token}}"
-                                     }
-                                 ],
-                                 "body": {
-                                     "mode": "raw",
-                                     "raw": "{\n    \"reason\": \"Cancel completed request\"\n}"
-                                 },
-                                 "url": {
-                                     "raw": "{{base_url}}/requests/550e8400-e29b-41d4-a716-446655440030/cancel/",
-                                     "query": []
-                                 }
-                             },
-                             "status": "Bad Request",
-                             "code": 400,
-                             "header": [
-                                 {
-                                     "key": "Content-Type",
-                                     "value": "application/json"
-                                 }
-                             ],
-                             "body": "{\n    \"message\": \"Cannot cancel service request in current status\",\n    \"data\": {\n        \"current_status\": \"fulfilled\",\n        \"allowed_statuses\": [\"open\", \"pending\"],\n        \"error_type\": \"invalid_status_transition\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 400\n}"
-                         }
-                     ]
-                 }
-             ]
-         }],
-         "event": [
-            {
-                "listen": "prerequest",
-                "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                        "// Set base URL if not already set",
-                        "if (!pm.environment.get('base_url')) {",
-                        "    pm.environment.set('base_url', 'http://localhost:8000');",
-                        "}",
-                        "",
-                        "// Add timestamp for debugging",
-                        "pm.globals.set('timestamp', new Date().toISOString());"
-                    ]
+                        "url": "{{base_url}}/api/services/requests/batch_expire/"
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"No expired service requests found to process\",\n    \"data\": {\n        \"operation\": \"batch_expire\",\n        \"expired_count\": 0,\n        \"processed_at\": \"2024-01-20T19:30:00Z\",\n        \"performed_by\": \"admin1\",\n        \"admin_id\": \"admin-uuid\",\n        \"search_criteria\": {\n            \"status\": \"open\",\n            \"expires_before\": \"2024-01-20T19:30:00Z\"\n        }\n    },\n    \"time\": \"2024-01-20T19:30:00Z\",\n    \"statusCode\": 200\n}"
+                },
+                {
+                    "name": "403 Permission Denied - Not Admin",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer customer-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/batch_expire/"
+                    },
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"You do not have permission to perform this action\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"current_user_type\": \"customer\",\n        \"action\": \"batch_expire_service_requests\",\n        \"user_id\": \"customer-uuid\"\n    },\n    \"time\": \"2024-01-20T19:30:00Z\",\n    \"statusCode\": 403\n}"
                 }
+            ]
+        },
+        {
+            "name": "11. Cancel Service Request",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test('Message indicates successful cancellation', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.message).to.include('cancelled successfully');",
+                            "});",
+                            "",
+                            "pm.test('Data contains cancellation details', function () {",
+                            "    const jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.data).to.have.property('cancellation_details');",
+                            "    pm.expect(jsonData.data).to.have.property('request_info');",
+                            "});"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{customer_token}}",
+                        "description": "Customer (owner) or Admin authentication required"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/api/services/requests/{{service_request_id}}/cancel/",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "services", "requests", "{{service_request_id}}", "cancel", ""]
+                },
+                "description": "Cancel a service request (Owner or Admin only)."
             },
-            {
-                "listen": "test",
-                "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                        "// Test for standardized response format",
-                        "pm.test('Response has standardized format', function () {",
-                        "    const jsonData = pm.response.json();",
-                        "    pm.expect(jsonData).to.have.property('message');",
-                        "    pm.expect(jsonData).to.have.property('data');",
-                        "    pm.expect(jsonData).to.have.property('time');",
-                        "    pm.expect(jsonData).to.have.property('statusCode');",
-                        "});",
-                        "",
-                        "// Test response time",
-                        "pm.test('Response time is less than 5000ms', function () {",
-                        "    pm.expect(pm.response.responseTime).to.be.below(5000);",
-                        "});",
-                        "",
-                        "// Store response data for chaining",
-                        "if (pm.response.code === 200 || pm.response.code === 201) {",
-                        "    const jsonData = pm.response.json();",
-                        "    ",
-                        "    // Store IDs for use in other requests",
-                        "    if (jsonData.data && jsonData.data.id) {",
-                        "        pm.environment.set('last_created_id', jsonData.data.id);",
-                        "    }",
-                        "    ",
-                        "    // Store category ID if this is a category response",
-                        "    if (jsonData.data && jsonData.data.category) {",
-                        "        pm.environment.set('category_id', jsonData.data.category);",
-                        "    }",
-                        "}"
-                    ]
+            "response": [
+                {
+                    "name": "200 Success - Request Cancelled",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer customer-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/cancel/"
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Service request cancelled successfully\",\n    \"data\": {\n        \"cancellation_details\": {\n            \"request_id\": \"request-uuid\",\n            \"request_title\": \"Need urgent plumbing help\",\n            \"previous_status\": \"open\",\n            \"new_status\": \"cancelled\",\n            \"cancelled_by\": \"customer1\",\n            \"cancelled_at\": \"2024-01-20T20:00:00Z\"\n        },\n        \"request_info\": {\n            \"customer_id\": \"customer-uuid\",\n            \"category\": \"Plumbing\",\n            \"location\": \"123 Emergency Lane\",\n            \"created_at\": \"2024-01-20T15:30:00Z\"\n        },\n        \"cancellation_impact\": {\n            \"assigned_provider\": null,\n            \"fulfilled_by_service\": null\n        }\n    },\n    \"time\": \"2024-01-20T20:00:00Z\",\n    \"statusCode\": 200\n}"
+                },
+                {
+                    "name": "400 Bad Request - Invalid Status",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer customer-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/cancel/"
+                    },
+                    "status": "Bad Request",
+                    "code": 400,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"Cannot cancel a request with status 'fulfilled'\",\n    \"data\": {\n        \"request_id\": \"request-uuid\",\n        \"current_status\": \"fulfilled\",\n        \"cancellable_statuses\": [\"open\", \"in_progress\"],\n        \"error_type\": \"invalid_status_for_cancellation\"\n    },\n    \"time\": \"2024-01-20T20:00:00Z\",\n    \"statusCode\": 400\n}"
+                },
+                {
+                    "name": "403 Permission Denied - Not Owner",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Authorization", "value": "Bearer other-customer-token"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": "{{base_url}}/api/services/requests/{{service_request_id}}/cancel/"
+                    },
+                    "status": "Forbidden",
+                    "code": 403,
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {"key": "Content-Type", "value": "application/json"}
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"message\": \"You do not have permission to cancel this request\",\n    \"data\": {\n        \"request_id\": \"request-uuid\",\n        \"owner_id\": \"owner-uuid\",\n        \"requester_id\": \"other-customer-uuid\",\n        \"error_type\": \"permission_denied\"\n    },\n    \"time\": \"2024-01-20T20:00:00Z\",\n    \"statusCode\": 403\n}"
                 }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Set base URL if not already set",
+                    "if (!pm.environment.get('base_url')) {",
+                    "    pm.environment.set('base_url', 'http://localhost:8000');",
+                    "}",
+                    "",
+                    "// Add timestamp for debugging",
+                    "pm.globals.set('timestamp', new Date().toISOString());"
+                ]
             }
-        ]
-  }
-  
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Global test for standardized response format",
+                    "pm.test('Response has standardized format', function () {",
+                    "    const jsonData = pm.response.json();",
+                    "    pm.expect(jsonData).to.have.property('message');",
+                    "    pm.expect(jsonData).to.have.property('data');",
+                    "    pm.expect(jsonData).to.have.property('time');",
+                    "    pm.expect(jsonData).to.have.property('statusCode');",
+                    "});",
+                    "",
+                    "// Test response time",
+                    "pm.test('Response time is less than 5000ms', function () {",
+                    "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+                    "});",
+                    "",
+                    "// Store response data for chaining",
+                    "if (pm.response.code === 200 || pm.response.code === 201) {",
+                    "    const jsonData = pm.response.json();",
+                    "    ",
+                    "    // Store IDs for use in other requests",
+                    "    if (jsonData.data && jsonData.data.service_request && jsonData.data.service_request.id) {",
+                    "        pm.environment.set('last_created_request_id', jsonData.data.service_request.id);",
+                    "    }",
+                    "}"
+                ]
+            }
+        }
+    ]
+}

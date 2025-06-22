@@ -985,37 +985,6 @@ class Base64ImageField(serializers.ImageField):
             logger.error(f"🔍 DEBUG: Error type: {type(e).__name__}")
             raise serializers.ValidationError("Image processing failed")
 
-class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
-    """Serializer for creating and updating services"""
-    image = Base64ImageField(required=False)
-    
-    class Meta:
-        model = Service
-        fields = [
-            'id', 'category', 'title', 'description', 'price', 
-            'location', 'image'
-        ]
-        read_only_fields = ['id']
-    
-    def validate_category(self, value):
-        """
-        🔍 ENHANCED CATEGORY VALIDATION
-        =============================
-        
-        Ensure the category is active and properly configured.
-        Provides comprehensive validation with debug logging.
-        """
-        # Debug: Log validation attempt
-        logger.debug(f"🔍 DEBUG: Validating category for service creation: {value.name} (ID: {value.id})")
-        
-        if not value.is_active:
-            logger.warning(f"❌ DEBUG: Validation failed - Category '{value.name}' is not active")
-            raise serializers.ValidationError("This category is not active.")
-            
-        # Debug: Log successful validation
-        logger.debug(f"✅ DEBUG: Category validation passed: {value.name}")
-        return value
-
 class ServiceImageSerializer(serializers.ModelSerializer):
     """
     🖼️ SERVICE IMAGE SERIALIZER - ENHANCED WITH COMPREHENSIVE DEBUG TRACKING
@@ -1317,7 +1286,14 @@ class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         images_data = validated_data.pop('images', [])
+        subcategories_data = validated_data.pop('subcategories', [])
+        
+        # Create the service without many-to-many fields
         service = Service.objects.create(**validated_data)
+        
+        # Set subcategories using .set() method
+        if subcategories_data:
+            service.subcategories.set(subcategories_data)
         
         # Process images if any
         for image_data in images_data:
@@ -1327,11 +1303,16 @@ class ServiceCreateUpdateSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         images_data = validated_data.pop('images', [])
+        subcategories_data = validated_data.pop('subcategories', None)
         
-        # Update the service instance fields
+        # Update the service instance fields (excluding many-to-many)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
+        
+        # Handle subcategories update if provided
+        if subcategories_data is not None:
+            instance.subcategories.set(subcategories_data)
         
         # Handle image updates if provided
         if images_data:
@@ -1730,6 +1711,46 @@ class ServiceRequestCreateSerializer(serializers.ModelSerializer):
         # ✅ DEBUG: Log successful comprehensive validation
         logger.debug("✅ DEBUG: ServiceRequest comprehensive validation completed successfully")
         return super().validate(attrs)
+    
+    def create(self, validated_data):
+        """
+        ➕ CREATE SERVICE REQUEST WITH MANY-TO-MANY FIELD HANDLING
+        =========================================================
+        
+        Creates a new service request while properly handling the many-to-many subcategories field.
+        """
+        # Extract many-to-many data
+        subcategories_data = validated_data.pop('subcategories', [])
+        
+        # Create the service request without many-to-many fields
+        service_request = ServiceRequest.objects.create(**validated_data)
+        
+        # Set subcategories using .set() method
+        if subcategories_data:
+            service_request.subcategories.set(subcategories_data)
+            
+        return service_request
+    
+    def update(self, instance, validated_data):
+        """
+        🔄 UPDATE SERVICE REQUEST WITH MANY-TO-MANY FIELD HANDLING
+        =========================================================
+        
+        Updates a service request while properly handling the many-to-many subcategories field.
+        """
+        # Extract many-to-many data
+        subcategories_data = validated_data.pop('subcategories', None)
+        
+        # Update regular fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        
+        # Handle subcategories update if provided
+        if subcategories_data is not None:
+            instance.subcategories.set(subcategories_data)
+            
+        return instance
         
 class ServiceRequestDetailSerializer(serializers.ModelSerializer):
     """

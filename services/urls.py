@@ -1,8 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-# Import your viewsets here
-from .views import ServiceCategoryViewSet, ServiceSubCategoryViewSet, ServiceViewSet, ServiceRequestViewSet
+from services.view_categories import ServiceCategoryViewSet
+from services.view_requests import ServiceRequestViewSet
+from services.view_services import ServiceViewSet
+from services.view_subcategories import ServiceSubCategoryViewSet
 
 # Debug: Print statement to verify URL loading
 print("🔧 DEBUG: Loading services app URLs with proper router configuration")

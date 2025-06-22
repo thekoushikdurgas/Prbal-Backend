@@ -381,7 +381,7 @@ class Service(models.Model):
     tags = models.JSONField(default=list, blank=True, null=True)
     
     # Pricing
-    hourly_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    hourly_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     pricing_options = models.JSONField(default=dict, blank=True, null=True)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='INR')
     
@@ -423,14 +423,9 @@ class Service(models.Model):
     
     @property
     def price(self):
-        """For backward compatibility"""
-        return self.base_price
+        """For backward compatibility - returns the hourly rate"""
+        return self.hourly_rate
         
-    @property
-    def hourly_rate(self):
-        """For backward compatibility"""
-        return self.base_price
-    
     @property
     def images(self):
         """Returns a list of image URLs"""
