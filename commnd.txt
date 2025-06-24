@@ -5,6 +5,11 @@ git remote add origin https://github.com/thekoushikdurgas/Prbal-Backend.git
 git branch -M main
 git push -u origin main -f
 
+git pull origin main
+
+git fetch origin
+git reset --hard origin/main
+
 git config --global user.email "koushik.btech.cse.19@nitap.ac.in"
 git config --global user.name "thekoushikdurgas"
 streamlit run filemanager.py
