@@ -1997,3 +1997,32 @@ INFO 2025-06-22 20:31:27,062 urls 18584 16952 🔗 Loading Users App URL Configu
 INFO 2025-06-22 20:31:27,298 urls 18584 16952 ✅ Users App URLs loaded successfully!
 INFO 2025-06-22 20:31:27,301 urls 18584 16952 📊 Total URL patterns: 28
 INFO 2025-06-22 20:31:27,332 urls 18584 16952 🔗 Users App URL configuration complete!
+INFO 2025-06-22 20:53:13,686 urls 1076 10128 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 20:53:13,815 urls 1076 10128 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 20:53:13,816 urls 1076 10128 📊 Total URL patterns: 28
+INFO 2025-06-22 20:53:13,845 urls 1076 10128 🔗 Users App URL configuration complete!
+INFO 2025-06-22 20:53:26,718 urls 2496 8668 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 20:53:26,833 urls 2496 8668 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 20:53:26,834 urls 2496 8668 📊 Total URL patterns: 28
+INFO 2025-06-22 20:53:26,857 urls 2496 8668 🔗 Users App URL configuration complete!
+INFO 2025-06-22 20:53:41,391 autoreload 13372 4016 Watching for file changes with StatReloader
+INFO 2025-06-22 20:53:44,911 urls 13372 4016 🔗 Loading Users App URL Configuration...
+INFO 2025-06-22 20:53:45,044 urls 13372 4016 ✅ Users App URLs loaded successfully!
+INFO 2025-06-22 20:53:45,046 urls 13372 4016 📊 Total URL patterns: 28
+INFO 2025-06-22 20:53:45,060 urls 13372 4016 🔗 Users App URL configuration complete!
+INFO 2025-06-22 20:57:50,733 middleware 13372 1944 API Request
+WARNING 2025-06-22 20:57:50,752 basehttp 13372 1944 "GET /api/v1/services/requests/my_requests/?status=open HTTP/1.1" 401 222
+INFO 2025-06-22 20:59:42,393 middleware 13372 6448 API Request
+INFO 2025-06-22 20:59:42,397 basehttp 13372 6448 "GET /api/v1/services/requests/my_requests/?status=open HTTP/1.1" 200 1492
+INFO 2025-06-22 21:00:21,355 middleware 13372 6448 API Request
+WARNING 2025-06-22 21:00:21,360 basehttp 13372 6448 "GET /api/v1/api/services/requests/d538327b-aa0e-4650-9545-7de703945e9e/recommended_providers/ HTTP/1.1" 404 14034
+INFO 2025-06-22 21:00:29,747 middleware 13372 6448 API Request
+INFO 2025-06-22 21:00:29,753 basehttp 13372 6448 "GET /api/v1/services/requests/d538327b-aa0e-4650-9545-7de703945e9e/recommended_providers/ HTTP/1.1" 200 2836
+INFO 2025-06-24 23:03:23,922 urls 7372 6444 🔗 Loading Users App URL Configuration...
+INFO 2025-06-24 23:03:24,199 urls 7372 6444 ✅ Users App URLs loaded successfully!
+INFO 2025-06-24 23:03:24,200 urls 7372 6444 📊 Total URL patterns: 28
+INFO 2025-06-24 23:03:24,203 urls 7372 6444 🔗 Users App URL configuration complete!
+INFO 2025-06-24 23:03:45,925 urls 16408 16860 🔗 Loading Users App URL Configuration...
+INFO 2025-06-24 23:03:45,947 urls 16408 16860 ✅ Users App URLs loaded successfully!
+INFO 2025-06-24 23:03:45,947 urls 16408 16860 📊 Total URL patterns: 28
+INFO 2025-06-24 23:03:45,951 urls 16408 16860 🔗 Users App URL configuration complete!

@@ -45,7 +45,7 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceCategory
-        fields = ['id', 'name', 'description', 'icon', 'icon_url', 'sort_order', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'icon', 'icon_name', 'sort_order', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
     
     def __init__(self, *args, **kwargs):
@@ -196,14 +196,14 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
                 # Note: This is a warning, not an error, as it's a guideline rather than a strict rule
         
         # 🖼️ DEBUG: Validate icon consistency
-        if 'icon' in attrs and 'icon_url' in attrs:
+        if 'icon' in attrs and 'icon_name' in attrs:
             icon = attrs['icon']
-            icon_url = attrs['icon_url']
+            icon_name = attrs['icon_name']
             
-            if icon and icon_url:
-                logger.warning("⚠️ DEBUG: Both icon file and icon URL provided - file will take precedence")
-            elif not icon and not icon_url:
-                logger.debug("📝 DEBUG: No icon provided - using default icon behavior")
+            if icon and icon_name:
+                logger.warning("⚠️ DEBUG: Both icon file and icon name provided - file will take precedence")
+            elif not icon and not icon_name:
+                logger.debug("📝 DEBUG: No icon provided - using default icon name 'home'")
         
         # 🔄 DEBUG: Validate status consistency
         if 'is_active' in attrs:
@@ -297,7 +297,7 @@ class ServiceSubCategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceSubCategory
-        fields = ['id', 'category', 'category_name', 'name', 'description', 'icon', 'icon_url', 'sort_order', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'category', 'category_name', 'name', 'description', 'icon', 'icon_name', 'sort_order', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
         
     def __init__(self, *args, **kwargs):
@@ -496,14 +496,14 @@ class ServiceSubCategorySerializer(serializers.ModelSerializer):
                     # But we log it for administrative awareness
         
         # 🖼️ DEBUG: Validate icon consistency
-        if 'icon' in attrs and 'icon_url' in attrs:
+        if 'icon' in attrs and 'icon_name' in attrs:
             icon = attrs['icon']
-            icon_url = attrs['icon_url']
+            icon_name = attrs['icon_name']
             
-            if icon and icon_url:
-                logger.warning("⚠️ DEBUG: Both icon file and icon URL provided for subcategory - file will take precedence")
-            elif not icon and not icon_url:
-                logger.debug("📝 DEBUG: No icon provided for subcategory - using default icon behavior")
+            if icon and icon_name:
+                logger.warning("⚠️ DEBUG: Both icon file and icon name provided for subcategory - file will take precedence")
+            elif not icon and not icon_name:
+                logger.debug("📝 DEBUG: No icon provided for subcategory - using default icon name 'home'")
         
         # 🔄 DEBUG: Validate status consistency
         if 'is_active' in attrs:

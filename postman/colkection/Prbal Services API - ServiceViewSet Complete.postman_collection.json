@@ -1,0 +1,1780 @@
+{
+	"info": {
+		"_postman_id": "fc182095-51d4-43ce-8e4c-1063d2939f68",
+		"name": "Prbal Services API - ServiceViewSet Complete",
+		"description": "Comprehensive collection for all 13 ServiceViewSet endpoints with standardized responses format: {message, data, time, statusCode}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-fc182095-51d4-43ce-8e4c-1063d2939f68?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "🔧 ServiceViewSet - All 13 Endpoints",
+			"item": [
+				{
+					"name": "1. List Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/?category={{category_id}}&status=active&is_featured=true&search=plumbing&ordering=-created_at&page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								""
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "{{category_id}}",
+									"description": "Filter by category UUID"
+								},
+								{
+									"key": "subcategories",
+									"value": "",
+									"description": "Filter by subcategory UUID",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "active",
+									"description": "Filter by status: active, pending, inactive"
+								},
+								{
+									"key": "is_featured",
+									"value": "true",
+									"description": "Filter featured services"
+								},
+								{
+									"key": "provider",
+									"value": "",
+									"description": "Filter by provider UUID",
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": "INR",
+									"description": "Filter by currency: INR, USD, EUR, GBP",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "plumbing",
+									"description": "Search in name, description, location, tags"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by: created_at, hourly_rate, min_hours, max_hours"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								}
+							]
+						},
+						"description": "GET /api/services/services/ - List services with filtering and pagination"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/?category={{category_id}}&status=active&is_featured=true&search=plumbing&ordering=-created_at&page=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										""
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category UUID"
+										},
+										{
+											"key": "subcategories",
+											"value": "",
+											"description": "Filter by subcategory UUID",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "active",
+											"description": "Filter by status: active, pending, inactive"
+										},
+										{
+											"key": "is_featured",
+											"value": "true",
+											"description": "Filter featured services"
+										},
+										{
+											"key": "provider",
+											"value": "",
+											"description": "Filter by provider UUID",
+											"disabled": true
+										},
+										{
+											"key": "currency",
+											"value": "INR",
+											"description": "Filter by currency: INR, USD, EUR, GBP",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "plumbing",
+											"description": "Search in name, description, location, tags"
+										},
+										{
+											"key": "ordering",
+											"value": "-created_at",
+											"description": "Order by: created_at, hourly_rate, min_hours, max_hours"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination"
+										}
+									]
+								},
+								"description": "GET /api/services/services/ - List services with filtering and pagination"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Services retrieved successfully\",\n    \"data\": {\n        \"count\": 25,\n        \"next\": \"http://localhost:8000/api/v1/services/services/?page=2\",\n        \"previous\": null,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n                    \"user_type\": \"provider\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true\n                },\n                \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"category_name\": \"Home Services\",\n                \"subcategories\": [\n                    {\n                        \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                        \"name\": \"Plumbing\",\n                        \"description\": \"Professional plumbing services\"\n                    }\n                ],\n                \"title\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n                \"price\": 500.00,\n                \"location\": \"Mumbai, Maharashtra\",\n                \"image\": \"https://example.com/services/plumbing1.jpg\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T15:00:00Z\"\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Create Service (Provider Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Professional Plumbing Service\",\n    \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [\"550e8400-e29b-41d4-a716-446655440010\"],\n    \"hourly_rate\": 500.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 750.00,\n        \"weekend_rate\": 600.00,\n        \"package_deals\": {\n            \"basic_service\": 800.00,\n            \"comprehensive_service\": 1500.00\n        }\n    },\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 8,\n    \"availability\": {\n        \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"wednesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"thursday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"friday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"saturday\": {\"start\": \"10:00\", \"end\": \"16:00\"},\n        \"emergency_available\": true\n    },\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\"],\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/services/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								""
+							]
+						},
+						"description": "POST /api/services/services/ - Create service (Provider only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Professional Plumbing Service\",\n    \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [\"550e8400-e29b-41d4-a716-446655440010\"],\n    \"hourly_rate\": 500.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 750.00,\n        \"weekend_rate\": 600.00,\n        \"package_deals\": {\n            \"basic_service\": 800.00,\n            \"comprehensive_service\": 1500.00\n        }\n    },\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 8,\n    \"availability\": {\n        \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"wednesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"thursday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"friday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"saturday\": {\"start\": \"10:00\", \"end\": \"16:00\"},\n        \"emergency_available\": true\n    },\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\"],\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										""
+									]
+								},
+								"description": "POST /api/services/services/ - Create service (Provider only)"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service created successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n            \"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156\n        },\n        \"name\": \"Professional Plumbing Service\",\n        \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Professional plumbing services\"\n            }\n        ],\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\"],\n        \"hourly_rate\": 500.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 750.00,\n            \"weekend_rate\": 600.00,\n            \"package_deals\": {\n                \"basic_service\": 800.00,\n                \"comprehensive_service\": 1500.00\n            }\n        },\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 8,\n        \"availability\": {\n            \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"emergency_available\": true\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\"],\n        \"status\": \"pending\",\n        \"is_featured\": false,\n        \"service_images\": [],\n        \"created_at\": \"2024-01-20T15:30:45.123Z\",\n        \"updated_at\": \"2024-01-20T15:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 201\n}"
+						},
+						{
+							"name": "Error Response - Forbidden (Not Provider)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Professional Plumbing Service\",\n    \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [\"550e8400-e29b-41d4-a716-446655440010\"],\n    \"hourly_rate\": 500.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 750.00,\n        \"weekend_rate\": 600.00,\n        \"package_deals\": {\n            \"basic_service\": 800.00,\n            \"comprehensive_service\": 1500.00\n        }\n    },\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 8,\n    \"availability\": {\n        \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"wednesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"thursday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"friday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n        \"saturday\": {\"start\": \"10:00\", \"end\": \"16:00\"},\n        \"emergency_available\": true\n    },\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\"],\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										""
+									]
+								},
+								"description": "POST /api/services/services/ - Create service (Provider only)"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Only service providers can create or modify services\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"user_type\": \"customer\",\n        \"required_type\": \"provider\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "3. Retrieve Service Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/{{service_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_id}}",
+								""
+							]
+						},
+						"description": "GET /api/services/services/{id}/ - Retrieve service details"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										""
+									]
+								},
+								"description": "GET /api/services/services/{id}/ - Retrieve service details"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service details retrieved successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n            \"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156,\n            \"verified\": true,\n            \"phone\": \"+91-9876543210\"\n        },\n        \"name\": \"Professional Plumbing Service\",\n        \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\"\n        },\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440010\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Professional plumbing services\"\n            }\n        ],\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\"],\n        \"hourly_rate\": 500.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 750.00,\n            \"weekend_rate\": 600.00,\n            \"package_deals\": {\n                \"basic_service\": 800.00,\n                \"comprehensive_service\": 1500.00\n            }\n        },\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 8,\n        \"availability\": {\n            \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"tuesday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"emergency_available\": true\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\"],\n        \"status\": \"active\",\n        \"is_featured\": true,\n        \"service_images\": [\n            {\n                \"id\": \"img-1\",\n                \"image\": \"https://example.com/services/plumbing1.jpg\",\n                \"description\": \"Main service image\",\n                \"order\": 1\n            }\n        ],\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T15:00:00Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "4. Update Service (Owner Only)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Professional Plumbing Service\",\n    \"description\": \"Updated expert plumbing repairs and installations with 7+ years experience. Available for emergencies 24/7.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [\"550e8400-e29b-41d4-a716-446655440010\"],\n    \"hourly_rate\": 550.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 800.00,\n        \"weekend_rate\": 650.00,\n        \"package_deals\": {\n            \"basic_service\": 900.00,\n            \"comprehensive_service\": 1600.00\n        }\n    },\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 10,\n    \"availability\": {\n        \"monday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"tuesday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"wednesday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"thursday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"friday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"saturday\": {\"start\": \"09:00\", \"end\": \"17:00\"},\n        \"sunday\": {\"start\": \"10:00\", \"end\": \"15:00\"},\n        \"emergency_available\": true\n    },\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\", \"threading machine\"],\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\", \"certified\", \"experienced\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/services/{{service_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_id}}",
+								""
+							]
+						},
+						"description": "PUT /api/services/services/{id}/ - Update service (Owner only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Updated Professional Plumbing Service\",\n    \"description\": \"Updated expert plumbing repairs and installations with 7+ years experience. Available for emergencies 24/7.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [\"550e8400-e29b-41d4-a716-446655440010\"],\n    \"hourly_rate\": 550.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 800.00,\n        \"weekend_rate\": 650.00,\n        \"package_deals\": {\n            \"basic_service\": 900.00,\n            \"comprehensive_service\": 1600.00\n        }\n    },\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 10,\n    \"availability\": {\n        \"monday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"tuesday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"wednesday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"thursday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"friday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"saturday\": {\"start\": \"09:00\", \"end\": \"17:00\"},\n        \"sunday\": {\"start\": \"10:00\", \"end\": \"15:00\"},\n        \"emergency_available\": true\n    },\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\", \"threading machine\"],\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\", \"certified\", \"experienced\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										""
+									]
+								},
+								"description": "PUT /api/services/services/{id}/ - Update service (Owner only)"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\",\n            \"profile_picture\": \"https://example.com/profiles/john.jpg\",\n            \"user_type\": \"provider\",\n            \"rating\": 4.8,\n            \"total_reviews\": 156\n        },\n        \"name\": \"Updated Professional Plumbing Service\",\n        \"description\": \"Updated expert plumbing repairs and installations with 7+ years experience. Available for emergencies 24/7.\",\n        \"hourly_rate\": 550.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 800.00,\n            \"weekend_rate\": 650.00\n        },\n        \"currency\": \"INR\",\n        \"min_hours\": 2,\n        \"max_hours\": 10,\n        \"availability\": {\n            \"monday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n            \"emergency_available\": true\n        },\n        \"location\": \"Mumbai, Maharashtra\",\n        \"latitude\": 19.0760,\n        \"longitude\": 72.8777,\n        \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\", \"threading machine\"],\n        \"status\": \"active\",\n        \"is_featured\": false,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T16:30:45.123Z\"\n    },\n    \"time\": \"2024-01-20T16:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						},
+						{
+							"name": "Error Response - Forbidden (Not Owner)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Updated Professional Plumbing Service\",\n    \"description\": \"Updated expert plumbing repairs and installations with 7+ years experience. Available for emergencies 24/7.\",\n    \"category\": \"{{category_id}}\",\n    \"subcategories\": [\"550e8400-e29b-41d4-a716-446655440010\"],\n    \"hourly_rate\": 550.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 800.00,\n        \"weekend_rate\": 650.00,\n        \"package_deals\": {\n            \"basic_service\": 900.00,\n            \"comprehensive_service\": 1600.00\n        }\n    },\n    \"currency\": \"INR\",\n    \"min_hours\": 2,\n    \"max_hours\": 10,\n    \"availability\": {\n        \"monday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"tuesday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"wednesday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"thursday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"friday\": {\"start\": \"08:00\", \"end\": \"19:00\"},\n        \"saturday\": {\"start\": \"09:00\", \"end\": \"17:00\"},\n        \"sunday\": {\"start\": \"10:00\", \"end\": \"15:00\"},\n        \"emergency_available\": true\n    },\n    \"location\": \"Mumbai, Maharashtra\",\n    \"latitude\": 19.0760,\n    \"longitude\": 72.8777,\n    \"required_tools\": [\"pipe wrench\", \"plunger\", \"pipe cutter\", \"sealant\", \"threading machine\"],\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\", \"certified\", \"experienced\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										""
+									]
+								},
+								"description": "PUT /api/services/services/{id}/ - Update service (Owner only)"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"You must be the owner of this object to perform this action\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"required_permission\": \"IsOwner\"\n    },\n    \"time\": \"2024-01-20T16:30:45.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "5. Partial Update Service (Owner Only)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hourly_rate\": 575.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 825.00,\n        \"weekend_rate\": 675.00\n    },\n    \"availability\": {\n        \"sunday\": {\"start\": \"10:00\", \"end\": \"16:00\"}\n    },\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\", \"certified\", \"experienced\", \"premium\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/services/{{service_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_id}}",
+								""
+							]
+						},
+						"description": "PATCH /api/services/services/{id}/ - Partial update service (Owner only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"hourly_rate\": 575.00,\n    \"pricing_options\": {\n        \"emergency_rate\": 825.00,\n        \"weekend_rate\": 675.00\n    },\n    \"availability\": {\n        \"sunday\": {\"start\": \"10:00\", \"end\": \"16:00\"}\n    },\n    \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\", \"certified\", \"experienced\", \"premium\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										""
+									]
+								},
+								"description": "PATCH /api/services/services/{id}/ - Partial update service (Owner only)"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"provider\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n            \"username\": \"plumber_pro\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\"\n        },\n        \"name\": \"Professional Plumbing Service\",\n        \"description\": \"Expert plumbing repairs and installations with 5+ years experience. Available for emergencies 24/7.\",\n        \"hourly_rate\": 575.00,\n        \"pricing_options\": {\n            \"emergency_rate\": 825.00,\n            \"weekend_rate\": 675.00\n        },\n        \"currency\": \"INR\",\n        \"availability\": {\n            \"monday\": {\"start\": \"09:00\", \"end\": \"18:00\"},\n            \"sunday\": {\"start\": \"10:00\", \"end\": \"16:00\"},\n            \"emergency_available\": true\n        },\n        \"tags\": [\"plumbing\", \"repairs\", \"installation\", \"emergency\", \"24x7\", \"certified\", \"experienced\", \"premium\"],\n        \"updated_at\": \"2024-01-20T16:45:30.123Z\"\n    },\n    \"time\": \"2024-01-20T16:45:30.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "6. Delete Service (Owner Only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/{{service_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_id}}",
+								""
+							]
+						},
+						"description": "DELETE /api/services/services/{id}/ - Delete service (Owner only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										""
+									]
+								},
+								"description": "DELETE /api/services/services/{id}/ - Delete service (Owner only)"
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service deleted successfully\",\n    \"data\": {\n        \"deleted_service_id\": \"550e8400-e29b-41d4-a716-446655440020\",\n        \"deletion_timestamp\": \"2024-01-20T17:00:00.123Z\"\n    },\n    \"time\": \"2024-01-20T17:00:00.123Z\",\n    \"statusCode\": 204\n}"
+						},
+						{
+							"name": "Error Response - Forbidden (Not Owner)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										""
+									]
+								},
+								"description": "DELETE /api/services/services/{id}/ - Delete service (Owner only)"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"You must be the owner of this object to perform this action\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"required_permission\": \"IsOwner\"\n    },\n    \"time\": \"2024-01-20T17:00:00.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "7. Find Nearby Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/nearby/?latitude={{latitude}}&longitude={{longitude}}&radius=10&max_results=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"nearby",
+								""
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "{{latitude}}",
+									"description": "Your current latitude"
+								},
+								{
+									"key": "longitude",
+									"value": "{{longitude}}",
+									"description": "Your current longitude"
+								},
+								{
+									"key": "radius",
+									"value": "10",
+									"description": "Search radius in kilometers (default: 10)"
+								},
+								{
+									"key": "category",
+									"value": "{{category_id}}",
+									"description": "Filter by category",
+									"disabled": true
+								},
+								{
+									"key": "max_results",
+									"value": "20",
+									"description": "Maximum number of results (default: 50)"
+								},
+								{
+									"key": "min_rating",
+									"value": "4.0",
+									"description": "Minimum provider rating",
+									"disabled": true
+								}
+							]
+						},
+						"description": "GET /api/services/services/nearby/ - Find nearby services based on location"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/nearby/?latitude={{latitude}}&longitude={{longitude}}&radius=10&max_results=20",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"nearby",
+										""
+									],
+									"query": [
+										{
+											"key": "latitude",
+											"value": "{{latitude}}",
+											"description": "Your current latitude"
+										},
+										{
+											"key": "longitude",
+											"value": "{{longitude}}",
+											"description": "Your current longitude"
+										},
+										{
+											"key": "radius",
+											"value": "10",
+											"description": "Search radius in kilometers (default: 10)"
+										},
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category",
+											"disabled": true
+										},
+										{
+											"key": "max_results",
+											"value": "20",
+											"description": "Maximum number of results (default: 50)"
+										},
+										{
+											"key": "min_rating",
+											"value": "4.0",
+											"description": "Minimum provider rating",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/nearby/ - Find nearby services based on location"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Found 15 services within 10.0 km of your location\",\n    \"data\": {\n        \"search_location\": {\n            \"latitude\": 19.0760,\n            \"longitude\": 72.8777,\n            \"address\": \"Mumbai, Maharashtra\"\n        },\n        \"search_radius_km\": 10,\n        \"total_found\": 15,\n        \"services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations with 5+ years experience\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"latitude\": 19.1356,\n                \"longitude\": 72.8266,\n                \"distance_km\": 7.2,\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"availability_today\": true,\n                \"emergency_available\": true\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203\n                },\n                \"name\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 450.00,\n                \"currency\": \"INR\",\n                \"location\": \"Bandra West, Mumbai\",\n                \"latitude\": 19.0596,\n                \"longitude\": 72.8295,\n                \"distance_km\": 5.8,\n                \"status\": \"active\",\n                \"is_featured\": false,\n                \"availability_today\": false,\n                \"emergency_available\": false\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T17:15:30.123Z\",\n    \"statusCode\": 200\n}"
+						},
+						{
+							"name": "Error Response - Missing Location",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/nearby/?latitude={{latitude}}&longitude={{longitude}}&radius=10&max_results=20",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"nearby",
+										""
+									],
+									"query": [
+										{
+											"key": "latitude",
+											"value": "{{latitude}}",
+											"description": "Your current latitude"
+										},
+										{
+											"key": "longitude",
+											"value": "{{longitude}}",
+											"description": "Your current longitude"
+										},
+										{
+											"key": "radius",
+											"value": "10",
+											"description": "Search radius in kilometers (default: 10)"
+										},
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category",
+											"disabled": true
+										},
+										{
+											"key": "max_results",
+											"value": "20",
+											"description": "Maximum number of results (default: 50)"
+										},
+										{
+											"key": "min_rating",
+											"value": "4.0",
+											"description": "Minimum provider rating",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/nearby/ - Find nearby services based on location"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Location parameters are required for nearby search\",\n    \"data\": {\n        \"error_type\": \"missing_parameters\",\n        \"required_parameters\": [\"latitude\", \"longitude\"],\n        \"provided_parameters\": []\n    },\n    \"time\": \"2024-01-20T17:15:30.123Z\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "8. Admin View (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/admin/?status=all&page=1&ordering=-created_at",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"admin",
+								""
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "all",
+									"description": "Filter by status: all, active, pending, inactive"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by: created_at, hourly_rate, provider__username"
+								},
+								{
+									"key": "provider",
+									"value": "",
+									"description": "Filter by provider ID",
+									"disabled": true
+								}
+							]
+						},
+						"description": "GET /api/services/services/admin/ - Admin view of all services (Admin only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/admin/?status=all&page=1&ordering=-created_at",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"admin",
+										""
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "all",
+											"description": "Filter by status: all, active, pending, inactive"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination"
+										},
+										{
+											"key": "ordering",
+											"value": "-created_at",
+											"description": "Order by: created_at, hourly_rate, provider__username"
+										},
+										{
+											"key": "provider",
+											"value": "",
+											"description": "Filter by provider ID",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/admin/ - Admin view of all services (Admin only)"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Admin services data retrieved successfully\",\n    \"data\": {\n        \"count\": 125,\n        \"next\": \"http://localhost:8000/api/v1/services/services/admin/?page=2\",\n        \"previous\": null,\n        \"results\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"email\": \"john@example.com\",\n                    \"phone\": \"+91-9876543210\",\n                    \"verified\": true,\n                    \"rating\": 4.8\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"total_bookings\": 45,\n                \"total_revenue\": 22500.00,\n                \"avg_rating\": 4.7,\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T15:00:00Z\",\n                \"admin_notes\": \"High-performing service, verified provider\"\n            }\n        ],\n        \"statistics\": {\n            \"total_services\": 125,\n            \"active_services\": 98,\n            \"pending_services\": 15,\n            \"inactive_services\": 12,\n            \"featured_services\": 23,\n            \"total_providers\": 78,\n            \"avg_service_rating\": 4.6\n        }\n    },\n    \"time\": \"2024-01-20T17:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						},
+						{
+							"name": "Error Response - Forbidden (Not Admin)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/admin/?status=all&page=1&ordering=-created_at",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"admin",
+										""
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "all",
+											"description": "Filter by status: all, active, pending, inactive"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination"
+										},
+										{
+											"key": "ordering",
+											"value": "-created_at",
+											"description": "Order by: created_at, hourly_rate, provider__username"
+										},
+										{
+											"key": "provider",
+											"value": "",
+											"description": "Filter by provider ID",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/admin/ - Admin view of all services (Admin only)"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Admin access required\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"required_permission\": \"IsAdminUser\",\n        \"user_type\": \"provider\"\n    },\n    \"time\": \"2024-01-20T17:30:45.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "9. Get Trending Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/trending/?limit=10&timeframe=week",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"trending",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of trending services to return (default: 10)"
+								},
+								{
+									"key": "timeframe",
+									"value": "week",
+									"description": "Timeframe for trending calculation: day, week, month"
+								},
+								{
+									"key": "category",
+									"value": "{{category_id}}",
+									"description": "Filter by category",
+									"disabled": true
+								}
+							]
+						},
+						"description": "GET /api/services/services/trending/ - Get trending services based on activity"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/trending/?limit=10&timeframe=week",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"trending",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Number of trending services to return (default: 10)"
+										},
+										{
+											"key": "timeframe",
+											"value": "week",
+											"description": "Timeframe for trending calculation: day, week, month"
+										},
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/trending/ - Get trending services based on activity"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Top 10 trending services retrieved successfully\",\n    \"data\": {\n        \"timeframe\": \"week\",\n        \"calculation_period\": \"2024-01-14 to 2024-01-20\",\n        \"trending_services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"trending_score\": 95.8,\n                \"weekly_views\": 245,\n                \"weekly_bookings\": 12,\n                \"weekly_revenue\": 6000.00,\n                \"growth_percentage\": 45.2,\n                \"created_at\": \"2024-01-20T10:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440021\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440101\",\n                    \"username\": \"electrician_expert\",\n                    \"first_name\": \"Mike\",\n                    \"last_name\": \"Johnson\",\n                    \"rating\": 4.9,\n                    \"total_reviews\": 203\n                },\n                \"name\": \"Electrical Installation & Repair\",\n                \"description\": \"Certified electrical services\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 450.00,\n                \"currency\": \"INR\",\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": false,\n                \"trending_score\": 87.3,\n                \"weekly_views\": 189,\n                \"weekly_bookings\": 8,\n                \"weekly_revenue\": 3600.00,\n                \"growth_percentage\": 32.1,\n                \"created_at\": \"2024-01-15T14:00:00Z\"\n            }\n        ],\n        \"trending_criteria\": {\n            \"factors\": [\"views\", \"bookings\", \"revenue\", \"ratings\", \"growth_rate\"],\n            \"calculation_method\": \"weighted_algorithm\"\n        }\n    },\n    \"time\": \"2024-01-20T17:45:30.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "10. Get Matching Requests (Provider Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/matching_requests/?max_distance=15&limit=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"matching_requests",
+								""
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "{{category_id}}",
+									"description": "Filter by category",
+									"disabled": true
+								},
+								{
+									"key": "max_distance",
+									"value": "15",
+									"description": "Maximum distance in km (default: 25)"
+								},
+								{
+									"key": "urgency",
+									"value": "high",
+									"description": "Filter by urgency: low, medium, high, urgent",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Maximum number of requests (default: 50)"
+								},
+								{
+									"key": "min_budget",
+									"value": "500",
+									"description": "Minimum budget filter",
+									"disabled": true
+								}
+							]
+						},
+						"description": "GET /api/services/services/matching_requests/ - Get matching requests for provider (Provider only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/matching_requests/?max_distance=15&limit=20",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"matching_requests",
+										""
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category",
+											"disabled": true
+										},
+										{
+											"key": "max_distance",
+											"value": "15",
+											"description": "Maximum distance in km (default: 25)"
+										},
+										{
+											"key": "urgency",
+											"value": "high",
+											"description": "Filter by urgency: low, medium, high, urgent",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "20",
+											"description": "Maximum number of requests (default: 50)"
+										},
+										{
+											"key": "min_budget",
+											"value": "500",
+											"description": "Minimum budget filter",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/matching_requests/ - Get matching requests for provider (Provider only)"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Found 8 matching service requests for your profile\",\n    \"data\": {\n        \"provider_location\": {\n            \"latitude\": 19.0760,\n            \"longitude\": 72.8777,\n            \"address\": \"Mumbai, Maharashtra\"\n        },\n        \"search_radius_km\": 15,\n        \"matching_requests\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n                \"customer\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440200\",\n                    \"username\": \"home_owner\",\n                    \"first_name\": \"Sarah\",\n                    \"last_name\": \"Williams\",\n                    \"verified\": true,\n                    \"rating\": 4.9\n                },\n                \"title\": \"Need Emergency Plumbing Service\",\n                \"description\": \"Kitchen sink is leaking badly and needs immediate attention\",\n                \"category_name\": \"Home Services\",\n                \"budget_min\": 500.00,\n                \"budget_max\": 1500.00,\n                \"currency\": \"INR\",\n                \"urgency\": \"urgent\",\n                \"status\": \"open\",\n                \"requested_date_time\": \"2024-01-25T14:00:00Z\",\n                \"location\": \"Andheri West, Mumbai\",\n                \"distance_km\": 7.2,\n                \"expires_at\": \"2024-01-27T12:00:00Z\",\n                \"match_score\": 94.5,\n                \"match_reasons\": [\n                    \"Category match: Home Services\",\n                    \"Budget within range: ₹500-1500\",\n                    \"Close proximity: 7.2km\",\n                    \"Emergency service available\"\n                ],\n                \"created_at\": \"2024-01-20T12:00:00Z\"\n            }\n        ],\n        \"match_criteria\": {\n            \"provider_categories\": [\"Home Services\"],\n            \"provider_hourly_rate\": 500.00,\n            \"provider_emergency_available\": true,\n            \"provider_location\": \"Mumbai, Maharashtra\"\n        }\n    },\n    \"time\": \"2024-01-20T18:00:30.123Z\",\n    \"statusCode\": 200\n}"
+						},
+						{
+							"name": "Error Response - Forbidden (Not Provider)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/matching_requests/?max_distance=15&limit=20",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"matching_requests",
+										""
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category",
+											"disabled": true
+										},
+										{
+											"key": "max_distance",
+											"value": "15",
+											"description": "Maximum distance in km (default: 25)"
+										},
+										{
+											"key": "urgency",
+											"value": "high",
+											"description": "Filter by urgency: low, medium, high, urgent",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "20",
+											"description": "Maximum number of requests (default: 50)"
+										},
+										{
+											"key": "min_budget",
+											"value": "500",
+											"description": "Minimum budget filter",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/matching_requests/ - Get matching requests for provider (Provider only)"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Only service providers can access matching requests\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"user_type\": \"customer\",\n        \"required_type\": \"provider\"\n    },\n    \"time\": \"2024-01-20T18:00:30.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "11. Filter Services by Availability",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/by_availability/?date=2024-01-25&time=14:00&duration=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"by_availability",
+								""
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2024-01-25",
+									"description": "Requested date (YYYY-MM-DD format)"
+								},
+								{
+									"key": "time",
+									"value": "14:00",
+									"description": "Requested time (HH:MM format)"
+								},
+								{
+									"key": "duration",
+									"value": "3",
+									"description": "Required duration in hours"
+								},
+								{
+									"key": "emergency",
+									"value": "true",
+									"description": "Filter for emergency availability",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "{{category_id}}",
+									"description": "Filter by category",
+									"disabled": true
+								},
+								{
+									"key": "latitude",
+									"value": "{{latitude}}",
+									"description": "Your latitude for distance calculation",
+									"disabled": true
+								},
+								{
+									"key": "longitude",
+									"value": "{{longitude}}",
+									"description": "Your longitude for distance calculation",
+									"disabled": true
+								}
+							]
+						},
+						"description": "GET /api/services/services/by_availability/ - Filter services by availability"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/by_availability/?date=2024-01-25&time=14:00&duration=3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"by_availability",
+										""
+									],
+									"query": [
+										{
+											"key": "date",
+											"value": "2024-01-25",
+											"description": "Requested date (YYYY-MM-DD format)"
+										},
+										{
+											"key": "time",
+											"value": "14:00",
+											"description": "Requested time (HH:MM format)"
+										},
+										{
+											"key": "duration",
+											"value": "3",
+											"description": "Required duration in hours"
+										},
+										{
+											"key": "emergency",
+											"value": "true",
+											"description": "Filter for emergency availability",
+											"disabled": true
+										},
+										{
+											"key": "category",
+											"value": "{{category_id}}",
+											"description": "Filter by category",
+											"disabled": true
+										},
+										{
+											"key": "latitude",
+											"value": "{{latitude}}",
+											"description": "Your latitude for distance calculation",
+											"disabled": true
+										},
+										{
+											"key": "longitude",
+											"value": "{{longitude}}",
+											"description": "Your longitude for distance calculation",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/by_availability/ - Filter services by availability"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Found 12 services available for your requested time slot\",\n    \"data\": {\n        \"requested_slot\": {\n            \"date\": \"2024-01-25\",\n            \"time\": \"14:00\",\n            \"duration_hours\": 3,\n            \"end_time\": \"17:00\"\n        },\n        \"available_services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true,\n                    \"response_time_avg\": \"15 minutes\"\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"category_name\": \"Home Services\",\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"location\": \"Mumbai, Maharashtra\",\n                \"status\": \"active\",\n                \"is_featured\": true,\n                \"availability_confirmed\": true,\n                \"emergency_available\": true,\n                \"can_start_immediately\": true,\n                \"estimated_travel_time\": \"30 minutes\",\n                \"next_available_slot\": \"2024-01-25T14:00:00Z\",\n                \"booking_flexibility\": \"high\"\n            }\n        ],\n        \"availability_summary\": {\n            \"total_checked\": 45,\n            \"available_count\": 12,\n            \"emergency_available\": 8,\n            \"immediate_start\": 5\n        }\n    },\n    \"time\": \"2024-01-20T18:15:30.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "12. Find Matching Services for Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/{{service_id}}/matching_services/?max_distance=20&min_rating=4.0&urgency_match=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_id}}",
+								"matching_services",
+								""
+							],
+							"query": [
+								{
+									"key": "max_distance",
+									"value": "20",
+									"description": "Maximum distance in km (default: 25)"
+								},
+								{
+									"key": "min_rating",
+									"value": "4.0",
+									"description": "Minimum provider rating (default: 3.0)"
+								},
+								{
+									"key": "urgency_match",
+									"value": "true",
+									"description": "Match urgency requirements (default: false)"
+								},
+								{
+									"key": "budget_range",
+									"value": "500-1500",
+									"description": "Budget range filter (min-max)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "GET /api/services/services/{id}/matching_services/ - Find services matching a request"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/matching_services/?max_distance=20&min_rating=4.0&urgency_match=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										"matching_services",
+										""
+									],
+									"query": [
+										{
+											"key": "max_distance",
+											"value": "20",
+											"description": "Maximum distance in km (default: 25)"
+										},
+										{
+											"key": "min_rating",
+											"value": "4.0",
+											"description": "Minimum provider rating (default: 3.0)"
+										},
+										{
+											"key": "urgency_match",
+											"value": "true",
+											"description": "Match urgency requirements (default: false)"
+										},
+										{
+											"key": "budget_range",
+											"value": "500-1500",
+											"description": "Budget range filter (min-max)",
+											"disabled": true
+										}
+									]
+								},
+								"description": "GET /api/services/services/{id}/matching_services/ - Find services matching a request"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Found 7 services matching your request criteria\",\n    \"data\": {\n        \"service_request\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440030\",\n            \"title\": \"Need Emergency Plumbing Service\",\n            \"category\": \"Home Services\",\n            \"budget_range\": \"₹500 - ₹1500\",\n            \"urgency\": \"urgent\",\n            \"location\": \"Andheri West, Mumbai\"\n        },\n        \"matching_services\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n                \"provider\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                    \"username\": \"plumber_pro\",\n                    \"first_name\": \"John\",\n                    \"last_name\": \"Smith\",\n                    \"rating\": 4.8,\n                    \"total_reviews\": 156,\n                    \"verified\": true,\n                    \"response_time_avg\": \"15 minutes\"\n                },\n                \"name\": \"Professional Plumbing Service\",\n                \"description\": \"Expert plumbing repairs and installations\",\n                \"hourly_rate\": 500.00,\n                \"currency\": \"INR\",\n                \"location\": \"Mumbai, Maharashtra\",\n                \"distance_km\": 7.2,\n                \"status\": \"active\",\n                \"emergency_available\": true,\n                \"match_score\": 96.5,\n                \"match_reasons\": [\n                    \"Perfect category match\",\n                    \"Within budget range\",\n                    \"Emergency service available\",\n                    \"High rating (4.8/5)\",\n                    \"Close proximity (7.2km)\",\n                    \"Fast response time\"\n                ],\n                \"estimated_cost\": {\n                    \"min_cost\": 1000.00,\n                    \"max_cost\": 1500.00,\n                    \"currency\": \"INR\"\n                },\n                \"availability_status\": \"available_now\"\n            }\n        ],\n        \"match_criteria\": {\n            \"category_match\": true,\n            \"budget_compatible\": true,\n            \"location_within_range\": true,\n            \"urgency_supported\": true,\n            \"rating_threshold_met\": true\n        },\n        \"match_summary\": {\n            \"total_evaluated\": 25,\n            \"category_matches\": 18,\n            \"budget_matches\": 12,\n            \"location_matches\": 15,\n            \"final_matches\": 7\n        }\n    },\n    \"time\": \"2024-01-20T18:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "13. Fulfill Service Request (Provider Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"proposed_rate\": 550.00,\n    \"estimated_hours\": 3,\n    \"proposed_schedule\": {\n        \"start_date\": \"2024-01-25\",\n        \"start_time\": \"14:00\",\n        \"estimated_duration_hours\": 3\n    },\n    \"service_proposal\": {\n        \"approach\": \"Will assess the leak first, then provide repair or replacement as needed\",\n        \"materials_included\": [\"basic plumbing materials\", \"sealants\", \"small fittings\"],\n        \"additional_costs\": \"Major pipe replacement may incur additional material costs\",\n        \"warranty\": \"6 months warranty on all work\"\n    },\n    \"provider_notes\": \"Available for emergency service. Can start within 30 minutes of confirmation.\",\n    \"terms_accepted\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/services/{{service_id}}/fulfill_request/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_id}}",
+								"fulfill_request",
+								""
+							]
+						},
+						"description": "POST /api/services/services/{id}/fulfill_request/ - Fulfill a service request (Provider only)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"proposed_rate\": 550.00,\n    \"estimated_hours\": 3,\n    \"proposed_schedule\": {\n        \"start_date\": \"2024-01-25\",\n        \"start_time\": \"14:00\",\n        \"estimated_duration_hours\": 3\n    },\n    \"service_proposal\": {\n        \"approach\": \"Will assess the leak first, then provide repair or replacement as needed\",\n        \"materials_included\": [\"basic plumbing materials\", \"sealants\", \"small fittings\"],\n        \"additional_costs\": \"Major pipe replacement may incur additional material costs\",\n        \"warranty\": \"6 months warranty on all work\"\n    },\n    \"provider_notes\": \"Available for emergency service. Can start within 30 minutes of confirmation.\",\n    \"terms_accepted\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/fulfill_request/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										"fulfill_request",
+										""
+									]
+								},
+								"description": "POST /api/services/services/{id}/fulfill_request/ - Fulfill a service request (Provider only)"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service request accepted successfully\",\n    \"data\": {\n        \"fulfillment_details\": {\n            \"fulfillment_id\": \"fulfill_550e8400-e29b-41d4-a716-446655440040\",\n            \"service_request_id\": \"550e8400-e29b-41d4-a716-446655440030\",\n            \"service_id\": \"550e8400-e29b-41d4-a716-446655440020\",\n            \"status\": \"accepted\",\n            \"proposed_rate\": 550.00,\n            \"estimated_hours\": 3,\n            \"estimated_total_cost\": 1650.00,\n            \"currency\": \"INR\"\n        },\n        \"service_info\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440020\",\n            \"name\": \"Professional Plumbing Service\",\n            \"provider\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440100\",\n                \"username\": \"plumber_pro\",\n                \"first_name\": \"John\",\n                \"last_name\": \"Smith\",\n                \"phone\": \"+91-9876543210\",\n                \"rating\": 4.8\n            }\n        },\n        \"schedule\": {\n            \"proposed_start\": \"2024-01-25T14:00:00Z\",\n            \"estimated_completion\": \"2024-01-25T17:00:00Z\",\n            \"flexibility\": \"Can adjust by ±2 hours if needed\"\n        },\n        \"next_steps\": {\n            \"customer_confirmation_required\": true,\n            \"confirmation_deadline\": \"2024-01-22T14:00:00Z\",\n            \"provider_contact_info\": {\n                \"phone\": \"+91-9876543210\",\n                \"preferred_contact_method\": \"phone\"\n            },\n            \"booking_instructions\": \"Customer will receive notification with provider contact details\"\n        },\n        \"terms\": {\n            \"cancellation_policy\": \"Free cancellation up to 2 hours before scheduled time\",\n            \"payment_terms\": \"Payment due upon completion\",\n            \"warranty\": \"6 months warranty on all work\"\n        }\n    },\n    \"time\": \"2024-01-20T18:45:30.123Z\",\n    \"statusCode\": 201\n}"
+						},
+						{
+							"name": "Error Response - Already Fulfilled",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"proposed_rate\": 550.00,\n    \"estimated_hours\": 3,\n    \"proposed_schedule\": {\n        \"start_date\": \"2024-01-25\",\n        \"start_time\": \"14:00\",\n        \"estimated_duration_hours\": 3\n    },\n    \"service_proposal\": {\n        \"approach\": \"Will assess the leak first, then provide repair or replacement as needed\",\n        \"materials_included\": [\"basic plumbing materials\", \"sealants\", \"small fittings\"],\n        \"additional_costs\": \"Major pipe replacement may incur additional material costs\",\n        \"warranty\": \"6 months warranty on all work\"\n    },\n    \"provider_notes\": \"Available for emergency service. Can start within 30 minutes of confirmation.\",\n    \"terms_accepted\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/fulfill_request/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										"fulfill_request",
+										""
+									]
+								},
+								"description": "POST /api/services/services/{id}/fulfill_request/ - Fulfill a service request (Provider only)"
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service request has already been fulfilled\",\n    \"data\": {\n        \"error_type\": \"request_already_fulfilled\",\n        \"request_status\": \"fulfilled\",\n        \"fulfilled_by\": {\n            \"provider_id\": \"550e8400-e29b-41d4-a716-446655440102\",\n            \"provider_name\": \"Another Provider\"\n        },\n        \"fulfilled_at\": \"2024-01-20T16:00:00Z\"\n    },\n    \"time\": \"2024-01-20T18:45:30.123Z\",\n    \"statusCode\": 409\n}"
+						},
+						{
+							"name": "Error Response - Forbidden (Not Provider)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"proposed_rate\": 550.00,\n    \"estimated_hours\": 3,\n    \"proposed_schedule\": {\n        \"start_date\": \"2024-01-25\",\n        \"start_time\": \"14:00\",\n        \"estimated_duration_hours\": 3\n    },\n    \"service_proposal\": {\n        \"approach\": \"Will assess the leak first, then provide repair or replacement as needed\",\n        \"materials_included\": [\"basic plumbing materials\", \"sealants\", \"small fittings\"],\n        \"additional_costs\": \"Major pipe replacement may incur additional material costs\",\n        \"warranty\": \"6 months warranty on all work\"\n    },\n    \"provider_notes\": \"Available for emergency service. Can start within 30 minutes of confirmation.\",\n    \"terms_accepted\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/services/{{service_id}}/fulfill_request/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"services",
+										"{{service_id}}",
+										"fulfill_request",
+										""
+									]
+								},
+								"description": "POST /api/services/services/{id}/fulfill_request/ - Fulfill a service request (Provider only)"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Only service providers can fulfill requests\",\n    \"data\": {\n        \"error_type\": \"permission_denied\",\n        \"user_type\": \"customer\",\n        \"required_type\": \"provider\"\n    },\n    \"time\": \"2024-01-20T18:45:30.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/v1/services",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		},
+		{
+			"key": "service_id",
+			"value": "550e8400-e29b-41d4-a716-446655440020",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "550e8400-e29b-41d4-a716-446655440001",
+			"type": "string"
+		},
+		{
+			"key": "latitude",
+			"value": "19.0760",
+			"type": "string"
+		},
+		{
+			"key": "longitude",
+			"value": "72.8777",
+			"type": "string"
+		}
+	]
+}

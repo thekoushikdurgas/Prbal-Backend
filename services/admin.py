@@ -332,7 +332,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 class ServiceSubCategoryInline(admin.TabularInline):
     model = ServiceSubCategory
     extra = 1
-    fields = ('name', 'description', 'icon', 'icon_url', 'sort_order', 'is_active')
+    fields = ('name', 'description', 'icon', 'icon_name', 'sort_order', 'is_active')
 
 @admin.register(ServiceSubCategory)
 class ServiceSubCategoryAdmin(admin.ModelAdmin):

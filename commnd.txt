@@ -1,6 +1,6 @@
 git init
 git add .
-git commit -m "verion=0.1"
+git commit -m "codesandbox setup"
 git remote add origin https://github.com/thekoushikdurgas/Prbal-Backend.git
 git branch -M main
 git push -u origin main -f

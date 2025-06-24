@@ -1,0 +1,1008 @@
+{
+	"info": {
+		"_postman_id": "b96da718-4416-4e24-b4a3-c3a9cba4527c",
+		"name": "Prbal Services API - Categories & SubCategories",
+		"description": "Complete collection for Service Categories and SubCategories endpoints. Based on actual codebase analysis from views.py, models.py, and serializers.py. Standardized response format: {message, data, time, statusCode}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20572666",
+		"_collection_link": "https://prbal5-1003.postman.co/workspace/prbal~38626842-f3c9-4a6f-a7bc-0367cd9a6824/collection/20572666-b96da718-4416-4e24-b4a3-c3a9cba4527c?action=share&source=collection_link&creator=20572666"
+	},
+	"item": [
+		{
+			"name": "🗂️ Service Categories",
+			"item": [
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/categories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"categories",
+								""
+							],
+							"query": [
+								{
+									"key": "active_only",
+									"value": "true",
+									"description": "Custom filter: true/false (from get_queryset)",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "home",
+									"description": "Search in name, description fields",
+									"disabled": true
+								},
+								{
+									"key": "ordering",
+									"value": "sort_order",
+									"description": "name, sort_order, created_at",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"description": "Django filter field",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List service categories. Permission: IsAuthenticatedOrReadOnly. No auth required for read."
+					},
+					"response": [
+						{
+							"name": "Success Response - Non-Paginated",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/categories/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service categories retrieved successfully\",\n    \"data\": {\n        \"categories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\",\n                \"description\": \"Professional home maintenance and repair services including plumbing, electrical, cleaning, and repair work\",\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/home.svg\",\n                \"sort_order\": 1,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T10:00:00Z\",\n                \"updated_at\": \"2024-01-20T10:00:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440002\",\n                \"name\": \"Technology Services\",\n                \"description\": \"Computer repair, software installation, network setup, and tech support services\",\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/tech.svg\",\n                \"sort_order\": 2,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T11:00:00Z\",\n                \"updated_at\": \"2024-01-20T11:00:00Z\"\n            }\n        ],\n        \"summary\": {\n            \"total_count\": 2,\n            \"filters_applied\": [],\n            \"retrieved_at\": \"2024-01-20T15:30:45.123Z\"\n        }\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						},
+						{
+							"name": "Success Response - Paginated",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/categories/?page=1&page_size=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "page_size",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service categories retrieved successfully - page 1\",\n    \"data\": [\n        {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n            \"name\": \"Home Services\",\n            \"description\": \"Professional home maintenance and repair services\",\n            \"icon\": null,\n            \"icon_url\": \"https://example.com/icons/home.svg\",\n            \"sort_order\": 1,\n            \"is_active\": true,\n            \"created_at\": \"2024-01-20T10:00:00Z\",\n            \"updated_at\": \"2024-01-20T10:00:00Z\"\n        }\n    ],\n    \"pagination_info\": {\n        \"current_page\": 1,\n        \"page_size\": 5,\n        \"total_count\": 8,\n        \"has_next\": true,\n        \"has_previous\": false\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Category Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/services/categories/{{category_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"services",
+								"categories",
+								"{{category_id}}",
+								""
+							]
+						},
+						"description": "Retrieve specific category. Permission: IsAuthenticatedOrReadOnly"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										"550e8400-e29b-41d4-a716-446655440001",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service category retrieved successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home Services\",\n        \"description\": \"Professional home maintenance and repair services including plumbing, electrical work, cleaning services, landscaping, and general home repairs. Available 24/7 for emergency situations.\",\n        \"icon\": null,\n        \"icon_url\": \"https://example.com/icons/home.svg\",\n        \"sort_order\": 1,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T10:00:00Z\"\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 200\n}"
+						},
+						{
+							"name": "Error Response - Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/categories/invalid-uuid/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										"invalid-uuid",
+										""
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Service category not found\",\n    \"data\": {\n        \"category_id\": \"invalid-uuid\",\n        \"error_type\": \"not_found\",\n        \"user_id\": null\n    },\n    \"time\": \"2024-01-20T15:30:45.123Z\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Category (Admin Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Category\",\n    \"description\": \"A comprehensive description of the new category\",\n    \"icon\": null,\n    \"sort_order\": 10,\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								""
+							]
+						},
+						"description": "Create new category. Permission: IsAdminUser (from get_permissions)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Business Services\",\n    \"description\": \"Professional business consultation and support services\",\n    \"icon\": null,\n    \"sort_order\": 5,\n    \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/categories/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Category 'Business Services' created successfully\",\n    \"data\": {\n        \"category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440003\",\n            \"name\": \"Business Services\",\n            \"description\": \"Professional business consultation and support services\",\n            \"icon\": null,\n            \"icon_url\": null,\n            \"sort_order\": 5,\n            \"is_active\": true,\n            \"created_at\": \"2024-01-20T16:00:00Z\",\n            \"updated_at\": \"2024-01-20T16:00:00Z\"\n        },\n        \"creation_details\": {\n            \"created_by\": \"admin\",\n            \"created_at\": \"2024-01-20T16:00:00Z\",\n            \"category_id\": \"550e8400-e29b-41d4-a716-446655440003\"\n        }\n    },\n    \"time\": \"2024-01-20T16:00:00.123Z\",\n    \"statusCode\": 201\n}"
+						},
+						{
+							"name": "Error Response - Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Test Category\",\n    \"description\": \"Test\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/categories/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										""
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"You do not have permission to access this endpoint\",\n    \"data\": {\n        \"required_permission\": \"admin\",\n        \"user_type\": \"customer\"\n    },\n    \"time\": \"2024-01-20T16:00:00.123Z\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Category (Admin Only)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Category Name\",\n    \"description\": \"Updated description with more comprehensive details\",\n    \"icon\": null,\n    \"sort_order\": 15,\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}",
+								""
+							]
+						},
+						"description": "Update existing category. Permission: IsAdminUser"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Home & Garden Services\",\n    \"description\": \"Comprehensive home and garden maintenance services\",\n    \"icon\": null,\n    \"sort_order\": 1,\n    \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										"550e8400-e29b-41d4-a716-446655440001",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Category updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home & Garden Services\",\n        \"description\": \"Comprehensive home and garden maintenance services\",\n        \"icon\": null,\n        \"icon_url\": \"https://example.com/icons/home.svg\",\n        \"sort_order\": 1,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T16:30:00Z\"\n    },\n    \"time\": \"2024-01-20T16:30:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Partial Update Category (Admin Only)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Updated description only\",\n    \"sort_order\": 20\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}",
+								""
+							]
+						},
+						"description": "Partially update category fields. Permission: IsAdminUser"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sort_order\": 3\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440001/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										"550e8400-e29b-41d4-a716-446655440001",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Category updated successfully\",\n    \"data\": {\n        \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n        \"name\": \"Home Services\",\n        \"description\": \"Professional home maintenance and repair services\",\n        \"icon\": null,\n        \"icon_url\": \"https://example.com/icons/home.svg\",\n        \"sort_order\": 3,\n        \"is_active\": true,\n        \"created_at\": \"2024-01-20T10:00:00Z\",\n        \"updated_at\": \"2024-01-20T17:00:00Z\"\n    },\n    \"time\": \"2024-01-20T17:00:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Category (Admin Only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}",
+								""
+							]
+						},
+						"description": "Delete category. Permission: IsAdminUser. Logs impact analysis."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/categories/550e8400-e29b-41d4-a716-446655440003/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										"550e8400-e29b-41d4-a716-446655440003",
+										""
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Category 'Business Services' deleted successfully\",\n    \"data\": {\n        \"deleted_category\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440003\",\n            \"name\": \"Business Services\",\n            \"sort_order\": 5,\n            \"was_active\": true\n        },\n        \"impact_analysis\": {\n            \"total_services_affected\": 0,\n            \"active_services_affected\": 0,\n            \"subcategories_affected\": 2\n        },\n        \"deletion_metadata\": {\n            \"deleted_by\": \"admin\",\n            \"deleted_at\": \"2024-01-20T17:30:00.123Z\",\n            \"deletion_type\": \"admin_action\"\n        }\n    },\n    \"time\": \"2024-01-20T17:30:00.123Z\",\n    \"statusCode\": 204\n}"
+						}
+					]
+				},
+				{
+					"name": "Category Statistics (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories/statistics/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"statistics",
+								""
+							]
+						},
+						"description": "Get category statistics. Custom action from views.py @action(detail=False, methods=['get']). Admin only."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/categories/statistics/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"categories",
+										"statistics",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Category statistics retrieved successfully\",\n    \"data\": {\n        \"summary\": {\n            \"total_categories\": 3,\n            \"total_services\": 45,\n            \"total_requests\": 28,\n            \"generated_by\": \"admin\",\n            \"generated_at\": \"2024-01-20T18:00:00.123Z\"\n        },\n        \"category_statistics\": [\n            {\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\",\n                    \"description\": \"Professional home maintenance and repair services\",\n                    \"sort_order\": 1,\n                    \"is_active\": true\n                },\n                \"service_counts\": {\n                    \"total\": 25,\n                    \"active\": 22,\n                    \"inactive\": 3\n                },\n                \"request_counts\": {\n                    \"total\": 18,\n                    \"open\": 12,\n                    \"fulfilled_or_expired\": 6\n                },\n                \"provider_count\": 15,\n                \"subcategory_count\": 5\n            },\n            {\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440002\",\n                    \"name\": \"Technology Services\",\n                    \"description\": \"Computer repair, software installation, network setup\",\n                    \"sort_order\": 2,\n                    \"is_active\": true\n                },\n                \"service_counts\": {\n                    \"total\": 20,\n                    \"active\": 18,\n                    \"inactive\": 2\n                },\n                \"request_counts\": {\n                    \"total\": 10,\n                    \"open\": 8,\n                    \"fulfilled_or_expired\": 2\n                },\n                \"provider_count\": 12,\n                \"subcategory_count\": 4\n            }\n        ]\n    },\n    \"time\": \"2024-01-20T18:00:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				}
+			],
+			"description": "ServiceCategoryViewSet endpoints - CRUD operations with admin permissions for write operations. Based on views.py analysis."
+		},
+		{
+			"name": "📁 Service SubCategories",
+			"item": [
+				{
+					"name": "List SubCategories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/subcategories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subcategories",
+								""
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "{{category_id}}",
+									"description": "Filter by parent category ID",
+									"disabled": true
+								},
+								{
+									"key": "active_only",
+									"value": "true",
+									"description": "Custom filter: true/false",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "repair",
+									"description": "Search in name, description, category__name",
+									"disabled": true
+								},
+								{
+									"key": "ordering",
+									"value": "sort_order",
+									"description": "name, sort_order, category__name, created_at",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"description": "Django filter field",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List service subcategories. Permission: IsAuthenticatedOrReadOnly"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/subcategories/?category=550e8400-e29b-41d4-a716-446655440001",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"subcategories",
+										""
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "550e8400-e29b-41d4-a716-446655440001"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Subcategories retrieved successfully\",\n    \"data\": {\n        \"subcategories\": [\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440011\",\n                \"name\": \"Plumbing\",\n                \"description\": \"Plumbing repairs, installations, and maintenance services\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/plumbing.svg\",\n                \"sort_order\": 1,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T10:30:00Z\",\n                \"updated_at\": \"2024-01-20T10:30:00Z\"\n            },\n            {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440012\",\n                \"name\": \"Electrical\",\n                \"description\": \"Electrical repairs, wiring, and electrical system installation\",\n                \"category\": {\n                    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                    \"name\": \"Home Services\"\n                },\n                \"icon\": null,\n                \"icon_url\": \"https://example.com/icons/electrical.svg\",\n                \"sort_order\": 2,\n                \"is_active\": true,\n                \"created_at\": \"2024-01-20T10:35:00Z\",\n                \"updated_at\": \"2024-01-20T10:35:00Z\"\n            }\n        ],\n        \"summary\": {\n            \"total_count\": 2,\n            \"filters_applied\": [\"category=550e8400-e29b-41d4-a716-446655440001\"],\n            \"retrieved_at\": \"2024-01-20T18:30:00.123Z\"\n        }\n    },\n    \"time\": \"2024-01-20T18:30:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Get SubCategory Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/subcategories/{{subcategory_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subcategories",
+								"{{subcategory_id}}",
+								""
+							]
+						},
+						"description": "Retrieve specific subcategory. Permission: IsAuthenticatedOrReadOnly"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/subcategories/550e8400-e29b-41d4-a716-446655440011/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"subcategories",
+										"550e8400-e29b-41d4-a716-446655440011",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Subcategory 'Plumbing' retrieved successfully\",\n    \"data\": {\n        \"subcategory\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440011\",\n            \"name\": \"Plumbing\",\n            \"description\": \"Professional plumbing services including repairs, installations, pipe work, drain cleaning, and emergency plumbing services available 24/7\",\n            \"category\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\",\n                \"description\": \"Professional home maintenance services\"\n            },\n            \"icon\": null,\n            \"icon_url\": \"https://example.com/icons/plumbing.svg\",\n            \"sort_order\": 1,\n            \"is_active\": true,\n            \"created_at\": \"2024-01-20T10:30:00Z\",\n            \"updated_at\": \"2024-01-20T10:30:00Z\"\n        },\n        \"access_details\": {\n            \"accessed_by\": \"Anonymous\",\n            \"accessed_at\": \"2024-01-20T19:00:00.123Z\",\n            \"category_name\": \"Home Services\",\n            \"services_count\": 8,\n            \"category_is_active\": true\n        }\n    },\n    \"time\": \"2024-01-20T19:00:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Create SubCategory (Admin Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"HVAC Services\",\n    \"description\": \"Heating, ventilation, and air conditioning services\",\n    \"category\": \"{{category_id}}\",\n    \"icon\": null,\n    \"sort_order\": 5,\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/subcategories/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subcategories",
+								""
+							]
+						},
+						"description": "Create new subcategory. Permission: IsAdminUser"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"HVAC Services\",\n    \"description\": \"Heating, ventilation, and air conditioning services\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"icon\": null,\n    \"sort_order\": 5,\n    \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/subcategories/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"subcategories",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Subcategory 'HVAC Services' created successfully\",\n    \"data\": {\n        \"subcategory\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440015\",\n            \"name\": \"HVAC Services\",\n            \"description\": \"Heating, ventilation, and air conditioning services\",\n            \"category\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\"\n            },\n            \"icon\": null,\n            \"icon_url\": null,\n            \"sort_order\": 5,\n            \"is_active\": true,\n            \"created_at\": \"2024-01-20T19:30:00Z\",\n            \"updated_at\": \"2024-01-20T19:30:00Z\"\n        },\n        \"creation_details\": {\n            \"created_by\": \"admin\",\n            \"created_at\": \"2024-01-20T19:30:00Z\",\n            \"category_name\": \"Home Services\",\n            \"subcategory_id\": \"550e8400-e29b-41d4-a716-446655440015\"\n        }\n    },\n    \"time\": \"2024-01-20T19:30:00.123Z\",\n    \"statusCode\": 201\n}"
+						}
+					]
+				},
+				{
+					"name": "Update SubCategory (Admin Only)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated SubCategory Name\",\n    \"description\": \"Updated comprehensive description for the subcategory\",\n    \"category\": \"{{category_id}}\",\n    \"icon\": null,\n    \"sort_order\": 10,\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/subcategories/{{subcategory_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subcategories",
+								"{{subcategory_id}}",
+								""
+							]
+						},
+						"description": "Update existing subcategory. Permission: IsAdminUser"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Plumbing & Pipe Services\",\n    \"description\": \"Comprehensive plumbing services including emergency repairs\",\n    \"category\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"icon\": null,\n    \"sort_order\": 1,\n    \"is_active\": true\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/subcategories/550e8400-e29b-41d4-a716-446655440011/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"subcategories",
+										"550e8400-e29b-41d4-a716-446655440011",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Subcategory 'Plumbing & Pipe Services' updated successfully\",\n    \"data\": {\n        \"subcategory\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440011\",\n            \"name\": \"Plumbing & Pipe Services\",\n            \"description\": \"Comprehensive plumbing services including emergency repairs\",\n            \"category\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\"\n            },\n            \"icon\": null,\n            \"icon_url\": \"https://example.com/icons/plumbing.svg\",\n            \"sort_order\": 1,\n            \"is_active\": true,\n            \"created_at\": \"2024-01-20T10:30:00Z\",\n            \"updated_at\": \"2024-01-20T20:00:00Z\"\n        },\n        \"update_details\": {\n            \"updated_by\": \"admin\",\n            \"updated_at\": \"2024-01-20T20:00:00Z\",\n            \"changes_made\": [\"name: 'Plumbing' → 'Plumbing & Pipe Services'\", \"description: updated\"],\n            \"category_name\": \"Home Services\",\n            \"subcategory_id\": \"550e8400-e29b-41d4-a716-446655440011\"\n        }\n    },\n    \"time\": \"2024-01-20T20:00:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Partial Update SubCategory (Admin Only)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sort_order\": 8,\n    \"description\": \"Updated description for this subcategory\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/subcategories/{{subcategory_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subcategories",
+								"{{subcategory_id}}",
+								""
+							]
+						},
+						"description": "Partially update subcategory fields. Permission: IsAdminUser"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sort_order\": 3\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/subcategories/550e8400-e29b-41d4-a716-446655440012/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"subcategories",
+										"550e8400-e29b-41d4-a716-446655440012",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Subcategory 'Electrical' partially updated successfully\",\n    \"data\": {\n        \"subcategory\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440012\",\n            \"name\": \"Electrical\",\n            \"description\": \"Electrical repairs, wiring, and electrical system installation\",\n            \"category\": {\n                \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n                \"name\": \"Home Services\"\n            },\n            \"icon\": null,\n            \"icon_url\": \"https://example.com/icons/electrical.svg\",\n            \"sort_order\": 3,\n            \"is_active\": true,\n            \"created_at\": \"2024-01-20T10:35:00Z\",\n            \"updated_at\": \"2024-01-20T20:30:00Z\"\n        },\n        \"partial_update_details\": {\n            \"updated_by\": \"admin\",\n            \"updated_at\": \"2024-01-20T20:30:00Z\",\n            \"fields_updated\": [\"sort_order\"],\n            \"changes_made\": [\"sort_order: 2 → 3\"],\n            \"category_name\": \"Home Services\",\n            \"subcategory_id\": \"550e8400-e29b-41d4-a716-446655440012\"\n        }\n    },\n    \"time\": \"2024-01-20T20:30:00.123Z\",\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete SubCategory (Admin Only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"description": "Admin JWT token required"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/subcategories/{{subcategory_id}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subcategories",
+								"{{subcategory_id}}",
+								""
+							]
+						},
+						"description": "Delete subcategory. Permission: IsAdminUser. Logs impact analysis including affected services."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer admin-token"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/subcategories/550e8400-e29b-41d4-a716-446655440015/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"subcategories",
+										"550e8400-e29b-41d4-a716-446655440015",
+										""
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Subcategory 'HVAC Services' deleted successfully\",\n    \"data\": {\n        \"deleted_subcategory\": {\n            \"id\": \"550e8400-e29b-41d4-a716-446655440015\",\n            \"name\": \"HVAC Services\",\n            \"category_name\": \"Home Services\",\n            \"sort_order\": 5,\n            \"was_active\": true\n        },\n        \"impact_analysis\": {\n            \"total_services_affected\": 0,\n            \"active_services_affected\": 0,\n            \"inactive_services_affected\": 0\n        },\n        \"deletion_metadata\": {\n            \"deleted_by\": \"admin\",\n            \"deleted_at\": \"2024-01-20T21:00:00.123Z\",\n            \"deletion_type\": \"admin_action\"\n        }\n    },\n    \"time\": \"2024-01-20T21:00:00.123Z\",\n    \"statusCode\": 204\n}"
+						}
+					]
+				}
+			],
+			"description": "ServiceSubCategoryViewSet endpoints - CRUD operations with admin permissions for write operations. Based on views.py analysis."
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/services",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "550e8400-e29b-41d4-a716-446655440001",
+			"type": "string"
+		},
+		{
+			"key": "subcategory_id",
+			"value": "550e8400-e29b-41d4-a716-446655440011",
+			"type": "string"
+		}
+	]
+}
