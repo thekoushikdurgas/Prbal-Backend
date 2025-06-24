@@ -102,7 +102,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -143,7 +142,6 @@ local_settings.py
 *.db
 
 # IDE and Editor files
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -188,9 +186,6 @@ gunicorn.pid
 *.crt
 
 # Environment specific
-.env.local
-.env.production
-.env.staging
 
 # Cache
 .cache/
@@ -198,3 +193,4 @@ gunicorn.pid
 
 # Logs (keeping your existing entry)
 logs/prbal.log
+config.bat
